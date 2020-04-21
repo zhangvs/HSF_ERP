@@ -1,0 +1,77 @@
+@{;
+    ViewBag.Title = "表单页面";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<script>
+    var keyValue = request('keyValue');
+    $(function () {
+        initControl();
+    });
+    //初始化控件
+    function initControl() {
+        //订单状态
+        $("#Step").ComboBox({
+            url: "../../SystemManage/DataItemDetail/GetDataItemListJson",
+            param: { EnCode: "Step" },
+            id: "ItemValue",
+            text: "ItemName",
+            description: "==请选择==",
+            height: "200px"
+        });
+        //获取表单
+        if (!!keyValue) {
+            $.SetForm({
+                url: "../../CustomerManage/Sale_UserStep/GetFormJson",
+                param: { keyValue: keyValue },
+                success: function (data) {
+                    $("#form1").SetWebControls(data);
+                }
+            })
+        }
+    }
+    //保存表单;
+    function AcceptClick() {
+        if (!$('#form1').Validform()) {
+            return false;
+        }
+        var postData = $("#form1").GetWebControls(keyValue);
+        postData["StepName"] = $("#Step").attr('data-text');
+        $.SaveForm({
+            url: "../../CustomerManage/Sale_UserStep/SaveForm?keyValue=" + keyValue,
+            param: postData,
+            loading: "正在保存数据...",
+            success: function () {
+                $.currentIframe().$("#gridTable").trigger("reloadGrid");
+            }
+        })
+    }
+</script>
+<div style="margin-top: 20px; margin-right: 30px;">
+    <table class="form">
+        <tr>
+            <td class="formTitle">昵称</td>
+            <td class="formValue">
+                <input id="NickName" type="text" class="form-control"  />
+            </td>
+            <td class="formTitle">头像</td>
+            <td class="formValue">
+                <input id="HeadimgUrl" type="text" class="form-control"  />
+            </td>
+        </tr>
+        <tr>
+            <td class="formTitle">姓名</td>
+            <td class="formValue">
+                <input id="Name" type="text" class="form-control"  />
+            </td>
+            <td class="formTitle">工序</td>
+            <td class="formValue">
+                <div id="Step" type="select" class="ui-select" isvalid="yes" checkexpession="NotNull"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="formTitle">电话</td>
+            <td class="formValue">
+                <input id="Tel" type="text" class="form-control"  />
+            
+    </table>
+</div>

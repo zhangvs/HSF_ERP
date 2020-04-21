@@ -1,0 +1,25 @@
+﻿html {
+    height: 100%;
+    background: #fff;
+}
+body {
+    background: url('../../Images/picture/rule_bg.gif') no-repeat left bottom 45px;
+    background-size: 100% 20%;
+    height: 100%;
+}
+.ruletxt {
+    padding: 0px 10px 55px;
+}
+    .ruletxt p {
+        line-height: 21px
+    }
+    .ruletxt h2 {
+        text-align: center;
+        margin: 10px 0;
+        color: #ff4f38;
+    }
+    .ruletxt h2 img {
+        width:17px;
+        height:17px;
+
+    }

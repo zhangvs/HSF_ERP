@@ -1,0 +1,85 @@
+@{;
+    ViewBag.Title = "表单页面";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<link href="~/Content/layui/css/layui.css" rel="stylesheet" />
+<script src="~/Content/layui/layui.js"></script>
+<script>
+    var keyValue = request('keyValue');
+    $(function () {
+        initControl();
+        layui.use('upload', function () {
+            var $ = layui.jquery
+                , upload = layui.upload;
+            //拖拽上传
+            upload.render({
+                elem: ".upload"
+                , url: '/CustomerManage/DZ_Order/UploadPicture'
+                , done: function (data) {
+                    console.log(data);
+                    if (data.Success) {
+                        this.item
+                        $("#" + this.item.context.id).attr("imgsrc", data.Message).html("<img src='" + data.Message + "' style='height:400px;' />");
+                    } else {
+                        layer.alert('上传失败:' + data.Message, {
+                            skin: 'layui-layer-molv', closeBtn: 0
+                        });
+                    }
+                }
+                , error: function () {
+                    layer.alert('上传异常', {
+                        skin: 'layui-layer-molv', closeBtn: 0
+                    });
+                }
+            });
+        });
+    });
+    //初始化控件
+    function initControl() {
+        //获取表单
+        if (!!keyValue) {
+            $.SetForm({
+                url: "../../CustomerManage/DZ_Order/GetFormJson",
+                param: { keyValue: keyValue },
+                success: function (data) {
+                    $("#form1").SetWebControls(data.entity);
+                    if (data.SignedImg != undefined) {
+                        $("#UploadSignedImg").attr("imgsrc", data.SignedImg).html("<img src='" + data.SignedImg + "' style='height:400px;' />");
+                    }
+                }
+            })
+        }
+    }
+    //保存表单;
+    function AcceptClick() {
+        if (!$('#form1').Validform()) {
+            return false;
+        }
+        var postData = $("#form1").GetWebControls(keyValue);
+        //图片为空并且上传图不为空
+        if (!!$("#UploadSignedImg").attr("imgsrc")) {
+            postData.SignedImg = $("#UploadSignedImg").attr("imgsrc");
+        }
+        $.SaveForm({
+            url: "../../CustomerManage/DZ_Order/SaveSigned?keyValue=" + keyValue,
+            param: postData,
+            loading: "正在保存数据...",
+            success: function () {
+                $.currentIframe().$("#gridTable").trigger("reloadGrid");
+            }
+        })
+    }
+</script>
+<div style="margin-top: 20px; margin-right: 30px;">
+    <table class="form">
+        <tr>
+            <td class="formValue" colspan="2" style="text-align:center">
+                <input id="SignedImg" type="hidden" class="form-control" />
+                <div class="layui-upload-drag upload" id="UploadSignedImg" style="width:350px;height:400px">
+                    <i class="layui-icon"></i>
+                    <p>点击上传签收单</p>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>

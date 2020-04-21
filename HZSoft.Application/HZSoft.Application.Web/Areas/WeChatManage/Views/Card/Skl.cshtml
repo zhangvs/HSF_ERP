@@ -1,0 +1,462 @@
+﻿@model  HZSoft.Application.Entity.BaseManage.Hsf_CardEntity
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>思科莱 · 「@Model.Name」</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="stylesheet" type="text/css" href="https://shrcdnout.yfway.com/share/css/base.css">
+    <link rel="stylesheet" type="text/css" href="https://shrcdnout.yfway.com/share/css/swiper.min.css">
+    <link rel="stylesheet" type="text/css" href="https://shrcdnout.yfway.com/share/css/mjtoplines.css?v=2016103102">
+    <link rel="stylesheet" type="text/css" href="https://shrcdnout.yfway.com/share/css/mjcity.css?v=2016123002">
+    <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script type="text/javascript" src="https://shrcdnout.yfway.com/share/js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="https://shrcdnout.yfway.com/share/js/canvas2image.js?v=2016101102"></script>
+</head>
+<body class="shop-body">
+    <div class="loading-mask">
+        <p>加载中……</p>
+    </div>
+    <div id="advisor-qrcode-box" style="display: none;">
+        <div style="margin: 15px auto;">
+            <div id="advisor-info" class="cf">
+                <div class="fl advisor-head">
+                    <img src="https://shrcdnout.yfway.com/share/images/mjcity/default.jpg" />
+                </div>
+                <div class="fl" style="margin-left: 10px;">
+                    <p class="advisor-name">家居顾问：<span>陆菲</span></p>
+                    <p class="advisor-text">专业加激情 维意一定赢</p>
+                    <a href='tel:18688884444' class="advisor-phone"><i></i><span style="text-decoration: underline;">18688884444</span></b></a>
+                </div>
+            </div>
+            <img class="advisor-qrimg" src="https://shrcdnout.yfway.com/share/images/mjcity/default.jpg" />
+            <p style="text-align: center;margin-top: 4px;">扫描二维码 加微信好友预约免费量尺</p>
+        </div>
+    </div>
+    <div style="display: none;" class="shop-pre-ads">
+        <img style="width: 100%;vertical-align: bottom;" src="/Content/images/card/动态二维码.gif" />
+        @*<img style="width: 100%;vertical-align: bottom;" src="https://shrcdnout.yfway.com/share/images/mjcity/2019-04-28/5cc4fef59818f.jpg">*@
+    </div>
+    <div>
+    </div>
+    <div class="mj-city-top-box">
+        <div class="toplist-box-new">
+            <ul class="cf">
+                <li>
+                    <img src="~/Content/images/card/cad1.jpg" style="max-width: 100%;">
+                </li>
+            </ul>
+        </div>
+        <!-- <a id="top-right-cam" href="javascript:void(0);">15&nbsp;</a> -->
+        <div class="toplist-dot">
+            <ul></ul>
+        </div>
+    </div>
+    <div style="background-color: #fff;">
+        <div id="guide-info-box">
+            <div id="shop-guide-head">
+                <img src="@Model.PhotoUrl" id="guide-head-img">
+            </div>
+            <div id="shop-guide-info">
+                <p class="guide-name">@Model.Name</p>
+                <p class="guide-desc" title="shopinfo['name']">@Model.Position</p>
+            </div>
+            <div id="shop-guide-contact">
+                <a href='tel:@Model.Mobile1'><img src="https://shrcdnout.yfway.com/share/images/mjcity/phone2.png?v=2016110102"></a>
+                <a href="javascript:void(0);" id="guide-qrcode"
+                   data-codeurl="@Model.QRcodeUrl">
+                    <img src="https://shrcdnout.yfway.com/share/images/mjcity/qricon.jpg">
+                </a>
+            </div>
+        </div>
+        <img id="brand-logo" style="display: none;" src="/Public/Home/images/logo-wy.png?v=2016122302" class="brand-img">
+    </div>
+    @*<div class="shop-box">
+            <!-- 		<a href="/index.php?s=/Home/Topline/map/shop/%E7%BB%B4%E6%84%8F%E5%AE%9A%E5%88%B6.html"
+                    class="shop-btn">
+                        <img src="https://shrcdnout.yfway.com/share/images/mjcity/address.png?v=20161101" class="info-tag" style="width: 14px;margin-top: -8px;"><span></span><img src="https://shrcdnout.yfway.com/share/images/mjcity/arow.png" class="info-arow">
+                    </a> -->
+            <!-- 		<a href='tel:13794029288' class="shop-btn">
+                        <img src="https://shrcdnout.yfway.com/share/images/mjcity/phone.png?v=2016110102" style="width: 16px;margin-top: -3px;">
+                        <span>13794029288</span>
+                        <img src="https://shrcdnout.yfway.com/share/images/mjcity/arow.png" class="info-arow">
+                    </a> -->
+            <!-- 		<a href="javascript:void(0);" class="shop-btn" id="shop-qrcode">
+                        <img src="https://shrcdnout.yfway.com/share/images/mjcity/QRcode.png" class="info-tag"><span>预约免费量尺</span><img src="https://shrcdnout.yfway.com/share/images/mjcity/arow.png" class="info-arow">
+                    </a> -->
+            <a href="javascript:void(0);" class="shop-btn" id="shop-qrcode" style="border: none; ">
+                <img src="https://shrcdnout.yfway.com/share/images/mjcity/guide-icon.png" class="info-tag"><span>@Model.Position</span>
+            </a>
+            <div class="shop-desinger-box swiper-container">
+                <div class="shop-desinger-list swiper-wrapper">
+                    <!-- 	            <div class="swiper-slide">
+                                        <img src="https://shrcdnout.yfway.com/share/images/mjcity/shop-desinger.jpg" />
+                                    </div> -->
+                </div>
+            </div>
+        </div>*@
+    <!-- <h2 class="caption new-caption">—————  继续拖动 查看主笔设计师  —————</h2> -->
+    @*<div class="caption">
+            <table class="new-caption">
+                <tr>
+                    <td class="fl">—————</td>
+                    <td class="fl caption-mid">
+                        <p><span id="slide-icon"></span></p>
+                        <p>左右滑动 更多精彩</p>
+                    </td>
+                    <td class="fl">—————</td>
+                </tr>
+            </table>
+        </div>*@
+    <div id="shop-guide-nav">
+        <ul class="cf">
+            <li>
+                <a href="" class="shop-guide-cur" id="nav-share">精选方案</a>
+            </li>
+            @*<li>
+                    <a href="javascript:void(0);" id="nav-magazine">产品杂志</a>
+                </li>*@
+            <li>
+                <a href="javascript:void(0);" id="nav-brand">品牌介绍</a>
+            </li>
+        </ul>
+    </div>
+    <div class="brand-intro-box nav-box" style="display: none;">
+        <div class="brand-intro">
+            @*<img data-src="https://shrcdnout.yfway.com/share/images/topline/user/wy01.jpg" src="" />
+                <img data-src="https://shrcdnout.yfway.com/share/images/topline/user/wy02.jpg" src="" />
+                <img data-src="https://shrcdnout.yfway.com/share/images/topline/user/wy03.jpg" src="" />
+                <img data-src="https://shrcdnout.yfway.com/share/images/topline/user/wy04.jpg" src="" />*@
+            @*<img data-src="/Content/images/card/gsjs.jpg" src="" />*@
+            <img src="~/Content/images/card/1 (1).jpg" />
+            <img src="~/Content/images/card/1 (2).jpg" />
+            <img src="~/Content/images/card/1 (3).jpg" />
+            <img src="~/Content/images/card/1 (4).jpg" />
+            <img src="~/Content/images/card/1 (5).jpg" />
+            <img src="~/Content/images/card/1 (6).jpg" />
+        </div>
+    </div>
+    <div class="nav-box share-list" style="background-color: #fff;overflow: hidden;">
+        <div class="mj_content">
+            <!--精选方案-->
+            <p style="display:none;">1</p>
+            <div class="mj_project" style="background:url(/Content/images/card/波尔图庄园.jpg);background-position:0px bottom;background-size:cover;">
+                <a href="https://www.kujiale.com/pcenter/design/3FO4GVGGLX05/list" target="_blank">
+                    <div class="mj_black"></div>
+                    @*<div class="mj-item">
+                            <p class="mj_writer">
+                                设计师：潘虹宇
+                            </p>                <p class="mj_like">
+                                <img src="https://shrcdnout.yfway.com/share/images/topline/userv2/icon_3x/scan.png">630
+                            </p>                                <div class="pro_title">
+                                <p class="mj_time">
+                                    03.04
+                                </p>                    <h1 class="mj_header">
+                                    天下城3房2厅<p style="font-size:0.5em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">[ 缙颐天下城&nbsp;马先生 ]</p>
+                                </h1>
+                                <p class="jptj"><span>精品推荐</span></p>
+                            </div>
+                            <p class="mj-city"><i></i>汉中市</p>
+                        </div>*@
+                </a>
+            </div>
+            <!--精选方案 结尾--><!--精选方案-->
+            <p style="display:none;">1</p>
+            <div class="mj_project" style="background:url(/Content/images/card/都市魅影.jpg);background-position:0px bottom;background-size:cover;">
+                <a href="https://www.kujiale.com/pcenter/design/3FO4GH6RQUU0/list" target="_blank">
+                    <div class="mj_black"></div>
+                    @*<div class="mj-item">
+                            <p class="mj_writer">
+                                设计师：夏侯命智
+                            </p>                <p class="mj_like">
+                                <img src="https://shrcdnout.yfway.com/share/images/topline/userv2/icon_3x/scan.png">272
+                            </p>                                <div class="pro_title">
+                                <p class="mj_time">
+                                    03.07
+                                </p>                    <h1 class="mj_header">
+                                    三月<p style="font-size:0.5em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">[ &nbsp;方先生 ]</p>
+                                </h1>
+                                <p class="jptj"><span>精品推荐</span></p>
+                            </div>
+                            <p class="mj-city"><i></i>九江市</p>
+                        </div>*@
+                </a>
+            </div>
+            <!--精选方案 结尾--><!--精选方案-->
+            <p style="display:none;">1</p>
+            <div class="mj_project" style="background:url(/Content/images/card/芬兰印象.jpg);background-position:0px bottom;background-size:cover;">
+                <a href="https://720yun.com/t/e3vkimiwr7w" target="_blank">
+                    <div class="mj_black"></div>
+                    @*<div class="mj-item">
+                            <p class="mj_writer">
+                                设计师：方军
+                            </p>                <p class="mj_like">
+                                <img src="https://shrcdnout.yfway.com/share/images/topline/userv2/icon_3x/scan.png">538
+                            </p>                                <div class="pro_title">
+                                <p class="mj_time">
+                                    03.02
+                                </p>                    <h1 class="mj_header">
+                                    阁楼 旋转楼梯<p style="font-size:0.5em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">[ 绿洲湾&nbsp;项欢女士 ]</p>
+                                </h1>
+                                <p class="jptj"><span>精品推荐</span></p>
+                            </div>
+                            <p class="mj-city"><i></i>武汉市</p>
+                        </div>*@
+                </a>
+            </div>
+            <!--精选方案 结尾--><!--精选方案-->
+            <p style="display:none;">1</p>
+            <div class="mj_project" style="background:url(/Content/images/card/维也纳.jpg);background-position:0px bottom;background-size:cover;">
+                <a href="https://www.kujiale.com/pcenter/design/3FO4H3YI7I6D/list" target="_blank">
+                    <div class="mj_black"></div>
+                    @*<div class="mj-item">
+                            <p class="mj_writer">
+                                设计师：王贵安
+                            </p>                <p class="mj_like">
+                                <img src="https://shrcdnout.yfway.com/share/images/topline/userv2/icon_3x/scan.png">520
+                            </p>                                <div class="pro_title">
+                                <p class="mj_time">
+                                    02.28
+                                </p>                    <h1 class="mj_header">
+                                    格林兰郡~简欧<p style="font-size:0.5em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">[ 格林兰郡&nbsp;韩先生 ]</p>
+                                </h1>
+                                <p class="jptj"><span>精品推荐</span></p>
+                            </div>
+                            <p class="mj-city"><i></i>西宁市</p>
+                        </div>*@
+                </a>
+            </div>
+            <!--精选方案 结尾--><!--精选方案-->
+            <p style="display:none;">1</p>
+            <div class="mj_project" style="background:url(/Content/images/card/西雅图.jpg);background-position:0px bottom;background-size:cover;">
+                <a href="https://720yun.com/t/f3vkimdyd87" target="_blank">
+                    <div class="mj_black"></div>
+                </a>
+            </div>
+        </div>
+        @*<div id="share-more">
+                <p>
+                    <a href="javascript:void(0);" id="get-more-share"><i></i>真好看，我要更多</a>
+                </p>
+            </div>*@
+    </div>
+    <div class="nav-box magazine-box">
+
+    </div>
+    @*<div class="caption">
+                <table class="new-caption">
+                    <tr>
+                        <td class="fl">—————</td>
+                        <td class="fl caption-mid">
+                            <p><span id="knowledge-icon"></span></p>
+                            <p>生活小常识 装潢小技巧</p>
+                        </td>
+                        <td class="fl">—————</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="city_content" style="background-color: #fff;">
+                <div class="own_main">
+                    <h3><img src="https://shrcdnout.yfway.com/share/images/mjcity/h1line.png" style="height:22px;">热门话题</h3>
+                </div>
+                <div class="hot_topic">
+                    <div class="topic_p">
+                        <a href="https://mp.weixin.qq.com/s/tvOEKktxjderduYvX-d_jw">
+                            <img src="https://shrcdnout.yfway.com/share/images/mjcity/2018-07-24/5b56818e99fa5.jpeg?">												<h3>换季断舍离，用正确的姿势收纳杂物</h3>
+                            <p>换更大房子的速度都赶不上家被堆满的速度</p>
+                        </a>
+                    </div>
+                </div><div class="hot_topic">
+                    <div class="topic_p">
+                        <a href="https://mp.weixin.qq.com/s/hAovtGSL3O7MLG4m3pvFtw">
+                            <img src="https://shrcdnout.yfway.com/share/images/mjcity/2018-07-24/5b56811623deb.jpg?">												<h3>选窗帘举棋不定害怕被坑？这几招教你避坑！</h3>
+                            <p>定制窗帘应该这样选！</p>
+                        </a>
+                    </div>
+                </div><div class="hot_topic">
+                    <div class="topic_p">
+                        <a href="https://mp.weixin.qq.com/s/IB1I3MJeAkII5aMfYuXp9g">
+                            <img src="https://shrcdnout.yfway.com/share/images/mjcity/2018-07-23/5b55a69661aff.jpg?">												<h3>隔断实现随心所欲，给家新定义！</h3>
+                            <p>让家变得更大一些！</p>
+                        </a>
+                    </div>
+                </div><div class="hot_topic">
+                    <div class="topic_p">
+                        <a href="https://mp.weixin.qq.com/s/5pyQfib3z6EctBe2dBEQdg">
+                            <img src="https://shrcdnout.yfway.com/share/images/mjcity/2018-07-23/5b55a4f8ca4e8.jpg?">												<h3>集颜值与实用于一体的榻榻米，你家真的不需要吗？</h3>
+                            <p>释放你的灵感，玩转你家的榻榻米！</p>
+                        </a>
+                    </div>
+                </div><div class="hot_topic">
+                    <div class="topic_p">
+                        <a href="https://mp.weixin.qq.com/s?__biz=MzI1Mzk5MTQwNQ==&mid=2247483839&idx=1&sn=caafdf9bae342974b9f4574b75d26729&chksm=e9cd413ddebac82b41826f9296efda4fbc7fc65f6c8c384c345d9ef0acd9c9fc944f82b410e8&scene=0#rd">
+                            <img src="https://shrcdnout.yfway.com/share/images/mjcity/2018-07-23/5b559ef670650.jpg?">												<h3>把异乡变成故乡，你需要一份定制的归属感</h3>
+                            <p>背后那个温暖的家，才是你一路勇敢的理由</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        <div>
+            <img style="width: 100%;vertical-align: bottom;" src="https://shrcdnout.yfway.com/share/images/mjcity/2019-04-28/5cc503751a90e.jpg">
+        </div>*@
+    <div>
+        <img style="width: 100%;vertical-align: bottom;" src="/Content/images/card/动态二维码3.gif" />
+    </div>
+    <div style="height: 40px;"></div>
+    <div class="cjty-bottom-fixed">
+        <a href="~/WeChatManage/Card/Guide?id=@Model.Id&name=@Model.Name" class="guide-appoint-count">
+            <img style="width: 100%;vertical-align: bottom;" src="https://shrcdnout.yfway.com/share/images/mjcity/bottom-m.jpg" />
+        </a>
+    </div>
+    <div class="loadingp">
+        <p>加载中……</p>
+    </div>
+    <script type="text/javascript">
+        var shop_version = '';
+        var city = "";
+        var zjb = "";
+        var uid = "";
+        var mid = "";
+        var all = "";
+        var area = "";
+        var guide_id = "23868";
+        var guide = "欧阳熙";
+        var manager = "1";
+        if (manager == 2) {
+            var pre_fix_name = "尚品 · 导购主管「" + guide + "」";
+        } else {
+            var pre_fix_name = "尚品 · 家居顾问「" + guide + "」";
+        }
+
+        var wxintro = '亲情服务，与您遇见最美的家。';
+        var wx_degbug = false;
+        var ctitle = $('.chapter_title').html();
+        var cur_url = 'https://shr.yfway.com/index.php?s=/Home/Topline/city/share_from/11855/brand/1/v/3/shop/4418/guide/23868.html';
+        if (shop_version == "5") {
+            var first_img = 'https://shrcdnout.yfway.com/share/images/mjcity/20180724/98dce83da57b0395e163467c9dae521b.jpg';
+        } else {
+            var first_img = 'https://shrcdnout.yfway.com/share/images/mjcity/advisers/shop4418/shop4418-23868.jpg';
+        }
+
+        var brand = "1";
+        var info = "";
+        var ajax_request = "/index.php?s=/Home/Topline/ajax_request.html";
+        var indicator_len = $('#scroller li').length;
+        var pc_default_width = 630;
+        var timestamp = '1583886872';
+        var nonceStr = '468djtwrty564yy';
+        var signature = 'e5fbd35180db0c8dbd44aceae6bb5d98e15a8133';
+        var test = 0;
+        var ww = $(window).width();
+        if (brand == 1) {
+            pre_fix_name = "维意 · 家居顾问「" + guide + "」";
+        }
+        //检测平台
+        if (IsPC()) {
+            $('body').css({ 'width': pc_default_width + 'px', 'margin': '0 auto', 'overflow-x': 'hidden' });
+            $('.cjty-bottom-fixed').css({ 'left': (ww - pc_default_width) / 2 + 'px', 'width': pc_default_width + 'px' });
+        }
+        var guideinfoWidth = ww * 0.96 - 80 - 110 - 5;
+        $('#shop-guide-info').css({ 'width': guideinfoWidth + 'px' });
+
+        function IsPC() {
+            var userAgentInfo = navigator.userAgent;
+            var Agents = ["Android", "iPhone",
+                "SymbianOS", "Windows Phone",
+                "iPad", "iPod"];
+            var flag = true;
+            for (var v = 0; v < Agents.length; v++) {
+                if (userAgentInfo.indexOf(Agents[v]) > 0) {
+                    flag = false;
+                    break;
+                }
+            }
+            return flag;
+        }
+    </script>
+    <script type="text/javascript" src="https://shrcdnout.yfway.com/share/js/layer/layer.js"></script>
+    <script type="text/javascript" src="https://shrcdnout.yfway.com/share/js/jquery-qrcode-0.14.0.min.js"></script>
+    <script type="text/javascript" src="https://shrcdnout.yfway.com/share/js/wxconfig.js?v=20171215"></script>
+    <script type="text/javascript">
+        var micro = 1;
+        var shop = "4418";
+        var shopUrl = "/index.php?s=/Home/Topline/getBossAuthor.html";
+        var mapurl = "/index.php?s=/Home/Topline/map.html";
+        var guide_count_url = "/index.php?s=/Home/Topline/guide_phone_click.html";
+        mapurl = mapurl.substring(0, mapurl.length - 5);
+        var page = 1;
+        var hasNextPage = true;
+        var loading = false;
+        var shop_img_url = "https://shrcdnout.yfway.com/share/images/mjcity/shops/";
+        var advisorsurl = "https://shrcdnout.yfway.com/share/images/mjcity/advisers/";
+        var picnum = parseInt(0);
+
+        var covers = '';
+        var cover_list = '';
+        try {
+            var coversdata = JSON.parse(covers);
+            var coverlist = JSON.parse(cover_list);
+        } catch (e) {
+            console.info("this is old shop");
+        }
+        var cover_img_pre_url = "https://shrcdnout.yfway.com/share/images/mjcity/"
+        var version = '?v=2017021701';
+        var guide_jump = '1';
+
+        $('.guide-appoint-count').click(function () {
+            $.ajax({
+                url: guide_count_url,
+                type: 'POST',
+                dataType: 'json',
+                data: { 'guide_id': guide_id },
+                success: function (data) {
+                }
+            });
+        });
+    </script>
+    <script type="text/javascript" src="https://shrcdnout.yfway.com/share/js/swiper.jquery.min.js"></script>
+    <script type="text/javascript" src="https://shrcdnout.yfway.com/share/js/guide.js?v=2017110101"></script>
+    <script type="text/javascript" src="https://shrcdnout.yfway.com/share/js/shop.js?v=20171130"></script>
+    <script type="text/javascript">
+        var shop_id = "4418";
+        function prependMj() {
+            var html = "";
+            html += '<div class="mj_project" style="background:url(http://zcdn.yfway.com/seeds_a/mj/2017-09-30/59cf4b0843975_max.jpg);background-position:0px bottom;background-size:cover;">';
+            html += '<a href="/index.php?s=/Home/Share/new_link/cid/66053/brand/0/guide/' + guide_id + '.html" target="_blank">';
+            html += '<div class="mj_black"></div>';
+            html += '<div class="mj-item">';
+            html += '    <p class="mj_writer">设计师：尚品宅配美家官方旗舰店</p> ';
+            html += '<div class="pro_title">';
+            html += '        <p class="mj_time">09.30</p>';
+            html += '              <h1 class="mj_header">';
+            html += '            中秋，最美不是月，是家<p style="font-size:0.5em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">&nbsp;</p>';
+            html += '        </h1>';
+            html += '        <p class="jptj"><span>精品推荐</span></p>';
+            html += '    </div>';
+            html += '    <p class="mj-city"><i></i>广州市</p>';
+            html += '</div>';
+            html += '</a>';
+            html += '</div>';
+            var shop_list = new Array('2534', '1134', '1132', '1131', '1130', '1129', '14', '12', '11', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1');
+            if (inArray(shop_id, shop_list)) {
+                $('.mj_content').prepend(html);
+            }
+
+        };
+        function inArray(val, arr) {
+            var isIn = false;
+            if (arr.length > 0) {
+                for (var i = 0; i < arr.length; i++) {
+                    if (val == arr[i]) {
+                        isIn = true;
+                    }
+                }
+            }
+            return isIn;
+        }
+    </script>
+    <!--分享-->
+    @{Html.RenderAction("_PartialShare", "Card", new { cardId = Model.Id, cardName = Model.Name, photoUrl = Model.PhotoUrl });}
+    <!--end分享-->
+</body>
+</html>

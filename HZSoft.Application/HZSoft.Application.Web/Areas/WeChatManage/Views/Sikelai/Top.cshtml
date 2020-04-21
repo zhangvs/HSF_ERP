@@ -1,0 +1,103 @@
+﻿@using HZSoft.Application.Entity.CustomerManage
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>思科莱“生活设计家”</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no" />
+
+    <link href="~/Content/scripts/plugins/layui/css/layui.css" rel="stylesheet" />
+    <link href="~/Content/styles/hsf/base.css" rel="stylesheet" />
+    <link href="~/Content/styles/hsf/top.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="skl_containers">
+        <nav>
+            <img src="~/Content/images/icon/指示图标.png" />
+            <span><a href="~/WeChatManage/Sikelai/Top?groupId=1"> 社会组 </a></span>
+            <span><a href="~/WeChatManage/Sikelai/Top?groupId=2"> 院校组 </a></span>
+            @*<span><a href="~/WeChatManage/Sikelai/Top?groupId=3">新秀组</a></span>*@
+        </nav>
+        <div class="skl_top_title">
+            <ul>
+                <li>名次</li>
+                <li>封面</li>
+                <li>编号</li>
+                <li>姓名</li>
+                <li>票数</li>
+            </ul>
+        </div>
+
+        <div class="skl_top_list">
+            <img class="jgtb" src="~/Content/images/icon/金冠图标.png" />
+            <img class="ygtb" src="~/Content/images/icon/银冠图标.png" />
+            <img class="tgtb" src="~/Content/images/icon/铜冠图标.png" />
+            <ul>
+                @*@{
+                        List<Poll_SignUpEntity> list = ViewBag.list;
+                        int i = 0;
+                        foreach (var item in list)
+                        {
+                            i++;
+                            <li>
+                                <a href="~/WeChatManage/Sikelai/Details?id=@item.Id">
+                                    <span>@i</span>
+                                    <span>
+                                        <img src="@item.Pic1" />
+                                    </span>
+                                    <span>@item.Id</span>
+                                    <span>@item.FullName</span>
+                                    <span>@item.PollCount</span>
+                                </a>
+                            </li>
+                        }
+                    }*@
+            </ul>
+        </div>
+        <!--导航-->
+        <div class="skl_nav">
+            <ul class="clearfix">
+                <li>
+                    <a href="~/WeChatManage/Sikelai/Index">
+                        <img src="~/Content/images/icon/首页白.png" />
+                        <p>首页</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="~/WeChatManage/Sikelai/SignUp">
+                        <img src="~/Content/images/icon/报名白.png" />
+                        <p>报名</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="~/WeChatManage/Sikelai/Search">
+                        <img src="~/Content/images/icon/搜索图标.png" />
+                        <p>搜索</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="~/WeChatManage/Sikelai/Top?groupId=1">
+                        <img src="~/Content/images/icon/排行红.png" />
+                        <p class="navnow">排行</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="~/WeChatManage/Sikelai/Rule">
+                        <img src="~/Content/images/icon/规则白.png" />
+                        <p>规则</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script src="~/Content/scripts/jquery/jquery-3.3.1.min.js"></script>
+    <script src="~/Content/scripts/plugins/layer/layer.js"></script>
+    <script src="~/Content/scripts/hsf/imgReady.js"></script>
+    <script src="~/Content/scripts/hsf/top.js"></script>
+</body>
+</html>

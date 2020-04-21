@@ -1,0 +1,133 @@
+﻿body {
+    background: #eeeeee;
+    padding-bottom: 65px;
+}
+h2 {
+    text-align: center;
+    margin: 10px 0;
+}
+
+.txt {
+    width: 96%;
+    height: 36px;
+    line-height: 36px;
+    margin: 5px 2%;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+.select {
+    height: 46px;
+    line-height: 36px;
+    width: 96%;
+    margin: 5px 2%;
+    padding: 0 10px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+.dis1 {
+    color: #fc0404;
+    font-size: 12px;
+    width: 96%;
+    height: 28px;
+    line-height:28px;
+    margin: 1px 2%;
+}
+.dis2 {
+    color: #fc0404;
+    font-size: 10px;
+    width: 96%;
+    margin: 1px 2%;
+}
+
+.uploadPic {
+    width: 96%;
+    margin: 5px 2%;
+    height: 0;
+    padding: 10px;
+    padding-bottom: 35%;
+    background: #fff;
+    border-radius: 5px;
+    color: #a9a9a9;
+}
+    .uploadPic ul {
+        width: 100%;
+        padding: 10px 0;
+    }
+    .uploadPic ul li {
+        width: 20%;
+        padding-bottom: 20%;
+        height: 0;
+        border: 1px #dddddd dashed;
+        float: left;
+        margin: 2.5%;
+        cursor: pointer;
+        text-align: center;
+        position: relative;
+    }
+        .uploadPic ul li img {
+            max-width: 100%
+        }
+
+
+.textarea {
+    width: 96%;
+    margin: 5px 2%;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.sumit {
+    width: 96%;
+    height: 35px;
+    color: #fff;
+    background: #ff4f38;
+    font-size: 16px;
+    border-radius: 5px;
+    margin: 5px 2%;
+}
+
+.button {
+    width: 96%;
+    height: 35px;
+    color: #ff4f38;
+    background: #fff;
+    font-size: 16px;
+    border-radius: 5px;
+    margin: 5px 2%;
+}
+
+
+.skl_state_div {
+    width: 100%;
+    margin: 50px 0;
+}
+
+    .skl_state_div img {
+        margin: 0 auto;
+        width: 67.5px;
+        height: 67.5px;
+        display: block;
+    }
+
+    .skl_state_title {
+        font-size: 16px;
+        text-align: center;
+        margin:5px;
+    }
+.skl_state_des {
+    font-size: 12px;
+    color: #666;
+    text-align: center;
+}
+    .skl_state_des span {
+        color: #ff4f38;
+    }
+.skl_back {
+    text-align: center;
+    margin: 55px 0;
+}
+        .skl_back a {
+            text-decoration: underline;
+            font-size:15px;
+        }

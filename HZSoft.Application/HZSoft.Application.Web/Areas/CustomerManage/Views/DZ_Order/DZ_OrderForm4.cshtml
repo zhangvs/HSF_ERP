@@ -1,0 +1,312 @@
+@{;
+    ViewBag.Title = "表单页面";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<script src="~/Content/scripts/plugins/layer2/layer.js"></script>
+<script src="~/Content/scripts/plugins/layui/layui.js"></script>
+<link href="~/Content/scripts/plugins/layui/css/layui.css" rel="stylesheet" />
+
+<script>
+    var keyValue = request('keyValue');
+    $(function () {
+        initControl();
+    });
+    //初始化控件
+    function initControl() {
+        //订单状态
+        $("#OrderType").ComboBox({
+            description: "==请选择==",
+        });
+        //运费承担方
+        $("#Carrier").ComboBox({
+            description: "==请选择==",
+        });
+        //运输方式
+        $("#ShippingType").ComboBox({
+            description: "==请选择==",
+        });
+        //经销商
+        $("#CompanyId").ComboBox({
+            url: "../../CustomerManage/Client_Company/GetListJson",
+            id: "CompanyId",
+            text: "FullName",
+            description: "==请选择==",
+            height: "360px",
+            width: "260px",
+        });
+        //客户名称
+        $("#CustomerId").ComboBox({
+            url: "../../CustomerManage/Customer/GetListJson",
+            id: "CustomerId",
+            text: "FullName",
+            description: "==请选择==",
+            height: "360px",
+            width: "280px",
+            allowSearch: true
+        });
+        //销售
+        $("#SalesmanUserId").ComboBoxTree({
+            url: "../../BaseManage/User/GetTreeJson",
+            description: "==请选择==",
+            height: "320px",
+            allowSearch: true
+        });
+        //获取表单
+        if (!!keyValue) {
+            $.SetForm({
+                url: "../../CustomerManage/DZ_Order/GetFormJson",
+                param: { keyValue: keyValue },
+                success: function (data) {
+                    $("#form1").SetWebControls(data);
+                    if (!!data.CreatePath) {
+                        $("#CreatePath_a").attr("href", data.CreatePath).text(data.CreatePath.substring(data.CreatePath.lastIndexOf("/") + 1));
+                    }
+                    if (!!data.CheckTuPath) {
+                        $("#CheckTuPath_a").attr("href", data.CheckTuPath).text(data.CheckTuPath.substring(data.CheckTuPath.lastIndexOf("/") + 1));
+                    }
+                    if (!!data.ChaiPath) {
+                        $("#ChaiPath_a").attr("href", data.ChaiPath).text(data.ChaiPath.substring(data.ChaiPath.lastIndexOf("/") + 1));
+                    }
+                    if (!!data.CheckTuMark) {
+                        $("input:radio[name='CheckTuMark'][value=" + data.CheckTuMark + "]").attr("checked", 'checked');
+                    }
+                    if (!!data.ChaiMark) {
+                        $("input:radio[name='ChaiMark'][value=" + data.ChaiMark + "]").attr("checked", 'checked');
+                    }
+                    if (!!data.CheckMark) {
+                        $("input:radio[name='CheckMark'][value=" + data.CheckMark + "]").attr("checked", 'checked');
+                    }
+                    //报价之后，不允许修改审核状态
+                    if (data.MoneyMark == 1) {
+                        $("input:radio[name='CheckMark']").attr('disabled', 'disabled');
+                    }
+                }
+            })
+        }
+    }
+    //保存表单;
+    function AcceptClick() {
+        if (!$('#form1').Validform()) {
+            return false;
+        }
+        var postData = $("#form1").GetWebControls(keyValue);
+        postData["CheckMark"] = $("input[name='CheckMark']:checked").val();
+        postData["CheckUserId"] = "@HZSoft.Application.Code.OperatorProvider.Provider.Current().UserId";
+        postData["CheckUserName"] = "@HZSoft.Application.Code.OperatorProvider.Provider.Current().UserName";
+        postData["CheckDate"] = "@HZSoft.Util.Time.GetDateTime()";
+        $.SaveForm({
+            url: "../../CustomerManage/DZ_Order/SaveForm?keyValue=" + keyValue,
+            param: postData,
+            loading: "正在保存数据...",
+            success: function () {
+                $.currentIframe().$("#gridTable").trigger("reloadGrid");
+            }
+        })
+    }
+
+</script>
+
+<style type="text/css">
+    * {
+        font-size: 12px;
+        margin: 0;
+        padding: 0;
+    }
+
+    fieldset {
+        padding: 10px;
+        color: #333;
+        border: #06c dashed 1px;
+    }
+
+    legend {
+        color: #06c;
+        font-weight: 800;
+        background: #fff;
+        border: #b6b6b6 solid 1px;
+        padding: 3px 6px;
+    }
+
+    ul {
+        list-style-type: none;
+        margin: 8px 0 4px 0;
+    }
+
+    li {
+        margin-top: 4px;
+    }
+</style>
+<div style="margin-left: 10px; margin-right: 10px;">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#jiedan" data-toggle="tab">接单</a></li>
+        <li><a href="#shentu" data-toggle="tab">审图</a></li>
+        <li><a href="#chaidan" data-toggle="tab">拆单</a></li>
+        <li><a href="#shenhe" data-toggle="tab">审核</a></li>
+    </ul>
+    <div class="tab-content" style="padding-top: 15px;">
+        <div id="jiedan" class="tab-pane active" style=" padding-right: 30px;">
+            <table class="form">
+                <tr>
+                    <td class="formTitle">单号<font face="宋体">*</font></td>
+                    <td class="formValue">
+                        <input id="Code" type="text" class="form-control" isvalid="yes" checkexpession="NotNull" disabled />
+                    </td>
+                    <td class="formTitle">订单类型<font face="宋体">*</font></td>
+                    <td class="formValue">
+                        <div id="OrderType" type="select" class="ui-select" disabled>
+                            <ul>
+                                <li data-value="1">普通单</li>
+                                <li data-value="2">补单</li>
+                                <li data-value="3">售后单</li>
+                                <li data-value="4">加急单</li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="formTitle">客户<font face="宋体">*</font></td>
+                    <td class="formValue">
+                        <div id="CustomerId" type="select" class="ui-select" isvalid="yes" checkexpession="NotNull" disabled></div>
+                    </td>
+                    <td class="formTitle">客户电话<font face="宋体">*</font></td>
+                    <td class="formValue">
+                        <input id="CustomerTelphone" type="text" class="form-control" isvalid="yes" checkexpession="NotNull" disabled />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="formTitle">设计师</td>
+                    <td class="formValue">
+                        <input id="DesignerUserName" type="text" class="form-control" disabled />
+                    </td>
+                    <td class="formTitle">设计师电话</td>
+                    <td class="formValue">
+                        <input id="DesignerTelphone" type="text" class="form-control" disabled />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="formTitle">经销商<font face="宋体">*</font></td>
+                    <td class="formValue">
+                        <div id="CompanyId" type="select" class="ui-select" disabled></div>
+                    </td>
+                    <td class="formTitle">销售<font face="宋体">*</font></td>
+                    <td class="formValue">
+                        <div id="SalesmanUserId" type="select" class="ui-select" disabled></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="formTitle">收货地址</td>
+                    <td class="formValue" colspan='3'>
+                        <input id="Address" type="text" class="form-control" disabled />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="formTitle">运输方式<font face="宋体">*</font></td>
+                    <td class="formValue">
+                        <div id="ShippingType" type="select" class="ui-select" disabled>
+                            <ul>
+                                <li data-value="1">公司派车</li>
+                                <li data-value="2">物流</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td class="formTitle">运费承担方<font face="宋体">*</font></td>
+                    <td class="formValue">
+                        <div id="Carrier" type="select" class="ui-select" disabled>
+                            <ul>
+                                <li data-value="1">我方</li>
+                                <li data-value="2">对方</li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="formTitle">原图附件<font face="宋体">*</font></td>
+                    <td class="formValue" colspan="3">
+                        <input id="CreatePath" type="hidden" class="form-control" isvalid="yes" checkexpession="NotNull" />
+                        <a id="CreatePath_a" style='text-decoration:underline;color: #337ab7;' href=""></a>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle" valign="top" style="padding-top: 4px;">
+                        备注
+                    </th>
+                    <td class="formValue" colspan="3">
+                        <textarea id="Description" class="form-control" style="height: 60px;"></textarea>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="shentu" class="tab-pane ">
+            <table class="form">
+                <tr>
+                    <td class="formTitle"></td>
+                    <td class="formValue">
+                        <div class="radio">
+                            <label><input name="CheckTuMark" type="radio" value="-1" disabled />&nbsp;<span style='color:red'>驳回</span> </label>
+                            <label><input name="CheckTuMark" type="radio" value="1" disabled />&nbsp;<span style='color:green'>通过</span> </label>
+                            <label><input name="CheckTuMark" type="radio" value="2" disabled />&nbsp;<span style='color:green'>无需审图</span> </label>
+                        </div>
+                    </td>
+                    <th class="formTitle">审图人</th>
+                    <td class="formValue">
+                        <input id="CheckTuUserName" type="text" class="form-control" disabled />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="formTitle">审图附件</td>
+                    <td class="formValue" colspan="3">
+                        <input id="CheckTuPath" type="hidden" class="form-control" />
+                        <a id="CheckTuPath_a" style='text-decoration:underline;color: #337ab7;' href=""></a>
+
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="chaidan" class="tab-pane ">
+            <table class="form">
+                <tr>
+                    <td class="formTitle"></td>
+                    <td class="formValue">
+                        <div class="radio">
+                            <label><input name="ChaiMark" type="radio" value="-1" disabled />&nbsp;<span style='color:red'>驳回</span> </label>
+                            <label><input name="ChaiMark" type="radio" value="1" disabled />&nbsp;<span style='color:green'>通过</span> </label>
+                        </div>
+                    </td>
+                    <td class="formTitle">拆单人</td>
+                    <td class="formValue">
+                        <input id="ChaiUserName" type="text" class="form-control" disabled />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="formTitle">拆单附件</td>
+                    <td class="formValue" colspan="3">
+                        <input id="ChaiPath" type="hidden" class="form-control" />
+                        <a id="ChaiPath_a" style='text-decoration:underline;color: #337ab7;' href=""></a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="shenhe" class="tab-pane ">
+            <table class="form">
+                <tr>
+                    <td class="formTitle"></td>
+                    <td class="formValue">
+                        <div class="radio">
+                            <label><input name="CheckMark" type="radio" value="-1" />&nbsp;<span style='color:red'>驳回</span> </label>
+                            <label><input name="CheckMark" type="radio" value="1" />&nbsp;<span style='color:green'>通过</span> </label>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="mask"></div>
+<div class="loading">
+    <div class="layui-progress layui-progress-big" lay-showpercent="true" lay-filter="uploadProgress">
+        <div class="layui-progress-bar layui-bg-red" lay-percent="0%"></div>
+    </div>
+</div>
+<link href="~/Content/styles/hsf/loading.css" rel="stylesheet" />
+<script src="~/Content/scripts/hsf/SplitUpload.js"></script>

@@ -1,0 +1,466 @@
+@{;
+    ViewBag.Title = "列表页面";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script>;
+    $(function () {
+        InitialPage();
+        GetGrid();
+    });
+    //初始化页面
+    function InitialPage() {
+        //报价状态
+        $("#MoneyMark").ComboBox({
+            description: "==请选择==",
+        });
+        //下单状态
+        $("#DownMark").ComboBox({
+            description: "==请选择==",
+        });
+        $("#PaymentState").ComboBox({
+            description: "==请选择==",
+        });
+        $("#EnterMark").ComboBox({
+            description: "==请选择==",
+        });
+        $("#SendMark").ComboBox({
+            description: "==请选择==",
+        });
+        //resize重设布局;
+        $(window).resize(function (e) {
+            window.setTimeout(function () {
+                $('#gridTable').setGridWidth(($('.gridPanel').width()));
+                $('#gridTable').setGridHeight($(window).height() - 136.5);
+            }, 200);
+            e.stopPropagation();
+        });
+    }
+    //加载表格
+    function GetGrid() {
+        var selectedRowIndex = 0;
+        var $gridTable = $('#gridTable');
+        $gridTable.jqGrid({
+            autowidth: true,
+            height: $(window).height() - 136.5,
+            url: "../../CustomerManage/DZ_Order/GetPageListJson",
+            datatype: "json",
+            colModel: [
+                { label: '主键', name: 'Id', hidden: true },
+                { label: '单号', name: 'Code', index: 'Code', width: 100, align: 'left', sortable: true },
+                { label: '经销商', name: 'CompanyName', index: 'CompanyName', width: 100, align: 'left', sortable: true },
+                { label: '客户', name: 'CustomerName', index: 'CustomerName', width: 150, align: 'left', sortable: true },
+                //{
+                //    label: '原图附件', name: 'CreatePath', index: 'CreatePath', width: 100, align: 'left', sortable: true,
+                //    formatter: function (cellvalue) {
+                //        if (cellvalue != null) {
+                //            return "<a style='text-decoration:underline' href='" + cellvalue.replace('~', '') + "'>原图附件下载</a>";
+                //        }
+                //        else {
+                //            return "";
+                //        }
+                //    }
+                //},
+                //{ label: '备注', name: 'Description', index: 'Description', width: 100, align: 'left', sortable: true },
+                { label: '接单人', name: 'CreateUserName', index: 'CreateUserName', width: 60, align: 'left', sortable: true },
+                { label: '创建日期', name: 'CreateDate', index: 'CreateDate', width: 118, align: 'left', sortable: true },
+                { label: '审图人', name: 'CheckTuUserName', index: 'CheckTuUserName', width: 60, align: 'center', sortable: true },
+                {
+                    label: "审图", name: "CheckTuMark", index: "CheckTuMark", width: 60, align: "center", sortable: false,
+                    formatter: function (cellvalue, options, rowObject) {
+                        if (cellvalue >= 1) {
+                            return "<i class=\"fa fa-toggle-on\"></i>";
+                        } else if (cellvalue == -1) {
+                            return "<span style='color:red'>驳回</span>";
+                        } else {
+                            return "<i class=\"fa fa-toggle-off\"></i>";
+                        }
+                    }
+                },
+                //{
+                //    label: '审图附件', name: 'CheckTuPath', index: 'CheckTuPath', width: 100, align: 'left', sortable: true,
+                //    formatter: function (cellvalue) {
+                //        if (cellvalue != null) {
+                //            return "<a style='text-decoration:underline' href='" + cellvalue.replace('~', '') + "'>审图附件下载</a>";
+                //        }
+                //        else {
+                //            return "";
+                //        }
+                //    }
+                //},
+                { label: '审图日期', name: 'CheckTuDate', index: 'CheckTuDate', width: 118, align: 'left', sortable: true },
+                { label: '拆单人', name: 'ChaiUserName', index: 'ChaiUserName', width: 60, align: 'center', sortable: true },
+                {
+                    label: "拆单", name: "ChaiMark", index: "ChaiMark", width: 60, align: "center", sortable: false,
+                    formatter: function (cellvalue, options, rowObject) {
+                        if (cellvalue == 1) {
+                            return "<i class=\"fa fa-toggle-on\"></i>";
+                        } else if (cellvalue == -1) {
+                            return "<span style='color:red'>驳回</span>";
+                        } else {
+                            return "<i class=\"fa fa-toggle-off\"></i>";
+                        }
+                    }
+                },
+                //{
+                //    label: '拆单附件', name: 'ChaiPath', index: 'ChaiPath', width: 100, align: 'left', sortable: true,
+                //    formatter: function (cellvalue) {
+                //        if (cellvalue != null) {
+                //            return "<a style='text-decoration:underline' href='" + cellvalue.replace('~', '') + "'>拆单附件下载</a>";
+                //        }
+                //        else {
+                //            return "";
+                //        }
+                //    }
+                //},
+                { label: '拆单日期', name: 'ChaiDate', index: 'ChaiDate', width: 118, align: 'left', sortable: true },
+                { label: '审核人', name: 'CheckUserName', index: 'CheckUserName', width: 60, align: 'center', sortable: true },
+                {
+                    label: "审核", name: "CheckMark", index: "CheckMark", width: 60, align: "center", sortable: false,
+                    formatter: function (cellvalue, options, rowObject) {
+                        if (cellvalue == 1) {
+                            return "<i class=\"fa fa-toggle-on\"></i>";
+                        } else if (cellvalue == -1) {
+                            return "<span style='color:red'>驳回</span>";
+                        } else {
+                            return "<i class=\"fa fa-toggle-off\"></i>";
+                        }
+                    }
+                },
+                { label: '审核日期', name: 'CheckDate', index: 'CheckDate', width: 118, align: 'left', sortable: true },
+                {
+                    label: "报价", name: "MoneyMark", index: "MoneyMark", width: 60, align: "center", sortable: false,
+                    formatter: function (cellvalue) {
+                        return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
+                    }
+                },
+                { label: "报价金额", name: "MoneyAccounts", width: 80, align: "left", formatter: 'number', formatoptions: { thousandsSeparator: "", decimalPlaces: 2 } },
+                {
+                    label: "下单", name: "DownMark", index: "DownMark", width: 60, align: "center", sortable: false,
+                    formatter: function (cellvalue) {
+                        return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
+                    }
+                },
+                { label: '下单日期', name: 'DownDate', index: 'DownDate', width: 118, align: 'left', sortable: true },
+                {
+                    label: '当前工序', name: 'StepState', index: 'StepState', width: 80, align: 'center', sortable: true,
+                    formatter: function (cellvalue, options, rowObject) {
+                        return top.clientdataItem["Step"][cellvalue] == undefined ? "" : top.clientdataItem["Step"][cellvalue];
+                    }
+                },
+                { label: '工序日期', name: 'StepDate', index: 'StepDate', width: 118, align: 'left', sortable: true },
+                {
+                    label: "入库", name: "EnterMark", index: "EnterMark", width: 60, align: "center", sortable: false,
+                    formatter: function (cellvalue) {
+                        return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
+                    }
+                },
+                { label: '入库日期', name: 'EnterDate', index: 'EnterDate', width: 118, align: 'left', sortable: true },
+                {
+                    label: "发货", name: "SendMark", index: "SendMark", width: 60, align: "center", sortable: false,
+                    formatter: function (cellvalue) {
+                        return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
+                    }
+                },
+                { label: '发货日期', name: 'SendDate', index: 'SendDate', width: 118, align: 'left', sortable: true },
+            ],
+            viewrecords: true,
+            rowNum: 30,
+            rowList: [30, 50, 100],
+            pager: "#gridPager",
+            sortname: 'CreateDate',
+            sortorder: 'desc',
+            rownumbers: true,
+            shrinkToFit: false,
+            gridview: true,
+            onSelectRow: function () {
+                selectedRowIndex = $('#' + this.id).getGridParam('selrow');
+            },
+            gridComplete: function () {
+                $('#' + this.id).setSelection(selectedRowIndex, false);
+            }
+        });
+        
+        //点击时间范围（今天、近7天、近一个月、近三个月）
+        $("#time_horizon a.btn-default").click(function () {
+            $("#time_horizon a.btn-default").removeClass("active");
+            $(this).addClass("active");
+            switch ($(this).attr('data-value')) {
+                case "1"://今天
+                    $("#StartTime").val("@DateTime.Now.ToString("yyyy-MM-dd")");
+                    $("#EndTime").val("@DateTime.Now.ToString("yyyy-MM-dd")");
+                    break;
+                case "2"://近7天
+                    $("#StartTime").val("@DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd")");
+                    $("#EndTime").val("@DateTime.Now.ToString("yyyy-MM-dd")");
+                    break;
+                case "3"://近一个月
+                    $("#StartTime").val("@DateTime.Now.AddMonths(-1).ToString("yyyy-MM-dd")");
+                    $("#EndTime").val("@DateTime.Now.ToString("yyyy-MM-dd")");
+                    break;
+                case "4"://近三个月
+                    $("#StartTime").val("@DateTime.Now.AddMonths(-3).ToString("yyyy-MM-dd")");
+                    $("#EndTime").val("@DateTime.Now.ToString("yyyy-MM-dd")");
+                    break;
+                default:
+                    break;
+            }
+            $("#SelectedStartTime").html($("#StartTime").val());
+            $("#SelectedEndTime").html($("#EndTime").val());
+            $('#btn_Search').trigger("click");
+        });
+        //查询点击事件
+        $("#btn_Search").click(function () {
+            if (!$(".ui-filter-text").next('.ui-filter-list').is(":hidden")) {
+                $(".ui-filter-text").trigger("click");
+            }
+            $("#SelectedStartTime").html($("#StartTime").val());
+            $("#SelectedEndTime").html($("#EndTime").val());
+            var queryJson = $("#filter-form").GetWebControls();
+            $gridTable.jqGrid('setGridParam', {
+                postData: { queryJson: JSON.stringify(queryJson) },
+                page: 1
+            }).trigger('reloadGrid');
+        });
+
+
+
+        ////查询条件
+        //$("#queryCondition .dropdown-menu li").click(function () {
+        //    var text = $(this).find('a').html();
+        //    var value = $(this).find('a').attr('data-value');
+        //    $("#queryCondition .dropdown-text").html(text).attr('data-value', value)
+        //});
+        ////查询事件
+        //$("#btn_Search").click(function () {
+        //    //var queryJson = {
+        //    //    condition: $("#queryCondition").find('.dropdown-text').attr('data-value'),
+        //    //    keyword: $("#txt_Keyword").val()
+        //    //}
+        //    var queryJson = {
+        //        condition: $("#queryCondition").find('.dropdown-text').attr('data-value'),
+        //        keyword: $("#txt_Keyword").val(),
+        //        NoMoneyMark: $("#NoMoneyMark").val(),
+        //        NoDownMark: $("#NoDownMark").val()
+        //    }
+        //    $gridTable.jqGrid('setGridParam', {
+        //        postData: { queryJson: JSON.stringify(queryJson) },
+        //        page: 1
+        //    }).trigger('reloadGrid');
+        //});
+        //查询回车
+        $('#txt_Keyword').bind('keypress', function (event) {
+            if (event.keyCode == "13") {
+                $('#btn_Search').trigger("click");
+            }
+        });
+    }
+
+    //详细
+    function btn_detail() {
+        var keyValue = $("#gridTable").jqGridRowValue("Id");
+        if (checkedRow(keyValue)) {
+            dialogOpen({
+                id: "Detail",
+                title: '详情',
+                url: '/CustomerManage/DZ_Order/DZ_OrderForm?keyValue=' + keyValue,
+                width: '600px',
+                height: '600px',
+                btn: null
+            });
+        }
+    }
+
+    //导出
+    function btn_export() {
+        dialogOpen({
+            id: "ExcelIExportDialog",
+            title: '导出销售单',
+            url: '/Utility/ExcelExportForm?gridId=gridTable&filename=销售单',
+            width: "500px",
+            height: "380px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].AcceptClick();
+            }, btn: ['导出Excel', '关闭']
+        });
+    }
+</script>
+<div class="titlePanel">
+    <div class="title-search">
+        @*<table>
+            <tr>
+                <td>
+                    <div id="queryCondition" class="btn-group">
+                        <a class="btn btn-default dropdown-text" data-toggle="dropdown">选择条件</a>
+                        <a class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a data-value="Code">单号</a></li>
+                            <li><a data-value="CompanyName">经销商</a></li>
+                            <li><a data-value="CustomerName">客户</a></li>
+                            <li><a data-value="CheckTuUserName">审图人</a></li>
+                            <li><a data-value="ChaiUserName">拆单人</a></li>
+                            <li><a data-value="CheckUserName">审核人</a></li>
+                        </ul>
+                    </div>
+                </td>
+                <td style="padding-left: 2px;">
+                    <input id="txt_Keyword" type="text" class="form-control" placeholder="请输入要查询关键字" style="width: 200px;" />
+                </td>
+                <td style="padding-left: 10px;">未报价：</td>
+                <td>
+                    <input id="NoMoneyMark" type="checkbox" value="0" name="NoMoneyMark" onclick="this.value=(this.value==0)?1:0">
+                </td>
+                <td style="padding-left: 10px;">未下单：</td>
+                <td>
+                    <input id="NoDownMark" type="checkbox" value="0" name="NoDownMark" onclick="this.value=(this.value==0)?1:0">
+                </td>
+                <td style="padding-left: 5px;">
+                    <a id="btn_Search" class="btn btn-primary"><i class="fa fa-search"></i>&nbsp;查询</a>
+                </td>
+            </tr>
+        </table>*@
+
+        <table>
+            <tr>
+                <td>查询条件</td>
+                <td style="padding-left: 10px;">
+                    <div class="ui-filter" style="width: 200px;">
+                        <div class="ui-filter-text">
+                            <strong id="SelectedStartTime">@DateTime.Now.AddMonths(-1).ToString("yyyy-MM-dd")</strong> 至 <strong id="SelectedEndTime">@DateTime.Now.ToString("yyyy-MM-dd")</strong>
+                        </div>
+                        <div class="ui-filter-list" style="width: 350px;">
+                            <table class="form" id="filter-form">
+                                <tr>
+                                    <th class="formTitle">接单日期：</th>
+                                    <td class="formValue">
+                                        <div style="float: left; width: 45%;">
+                                            <input id="StartTime" readonly type="text" value="@DateTime.Now.AddMonths(-1).ToString("yyyy-MM-dd")" class="form-control input-wdatepicker" onfocus="WdatePicker({maxDate:'%y-%M-%d'})">
+                                        </div>
+                                        <div style="float: left; width: 10%; text-align: center;">至</div>
+                                        <div style="float: left; width: 45%;">
+                                            <input id="EndTime" readonly type="text" value="@HZSoft.Util.Time.GetToday()" class="form-control input-wdatepicker" onfocus="WdatePicker()">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">销售单号：</td>
+                                    <td class="formValue">
+                                        <input id="Code" type="text" class="form-control">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">客户：</td>
+                                    <td class="formValue">
+                                        <input id="CustomerName" type="text" class="form-control">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">销售人：</td>
+                                    <td class="formValue">
+                                        <input id="SalesmanUserName" type="text" class="form-control">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">审图人：</td>
+                                    <td class="formValue">
+                                        <input id="CheckTuUserName" type="text" class="form-control">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">拆单人：</td>
+                                    <td class="formValue">
+                                        <input id="ChaiUserName" type="text" class="form-control">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">审核人：</td>
+                                    <td class="formValue">
+                                        <input id="CheckUserName" type="text" class="form-control">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">收款状态：</td>
+                                    <td class="formValue">
+                                        <div id="PaymentState" type="select" class="ui-select">
+                                            <ul>
+                                                <li data-value="1">未收款</li>
+                                                <li data-value="2">部分收款</li>
+                                                <li data-value="3">全部收款</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">报价：</td>
+                                    <td class="formValue">
+                                        <div id="MoneyMark" type="select" class="ui-select">
+                                            <ul>
+                                                <li data-value="0">未报价</li>
+                                                <li data-value="1">已报价</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">下单：</td>
+                                    <td class="formValue">
+                                        <div id="DownMark" type="select" class="ui-select">
+                                            <ul>
+                                                <li data-value="0">未下单</li>
+                                                <li data-value="1">已下单</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">入库：</td>
+                                    <td class="formValue">
+                                        <div id="EnterMark" type="select" class="ui-select">
+                                            <ul>
+                                                <li data-value="0">未入库</li>
+                                                <li data-value="1">已入库</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">发货：</td>
+                                    <td class="formValue">
+                                        <div id="SendMark" type="select" class="ui-select">
+                                            <ul>
+                                                <li data-value="0">未发货</li>
+                                                <li data-value="1">已发货</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="ui-filter-list-bottom">
+                                <a id="btn_Search" class="btn btn-primary">&nbsp;查&nbsp;&nbsp;询</a>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td style="padding-left: 10px;">
+                    <div id="time_horizon" class="btn-group">
+                        <a class="btn btn-default" data-value="1">今天</a>
+                        <a class="btn btn-default" data-value="2">近7天</a>
+                        <a class="btn btn-default active" data-value="3">近1个月</a>
+                        <a class="btn btn-default" data-value="4">近3个月</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="toolbar">
+        <div class="btn-group">
+            <a id="lr-replace" class="btn btn-default" onclick="reload()"><i class="fa fa-refresh"></i>&nbsp;刷新</a>
+            <a id="lr-edit" class="btn btn-default" onclick="btn_detail()"><i class="fa fa-pencil-square-o"></i>&nbsp;详情</a>
+            <a id="lr-export" class="btn btn-default" onclick="btn_export()"><i class="fa fa-sign-out"></i>&nbsp;导出</a>
+        </div>
+    </div>
+    @*<script>$('.toolbar').authorizeButton()</script>*@
+</div>
+<div class="gridPanel">
+    <table id="gridTable"></table>
+    <div id="gridPager"></div>
+</div>

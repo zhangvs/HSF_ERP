@@ -1,0 +1,89 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>思科莱“生活设计家”</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no" />
+    <link href="~/Content/scripts/plugins/layui/css/layui.css" rel="stylesheet" />
+    <link href="~/Content/styles/hsf/base.css" rel="stylesheet" />
+    <link href="~/Content/styles/hsf/signup.css" rel="stylesheet" />
+    <link href="~/Content/styles/hsf/iconfont.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="skl_containers">
+        <h2>活动报名处</h2>
+        <form id="form1">
+            <select class="select" id="GroupId">
+                <option value="">==请选择赛组==</option>
+                <option value="1">社会组</option>
+                <option value="2">院校组</option>
+                @*<option value="3">新秀组</option>*@
+            </select>
+            <input class="txt" id="FullName" type="text" placeholder="请输入您的姓名" />
+            <input class="txt" id="Telphone" type="text" placeholder="请输入您的手机号" />
+            <p class="dis1">*请输入正确的手机号，方便联系您兑奖奖品</p>
+            <div class="uploadPic">
+                <p>上传图片 (1-4) 张 (默认第一张为封面)</p>
+                <ul>
+                    <li class="upload" id="Pic1"></li>
+                    <li class="upload" id="Pic2"></li>
+                    <li class="upload" id="Pic3"></li>
+                    <li class="upload" id="Pic4"></li>
+                </ul>
+            </div>
+            <textarea id="Description" class="textarea" rows="4" placeholder="您可以再为您上传的图片添加描述"></textarea>
+            <p class="dis2">*图片描述请不要超过 100 字</p>
+            <p class="dis2">*图片大小限制在 1M 以内</p>
+            <p style="color:red" id="ErrorMessage"></p>
+            <input class="sumit" type="button" onclick="valiCode()" value="确认提交" />
+        </form>
+        <!--导航-->
+        <div class="skl_nav">
+            <ul class="clearfix">
+                <li>
+                    <a href="~/WeChatManage/Sikelai/Index">
+                        <img src="~/Content/images/icon/首页白.png" />
+                        <p>首页</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="~/WeChatManage/Sikelai/SignUp">
+                        <img src="~/Content/images/icon/报名红.png" />
+                        <p class="navnow">报名</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="~/WeChatManage/Sikelai/Search">
+                        <img src="~/Content/images/icon/搜索图标.png" />
+                        <p>搜索</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="~/WeChatManage/Sikelai/Top?groupId=1">
+                        <img src="~/Content/images/icon/排行白.png" />
+                        <p>排行</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="~/WeChatManage/Sikelai/Rule">
+                        <img src="~/Content/images/icon/规则白.png" />
+                        <p>规则</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script src="~/Content/scripts/jquery/jquery-3.3.1.min.js"></script>
+    <script src="~/Content/scripts/utils/hzsoft-ui.js"></script>
+    <script src="~/Content/scripts/utils/hzsoft-form.js"></script>
+    <script src="~/Content/scripts/plugins/valide.js" type="text/javascript"></script>
+    <script src="~/Content/scripts/plugins/layui/layui.js"></script>
+    <script src="~/Content/scripts/hsf/signup.js"></script>
+</body>
+</html>

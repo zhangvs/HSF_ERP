@@ -1,0 +1,183 @@
+﻿body {
+    background: #f7f7f7;
+    padding-bottom:65px;
+}
+/*banner图片*/
+.skl_banner {
+    width: 100%;
+}
+
+.skl_banner_img {
+    width: 100%;
+}
+
+    .skl_banner_img img {
+        width: 100%;
+        display: block;
+    }
+/*分组统计*/
+.skl_banner_ul {
+    width: 100%;
+    height: 50px;
+    padding: 8px 0;
+    background: #f7f7f7;
+    opacity: 0.9;
+    margin-top: -50px;
+    border-bottom: 2px #e1e1e1 solid;
+}
+
+    .skl_banner_ul ul {
+        width: 100%;
+    }
+
+        .skl_banner_ul ul li {
+            width: 50%;
+            float: left;
+        }
+.fg_l {
+    border-left: 1px #fff solid;
+}
+.fg_r {
+    border-right: 1px #e1e1e1 solid;
+}
+            .skl_banner_ul ul li p {
+                text-align: center;
+                font-weight: 500;
+            }
+
+/*介绍*/
+.skl_introduce {
+    width: 100%;
+    background: #fff;
+    padding: 0px 20px;
+}
+
+    .skl_introduce p {
+        width: 100%;
+        height: 30px;
+        line-height: 30px;
+        color: #ff4f37;
+        text-align: center;
+        border-bottom: 1px #eee solid;
+    }
+
+        .skl_introduce p img {
+            width: 10px;
+            height: 10px;
+        }
+
+    .skl_introduce ul {
+        width: 100%;
+    }
+
+        .skl_introduce ul li {
+            width: 100%;
+            height: 35px;
+            line-height: 35px;
+        }
+            .skl_introduce ul li img {
+                width: 20px;
+                height: 20px;
+                vertical-align: middle;
+                margin-right: 10px;
+            }
+            .skl_introduce ul li span {
+                font-family: "宋体";
+                font-size:20px;
+            }
+
+.skl_sortdiv {
+    width: 100%;
+    height: 37px;
+    border-top: 1px #eee solid;
+    border-bottom: 1px #eee solid;
+    background: #fff;
+}
+.skl_sort {
+    width: 50%;
+    height: 37px;
+    line-height: 37px;
+    text-align: center;
+    float: left;
+    font-size: 16px;
+}
+.skl_sort_now {
+    color: #ff4f37;
+    border-bottom: 4px #ff4f37 solid;
+}
+
+/*参赛者作品*/
+.skl_box {
+    position: relative;
+    width: 100%;
+    max-width:640px;
+    min-width:320px;
+}
+.skl_box_item {
+    /*position: absolute;*/
+    width: 46vw;
+    height: 35vw;
+    margin: 5vw 2vw;
+    border: 6px solid #fff;
+    float:left
+}
+    .skl_box_item img {
+        width: 100%;
+        height: 100%;
+        z-index:1;
+    }
+
+.skl_box_item_text {
+    width: 100%;
+    height: 15px;
+    margin-top: -18px;
+    background: #000;
+    opacity: 0.5;
+    color: #fff;
+    z-index: 99;
+    /*position: absolute;*/
+}
+.skl_box_item_text_Max{
+    border-left:1px #fff solid;
+    float:right;
+    padding:0 3px;
+}
+.skl_box_item_text_Max img {
+    width: 10px;
+    height: 10px;
+}
+.skl_box_item_text_No {
+    margin-left: 5%;
+}
+.skl_box_item_text_Name {
+    margin-left: 5%;
+}
+/*投票按钮*/
+.skl_box_item_Tou {
+    width: 100%;
+    height: 25px;
+    line-height: 25px;
+    background: #fff;
+    color: #ff4f37;
+    border-top:1px #ccc solid;
+}
+    .skl_box_item_Tou span:first-child {
+        width: 60%;
+        height: 25px;
+        line-height: 25px;
+        padding:10px;
+    }
+    .skl_box_item_Tou span:last-child a {
+        width: 40%;
+        height: 25px;
+        line-height: 25px;
+        background: #ff4f37;
+        color: #fff;
+        float:right;
+        text-align:center;
+    }
+    .skl_box_item_Tou img {
+        width: 15px;
+        height: 15px;
+        vertical-align: middle;
+    }

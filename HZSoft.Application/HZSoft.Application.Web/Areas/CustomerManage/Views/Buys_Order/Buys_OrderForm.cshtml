@@ -1,0 +1,364 @@
+@{;
+    ViewBag.Title = "表单页面";
+    Layout = "~/Views/Shared/_OrderForm.cshtml";
+}
+<script>
+    var keyValue = request('keyValue');
+    $(function () {
+        InitialPage();
+        GetOrderEntryGrid();
+        initControl();
+    });
+    //初始化页面
+    function InitialPage() {
+        //运输方式
+        $("#ShippingType").ComboBox({
+            description: "==请选择==",
+        }).bind("change", function () {
+            var value = $(this).attr('data-value');
+            $("#Carrier").ComboBoxSetValue(value);
+        });
+
+        //运费承担方
+        $("#Carrier").ComboBox({
+            description: "==请选择==",
+        });
+        $(".bills").height($(window).height() - 88);
+        //resize重设(表格、树形)宽高
+        $(window).resize(function (e) {
+            window.setTimeout(function () {
+                $('#gridTable').setGridWidth(($('.gridPanel').width()));
+                $(".bills").height($(window).height() - 88);
+            }, 200);
+            e.stopPropagation();
+        });
+    }
+
+    //初始化控件
+    function initControl() {
+        //var queryJson = {
+        //    BaoZhuangMark: 2,//已包装
+        //    EnterMark: 0//未入库的
+        //}
+        ////报价的订单
+        //$("#ProduceId").ComboBox({
+        //    url: "../../CustomerManage/Sale_Customer/GetListJson",
+        //    param: { queryJson: JSON.stringify(queryJson) },
+        //    id: "ProduceId",
+        //    text: "ProduceCode",
+        //    description: "==请选择==",
+        //    height: "360px",
+        //    width: "280px",
+        //    //allowSearch: true
+        //}).bind("change", function () {
+        //    var value = $(this).attr('data-value');
+        //    if (value) {
+        //        $.SetForm({
+        //            url: "../../CustomerManage/Sale_Customer/GetFormJson",
+        //            param: { keyValue: value },
+        //            success: function (data) {
+        //                $("#form1").SetWebControls(data.entity);
+        //                $("#ProduceCode").val(data.entity.ProduceCode);
+        //            }
+        //        });
+        //    }
+        //});
+
+        //获取表单
+        if (!!keyValue) {
+            $.SetForm({
+                url: "../../CustomerManage/Buys_Order/GetFormJson",
+                param: { keyValue: keyValue },
+                success: function (data) {
+                    //主表
+                    var order = data.entity;
+                    $("#form1").SetWebControls(order);
+                    $("#DiscountSum").val(toDecimal(order.DiscountSum));
+                    $("#Accounts").val(toDecimal(order.Accounts));
+                    //明细
+                    var childEntity = data.childEntity;
+                    $('#gridTable').find('[role=row]').each(function (i) {
+                        var row = childEntity[i - 1];
+                        if (row != undefined) {
+                            $(this).find('input[name="OrderEntryId"]').val(row.OrderEntryId);
+                            $(this).find('input[name="ProductId"]').val(row.ProductId);
+                            $(this).find('input[name="ProductCode"]').val(row.ProductCode);
+                            $(this).find('input[name="ProductName"]').val(row.ProductName);
+                            $(this).find('input[name="Unit"]').val(row.Unit);
+                            $(this).find('input[name="Qty"]').val(toDecimal(row.Qty));
+                            $(this).find('input[name="Description"]').val(row.Description);
+                            $(this).find('[id="PlusDelete"]').val("删除");
+                            $(this).find('input').removeAttr('disabled').attr("isvalid", "yes");
+                            $(this).next().find('input').removeAttr('disabled');
+                        }
+                    });
+                    //合计
+                    GetTotal();
+                }
+            })
+        }
+        else {
+            $.SetForm({
+                url: "../../BaseManage/POS_Product/GetFormJson",
+                param: { keyValue: keyValue },
+                success: function (data) {
+                    $("#form1").SetWebControls(data);
+                }
+            });
+        }
+    }
+
+    //加载明细表
+    function GetOrderEntryGrid() {
+        var $grid = $('#gridTable');
+        $grid.jqGrid({
+            unwritten: false,
+            datatype: 'local',
+            height: '100%',
+            autowidth: true,
+            colModel: [
+                { label: '主键', name: 'OrderEntryId', hidden: true },
+                { label: '商品名称', name: "ProductName", width: 260, align: 'left', sortable: false, resizable: false },
+                { label: '商品单', name: "ProductCode", width: 100, align: 'center', sortable: false, resizable: false },
+                { label: '单位', name: "Unit", width: 100, align: 'center', sortable: false, resizable: false },
+                { label: '数量', name: 'Qty', width: 80, align: 'center', sortable: false, resizable: false },
+                { label: '说明信息', name: 'Description', width: 200, align: 'left', sortable: false, resizable: false },
+                { label: '删除', name: 'PlusDelete', width: 95, align: '', sortable: false, resizable: false },
+            ],
+            pager: false,
+            rownumbers: true,
+            shrinkToFit: false,
+            gridview: true,
+            footerrow: true,
+            gridComplete: function () {
+                //合计
+                $(this).footerData("set", {
+                    "Unit": "合计：",
+                    "Qty": "<span id='TotalQty'>0.00</span>",
+                });
+                $('table.ui-jqgrid-ftable td[aria-describedby="gridTable_Unit"]').prevUntil().css("border-right-color", "#fff");
+            }
+        });
+        //表头合并
+        $grid.jqGrid('setGroupHeaders', {
+            useColSpanStyle: true,
+            groupHeaders: [
+              { startColumnName: 'ProductName', numberOfColumns: 3, titleText: '商品信息' },
+              { startColumnName: 'Qty', numberOfColumns: 7, titleText: '数量信息' }
+            ]
+        });
+
+        //默认添加13行 空行
+        for (var i = 1; i < 10; i++) {
+            var rowdata = {
+                OrderEntryId: '<input name="OrderEntryId" type="text" />',
+                ProductName: '<div class="product"><input name="ProductName" readonly type="text" class="editable" isvalid="no" checkexpession="NotNull"/><span class="ui-icon-ellipsis"></span></div>',
+                ProductCode: '<input name="ProductCode" type="text" class="editable center disabled" /><input name="ProductId" type="hidden" />',
+                Unit: '<input name="Unit" type="text" class="editable center" />',
+                Qty: '<input name="Qty" type="text" class="editable center decimal" isvalid="no" checkexpession="Double" />',
+                Description: '<input name="Description" type="text" class="editable" />',
+                PlusDelete: '<input readonly disabled="disabled" id="PlusDelete" class="editable center" type="text" style="cursor:pointer" datacol="No" err="删除"  />'
+            }
+            $grid.jqGrid('addRowData', i, rowdata);
+        };
+        $grid.find('.decimal').attr('onfocus', 'IsMoney(this.id)');
+        $grid.find('input').attr("disabled", "disabled");
+        $grid.find("tbody tr:eq(1)").find('input').removeAttr('disabled').attr("isvalid", "yes");
+        $grid.find('.disabled').attr("disabled", "disabled");
+        //商品名称事件
+        $('input[name="ProductName"]').focus(function () {
+            $('.ui-icon-ellipsis').hide();
+            $(this).next('.ui-icon-ellipsis').show();
+            $(this).Contextmenu();
+        });
+        //选择商品事件
+        $('.ui-icon-ellipsis').click(function () {
+            var $ellipsis = $(this);
+            dialogOpen({
+                id: "OptionProduct",
+                title: '选择商品',
+                url: '/BaseManage/POS_Product/POS_ProductIndex?typeId=a229bf60-cd13-495d-aa6a-8c04e3233a6c',
+                width: "1200px",
+                height: "600px",
+                callBack: function (iframeId) {
+                    top.frames[iframeId].AcceptClick(function (datas) {
+                        var currRow = $ellipsis.parents('[role=row]').prev();
+                        for (var i = 0; i < datas.length; i++) {
+                            var data = datas[i];
+                            if ($('#gridTable').find('[data-value="' + data.ProductId + '"]').length == 0) {
+                                var nextRow = currRow.next();
+                                nextRow.find('input[name="ProductName"]').val(data.ProductName);
+                                nextRow.find('input[name="ProductCode"]').val(data.ProductCode).attr('data-value', data.ProductId);
+                                nextRow.find('input[name="ProductId"]').val(data.ProductId);
+                                nextRow.find('input[name="Unit"]').val(data.Unit);
+                                nextRow.find('input[name="Qty"]').val('1');
+                                nextRow.find('input[id="PlusDelete"]').val("删除").removeAttr("disabled");
+                                nextRow.find('input').removeAttr('disabled').attr("isvalid", "yes");
+                                nextRow.next().find('input').removeAttr('disabled');
+                                currRow = nextRow;
+                            } else {
+                                top.dialogTop('商品信息已存在,不能重复添加', 'error');
+                            }
+                        }
+                    });
+                },
+                btn: ['确认选中', '关闭']
+            });
+        });
+
+        //删除信息文本框点击事件
+        $("#gridTable tbody tr").find('input[id="PlusDelete"]').click(function () {
+            if ($(this).attr('disabled') == 'disabled') {
+                return false;
+            }
+            var KeyValue = $(this).parent().parent().find('input[name="ProductName"]').find('input').val()
+            if (KeyValue != "") {
+                var currtr = $(this).parent().parent();
+                dialogConfirm('您确认要删除此数据吗？', function (r) {
+                    if (r) {
+                        currtr.remove();
+                        GetTotal();
+                        dialogMsg("操作成功", 1);
+                    }
+                });
+            }
+        });
+
+        //价格文本框事件
+        $grid.find('.decimal').click(function () {
+            $(this).select();
+        });
+        //价格文本框换算
+        $grid.find('.decimal').keyup(function () {
+            var _inputName = $(this).attr('name');
+            var $Qty = $(this).parents('[role=row]').find('input[name="Qty"]');                    //数量
+            //数量*单价=金额
+            GetTotal();
+        });
+    }
+
+    //合计
+    function GetTotal() {
+        var TotalQty = 0.00, TotalPrice = 0.00, TotalAmount = 0.00;
+        $("#gridTable").find("tbody tr").each(function (i) {
+            var Qty = $(this).find('td:eq(5)').find('input').val();
+            if (Qty != "" && Qty != undefined) {
+                TotalQty += Number(Qty);
+            }
+        });
+        $("#TotalQty").text(toDecimal(TotalQty));
+    }
+
+    //保存表单
+    function AcceptClick(save_Mode) {
+        if (!$('#form1').Validform()) {
+            return false;
+        }
+        var OrderEntryJson = [];
+        $("#gridTable").find('[role=row]').each(function (i) {
+            if (!!$(this).find('input[name="ProductId"]').val()) {
+                OrderEntryJson.push({
+                    OrderEntryId: $(this).find('input[name="OrderEntryId"]').val(),
+                    ProductName: $(this).find('input[name="ProductName"]').val(),
+                    ProductCode: $(this).find('input[name="ProductCode"]').val(),
+                    ProductId: $(this).find('input[name="ProductId"]').val(),
+                    Unit: $(this).find('input[name="Unit"]').val(),
+                    Qty: $(this).find('input[name="Qty"]').val(),
+                    Description: $(this).find('input[name="Description"]').val(),
+                    SortCode: i
+                });
+            }
+        });
+        var postData = $("#form1").GetWebControls(keyValue);
+        postData["TotalQty"] = $("#TotalQty").text();
+        postData["orderEntryJson"] = JSON.stringify(OrderEntryJson);
+        $.ConfirmAjax({
+            msg: "注：您确认要保存此操作吗？",
+            url: "../../CustomerManage/Buys_Order/SaveForm?keyValue=" + keyValue,
+            param: postData,
+            success: function (data) {
+                if (save_Mode == 1) {
+                    reload();
+                } else {
+                    top.$.removeTab('closeCurrent');
+                }
+            }
+        });
+    }
+</script>
+
+<div class="bills">
+    <table class="form" style="width: 100%; margin-bottom: 10px;">
+        @*<tr>
+            <th class="formTitle" style="width: 60px;">生产单<font face="宋体">*</font></th>
+            <td class="formValue">
+                <div id="ProduceId" type="select" class="ui-select" isvalid="yes" checkexpession="NotNull"></div>
+                <input id="ProduceCode" type="hidden" class="form-control" />
+            </td>
+            <th class="formTitle" style="width: 60px;">销售单<font face="宋体">*</font></th>
+            <td class="formValue">
+                <input id="OrderId" type="hidden" class="form-control" />
+                <input id="OrderCode" type="text" class="form-control" disabled />
+            </td>
+            <th class="formTitle">制单人员<font face="宋体">*</font></th>
+            <td class="formValue">
+                <input id="CreateUserName" type="text" class="form-control" readonly value="@HZSoft.Application.Code.OperatorProvider.Provider.Current().UserName" />
+            </td>
+        </tr>*@
+        <tr>
+            <th class="formTitle">入库单<font face="宋体">*</font></th>
+            <td class="formValue">
+                <input id="Code" type="text" readonly value="@ViewBag.OrderCode" class="form-control" isvalid="yes" checkexpession="NotNull" />
+            </td>
+            <td class="formTitle">客户<font face="宋体">*</font></td>
+            <td class="formValue">
+                <input id="CustomerName" type="text" class="form-control" disabled />
+                <input id="CustomerId" type="hidden" class="form-control" />
+            </td>
+            <td class="formTitle">经销商<font face="宋体">*</font></td>
+            <td class="formValue">
+                <input id="CompanyName" type="text" class="form-control" disabled />
+                <input id="CompanyId" type="hidden" class="form-control" />
+            </td>
+        </tr>
+    </table>
+    <div class="gridPanel">
+        <table id="gridTable"></table>
+    </div>
+    <textarea id="Description" placeholder="暂无备注信息" class="form-control" style="width: 100%; height: 50px; margin-top: 10px;"></textarea>
+    <table class="form" style="width: 100%; margin-bottom: 10px;display:none">
+        <tr>
+            <td class="formTitle">运输方式<font face="宋体">*</font></td>
+            <td class="formValue">
+                <div id="ShippingType" type="select" class="ui-select" disabled>
+                    <ul>
+                        <li data-value="1">公司派车</li>
+                        <li data-value="2">物流</li>
+                    </ul>
+                </div>
+            </td>
+            <td class="formTitle">运费承担<font face="宋体">*</font></td>
+            <td class="formValue">
+                <div id="Carrier" type="select" class="ui-select" disabled>
+                    <ul>
+                        <li data-value="1">我方</li>
+                        <li data-value="2">对方</li>
+                    </ul>
+                </div>
+            </td>
+            <td class="formTitle">收货地址<font face="宋体">*</font></td>
+            <td class="formValue">
+                <input id="Address" type="text" class="form-control" disabled />
+            </td>
+            <td class="formTitle">客户电话</td>
+            <td class="formValue">
+                <input id="CustomerTelphone" type="text" class="form-control" disabled />
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="bottomField">
+    @*<a id="savaAndAdd" class="btn btn-success" onclick="AcceptClick(1)">保存并新增</a>*@
+    <a id="save" class="btn btn-success" onclick="AcceptClick(2)">保存单据</a>
+</div>
+

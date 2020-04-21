@@ -1,0 +1,96 @@
+﻿body {
+    padding-bottom: 65px;
+    background: #fff;
+}
+nav {
+    width: 100%;
+    height: 42px;
+    line-height: 42px;
+    padding: 0 4%;
+}
+
+    nav span a {
+        font-family: 华文行楷;
+        color: #004fa0;
+        margin: 2% 15%;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    nav img {
+        width: 30.5px;
+        height: 22.5px;
+    }
+
+.skl_top_title {
+    width: 100%;
+}
+
+    .skl_top_title ul {
+        background: #f7f7f7;
+        height: 33px;
+        line-height: 33px;
+        color: #666;
+    }
+
+        .skl_top_title ul li {
+            width: 20%;
+            float: left;
+            text-align: center;
+        }
+
+.skl_top_list {
+    width: 100%;
+    position:relative;
+}
+
+    .skl_top_list ul {
+        width: 100%;
+    }
+
+        .skl_top_list ul li {
+            width: 100%;
+            height: 75px;
+            line-height: 75px;
+            border-bottom: 1px #eee solid;
+            padding: 7.5px 0;
+        }
+            .skl_top_list ul li a {
+                width: 100%;
+                display: block;
+            }
+            .skl_top_list ul li a span {
+                width: 20%;
+                height: 60px;
+                line-height: 60px;
+                float: left;
+                text-align: center;
+            }
+
+                .skl_top_list ul li a span img {
+                    width: 60px;
+                    height: 60px;
+                    display: block;
+                    margin: 0 auto;
+                }
+.jgtb{
+    position:absolute;
+    top:32px;
+    left:10px;
+    width:12px;
+    height:10px;
+}
+.ygtb {
+    position: absolute;
+    top: 108px;
+    left: 10px;
+    width: 12px;
+    height: 10px;
+}
+.tgtb {
+    position: absolute;
+    top: 183px;
+    left: 10px;
+    width: 12px;
+    height: 10px;
+}

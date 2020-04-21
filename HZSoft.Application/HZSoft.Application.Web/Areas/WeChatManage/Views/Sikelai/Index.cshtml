@@ -1,0 +1,130 @@
+﻿@using HZSoft.Application.Entity.CustomerManage
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>2019年首届“思科莱”杯“生活设计家”室内设计大赛</title>
+    <link href="~/Content/styles/hsf/base.css" rel="stylesheet" />
+    <link href="~/Content/styles/hsf/index.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="skl_containers">
+        <!--顶部banner-->
+        <div class="skl_banner_img">
+            <div class="skl_banner_img clearfix">
+                <img src="~/Content/images/picture/banner1.jpg" />
+            </div>
+            <div class="skl_banner_ul">
+                <ul class="clearfix">
+                    <li class="fg_r"><a href="~/WeChatManage/Sikelai/Top?groupId=1"><p>社会组</p><p>@ViewBag.Count1</p></a></li>
+                    <li class="fg_l fg_r"><a href="~/WeChatManage/Sikelai/Top?groupId=2"><p>院校组</p><p>@ViewBag.Count2</p></a></li>
+                    @*<li class="fg_l"><a href="~/WeChatManage/Sikelai/Top?groupId=3"><p>新秀组</p><p>@ViewBag.Count3</p></a></li>*@
+                </ul>
+            </div>
+        </div>
+        <!--活动介绍-->
+        <div class="skl_introduce">
+            <p>
+                <img src="~/Content/images/icon/距离活动时间图标.png" /> 距活动结束时间还有 <span class="djs"></span>
+            </p>
+            <ul>
+                <li>
+                    <a href="~/WeChatManage/Sikelai/SklActivity">
+                        <img src="~/Content/images/icon/微信图标.png" />
+                        思科莱“生活设计家”评选活动
+                        <span class="fr">></span>
+                    </a>
+                </li>
+                <li>
+                    <a href="~/WeChatManage/Sikelai/SklIntroduce">
+                        <img src="~/Content/images/icon/企业简介图标.png" />
+                        关于我们
+                        <span class="fr">></span>
+                    </a>
+                </li>
+                <li>
+                    <a href="~/Content/参赛户型图CAD.rar">
+                        <img src="~/Content/images/icon/企业简介图标1.png" />
+                        参赛户型CAD图纸下载
+                        <span class="fr">></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!--参赛选手-->
+        <div class="skl_players">
+            <div class="skl_sortdiv">
+                <a href="~/WeChatManage/Sikelai/ListsNew?sidx=Id"><nav class="skl_sort fg_r skl_sort_now">最新参与</nav></a>
+                <a href="~/WeChatManage/Sikelai/ListsTop?sidx=PollCount"><nav class="skl_sort fg_l">人气选手</nav></a>
+            </div>
+            <div class="skl_box clearfix">
+                @*@{
+                        List<Poll_SignUpEntity> list = ViewBag.list;
+                        foreach (var item in list)
+                        {
+                            <div class="skl_box_item">
+                                <a href="~/WeChatManage/Sikelai/Details?id=@item.Id">
+                                    <img src="@item.Pic1" />
+                                    <div class="skl_box_item_text">
+                                        <span class="skl_box_item_text_No">@item.Id 号</span>
+                                        <span class="skl_box_item_text_Name">@item.FullName</span>
+                                        <span class="skl_box_item_text_Max">
+                                            <img src="~/Content/images/icon/放大图标.png" />
+                                          </span>
+                                    </div>
+                                </a>
+                                <p class="skl_box_item_Tou">
+                                    <span>@item.PollCount 票</span>
+                                    <span><a href="~/WeChatManage/Sikelai/PollSave?id=@item.Id&name=@item.FullName"><img src="~/Content/images/icon/心型填充.png" />投票</a></span>
+                                </p>
+                            </div>
+                        }
+                    }*@
+            </div>
+        </div>
+        <!--导航-->
+        <div class="skl_nav">
+            <ul class="clearfix">
+                <li>
+                    <a href="~/WeChatManage/Sikelai/Index">
+                        <img src="~/Content/images/icon/首页红.png" />
+                        <p class="navnow">首页</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="~/WeChatManage/Sikelai/SignUp">
+                        <img src="~/Content/images/icon/报名白.png" />
+                        <p>报名</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="~/WeChatManage/Sikelai/Search">
+                        <img src="~/Content/images/icon/搜索图标.png" />
+                        <p>搜索</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="~/WeChatManage/Sikelai/Top?groupId=1">
+                        <img src="~/Content/images/icon/排行白.png" />
+                        <p>排行</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="~/WeChatManage/Sikelai/Rule">
+                        <img src="~/Content/images/icon/规则白.png" />
+                        <p>规则</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script src="~/Content/scripts/jquery/jquery-3.3.1.min.js"></script>
+    <script src="~/Content/scripts/plugins/layer/layer.js"></script>
+    <script src="~/Content/scripts/hsf/imgReady.js"></script>
+    <script src="~/Content/scripts/hsf/index.js"></script>
+    <script src="~/Content/scripts/hsf/sidxIndex.js"></script>
+</body>
+</html>

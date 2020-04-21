@@ -1,0 +1,216 @@
+﻿@{
+    ViewBag.Title = "订单详细";
+    Layout = "~/Views/Shared/_OrderForm.cshtml";
+}
+<script>
+    var keyValue = request('keyValue');
+    $(function () {
+        InitialPage();
+        GetOrderEntryGrid();
+        InitControl();
+    });
+    //初始化页面
+    function InitialPage() {
+        $("#ifmSignIn").attr("src", "/Resource/QRcode/" + keyValue+".jpg");
+        $(".bills").height($(window).height() - 88);
+        //resize重设(表格、树形)宽高
+        $(window).resize(function (e) {
+            window.setTimeout(function () {
+                $('#gridTable').setGridWidth(($('.gridPanel').width()));
+                $(".bills").height($(window).height() - 88);
+            }, 200);
+            e.stopPropagation();
+        });
+        //订单状态
+        $("#OrderType").ComboBox({
+            url: "../../SystemManage/DataItemDetail/GetDataItemListJson",
+            param: { EnCode: "OrderType" },
+            id: "ItemValue",
+            text: "ItemName",
+            description: "==请选择==",
+            height: "200px"
+        });
+    }
+    //初始化控件
+    function InitControl() {
+        //获取表单
+        if (!!keyValue) {
+            $.SetForm({
+                url: "../../CustomerManage/Sale_Customer/GetFormJson",
+                param: { keyValue: keyValue },
+                success: function (data) {
+                    var order = data.entity;
+                    order.KaiLiaoMark = order.KaiLiaoMark == 2 ? 1 : order.KaiLiaoMark;
+                    order.FengBianMark = order.FengBianMark == 2 ? 1 : order.FengBianMark;
+                    order.PaiZuanMark = order.PaiZuanMark == 2 ? 1 : order.PaiZuanMark;
+                    order.ShiZhuangMark = order.ShiZhuangMark == 2 ? 1 : order.ShiZhuangMark;
+                    order.BaoZhuangMark = order.BaoZhuangMark == 2 ? 1 : order.BaoZhuangMark;
+                    order.XiSuMark = order.XiSuMark == 2 ? 1 : order.XiSuMark;
+                    $("#form1").SetWebControls(order);
+
+                    //明细
+                    var childEntity = data.childEntity;
+                    $('#gridTable').find('[role=row]').each(function (i) {
+                        var row = childEntity[i - 1];
+                        if (row != undefined) {
+                            $(this).find('td[aria-describedby="gridTable_Id"]').html(row.Id);
+                            $(this).find('td[aria-describedby="gridTable_ProductCode"]').html(row.ProductCode);
+                            $(this).find('td[aria-describedby="gridTable_ProductName"]').html(row.ProductName);
+                            $(this).find('td[aria-describedby="gridTable_SumArea"]').html(row.SumArea);
+                            $(this).find('td[aria-describedby="gridTable_SumCount"]').html(row.SumCount);
+                            $(this).find('td[aria-describedby="gridTable_Description"]').html(row.Description);
+                            $(this).find('input').removeAttr('readonly').attr("isvalid", "yes");
+                            $(this).next().find('input').removeAttr('readonly');
+                        }
+                    });
+                    //合计
+                    GetTotal();
+                }
+            })
+        }
+    }
+    //合计
+    function GetTotal() {
+        var SumTotalArea = 0.00, SumTotalCount = 0.00;
+        $("#gridTable").find('[role=row]').each(function (i) {
+            var SumArea = $(this).find('td:eq(4)').html();
+            if (SumArea != "" && SumArea != undefined && SumArea != '&nbsp;') {
+                SumTotalArea += Number(SumArea);
+            }
+            var SumCount = $(this).find('td:eq(5)').html();
+            if (SumCount != "" && SumCount != undefined && SumCount != '&nbsp;') {
+                SumTotalCount += Number(SumCount);
+            }
+        });
+        $("#SumTotalArea").text(toDecimal(SumTotalArea));
+        $("#SumTotalCount").text(toDecimal(SumTotalCount));
+    }
+    //加载明细
+    function GetOrderEntryGrid() {
+        var $grid = $("#gridTable");
+        $grid.jqGrid({
+            unwritten: false,
+            datatype: "local",
+            height: '100%',
+            autowidth: true,
+            colModel: [
+                { label: '统计子表Id', name: 'Id', width: 80, align: '', sortable: false, resizable: false, hidden: true },
+                { label: '产品名称', name: 'ProductName', width: 180, align: '', sortable: false, resizable: false },
+                { label: '产品单号', name: 'ProductCode', width: 100, align: '', sortable: false, resizable: false },
+                { label: '总面积', name: 'SumArea', width: 120, align: '', sortable: false, resizable: false },
+                { label: '总数量', name: 'SumCount', width: 120, align: '', sortable: false, resizable: false },
+                { label: '描述', name: 'Description', width: 380, align: '', sortable: false, resizable: false }
+            ],
+            pager: false,
+            rownumbers: true,
+            shrinkToFit: false,
+            gridview: true,
+            footerrow: true,
+            gridComplete: function () {
+                //合计
+                $(this).footerData("set", {
+                    "ProductName": "合计：",
+                    "SumArea": "<span id='SumTotalArea'>0.00</span>",
+                    "SumCount": "<span id='SumTotalCount'>0.00</span>"
+                });
+                $('table.ui-jqgrid-ftable td[aria-describedby="gridTable_UnitId"]').prevUntil().css("border-right-color", "#fff");
+            }
+        });
+        //表头合并
+        $grid.jqGrid('setGroupHeaders', {
+            useColSpanStyle: true,
+            groupHeaders: [
+                { startColumnName: 'ProductName', numberOfColumns: 2, titleText: '商品信息' },
+                { startColumnName: 'SumArea', numberOfColumns: 3, titleText: '数据信息' },
+            ]
+        });
+        //默认添加13行 空行
+        for (var i = 1; i < 13; i++) {
+            var rowdata = {
+                Id: '',
+                ProductName: '',
+                ProductCode: '',
+                SumArea: '',
+                SumCount: '',
+                Description: ''
+            }
+            $grid.jqGrid('addRowData', i, rowdata);
+        };
+    }
+    //打印
+    function btn_print() {
+        $(".bills").printTable();
+    }
+</script>
+<div class="bills">
+    <div class="printArea">
+        <table class="form" style="width: 100%; margin-bottom: 10px;">
+            <tr>
+                <th class="formTitle" >销售单</th>
+                <td class="formValue">
+                    <input id="OrderCode" type="text" class="form-control" readonly/>
+                </td>
+                <th class="formTitle" >订单状态</th>
+                <td class="formValue">
+                    <div id="OrderType" type="select" class="ui-select" readonly></div>
+                </td>
+                <td class="formValue" rowspan="4">
+                    <img id="ifmSignIn" />
+                </td>
+            </tr>
+            <tr>
+                <td class="formTitle" >客户</td>
+                <td class="formValue">
+                    <input id="CustomerName" type="text" class="form-control" readonly />
+                </td>
+                <td class="formTitle" >经销商</td>
+                <td class="formValue">
+                    <input id="CompanyName" type="text" class="form-control" readonly />
+                </td>
+                <td class="formValue"></td>
+            </tr>
+            <tr>
+                <th class="formTitle" >生产单</th>
+                <td class="formValue">
+                    <input id="ProduceCode" type="text" class="form-control" readonly />
+                </td>
+                <td class="formTitle" >销售</td>
+                <td class="formValue">
+                    <input id="SalesmanUserName" type="text" class="form-control" readonly />
+                </td>
+                <td class="formValue"></td>
+            </tr>
+            <tr>
+                <td class="formTitle">材料</td>
+                <td class="formValue">
+                    <div class="checkbox">
+                        <label><input id="GuiTiMark" type="checkbox" />&nbsp;柜体 </label>
+                        <label><input id="MenBanMark" type="checkbox" />&nbsp;门板 </label>
+                        <label><input id="WuJinMark" type="checkbox" />&nbsp;五金 </label>
+                    </div>
+                </td>
+                <td class="formTitle">工序</td>
+                <td class="formValue">
+                    <label><input id="KaiLiaoMark" type="checkbox" checked />&nbsp;开料 </label>&nbsp;&nbsp;
+                    <label><input id="FengBianMark" type="checkbox" checked />&nbsp;封边 </label>&nbsp;&nbsp;
+                    <label><input id="PaiZuanMark" type="checkbox" checked />&nbsp;排钻 </label>&nbsp;&nbsp;
+                    <label><input id="ShiZhuangMark" type="checkbox" checked />&nbsp;试装 </label>&nbsp;&nbsp;
+                    <label><input id="BaoZhuangMark" type="checkbox" checked />&nbsp;包装 </label>&nbsp;&nbsp;&nbsp;&nbsp;
+                    @*<label><input id="XiSuMark" type="checkbox" />&nbsp;吸塑 </label>*@
+                </td>
+                <td class="formTitle"></td>
+            </tr>
+        </table>
+    </div>
+    <div class="gridPanel printArea">
+        <table id="gridTable"></table>
+    </div>
+    <div class="printArea">
+        <textarea id="Remark" placeholder="暂无备注信息" class="form-control" style="width: 100%; height: 50px; margin-top: 10px;"></textarea>
+    </div>
+</div>
+<div id="bottomField">
+    <div class="btn-group">
+        <a id="lr-print" class="btn btn-success" onclick="btn_print()"><i class="fa fa-print"></i>&nbsp;打印</a>
+    </div>
+</div>

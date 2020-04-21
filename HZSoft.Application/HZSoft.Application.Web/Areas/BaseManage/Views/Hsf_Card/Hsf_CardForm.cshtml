@@ -1,0 +1,190 @@
+@{;
+    ViewBag.Title = "表单页面";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<link href="~/Content/layui/css/layui.css" rel="stylesheet" />
+<script src="~/Content/layui/layui.js"></script>
+<script>
+    var keyValue = request('keyValue');
+    $(function () {
+        initControl();
+        layui.use('upload', function () {
+            var $ = layui.jquery
+                , upload = layui.upload;
+            //拖拽上传
+            upload.render({
+                elem: ".upload"
+                , url: '/BaseManage/Hsf_Card/UploadPicture'
+                , done: function (data) {
+                    console.log(data);
+                    if (data.Success) {
+                        this.item
+                        $("#" + this.item.context.id).attr("imgsrc", data.Message).html("<img src='" + data.Message + "' style='height:13em;' />");
+                    } else {
+                        layer.alert('上传失败:' + data.Message, {
+                            skin: 'layui-layer-molv', closeBtn: 0
+                        });
+                    }
+                }
+                , error: function () {
+                    layer.alert('上传异常', {
+                        skin: 'layui-layer-molv', closeBtn: 0
+                    });
+                }
+            });
+
+            //拖拽上传
+            upload.render({
+                elem: ".upload2"
+                , url: '/BaseManage/Hsf_Card/UploadQRcode'
+                , done: function (data) {
+                    console.log(data);
+                    if (data.Success) {
+                        this.item
+                        $("#" + this.item.context.id).attr("imgsrc", data.Message).html("<img src='" + data.Message + "' style='height:13em;' />");
+                    } else {
+                        layer.alert('上传失败:' + data.Message, {
+                            skin: 'layui-layer-molv', closeBtn: 0
+                        });
+                    }
+                }
+                , error: function () {
+                    layer.alert('上传异常', {
+                        skin: 'layui-layer-molv', closeBtn: 0
+                    });
+                }
+            });
+        });
+
+    });
+    //初始化控件
+    function initControl() {
+        //获取表单
+        if (!!keyValue) {
+            $.SetForm({
+                url: "../../BaseManage/Hsf_Card/GetFormJson",
+                param: { keyValue: keyValue },
+                success: function (data) {
+                    $("#form1").SetWebControls(data);
+                    if (data.PhotoUrl != undefined) {
+                        $("#UploadPhotoUrl").attr("imgsrc", data.PhotoUrl).html("<img src='" + data.PhotoUrl + "' style='height:110px;' />");
+                    }
+                    if (data.QRcodeUrl != undefined) {
+                        $("#UploadQRcodeUrl").attr("imgsrc", data.QRcodeUrl).html("<img src='" + data.QRcodeUrl + "' style='height:110px;' />");
+                    }
+                }
+            })
+        }
+    }
+    //保存表单;
+    function AcceptClick() {
+        if (!$('#form1').Validform()) {
+            return false;
+        }
+        var postData = $("#form1").GetWebControls(keyValue);
+        //图片为空并且上传图不为空
+        if (!!$("#UploadPhotoUrl").attr("imgsrc")) {
+            postData.PhotoUrl = $("#UploadPhotoUrl").attr("imgsrc");
+        }
+        //图片为空并且上传图不为空
+        if (!!$("#UploadQRcodeUrl").attr("imgsrc")) {
+            postData.QRcodeUrl = $("#UploadQRcodeUrl").attr("imgsrc");
+        }
+
+        $.SaveForm({
+            url: "../../BaseManage/Hsf_Card/SaveForm?keyValue=" + keyValue,
+            param: postData,
+            loading: "正在保存数据...",
+            success: function () {
+                $.currentIframe().$("#gridTable").trigger("reloadGrid");
+            }
+        })
+    }
+</script>
+<div style="margin-top: 20px; margin-right: 30px;">
+    <table class="form">
+        <tr>
+            <td class="formTitle">姓名<font face="宋体">*</font></td>
+            <td class="formValue">
+                <input id="Name" type="text" class="form-control" isvalid="yes" checkexpession="NotNull" />
+            </td>
+            <td class="formTitle">英文<font face="宋体">*</font></td>
+            <td class="formValue">
+                <input id="NameEn" type="text" class="form-control" isvalid="yes" checkexpession="NotNull" />
+            </td>
+        </tr>
+        <tr>
+            <td class="formTitle">职位</td>
+            <td class="formValue">
+                <input id="Position" type="text" class="form-control" />
+            </td>
+            <td class="formTitle">手机<font face="宋体">*</font></td>
+            <td class="formValue">
+                <input id="Mobile1" type="text" class="form-control" isvalid="yes" checkexpession="NotNull" />
+            </td>
+        </tr>
+        <tr>
+            <td class="formTitle">手机2</td>
+            <td class="formValue">
+                <input id="Mobile2" type="text" class="form-control" />
+            </td>
+            <td class="formTitle">电话</td>
+            <td class="formValue">
+                <input id="Telephone" type="text" class="form-control" />
+            </td>
+        </tr>
+        <tr>
+            <td class="formTitle">传真</td>
+            <td class="formValue">
+                <input id="Fax" type="text" class="form-control" />
+            </td>
+            <td class="formTitle">邮箱</td>
+            <td class="formValue">
+                <input id="Email" type="text" class="form-control" />
+            </td>
+        </tr>
+        <tr>
+            <td class="formTitle">公司</td>
+            <td class="formValue">
+                <input id="CompanyName" type="text" class="form-control" value="山东韩宇来企业集团" />
+            </td>
+            <td class="formTitle">公司英文</td>
+            <td class="formValue">
+                <input id="CompanyNameEn" type="text" class="form-control" value="ShanDong Han Yulai Group" />
+            </td>
+        </tr>
+        <tr>
+            <td class="formTitle">网址</td>
+            <td class="formValue">
+                <input id="Website" type="text" class="form-control" value="http://www.hanshifu.net" />
+            </td>
+            <td class="formTitle">地址</td>
+            <td class="formValue">
+                <input id="Address" type="text" class="form-control" value="山东临沂兰山经济开发区大山路西段" />
+            </td>
+        </tr>
+        <tr>
+            <td class="formValue" colspan="2" style="text-align:center">
+                <input id="PhotoUrl" type="hidden" class="form-control" />
+                <div class="layui-upload-drag upload" id="UploadPhotoUrl" style="width:150px;height:150px">
+                    <i class="layui-icon"></i>
+                    <p>点击上传头像</p>
+                </div>
+            </td>
+            <td class="formValue" colspan="2" style="text-align:center">
+                <input id="QRcodeUrl" type="hidden" class="form-control" />
+                <div class="layui-upload-drag upload2" id="UploadQRcodeUrl" style="width:150px;height:150px">
+                    <i class="layui-icon"></i>
+                    <p>点击上传二维码</p>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="formTitle">电子名片连接</td>
+            <td class="formValue" colspan="3">
+                <input id="Description" type="text" class="form-control" readonly />
+            </td>
+        </tr>
+
+    </table>
+</div>

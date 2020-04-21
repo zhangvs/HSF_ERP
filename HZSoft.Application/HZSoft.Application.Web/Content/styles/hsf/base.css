@@ -1,0 +1,127 @@
+﻿/*重置样式*/
+*,
+::after,
+::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /*所有的盒模型以边框开始计算*/
+    -webkit-box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent; /*透明*/
+}
+
+body {
+    font-size: 12px;
+    color: #333;
+    font-family: 'Microsoft YaHei',sans-serif;
+}
+
+ul, ol {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+    color: #333;
+}
+
+input, textarea, select {
+    outline: none;
+    border: none;
+    resize: none;
+    -webkit-appearance: none;
+}
+
+/*公用样式*/
+.fl {
+    float: left;
+}
+
+.fr {
+    float: right;
+}
+
+.clearfix::before,
+.clearfix::after {
+    content: "";
+    display: block;
+    height: 0;
+    line-height: 0;
+    visibility: hidden;
+    clear: both;
+}
+
+.m_l10 {
+    margin-left: 10px;
+}
+
+.m_r10 {
+    margin-right: 10px;
+}
+
+
+.skl_containers {
+    width: 100%;
+    max-width: 640px;
+    min-width: 320px;
+    margin: 0 auto;
+}
+
+/*导航*/
+.skl_nav {
+    width: 100%;
+}
+
+    .skl_nav ul {
+        width: 100%;
+        height: 45px;
+        background: #333;
+        bottom: 0px;
+        z-index: 999;
+        position: fixed;
+        padding: 4px 0;
+        max-width: 640px;
+        min-width: 320px;
+    }
+
+        .skl_nav ul li {
+            width: 20%;
+            float: left;
+            text-align: center;
+            padding: 3px;
+        }
+            .skl_nav ul li a {
+                display: block;
+                width: 100%;
+            }
+
+                .skl_nav ul li a img {
+                    width: 17px;
+                    height: 17px;
+                    display: block;
+                    margin: 0 auto;
+                }
+
+                .skl_nav ul li a p {
+                    color: #fff;
+                    font-size: 12px;
+                    text-align: center;
+                }
+                    .skl_nav ul li a p.navnow {
+                        color: #ff4f37
+                    }
+
+
+            .skl_nav ul li:nth-child(3) {
+                margin-top: -15px;
+                width: 55px;
+                height: 55px;
+                padding: 3px;
+                border: 5px #333 solid;
+                border-radius: 55px;
+                box-shadow: 0px 1px 2px #212121;
+                background: #fff;
+                color: #333;
+            }
+                .skl_nav ul li:nth-child(3) a p {
+                    color: #444;
+                }

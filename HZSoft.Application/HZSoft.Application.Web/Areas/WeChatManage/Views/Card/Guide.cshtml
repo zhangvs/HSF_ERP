@@ -1,0 +1,703 @@
+﻿@model  HZSoft.Application.Entity.BaseManage.Hsf_CardEntity
+<!DOCTYPE html>
+<html>
+<head>
+    <title>免费预约</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="stylesheet" type="text/css" href="https://shrcdnout.yfway.com/share/css/base.css">
+    <link rel="stylesheet" type="text/css" href="https://shrcdnout.yfway.com/share/js/thirdcity/css/city-picker.css">
+    <script type="text/javascript" src="https://shrcdnout.yfway.com/share/js/jquery-2.0.3.min.js"></script>
+    <style id="__WXWORK_INNER_SCROLLBAR_CSS">
+        ::-webkit-scrollbar {
+            width: 12px !important;
+            height: 12px !important;
+        }
+
+        ::-webkit-scrollbar-track:vertical {
+        }
+
+        ::-webkit-scrollbar-thumb:vertical {
+            background-color: rgba(136, 141, 152, 0.5) !important;
+            border-radius: 10px !important;
+            background-clip: content-box !important;
+            border: 2px solid transparent !important;
+        }
+
+        ::-webkit-scrollbar-track:horizontal {
+        }
+
+        ::-webkit-scrollbar-thumb:horizontal {
+            background-color: rgba(136, 141, 152, 0.5) !important;
+            border-radius: 10px !important;
+            background-clip: content-box !important;
+            border: 2px solid transparent !important;
+        }
+
+        ::-webkit-resizer {
+            display: none !important;
+        }
+    </style>
+    <script type="text/javascript" src="https://shrcdnout.yfway.com/share/js/thirdcity/js/citydata.js"></script>
+    <script type="text/javascript" src="https://shrcdnout.yfway.com/share/js/thirdcity/js/cityPicker-1.0.0.js?v=1"></script>
+    <script type="text/javascript" src="https://shrcdnout.yfway.com/share/js/layer/layer.js"></script>
+    <link rel="stylesheet" href="https://shrcdnout.yfway.com/share/js/layer/skin/layer.css" id="layui_layer_skinlayercss">
+    <link href="https://shrcdnout.yfway.com/share/js/swiper/swiper.min.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="https://shrcdnout.yfway.com/share/js/swiper/swiper.min.js"></script>
+</head>
+<body>
+    <div class="top">
+        <div class="swiper-container swiper-container-horizontal">
+            <div class="swiper-wrapper" style="transform: translate3d(-1904px, 0px, 0px); transition-duration: 0ms;">
+                <div class="swiper-slide" style="width: 1904px;">
+                    <img src="~/Content/images/card/预约1.png" />
+                </div>
+                <div class="swiper-slide" style="width: 1904px;">
+                    <img src="~/Content/images/card/预约2.jpg" />
+                </div>
+                <div class="swiper-slide" style="width: 1904px;">
+                    <img src="~/Content/images/card/预约3.jpg" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mid cf">
+        <div class="mid-box cf">
+            <div class="mid-subbox">
+                <p><input type="text" name="name" placeholder="请输入您的姓名"></p>
+                <p><input type="text" name="phone" placeholder="请输入您电话" onkeyup="value=value.replace(/[^\d]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))"></p>
+                @*<p class="input-wrapper"><input type="text" name="verifycode" placeholder="请输入验证码" onkeyup="value=value.replace(/[^\d]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))"> <a href="javascript:void(0);" class="get-verifycode">获取验证码</a></p>*@
+                <div class="mid-city cf">
+                    <div class="city-picker-selector" id="city-picker-search"><div class="selector-item storey province" data-index="0"><a href="javascript:;" class="selector-name reveal df-color ">请选择省份</a><input type="hidden" name="userProvinceId" class="input-price val-error" value="" data-required="userProvinceId"><div class="selector-list listing hide"><ul><li class="caller" data-id="110000" data-title="北京">北京市</li><li class="caller" data-id="120000" data-title="天津">天津市</li><li class="caller" data-id="130000" data-title="河北">河北省</li><li class="caller" data-id="140000" data-title="山西">山西省</li><li class="caller" data-id="150000" data-title="内蒙古">内蒙古自治区</li><li class="caller" data-id="210000" data-title="辽宁">辽宁省</li><li class="caller" data-id="220000" data-title="吉林">吉林省</li><li class="caller" data-id="230000" data-title="黑龙江">黑龙江省</li><li class="caller" data-id="310000" data-title="上海">上海市</li><li class="caller" data-id="320000" data-title="江苏">江苏省</li><li class="caller" data-id="330000" data-title="浙江">浙江省</li><li class="caller" data-id="340000" data-title="安徽">安徽省</li><li class="caller" data-id="350000" data-title="福建">福建省</li><li class="caller" data-id="360000" data-title="江西">江西省</li><li class="caller" data-id="370000" data-title="山东">山东省</li><li class="caller" data-id="410000" data-title="河南">河南省</li><li class="caller" data-id="420000" data-title="湖北">湖北省</li><li class="caller" data-id="430000" data-title="湖南">湖南省</li><li class="caller" data-id="440000" data-title="广东">广东省</li><li class="caller" data-id="450000" data-title="广西">广西壮族自治区</li><li class="caller" data-id="460000" data-title="海南">海南省</li><li class="caller" data-id="500000" data-title="重庆">重庆市</li><li class="caller" data-id="510000" data-title="四川">四川省</li><li class="caller" data-id="520000" data-title="贵州">贵州省</li><li class="caller" data-id="530000" data-title="云南">云南省</li><li class="caller" data-id="540000" data-title="西藏">西藏自治区</li><li class="caller" data-id="610000" data-title="陕西">陕西省</li><li class="caller" data-id="620000" data-title="甘肃">甘肃省</li><li class="caller" data-id="630000" data-title="青海">青海省</li><li class="caller" data-id="640000" data-title="宁夏">宁夏回族自治区</li><li class="caller" data-id="650000" data-title="新疆">新疆维吾尔自治区</li><li class="caller" data-id="710000" data-title="台湾">台湾省</li><li class="caller" data-id="810000" data-title="香港">香港特别行政区</li><li class="caller" data-id="820000" data-title="澳门">澳门特别行政区</li></ul></div></div><div class="selector-item storey city" data-index="1"><a href="javascript:;" class="selector-name reveal df-color forbid">请选择城市</a><input type="hidden" name="userCityId" class="input-price val-error" value="" data-required="userCityId"><div class="selector-list listing hide"><ul></ul></div></div><div class="selector-item storey district" data-index="2"><a href="javascript:;" class="selector-name reveal df-color forbid">请选择区县</a><input type="hidden" name="userDistrictId" class="input-price val-error" value="" data-required="userDistrictId"><div class="selector-list listing hide"><ul></ul></div></div></div>
+                </div>
+                <p class="mid-submit"><a href="javascript:void(0);" id="submit">免费预约</a></p>
+            </div>
+            <!-- <div class="bottom cf" style="margin: 0px auto 20px auto;">
+                <p style="margin-top: 0px;">*活动期间，预约量尺成功后，</p>
+                <p style="margin-bottom: 0px;">即送天然乳胶枕一个。</p>
+            </div> -->
+        </div>
+    </div>
+    <input type="hidden" name="design_uid" value="">
+    <input type="hidden" name="design_name" value="">
+    <input type="hidden" name="design_phone" value="">
+    <input type="hidden" name="design_face" value="">
+    <input type="hidden" name="unionid" value="o_LtdsxAG-jbQPXG2-2Q0M0VExgg">
+    <input type="hidden" name="guide_name" value="欧阳熙">
+    <input type="hidden" name="design_account" value="">
+    <input type="hidden" name="brand" value="skl">
+    <!-- 兼容 guide 和 guide_id -->
+    <input type="hidden" name="guide_id" value="">	    <!-- 兼容 guide 和 guide_id -->
+    <input type="hidden" name="meijia_id" value="@ViewBag.meijia_id">
+    <input type="hidden" name="share_from" value="@ViewBag.share_from">
+    <div class="bottom cf">
+        <p>请确保填写真实，我们承诺您的信息将被严格保密</p>
+        <p>©思科莱 2019</p>
+        <!-- 下面是活动 的提示，结束后用回上方的-->
+        <!-- <p>*活动期间，预约量尺成功</p> -->
+        <!-- <p>即送天然乳胶枕一个，送完即止</p> -->
+    </div>
+    <div class="success-box" style="display: none;">
+        <img src="~/Content/images/card/预约成功.jpg" />
+    </div>
+    <div id="container" style="display: none;"></div>
+
+    <style type="text/css">
+
+        body {
+            background: #ededee;
+            padding: 0px;
+        }
+
+        a:active, a:visited, a:focus {
+            text-decoration: none;
+            border: none;
+        }
+
+        .top {
+            width: 100%;
+        }
+
+            .top img {
+                width: 100%;
+                height: auto;
+            }
+
+        .mid {
+            background: #ededee;
+        }
+
+        .mid-box {
+            width: 90%;
+            margin: 0 auto;
+            background: #fff;
+            margin-top: 20px;
+            box-shadow: 0px 0px 8px rgba(0,0,0,0.1)
+        }
+
+        .mid-subbox {
+            width: 90%;
+            margin: 0 auto;
+            margin-top: 20px;
+        }
+
+            .mid-subbox p {
+                display: block;
+                width: 100%;
+                border-bottom: 1px solid #eee;
+                padding: 0px 10px;
+                box-sizing: border-box;
+            }
+
+                .mid-subbox p input {
+                    border: none;
+                    line-height: 50px;
+                    width: 100%;
+                    margin: 0 auto;
+                    display: block;
+                }
+
+        .input-wrapper {
+            display: flex !important;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+            .input-wrapper input {
+                flex: 1;
+            }
+
+        .mid-city {
+            height: 85px;
+            line-height: 85px;
+        }
+
+        .mid-submit {
+            text-align: center;
+            border: none !important;
+            margin-bottom: 30px;
+        }
+
+            .mid-submit a {
+                background: #c8a069;
+                font-size: 18px;
+                color: #fff;
+                border-radius: 4px;
+                letter-spacing: 2px;
+                display: block;
+                width: 100%;
+                height: 42px;
+                line-height: 42px;
+                font-weight: bold;
+            }
+
+                .mid-submit a:hover {
+                    background: #c8a069;
+                }
+
+        .bottom {
+            color: #898a89;
+            font-size: 12px;
+            width: 90%;
+            line-height: 18px;
+            margin: 0 auto;
+        }
+
+            .bottom p {
+                text-align: center;
+                display: block;
+                width: 100%;
+            }
+
+                .bottom p:first-child {
+                    margin-top: 30px;
+                }
+
+                .bottom p:last-child {
+                    margin-bottom: 30px;
+                }
+
+        .success-box img {
+            width: 100%;
+            height: auto;
+        }
+        /*城市选择*/
+        .city-picker-selector {
+            display: flex;
+            margin-top: 20px;
+        }
+
+            .city-picker-selector .selector-item {
+            }
+
+            .city-picker-selector .selector-name {
+                font-size: 12px;
+            }
+
+            .city-picker-selector li {
+                font-size: 12px;
+            }
+
+            .city-picker-selector .selector-list {
+            }
+
+            .city-picker-selector ul {
+                max-height: 200px;
+            }
+    </style>
+    <script type="text/javascript">
+        var mySwiper = new Swiper('.swiper-container', {
+            // loop: true,
+            // 如果需要分页器
+            autoplay: {
+                delay: 2000,
+                stopOnLastSlide: false,
+                disableOnInteraction: false,
+            },
+            // 如果需要前进后退按钮
+            //nextButton: '.swiper-button-next',
+            // prevButton: '.swiper-button-prev',
+
+            // 如果需要滚动条
+            //scrollbar: '.swiper-scrollbar',
+        });
+        var test = "";
+        var guide = "23868";
+        var uid = "";
+        var url = "/Card/AddGuide";
+        var loading = false;
+        $('#submit').click(function () {
+            var province = $('.city-picker-selector .province .selector-name').html();
+            var city = $('.city-picker-selector .city .selector-name').html();
+            var district = $('.city-picker-selector .district .selector-name').html();
+            province = province != '请选择省份' ? province : '';
+            city = city != '请选择城市' ? city : '';
+            district = district != '请选择区县' ? district : '';
+            var addr = province + "|" + city + "|" + district;
+            addr = addr != '||' ? addr : '';
+            var name = $.trim($('.mid-subbox input[name="name"]').val());
+            var phone = $('.mid-subbox input[name="phone"]').val();
+
+            var phoneFirstChar = phone.substring(0, 1);
+            if (phoneFirstChar != "1" || phone.length != 11) {
+                layer.msg('请输入正确的手机号！'); return false;
+            }
+            if (!name) {
+                layer.msg('请输入您的姓名！');
+                return false;
+            }
+            if (!addr) {
+                layer.msg('请选择您你所在地！');
+                return false;
+            }
+            var design_uid = $('input[name="design_uid"]').val();
+            var design_name = $('input[name="design_name"]').val();
+            var design_phone = $('input[name="design_phone"]').val();
+            var design_face = $('input[name="design_face"]').val();
+            var unionid = $('input[name="unionid"]').val();
+            var guide_name = $('input[name="guide_name"]').val();
+            var design_account = $('input[name="design_account"]').val();
+            var brand = $('input[name="brand"]').val();
+            var guide_id = $('input[name="guide_id"]').val();
+            var meijia_id = $('input[name="meijia_id"]').val();
+            var share_from = $('input[name="share_from"]').val();
+            var verifycode = $('input[name="verifycode"]').val();
+
+            var data = {
+                name: name,
+                phone: phone,
+                city: addr,
+                design_uid: design_uid,
+                design_name: design_name,
+                design_phone: design_phone,
+                design_face: design_face,
+                unionid: unionid,
+                guide_name: guide_name,
+                design_account: design_account,
+                brand: brand,
+                guide_id: guide_id,
+                meijia_id: meijia_id,
+                share_from: share_from,
+                verifycode: verifycode,
+                test: test
+            }
+            var storagePhone = sessionStorage.getItem('phone');
+            if (storagePhone == phone) {
+                layer.msg('该号码已预约，请勿重复操作！');
+                return false;
+            }
+            if (loading) { return false; }
+            loading = true;
+            var index = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+
+            if (unionid == 'o_Ltds39Cfu1APd9hb73XPingGaM') {
+                //alert(data.share_from);
+                //alert(url);
+            }
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: data,
+            })
+                .done(function (res) {
+                    layer.closeAll();
+                    loading = false;
+                    if (test == '1') {
+                        alert(JSON.stringify(res));
+                    }
+                    if (res == "1") {
+                        sessionStorage.setItem('phone', phone);
+                        showSuccess();
+                        //layer.msg('已成功预约，我们将在24小时内联系您！');
+                        resetInput();
+                    } else {
+                        alert(res.msg);
+                    }
+                })
+                .fail(function (res) {
+                    if (unionid == 'o_LtdszYNYvnVbuaqqMam6yj2KbM') {
+                        alert(JSON.stringify(res));
+                    }
+                    loading = false;
+                    layer.closeAll();
+                    layer.msg('预约失败，请重试！');
+                })
+                .always(function () {
+                    console.log("complete");
+                });
+        });
+
+        var verifyCodeUrl = '?s=/WYCRM/Api/get_code';
+        $('.get-verifycode').click(function () {
+            var phone = $('input[name="phone"]').val();
+            if (phone == '') { layer.msg('请填写手机号！'); return false; };
+            var phoneFirstChar = phone.substring(0, 1);
+            if (phoneFirstChar != "1") {
+                layer.msg('请输入正确的手机号！'); return false;
+            }
+            var canget = $(this).attr('canget');
+            if (canget == '1') { return false };
+            $(this).attr('canget', 1);
+            codeCountDown($(this), 59);
+            $.ajax({
+                url: verifyCodeUrl,
+                type: 'POST',
+                dataType: 'json',
+                data: { 'brand': brand, 'phone': phone },
+            })
+                .done(function (res) {
+                    if (res.status == '0') { layer.msg(res.info ? res.info : '获取验证码失败！') }
+                })
+                .fail(function (res) {
+                    layer.msg('验证码获取失败，请重试！');
+                })
+                .always(function () {
+                    console.log("complete");
+                });
+
+
+        })
+
+        function request_verifycode() {
+
+        }
+
+        function codeCountDown(_that, count) {
+            if (count <= 0) {
+                _that.attr('canget', '0');
+                _that.html('获取验证码');
+                clearTimeout(t);
+                t = null;
+                _that.css({
+                    'color': '#666'
+                });
+            } else {
+                _that.html('重新获取(' + count + 's)');
+                _that.css({
+                    'color': '#ccc'
+                });
+                var t = setTimeout(function () {
+                    codeCountDown(_that, count - 1);
+                    clearTimeout(t);
+                    t = null;
+                }, 1000);
+            }
+        }
+
+        function resetInput() {
+            $('.mid-subbox input[name="name"]').val('');
+            $('.mid-subbox input[name="phone"]').val('');
+            $('.city-picker-selector .province .selector-name').html('请选择省份');
+            $('.city-picker-selector .city .selector-name').html('请选择城市');
+            $('.city-picker-selector .district .selector-name').html('请选择区县');
+        }
+
+        function showSuccess() {
+            $('.top,.mid,.bottom').hide();
+            $('.success-box').show();
+        }
+        //模拟城市-联动/搜索
+        $('#city-picker-search').cityPicker({
+            dataJson: cityData,
+            renderMode: true,
+            search: false,
+            linkage: true
+        });</script>
+    <!-- 这个地图的key是个人的，需要更换时请申请官方key cjt -->
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&amp;ak=XUMXZ5GOcBSxc6q3oGOQXia0KezXfX4z"></script>
+    <script type="text/javascript" src="https://api.map.baidu.com/getscript?v=2.0&amp;ak=XUMXZ5GOcBSxc6q3oGOQXia0KezXfX4z&amp;services=&amp;t=20200309163354"></script>
+    <script type="text/javascript">
+        var share_from = '';
+        var local_city = '';
+        var local_district = '';
+        //获取城市，设置选项
+        /*get_city(function(){
+            //维意小程序引用
+            if(share_from == 38){
+                return true;
+            }
+            for(var i=0;i<cityData.length;i++){
+                if(cityData[i]['name'] == local_city){
+                    var pid = cityData[i]['parentId'];
+                    var id = cityData[i]['id'];
+                    if(pid && pid !='100000'){
+                        var province = $('[data-id="'+pid+'"]').html();
+                        $('[data-id="'+pid+'"]').click();
+                        $('[data-id="'+id+'"]').click();
+                    }
+                }
+            }
+            for (var i = 0; i < cityData.length; i++) {
+                if(cityData[i]['name'] == local_district){
+                    //console.info(cityData[i])
+                    var id = cityData[i]['id'];
+                    $('[data-id="'+id+'"]').click();
+                }
+            }
+        });
+        function get_city(callback){
+            //维意小程序引用
+            if(share_from == 38){
+                return true;
+            }
+            map = new BMap.Map("container");
+            var point = new BMap.Point(116.331398,39.897445);
+            map.centerAndZoom(point,12);
+            var geolocation = new BMap.Geolocation();
+            geolocation.getCurrentPosition(function(r){
+                if(this.getStatus() == BMAP_STATUS_SUCCESS){
+                    var point = new BMap.Point(r.point.lng,r.point.lat);
+                    //根据经纬度解析地址
+                    var pt = point;
+                    var geoc = new BMap.Geocoder();
+                    geoc.getLocation(pt, function(rs){
+                        var addComp = rs.addressComponents;
+                        console.info(addComp);
+                        var timestamp = Date.parse(new Date());
+                        //store.localset('nearTimestamp',timestamp);
+                        //store.localset('nearCity',addComp.city);
+                        local_district = addComp.district;
+                        local_city = addComp.city;
+                        callback && callback();
+                    });
+                }
+                else {
+                    alert('获取城市失败，将展示默认列表！');
+                }
+            },{enableHighAccuracy: true});
+        }  */</script>
+    <!-- <script charset="utf-8" src="http://map.qq.com/api/js?v=2.exp&key=2Q3BZ-DJUKS-JAHOE-6STXW-PNBRT-VTFRH"></script> -->
+    <script>
+        // var citylocation,map,marker = null;
+        // var init = function() {
+
+        //     var center = new qq.maps.LatLng(39.916527,116.397128);
+
+        //     map = new qq.maps.Map(document.getElementById('container'),{
+        //         center: center,
+        //         zoom: 13
+        //     });
+        //    var  geocoder = new qq.maps.Geocoder({
+        //         complete : function(result){
+        //         	console.info('result');
+        //         	console.info(result);
+        //         }
+        //     });
+        //     //获取城市列表接口设置中心点
+        //     citylocation = new qq.maps.CityService({
+        //         complete : function(result){
+        //         	var city = result.detail.name;
+        //            	if(city){
+        //         		for(var i=0;i<cityData.length;i++){
+        //         			if(cityData[i]['name'] == city){
+        //         				var pid = cityData[i]['parentId'];
+        //         				var id = cityData[i]['id'];
+        //         				if(pid && pid !='100000'){
+        //         					var province = $('[data-id="'+pid+'"]').html();
+        //         					$('[data-id="'+pid+'"]').click();
+        //         					$('[data-id="'+id+'"]').click();
+        //         				}
+        //         			}
+        //         		}
+        //         	}
+        //             //map.setCenter(result.detail.latLng);
+        //         }
+        //     });
+        //     //调用searchLocalCity();方法    根据用户IP查询城市信息。
+        //     citylocation.searchLocalCity();
+        // }</script>
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+    <script>
+        var brand = '1';
+
+        //地址添加参数
+        function addStrToUrl(url, str, arg) {
+            //把&后面去掉
+            var has_other = url.indexOf('&');
+            if (has_other > -1) {
+                url = url.substring(0, has_other);
+            }
+            var has_html = url.indexOf('.html');
+            if (has_html > -1) {
+                url = url.substring(0, has_html);
+            }
+            var str_pos = url.indexOf(str);
+            var str_len = str.length;
+            var url_pre = '';
+            var url_aft = '';
+            //如果已有该参数
+            if (str_pos > -1) {
+                var with_str_pos = str_pos + str_len + 1;
+                url_pre = url.substring(0, with_str_pos);
+                url_aft = url.substring(with_str_pos, url.length);
+                var aft_split_pos = url_aft.indexOf('/');
+                //后面还有其他参数
+                if (aft_split_pos > -1) {
+                    var new_aft_url = arg + url_aft.substring(aft_split_pos, url_aft.length);
+                    url = url_pre + new_aft_url;
+                } else {
+                    url = url_pre + arg;
+                }
+            } else {
+                url += '/' + str + '/' + arg;
+            }
+            return url;
+        }
+
+        //微信分享
+        var uri = window.location.href;
+        var wx_id = brand == 0 ? 5 : 11;
+        //微信JSSDK初始化
+        $.ajax({
+            type: "POST",
+            url: "index.php?s=/Home/Jssdk/getSignPackage",
+            async: true,
+            data: { "wx_id": wx_id, "uri": uri },
+            dataType: "json",
+            success: function (data) {
+                wx.config({
+                    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                    appId: data.appId, // 必填，公众号的唯一标识
+                    timestamp: data.timestamp, // 必填，生成签名的时间戳
+                    nonceStr: data.nonceStr, // 必填，生成签名的随机串
+                    signature: data.signature,// 必填，签名
+                    jsApiList: [
+                        'onMenuShareTimeline',
+                        'onMenuShareAppMessage',
+                        'onMenuShareQQ',
+                        'onMenuShareWeibo',
+                        'onMenuShareQZone',
+                        'previewImage',
+                        'getLocation'
+                    ] // 必填，需要使用的JS接口列表
+                });
+
+                var single_url = addStrToUrl(data.url, 'share_from', '10');
+                var timeline_url = addStrToUrl(data.url, 'share_from', '9');
+
+                wx.ready(function () {
+                    // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+                    wx.getLocation({
+                        type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+                        success: function (res) {
+                            var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+                            var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+                            var speed = res.speed; // 速度，以米/每秒计
+                            var accuracy = res.accuracy; // 位置精度
+                            get_location(latitude, longitude);
+                        }
+                    });
+
+                    wx.onMenuShareAppMessage({
+                        title: '点击获取『免费』预约思科莱特权', // 分享标题
+                        desc: '『维意定制』思科莱，全屋配齐，24小时看设计方案', // 分享描述
+                        link: single_url, // 分享链接
+                        imgUrl: 'https://shrcdnout.yfway.com/share/images/measure/swiper-2019062101.jpg?v=2', // 分享图标
+                        type: '', // 分享类型,music、video或link，不填默认为link
+                        dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                        success: function () {
+                            //alert('分享成功');
+                        },
+                        cancel: function () {
+                            //alert('取消分享');
+                        }
+                    });
+
+                    wx.onMenuShareTimeline({
+                        title: '点击获取『免费』预约思科莱特权', // 分享标题
+                        link: timeline_url, // 分享链接
+                        imgUrl: 'https://shrcdnout.yfway.com/share/images/measure/swiper-2019062101.jpg?v=2', // 分享图标
+                        success: function () {
+
+                        },
+                        cancel: function () {
+                            // 用户取消分享后执行的回调函数
+                        }
+                    });
+
+                });
+            }
+        });
+        function get_location(lat, lng) {
+            $.ajax({
+                url: '?s=/SPHome/ShowHouse/get_city',
+                type: 'POST',
+                dataType: 'json',
+                data: { 'lat': lat, 'lng': lng },
+            })
+                .done(function (res) {
+                    var theCity = res.result.ad_info.city;
+                    var theDistrict = res.result.ad_info.district;
+                    // alert(theCity+theDistrict);
+                    for (var i = 0; i < cityData.length; i++) {
+                        if (cityData[i]['name'] == theCity) {
+                            var pid = cityData[i]['parentId'];
+                            var id = cityData[i]['id'];
+                            if (pid && pid != '100000') {
+                                var province = $('[data-id="' + pid + '"]').html();
+                                $('[data-id="' + pid + '"]').click();
+                                $('[data-id="' + id + '"]').click();
+                            }
+                            break;
+                        }
+                    }
+                    for (var i = 0; i < cityData.length; i++) {
+                        if (cityData[i]['name'] == theDistrict) {
+                            //console.info(cityData[i])
+                            var id = cityData[i]['id'];
+                            $('[data-id="' + id + '"]').click();
+                            break;
+                        }
+                    }
+                })
+                .fail(function () {
+                    layer.msg('获取验证码出错了！')
+                })
+                .always(function () {
+                    console.log("complete");
+                });
+        }</script>
+</body>
+</html>

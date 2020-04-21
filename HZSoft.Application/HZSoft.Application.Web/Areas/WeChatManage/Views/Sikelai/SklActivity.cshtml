@@ -1,0 +1,136 @@
+﻿@using HZSoft.Application.Entity.CustomerManage
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>思科莱“生活设计家”</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no" />
+    <link href="~/Content/styles/hsf/base.css" rel="stylesheet" />
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        table, td, th {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <div class="skl_containers">
+        <div style="padding:10px 15px 55px 15px">
+            <h1 style="text-align:center">2019年首届“思科莱”杯“生活设计家”室内设计大赛 </h1>
+            <br />
+            <br />
+            <br />
+            <h2>一、活动目的：</h2>
+            <p>4月22日是世界地球日，在此特殊的日子里，韩师傅集成家居有限公司不忘初心，旗下品牌“思科莱”在今天以“绿色环保生活、健康时尚家居”为主题的首届“思科莱”杯“生活·设计·家”室内设计大赛将隆重启动。通过本次设计大赛，使更多的人参与到节约资源、保护环境的行动中来，保护我们生活的环境，追求我们美好的生活，本着“思维先行、设计追随、智造服务”的理念，全面打造放心消费、绿色装修、舒适安心的家装理念，引导家装行业健康、快速、良性发展。</p>
+
+            <br />
+            <h2>二、活动流程：</h2>
+            <h3>1，活动主题：绿色环保生活、健康时尚家居</h3>
+            <p style="padding-left:30px">               ——2019年首届“思科莱”杯“生活·设计·家”室内设计大赛</p>
+            <br />
+            <h3>2，活动时间：</h3>
+            <p>   赛事发布：4月22日</p>
+            <p>   参赛时间：4月22日-8月15日</p>
+            <p>   评选时间：8月22日--9月1日</p>
+            <p>   颁奖时间：9月2日</p>
+            <br />
+            <h3>3，活动地点：</h3>
+            <p>报名方式：网络报名</p>
+            <p>1）关注“<b>思科莱全屋定制</b>”微信公众号，点击菜单栏“<b>设计大赛</b>”参与比赛。</p>
+            <p>3）“思科莱官微”微信公众号导入到设计大赛页面。</p>
+            <p>评选地点：临沂国际会展中心2号馆一楼东侧</p>
+            <br />
+            <h3>4，参赛对象：</h3>
+            <p>1）社会组：设计机构，家装公司，个人设计师，民间创意设计高手</p>
+            <p>2）院校组：院校学生</p>
+            @*<h3>5，赛事系统：</h3>
+        <p>“思科莱全屋定制”微信公众号设计报名系统</p>*@
+            <br />
+
+            <h2>三，活动内容</h2>
+            <h3>1、设计说明</h3>
+            <p>1）设计作品按照指定户型进行设计，设计户型见下方（附件一）。</p>
+            <p>2）设计作品以定制柜类家具为载体，通过智能化、多功能等角度进行创新设计。</p>
+            <p>3）外观上要求美观，体现安全、时尚与人性化的特点。</p>
+            <h3>2、评选标准</h3>
+            <p>本次评选为线上投票按投票数量进行评选。</p>
+            <h3>3、参赛须知</h3>
+            <p>1）所有参赛作品必须是具有作者独立知识产权的、未发表过的原创作品，曾经参加过其他设计竞赛或为第三方服务设计的产品方案不得参赛，否则，大赛组委会有权在本次设计大赛阶段取消其参赛资格，由此引起的法律纠纷及责任由作者本人承担。</p>
+            <p>2）对于所有获奖作品，获奖者接受奖金及证书即意味着获奖作品的相关知识产权属于大塞组委会，其中包括对作品进行复制、散布、展示等权利，而大赛组委会无需为此向获奖者支付其他任何额外赛用，获奖者保留对作品的署名权。</p>
+            <p>3）如因参赛者的剽窃作品、窃取商业秘密等行为所引起的法律责任由参赛者自负，并且大赛组委会有权取消其参赛资格，并回收获奖奖金。谢绝一稿多投，一经发现，组委会将取消作品参赛资格，并公布于众。</p>
+            <p>4）以上时间安排如有变动，以大赛组委会发布的消息和通知为准。</p>
+            <p>5）大赛组委会保留对比赛条款最终解释权。</p>
+            <br />
+
+            <h2>四、奖项设置：</h2>
+            <h3>A，社会组：（个人奖/团体奖）</h3>
+            <p>金奖一名（奖金5000元、奖杯、证书）</p>
+            <p>银奖两名（奖金3000元、奖杯、证书）</p>
+            <p>铜奖三名（奖金1000元、奖杯、证书）</p>
+            <p>优秀奖十名（奖杯、证书、奖品）</p>
+            <br />
+            <h3>B：院校组（个人奖/团体奖）</h3>
+            <p>金奖一名（奖金5000元、奖杯、证书）</p>
+            <p>银奖两名（奖金3000元、奖杯、证书）</p>
+            <p>铜奖三名（奖金1000元、奖杯、证书）</p>
+            <p>优秀奖十名（奖杯、证书、奖品）</p>
+            <br />
+            <h3>（注：上述奖金金额均指税前金额、参赛者应按照国家法律规定纳税）</h3>
+            <br />
+            <br />
+            <br />
+            <h2>附件一：设计户型</h2>
+            <img src="~/Content/images/hxt11.jpg" style="width:100%" />
+            <br />
+            <img src="~/Content/images/hxt22.jpg" style="width:100%" />
+            <br />
+            <img src="~/Content/images/hxt33.jpg" style="width:100%" />
+            <br />
+            <div style="height:100px"></div>
+        </div>
+        <!--导航-->
+        <div class="skl_nav">
+            <ul class="clearfix">
+                <li>
+                    <a href="~/WeChatManage/Sikelai/Index">
+                        <img src="~/Content/images/icon/首页白.png" />
+                        <p>首页</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="~/WeChatManage/Sikelai/SignUp">
+                        <img src="~/Content/images/icon/报名白.png" />
+                        <p>报名</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="~/WeChatManage/Sikelai/Search">
+                        <img src="~/Content/images/icon/搜索图标.png" />
+                        <p>搜索</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="~/WeChatManage/Sikelai/Top?groupId=1">
+                        <img src="~/Content/images/icon/排行白.png" />
+                        <p>排行</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="~/WeChatManage/Sikelai/Rule">
+                        <img src="~/Content/images/icon/规则白.png" />
+                        <p>规则</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

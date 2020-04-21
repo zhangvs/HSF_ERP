@@ -1,0 +1,73 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>思科莱“生活设计家”</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no" />
+
+    <link href="~/Content/styles/hsf/base.css" rel="stylesheet" />
+    <link href="~/Content/styles/hsf/search.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="skl_containers">
+        <div class="skl_search_logo"><img src="~/Content/images/picture/search_logo.gif" /></div>
+        <p class="skl_search">
+            <input type="text" id="keyword" placeholder="请输入搜索人编号或姓名" />
+            <img src="~/Content/images/icon/搜索框图标.png" onclick="search()" />
+        </p>
+        <p class="soutxt">分享搜索成功页面，拉票更容易</p>
+
+        <div class="skl_search_img"><img src="~/Content/images/picture/search_img.gif" /></div>
+        <!--导航-->
+        <div class="skl_nav">
+            <ul class="clearfix">
+                <li>
+                    <a href="~/WeChatManage/Sikelai/Index">
+                        <img src="~/Content/images/icon/首页白.png" />
+                        <p>首页</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="~/WeChatManage/Sikelai/SignUp">
+                        <img src="~/Content/images/icon/报名白.png" />
+                        <p>报名</p>
+                    </a>
+                </li>
+                <li style="background: #ff4f38;">
+                    <a href="~/WeChatManage/Sikelai/Search">
+                        <img src="~/Content/images/icon/搜索图标.png" />
+                        <p class="navnow">搜索</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="~/WeChatManage/Sikelai/Top?groupId=1">
+                        <img src="~/Content/images/icon/排行白.png" />
+                        <p>排行</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="~/WeChatManage/Sikelai/Rule">
+                        <img src="~/Content/images/icon/规则白.png" />
+                        <p>规则</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script type="text/javascript">
+        function search() {
+            var keyword = document.getElementById("keyword").value;
+            if (keyword == "" || keyword.length == 0) {
+                return;
+            }
+            window.location.href = "/WeChatManage/Sikelai/Details?keyword=" + keyword;
+        }
+    </script>
+</body>
+</html>
