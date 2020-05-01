@@ -547,14 +547,14 @@ namespace HZSoft.Application.Entity.CustomerManage
             //this.PaiZuanMark = this.PaiZuanMark == null ? 0 : this.PaiZuanMark;
             //this.ShiZhuangMark = this.ShiZhuangMark == null ? 0 : this.ShiZhuangMark;
             //this.BaoZhuangMark = this.BaoZhuangMark == null ? 0 : this.BaoZhuangMark;
-            //this.XiSuMark = this.XiSuMark == null ? 0 : this.XiSuMark;
-            this.MoneyOkMark = 0;//报价审核
+            this.XiSuMark = this.XiSuMark == null ? 0 : this.XiSuMark;
             this.PushMark = 0;//推单
             this.EnterMark = 0;
             this.SendMark = 0;
             this.EndDate = DateTime.Now.AddDays(30).Date;//最迟交付日期
             this.DeleteMark = 0;
             this.EnabledMark = 1;
+            this.MoneyOkMark = this.MoneyOkMark == null ? 0 : this.MoneyOkMark;//报价审核
         }
         /// <summary>
         /// 编辑调用
