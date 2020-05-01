@@ -49,6 +49,7 @@ namespace HZSoft.Application.IService.CustomerManage
         /// <returns></returns>
         void SaveForm(string keyValue, DZ_OrderEntity entity);
         void SaveSigned(string keyValue, DZ_OrderEntity entity);
+        void UpdateMoneyOkState(string keyValue,int? state);
         #endregion
     }
 }

@@ -61,7 +61,7 @@
     function GetGrid() {
         var selectedRowIndex = 0;
         var queryJson = {};
-        queryJson.DownMark = 1;
+        queryJson.PushMark = 1;//推单的才显示出来
 
         var $gridTable = $('#gridTable');
         $gridTable.jqGrid({
@@ -72,7 +72,8 @@
             datatype: "json",
             colModel: [
                 { label: '客户Id', name: 'ProduceId', index: 'ProduceId', width: 80, align: '', sortable: true, hidden: true },
-                { label: '生产单', name: 'ProduceCode', index: 'ProduceCode', width: 130, align: '', sortable: true },
+                { label: '单号', name: 'ProduceCode', index: 'ProduceCode', width: 130, align: '', sortable: true },
+                { label: '标题', name: 'OrderTitle', index: 'OrderTitle', width: 130, align: 'left', sortable: true },
                 //{ label: '销售单', name: 'OrderCode', index: 'OrderCode', width: 130, align: '', sortable: true },
                 {
                     label: '订单类型', name: 'OrderType', index: 'OrderType', width: 80, align: 'center', sortable: true,
@@ -85,13 +86,52 @@
                         }
                     }
                 },
-                { label: '客户', name: 'CustomerName', index: 'CustomerName', width:130, align: '', sortable: true },
-                { label: '经销商', name: 'CompanyName', index: 'CompanyName', width: 130, align: '', sortable: true },
-                { label: '收款时间', name: 'CreateDate', index: 'CreateDate', width: 100, align: '', sortable: true, formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' } },
-                { label: '销售人', name: 'CreateUserName', index: 'CreateUserName', width: 80, align: '', sortable: true },
-                { label: '下单时间', name: 'DownDate', index: 'DownDate', width: 100, align: '', sortable: true, formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' } },
-                { label: '下单人', name: 'DownUserName', index: 'DownUserName', width: 80, align: '', sortable: true },
+                { label: '经销商', name: 'CompanyName', index: 'CompanyName', width: 130, align: 'center', sortable: true },
+                { label: '客户', name: 'CustomerName', index: 'CustomerName', width: 130, align: 'center', sortable: true },
+                { label: '销售人', name: 'SalesmanUserName', index: 'SalesmanUserName', width: 80, align: 'center', sortable: true },
+                { label: '收款确认', name: 'CreateDate', index: 'CreateDate', width: 100, align: '', sortable: true, formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' } },
                 {
+                    label: "报价审核", name: "MoneyOkMark", index: "MoneyOkMark", width: 60, align: "center", sortable: false,
+                    formatter: function (cellvalue) {
+                        if (cellvalue >= 1) {
+                            return "<i class=\"fa fa-toggle-on\"></i>";
+                        } else if (cellvalue == -1) {
+                            return "<span style='color:red'>驳回</span>";
+                        } else {
+                            return "<i class=\"fa fa-toggle-off\"></i>";
+                        }
+                    }
+                },
+                { label: '报价审核日期', name: 'MoneyOkDate', index: 'MoneyOkDate', width: 118, align: 'left', sortable: true },
+                {
+                    label: "下单", name: "DownMark", index: "DownMark", width: 60, align: "center", sortable: false,
+                    formatter: function (cellvalue) {
+                        if (cellvalue >= 1) {
+                            return "<i class=\"fa fa-toggle-on\"></i>";
+                        } else if (cellvalue == -1) {
+                            return "<span style='color:red'>驳回</span>";
+                        } else {
+                            return "<i class=\"fa fa-toggle-off\"></i>";
+                        }
+                    }
+                },
+                { label: '下单人', name: 'DownUserName', index: 'DownUserName', width: 80, align: 'center', sortable: true },
+                { label: '下单时间', name: 'DownDate', index: 'DownDate', width: 100, align: '', sortable: true, formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' } },
+                {
+                    label: "推单", name: "PushMark", index: "PushMark", width: 60, align: "center", sortable: false,
+                    formatter: function (cellvalue) {
+                        if (cellvalue >= 1) {
+                            return "<i class=\"fa fa-toggle-on\"></i>";
+                        } else if (cellvalue == -1) {
+                            return "<span style='color:red'>驳回</span>";
+                        } else {
+                            return "<i class=\"fa fa-toggle-off\"></i>";
+                        }
+                    }
+                },
+                { label: '推单人', name: 'PushUserName', index: 'PushUserName', width: 80, align: 'center', sortable: true },
+                { label: '推单时间', name: 'PushDate', index: 'PushDate', width: 100, align: '', sortable: true, formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' } },
+                    {
                     label: '最迟交付', name: 'EndDate', index: 'EndDate', width: 80, align: '', sortable: true, formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' },
                     formatter: function (cellvalue, options, rowObject) {
                         if (cellvalue!=null) {

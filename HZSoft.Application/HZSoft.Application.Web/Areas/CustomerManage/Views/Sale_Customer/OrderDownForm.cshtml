@@ -22,6 +22,13 @@
                     if (!!data.entity.DownPath) {
                         $("#DownPath_a").attr("href", data.entity.DownPath).text(data.entity.DownPath.substring(data.entity.DownPath.lastIndexOf("/") + 1));
                     }
+                    if (!!data.entity.DownMark) {
+                        $("input:radio[name='DownMark'][value=" + data.entity.DownMark + "]").attr("checked", 'checked');
+                    }
+                    //推单之后，不允许修改下单
+                    if (data.entity.PushMark==1) {
+                        $("#fileUpload").hide();
+                    }
                 }
             })
         }
@@ -32,6 +39,7 @@
             return false;
         }
         var postData = $("#form1").GetWebControls(keyValue);
+        postData["DownMark"] = $("input[name='DownMark']:checked").val();
         $.SaveForm({
             url: "../../CustomerManage/Sale_Customer/SaveDownForm?keyValue=" + keyValue,
             param: postData,
@@ -45,8 +53,19 @@
 <div style="margin-top: 20px; margin-right: 30px;">
     <table class="form">
         <tr>
-            <td class="formTitle">下单附件</td>
+            <td class="formTitle">销售单号</td>
             <td class="formValue">
+                <input id="OrderId" type="hidden" class="form-control" disabled />
+                <input id="OrderCode" type="text" class="form-control" disabled />
+            </td>
+            <td class="formTitle">标题</td>
+            <td class="formValue">
+                <input id="OrderTitle" type="text" class="form-control" disabled />
+            </td>
+        </tr>
+        <tr>
+            <td class="formTitle">下单附件</td>
+            <td class="formValue" colspan="3">
                 <input type="hidden" id="totalPage" value="0" />
                 <input type="hidden" id="page" value="1" />
                 <input type="hidden" id="status" value="0" />
@@ -58,6 +77,10 @@
             </td>
         </tr>
     </table>
+    <div class="radio" style="position:absolute;bottom:30px;right:150px">
+        <label><input name="DownMark" type="radio" value="-1" />&nbsp;<span style='color:red'>驳回</span> </label>
+        <label><input name="DownMark" type="radio" value="1" />&nbsp;<span style='color:green'>通过</span> </label>
+    </div>
 </div>
 
 <div class="loading">

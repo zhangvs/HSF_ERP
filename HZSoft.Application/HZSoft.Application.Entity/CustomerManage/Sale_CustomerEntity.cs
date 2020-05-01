@@ -45,6 +45,12 @@ namespace HZSoft.Application.Entity.CustomerManage
         [Column("OrderCode")]
         public string OrderCode { get; set; }
         /// <summary>
+        /// 标题
+        /// </summary>
+        /// <returns></returns>
+        [Column("OrderTitle")]
+        public string OrderTitle { get; set; }
+        /// <summary>
         /// 经销商Id
         /// </summary>
         /// <returns></returns>
@@ -391,6 +397,16 @@ namespace HZSoft.Application.Entity.CustomerManage
 
 
         /// <summary>
+        /// 报价审核
+        /// </summary>
+        /// <returns></returns>
+        public int? MoneyOkMark { get; set; }
+        /// <summary>
+        /// 报价审核日期
+        /// </summary>
+        /// <returns></returns>
+        public DateTime? MoneyOkDate { get; set; }
+        /// <summary>
         /// 下单
         /// </summary>
         /// <returns></returns>
@@ -416,10 +432,26 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// <returns></returns>
         public string DownPath { get; set; }
 
-
-
-
-
+        /// <summary>
+        /// 推单
+        /// </summary>
+        /// <returns></returns>
+        public int? PushMark { get; set; }
+        /// <summary>
+        /// 推单人Id
+        /// </summary>
+        /// <returns></returns>
+        public string PushUserId { get; set; }
+        /// <summary>
+        /// 推单人
+        /// </summary>
+        /// <returns></returns>
+        public string PushUserName { get; set; }
+        /// <summary>
+        /// 推单日期
+        /// </summary>
+        /// <returns></returns>
+        public DateTime? PushDate { get; set; }
 
         /// <summary>
         /// 添加时间
@@ -516,6 +548,8 @@ namespace HZSoft.Application.Entity.CustomerManage
             //this.ShiZhuangMark = this.ShiZhuangMark == null ? 0 : this.ShiZhuangMark;
             //this.BaoZhuangMark = this.BaoZhuangMark == null ? 0 : this.BaoZhuangMark;
             //this.XiSuMark = this.XiSuMark == null ? 0 : this.XiSuMark;
+            this.MoneyOkMark = 0;//报价审核
+            this.PushMark = 0;//推单
             this.EnterMark = 0;
             this.SendMark = 0;
             this.EndDate = DateTime.Now.AddDays(30).Date;//最迟交付日期

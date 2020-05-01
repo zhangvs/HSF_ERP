@@ -431,25 +431,6 @@ namespace HZSoft.Application.Service.CustomerManage
             {
                 if (!string.IsNullOrEmpty(keyValue))
                 {
-                    if (entity.MoneyMark == 1 && entity.MoneyAccounts>0)
-                    {
-                        DZ_OrderEntity oldEntity = GetEntity(keyValue);
-                        if (entity.MoneyMark == 1 && oldEntity.MoneyMark == 0)
-                        {
-                            //发微信模板消息
-                            if (!string.IsNullOrEmpty(oldEntity.SalesmanUserName))
-                            {
-                                Hsf_CardEntity hsf_CardEntity = db.IQueryable<Hsf_CardEntity>(t => t.Name.Equals(oldEntity.SalesmanUserName)).First();
-                                if (hsf_CardEntity != null)
-                                {
-                                    TemplateApp.SendTemplateMoney(TemplateApp.AccessToken, hsf_CardEntity.OpenId, "XfKHJdlsZ66CtuQVZl5u5_K0AO2lOw0vYKsTyfSogAU",
-                                        "您好，您的订单已报价成功!", oldEntity.Code, oldEntity.CustomerName, entity.MoneyAccounts.ToString(), "请确认预付款。");
-                                }
-                            }
-                        }
-                    }
-
-
                     entity.Modify(keyValue);
                     this.BaseRepository().Update(entity);
                 }
@@ -460,13 +441,6 @@ namespace HZSoft.Application.Service.CustomerManage
                     coderuleService.UseRuleSeed(entity.CreateUserId, "", ((int)CodeRuleEnum.Customer_DZOrder).ToString(), db);//占用单据号
                     db.Commit();
                 }
-                //TrailRecordEntity trailRecordEntity = new TrailRecordEntity()
-                //{
-                //    ObjectSort = 5,
-                //    ObjectId = keyValue,
-                //    TrackContent = ""
-                //};
-
             }
             catch (Exception)
             {
@@ -501,6 +475,69 @@ namespace HZSoft.Application.Service.CustomerManage
                 throw;
             }
         }
+
+
+        /// <summary>
+        /// 报价审核
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <returns></returns>
+        public void UpdateMoneyOkState(string keyValue,int? state)
+        {
+            IRepository db = new RepositoryFactory().BaseRepository().BeginTrans();
+            try
+            {
+                if (!string.IsNullOrEmpty(keyValue))
+                {
+                    DZ_OrderEntity entity = new DZ_OrderEntity()
+                    {
+                        MoneyOkMark = state,
+                        MoneyOkDate = DateTime.Now,
+                        MoneyOkUserId = OperatorProvider.Provider.Current().UserId,
+                        MoneyOkUserName = OperatorProvider.Provider.Current().UserName
+                    };
+                    entity.Modify(keyValue);
+                    this.BaseRepository().Update(entity);
+
+                    //报价审核改变生产单报价审核状态
+                    Sale_CustomerEntity sale_CustomerEntity = db.FindEntity<Sale_CustomerEntity>(t => t.OrderId == keyValue);
+                    if (sale_CustomerEntity!=null)
+                    {
+                        sale_CustomerEntity.MoneyOkMark = state;
+                        sale_CustomerEntity.MoneyOkDate = DateTime.Now;
+                        db.Update<Sale_CustomerEntity>(sale_CustomerEntity);
+                        db.Commit();
+                    }
+
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
         #endregion
     }
 }
+
+
+//报价审核通过之后，给业务员发消息提醒
+//if (entity.MoneyOkMark == 1 && entity.MoneyAccounts > 0)
+//{
+//    DZ_OrderEntity oldEntity = GetEntity(keyValue);
+//    if (oldEntity.MoneyMark == 0)
+//    {
+//        //发微信模板消息
+//        if (!string.IsNullOrEmpty(oldEntity.SalesmanUserName))
+//        {
+//            var hsf_CardList = db.IQueryable<Hsf_CardEntity>(t => t.Name.Equals(oldEntity.SalesmanUserName));
+//            if (hsf_CardList.Count() != 0)
+//            {
+//                var hsf_CardEntity = hsf_CardList.First();
+//                //不直接给销售员报价，只有直营店店长才能知道报价
+//                TemplateApp.SendTemplateMoney(TemplateApp.AccessToken, hsf_CardEntity.OpenId, "XfKHJdlsZ66CtuQVZl5u5_K0AO2lOw0vYKsTyfSogAU",
+//                    "您好，您的订单已报价成功!", oldEntity.Code, oldEntity.CustomerName, entity.MoneyAccounts.ToString(), "请确认预付款。");
+//            }
+//        }
+//    }
+//}

@@ -102,18 +102,20 @@
                             $("#CreatePath_a").attr("href", data.CreatePath).text(data.CreatePath.substring(data.CreatePath.lastIndexOf("/") + 1));
                         }
                         //审图之后，不允许修改接单信息
-                        if (data.CheckTuMark == 1) {
-                            $("#Code").attr('disabled', 'disabled');
-                            $("#OrderType").attr('disabled', 'disabled');
-                            $("#CustomerId").attr('disabled', 'disabled');
-                            $("#CompanyId").attr('disabled', 'disabled');
-                            $("#CustomerTelphone").attr('disabled', 'disabled');
-                            $("#DesignerUserName").attr('disabled', 'disabled');
-                            $("#DesignerTelphone").attr('disabled', 'disabled');
-                            $("#Address").attr('disabled', 'disabled');
-                            $("#ShippingType").attr('disabled', 'disabled');
-                            $("#Carrier").attr('disabled', 'disabled');
-                            $("#SalesmanUserId").attr('disabled', 'disabled');
+                        if (data.CheckTuMark >= 1) {
+                            //$("#Code").attr('disabled', 'disabled');
+                            //$("#OrderType").attr('disabled', 'disabled');
+                            //$("#OrderTitle").attr('disabled', 'disabled');
+                            //$("#Accounts").attr('disabled', 'disabled');
+                            //$("#CustomerId").attr('disabled', 'disabled');
+                            //$("#CompanyId").attr('disabled', 'disabled');
+                            //$("#CustomerTelphone").attr('disabled', 'disabled');
+                            //$("#DesignerUserName").attr('disabled', 'disabled');
+                            //$("#DesignerTelphone").attr('disabled', 'disabled');
+                            //$("#Address").attr('disabled', 'disabled');
+                            //$("#ShippingType").attr('disabled', 'disabled');
+                            //$("#Carrier").attr('disabled', 'disabled');
+                            //$("#SalesmanUserId").attr('disabled', 'disabled');
                             $("#fileUpload").hide();
                         }
                     }
@@ -189,7 +191,7 @@
         <tr>
             <td class="formTitle">订单类型<font face="宋体">*</font></td>
             <td class="formValue">
-                @*<div id="OrderType" type="select" class="ui-select">
+            @*<div id="OrderType" type="select" class="ui-select">
                 <ul>
                     <li data-value="1">普通单</li>
                     <li data-value="2">补单</li>

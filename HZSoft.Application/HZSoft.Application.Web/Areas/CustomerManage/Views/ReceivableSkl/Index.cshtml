@@ -36,7 +36,7 @@
                 { label: '主键', name: 'Id', hidden: true },
                 { label: "接单日期", name: "CreateDate", width: 100, align: "left", formatter: "date", formatoptions: { newformat: 'Y-m-d' } },
                 { label: "单据编号", name: "Code", width: 130, align: "left" },
-                { label: "客户名称", name: "CustomerName", width: 250, align: "left" },
+                { label: "客户名称", name: "CustomerName", width: 150, align: "left" },
                 { label: "销售人员", name: "SalesmanUserName", width: 80, align: "left" },
                 { label: "应收金额", name: "Accounts", width: 80, align: "left", formatter: 'number', formatoptions: { thousandsSeparator: "", decimalPlaces: 2 } },
                 {
@@ -80,18 +80,45 @@
                     datatype: "json",
                     height: "100%",
                     colModel: [
+                        { label: '主键', name: 'ReceivableId', hidden: true },
                         { label: '收款日期', name: "PaymentTime", width: 100, align: "left", formatter: "date", formatoptions: { newformat: 'Y-m-d' } },
                         { label: '收款金额', name: 'PaymentPrice', width: 100, align: 'left', formatter: 'number', formatoptions: { thousandsSeparator: "", decimalPlaces: 2 } },
                         { label: "创建人员", name: "CreateUserName", width: 100, align: "left" },
                         { label: "创建时间", name: "CreateDate", width: 130, align: 'left', sortable: true, formatter: "date", formatoptions: { srcformat: 'Y-m-d H:i', newformat: 'Y-m-d H:i' } },
-                        { label: '备注信息', name: 'Description', width: 200, align: 'left' }
+                        {
+                            label: "收款确认", name: "EnabledMark", index: "EnabledMark", width: 150, align: "center",
+                            formatter: function (cellvalue, options, rowObject) {
+                                if (cellvalue >= 1) {
+                                    return "<i class=\"fa fa-toggle-on\"></i>";
+                                } else if (cellvalue == -1) {
+                                    return "<span style='color:red'>驳回</span>";
+                                } else {
+                                    return "<i class=\"fa fa-toggle-off\"></i>";
+                                }
+                            }
+                        },
+                        { label: '备注信息', name: 'Description', width: 200, align: 'left' },
                     ],
                     caption: "收款记录",
                     rowNum: "1000",
                     rownumbers: true,
                     shrinkToFit: false,
                     gridview: true,
-                    hidegrid: false
+                    hidegrid: false,
+                    ondblClickRow: function (row) {
+                        //var rowData = $("#" + subgrid_table_id).jqGrid('getRowData', row);
+                        var keyValue = $("#" + subgrid_table_id).jqGridRowValue('ReceivableId');
+                        if (checkedRow(keyValue)) {
+                            dialogOpen({
+                                id: "Detail",
+                                title: '收款详情',
+                                url: '/CustomerManage/ReceivableSkl/ReceiptSklForm?keyValue=' + keyValue,
+                                width: "700px",
+                                height: "700px",
+                                btn: null
+                            });
+                        }
+                    }
                 });
             }
         });
@@ -137,6 +164,7 @@
             }).trigger('reloadGrid');
         });
     }
+
     //收款
     function btn_receipt() {
         var orderId = $("#gridTable").jqGridRowValue('Id');
@@ -147,8 +175,8 @@
                 id: 'ReceiptForm',
                 title: '收款录入【单号】- ' + orderCode,
                 url: '/CustomerManage/ReceivableSkl/ReceiptForm?orderId=' + orderId,
-                width: "500px",
-                height: "415px",
+                width: "700px",
+                height: "750px",
                 callBack: function (iframeId) {
                     top.frames[iframeId].AcceptClick();
                 }

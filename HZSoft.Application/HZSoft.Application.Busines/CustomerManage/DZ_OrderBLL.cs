@@ -99,6 +99,23 @@ namespace HZSoft.Application.Busines.CustomerManage
                 throw;
             }
         }
+        /// <summary>
+        /// 报价审核
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <param name="entity">实体对象</param>
+        /// <returns></returns>
+        public void UpdateMoneyOkState(string keyValue, int? state)
+        {
+            try
+            {
+                service.UpdateMoneyOkState(keyValue, state);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
         #endregion
     }
 }

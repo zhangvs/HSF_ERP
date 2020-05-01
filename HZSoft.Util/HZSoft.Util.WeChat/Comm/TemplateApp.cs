@@ -21,24 +21,6 @@ namespace HZSoft.Util.WeChat.Comm
             Console.ReadKey();
         }
         /// <summary>
-        /// 网页跳转
-        /// </summary>
-        /// <param name="openId"></param>
-        /// <param name="template_id"></param>
-        /// <returns></returns>
-        public static SendTemplateMessageResult SendTemplateURL(string accessToken, string openId, string template_id,string first,string keyword1,string remark)
-        {
-            var data = new
-            {
-                first = new TemplateDataItem(first),
-                keyword1 = new TemplateDataItem(keyword1),
-                keyword2 = new TemplateDataItem(DateTime.Now.ToString("yyyy年MM月dd日 HH:mm")),
-                remark = new TemplateDataItem(remark),
-            };
-            //string url = "https://baidu.com";
-            return Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(accessToken, openId, template_id, null, data, null);
-        }
-        /// <summary>
         /// 报价成功
         /// </summary>
         /// <param name="openId"></param>
@@ -48,19 +30,55 @@ namespace HZSoft.Util.WeChat.Comm
         /// <param name="keyword4">时间</param>
         /// <param name="template_id"></param>
         /// <returns></returns>
-        public static SendTemplateMessageResult SendTemplateMoney(string accessToken, string openId, string template_id, string first, string keyword1, string keyword2, string keyword3, string remark)
+        public static string SendTemplateMoney(string accessToken, string openId, string template_id, string first, string keyword1, string keyword2, string keyword3, string remark)
         {
-            var data = new
+            try
             {
-                first = new TemplateDataItem(first),
-                keyword1 = new TemplateDataItem(keyword1),
-                keyword2 = new TemplateDataItem(keyword2),
-                keyword3 = new TemplateDataItem(keyword3),
-                keyword4 = new TemplateDataItem(DateTime.Now.ToString("yyyy年MM月dd日 HH:mm")),
-                remark = new TemplateDataItem(remark),
-            };
-            //string url = "https://baidu.com";
-            return Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(accessToken, openId, template_id, null, data, null);
+                var data = new
+                {
+                    first = new TemplateDataItem(first),
+                    keyword1 = new TemplateDataItem(keyword1),
+                    keyword2 = new TemplateDataItem(keyword2),
+                    keyword3 = new TemplateDataItem(keyword3),
+                    keyword4 = new TemplateDataItem(DateTime.Now.ToString("yyyy年MM月dd日 HH:mm")),
+                    remark = new TemplateDataItem(remark),
+                };
+                //string url = "https://baidu.com";
+                SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(accessToken, openId, template_id, null, data, null);
+                return sendTemplateMessageResult.errmsg;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;//微信Post请求发生错误！错误代码：43004，说明：require subscribe hint: [ziWtva03011295]
+            }
+
+        }
+        /// <summary>
+        /// 完全入库
+        /// </summary>
+        /// <param name="openId"></param>
+        /// <param name="template_id"></param>
+        /// <returns></returns>
+        public static string SendTemplateURL(string accessToken, string openId, string template_id, string first, string keyword1, string remark)
+        {
+            try
+            {
+                var data = new
+                {
+                    first = new TemplateDataItem(first),
+                    keyword1 = new TemplateDataItem(keyword1),
+                    keyword2 = new TemplateDataItem(DateTime.Now.ToString("yyyy年MM月dd日 HH:mm")),
+                    remark = new TemplateDataItem(remark),
+                };
+                //string url = "https://baidu.com";
+                SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(accessToken, openId, template_id, null, data, null);
+                return sendTemplateMessageResult.errmsg;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+
         }
         /// <summary>
         /// 小程序跳转

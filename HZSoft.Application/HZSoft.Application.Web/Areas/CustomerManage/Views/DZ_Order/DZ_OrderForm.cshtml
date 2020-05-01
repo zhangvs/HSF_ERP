@@ -79,6 +79,9 @@
                     if (!!data.CheckMark) {
                         $("input:radio[name='CheckMark'][value=" + data.CheckMark + "]").attr("checked", 'checked');
                     }
+                    if (!!data.MoneyMark) {
+                        $("input:radio[name='MoneyMark'][value=" + data.MoneyMark + "]").attr("checked", 'checked');
+                    }
                 }
             })
         }
@@ -223,9 +226,9 @@
                     <td class="formTitle"></td>
                     <td class="formValue">
                         <div class="radio">
-                            <label><input name="CheckTuMark" type="radio" value="-1" disabled />&nbsp;<span style='color:red'>驳回</span> </label>
-                            <label><input name="CheckTuMark" type="radio" value="1" disabled />&nbsp;<span style='color:green'>通过</span> </label>
-                            <label><input name="CheckTuMark" type="radio" value="2" disabled />&nbsp; </label>
+                            <label><input name="CheckTuMark" type="radio" value="-1" />&nbsp;<span style='color:red'>驳回</span> </label>
+                            <label><input name="CheckTuMark" type="radio" value="1" />&nbsp;<span style='color:green'>通过</span> </label>
+                            <label><input name="CheckTuMark" type="radio" value="2" />&nbsp;<span style='color:green'>无需审图</span> </label>
                         </div>
                     </td>
                     <th class="formTitle">审图人</th>
@@ -289,7 +292,10 @@
                 <tr>
                     <td class="formTitle"></td>
                     <td class="formValue">
-                        <label><input id="MoneyMark" type="checkbox" disabled />&nbsp;报价 </label>
+                        <div class="radio">
+                            <label><input name="MoneyMark" type="radio" value="-1" disabled />&nbsp;<span style='color:red'>驳回</span> </label>
+                            <label><input name="MoneyMark" type="radio" value="1" disabled />&nbsp;<span style='color:green'>通过</span> </label>
+                        </div>
                     </td>
                     <td class="formTitle">报价金额<font face="宋体">*</font></td>
                     <td class="formValue">

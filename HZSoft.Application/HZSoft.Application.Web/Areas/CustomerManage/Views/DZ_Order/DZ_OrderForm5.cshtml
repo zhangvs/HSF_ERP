@@ -79,8 +79,14 @@
                     if (!!data.CheckMark) {
                         $("input:radio[name='CheckMark'][value=" + data.CheckMark + "]").attr("checked", 'checked');
                     }
-                    if (!!data.DownMark) {
+                    if (!!data.MoneyMark) {
+                        $("input:radio[name='MoneyMark'][value=" + data.MoneyMark + "]").attr("checked", 'checked');
+                    }
+
+                    if (data.MoneyOkMark == 1) {
+                        $("input:radio[name='MoneyMark']").attr('disabled', 'disabled');
                         $("#MoneyAccounts").attr("disabled", 'disabled');
+                        $("#fileUpload").hide();
                     }
                 }
             })
@@ -95,10 +101,11 @@
             return false;
         }
         var postData = $("#form1").GetWebControls(keyValue);
-        var acc = $("#MoneyAccounts").val()
-        if (acc>0) {
-            postData["MoneyMark"] = 1;
-        }
+        //var acc = $("#MoneyAccounts").val()
+        //if (acc>0) {
+        //    postData["MoneyMark"] = 1;
+        //}
+        postData["MoneyMark"] = $("input[name='MoneyMark']:checked").val();
         postData["MoneyDate"] = "@HZSoft.Util.Time.GetDateTime()";
         postData["MoneyUserId"] = "@HZSoft.Application.Code.OperatorProvider.Provider.Current().UserId";
         postData["MoneyUserName"] = "@HZSoft.Application.Code.OperatorProvider.Provider.Current().UserName";
@@ -252,9 +259,9 @@
                     <td class="formTitle"></td>
                     <td class="formValue">
                         <div class="radio">
-                            <label><input name="CheckTuMark" type="radio" value="-1" disabled />&nbsp;<span style='color:red'>驳回</span> </label>
-                            <label><input name="CheckTuMark" type="radio" value="1" disabled />&nbsp;<span style='color:green'>通过</span> </label>
-                            <label><input name="CheckTuMark" type="radio" value="2" disabled />&nbsp; </label>
+                            <label><input name="CheckTuMark" type="radio" value="-1" />&nbsp;<span style='color:red'>驳回</span> </label>
+                            <label><input name="CheckTuMark" type="radio" value="1" />&nbsp;<span style='color:green'>通过</span> </label>
+                            <label><input name="CheckTuMark" type="radio" value="2" />&nbsp;<span style='color:green'>无需审图</span> </label>
                         </div>
                     </td>
                     <th class="formTitle">审图人</th>
@@ -316,10 +323,13 @@
         <div id="baojia" class="tab-pane ">
             <table class="form">
                 <tr>
-                    @*<td class="formTitle"></td>
+                    <td class="formTitle"></td>
                     <td class="formValue">
-                        <label><input id="MoneyMark" type="checkbox" />&nbsp;报价 </label>
-                    </td>*@
+                        <div class="radio">
+                            <label><input name="MoneyMark" type="radio" value="-1" />&nbsp;<span style='color:red'>驳回</span> </label>
+                            <label><input name="MoneyMark" type="radio" value="1" />&nbsp;<span style='color:green'>通过</span> </label>
+                        </div>
+                    </td>
                     <td class="formTitle">报价金额<font face="宋体">*</font></td>
                     <td class="formValue">
                         <input id="MoneyAccounts" type="text" class="form-control" isvalid="yes" checkexpession="Double" />

@@ -39,6 +39,12 @@ namespace HZSoft.Application.Entity.CustomerManage
         [Column("OrderCode")]
         public string OrderCode { get; set; }
         /// <summary>
+        /// 标题
+        /// </summary>
+        /// <returns></returns>
+        [Column("OrderTitle")]
+        public string OrderTitle { get; set; }
+        /// <summary>
         /// 生产id
         /// </summary>
         /// <returns></returns>

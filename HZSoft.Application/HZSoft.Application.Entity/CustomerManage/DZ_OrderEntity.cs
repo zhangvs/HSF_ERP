@@ -204,20 +204,41 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// <returns></returns>
         public string MoneyUserName { get; set; }
         /// <summary>
-        /// 报价附件
-        /// </summary>
-        /// <returns></returns>
-        public string MoneyPath { get; set; }
-        /// <summary>
         /// 报价日期
         /// </summary>
         /// <returns></returns>
         public DateTime? MoneyDate { get; set; }
         /// <summary>
+        /// 报价附件
+        /// </summary>
+        /// <returns></returns>
+        public string MoneyPath { get; set; }
+        /// <summary>
         /// 拆单金额
         /// </summary>
         /// <returns></returns>
         public decimal? MoneyAccounts { get; set; }
+
+        /// <summary>
+        /// 报价审核
+        /// </summary>
+        /// <returns></returns>
+        public int? MoneyOkMark { get; set; }
+        /// <summary>
+        /// 报价审核人Id
+        /// </summary>
+        /// <returns></returns>
+        public string MoneyOkUserId { get; set; }
+        /// <summary>
+        /// 报价审核人
+        /// </summary>
+        /// <returns></returns>
+        public string MoneyOkUserName { get; set; }
+        /// <summary>
+        /// 报价审核日期
+        /// </summary>
+        /// <returns></returns>
+        public DateTime? MoneyOkDate { get; set; }
 
         /// <summary>
         /// 应收金额
@@ -266,6 +287,20 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// </summary>
         /// <returns></returns>
         public DateTime? DownDate { get; set; }
+
+
+        /// <summary>
+        /// 推单
+        /// </summary>
+        /// <returns></returns>
+        public int? PushMark { get; set; }
+
+        /// <summary>
+        /// 推单日期
+        /// </summary>
+        /// <returns></returns>
+        public DateTime? PushDate { get; set; }
+
 
         /// <summary>
         /// 工序状态
@@ -403,10 +438,12 @@ namespace HZSoft.Application.Entity.CustomerManage
             this.MoneyAccounts = 0;//报价金额
             this.ReceivedAmount = 0;//收款金额
             this.DownMark = 0;//下单
+            this.PushMark = 0;//推单
             this.EnterMark = 0;
             this.SendMark = 0;
             this.DeleteMark = 0;
             this.EnabledMark = 1;
+            this.MoneyOkMark = 0;
         }
         /// <summary>
         /// 编辑调用

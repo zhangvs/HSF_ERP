@@ -83,6 +83,7 @@
             return false;
         }
         var postData = $("#form1").GetWebControls(keyValue);
+        //var postData = {};
         postData["CheckTuMark"] = $("input[name='CheckTuMark']:checked").val();
         postData["CheckTuUserId"] = "@HZSoft.Application.Code.OperatorProvider.Provider.Current().UserId";
         postData["CheckTuUserName"] = "@HZSoft.Application.Code.OperatorProvider.Provider.Current().UserName";

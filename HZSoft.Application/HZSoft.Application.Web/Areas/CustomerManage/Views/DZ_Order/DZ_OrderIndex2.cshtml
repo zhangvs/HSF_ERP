@@ -30,22 +30,11 @@
             colModel: [
                 { label: '主键', name: 'Id', hidden: true },
                 { label: '单号', name: 'Code', index: 'Code', width: 130, align: 'left', sortable: true },
-                { label: '经销商', name: 'CompanyName', index: 'CompanyName', width: 100, align: 'left', sortable: true },
-                { label: '客户', name: 'CustomerName', index: 'CustomerName', width: 150, align: 'left', sortable: true },
-                //{
-                //    label: '原图附件', name: 'CreatePath', index: 'CreatePath', width: 100, align: 'left', sortable: true,
-                //    formatter: function (cellvalue) {
-                //        if (cellvalue != null) {
-                //            return "<a style='text-decoration:underline' href='" + cellvalue.replace('~', '') + "'>原图附件下载</a>";
-                //        }
-                //        else {
-                //            return "";
-                //        }
-                //    }
-                //},
-                //{ label: '备注', name: 'Description', index: 'Description', width: 100, align: 'left', sortable: true },
-                { label: '接单人', name: 'CreateUserName', index: 'CreateUserName', width: 60, align: 'left', sortable: true },
-                { label: '创建日期', name: 'CreateDate', index: 'CreateDate', width: 118, align: 'left', sortable: true },
+                { label: '标题', name: 'OrderTitle', index: 'OrderTitle', width: 130, align: 'left', sortable: true },
+                { label: '经销商', name: 'CompanyName', index: 'CompanyName', width: 100, align: 'center', sortable: true },
+                { label: '客户', name: 'CustomerName', index: 'CustomerName', width: 130, align: 'center', sortable: true },
+                { label: '销售人', name: 'SalesmanUserName', index: 'SalesmanUserName', width: 65, align: 'center', sortable: true },
+                { label: '接单日期', name: 'CreateDate', index: 'CreateDate', width: 118, align: 'left', sortable: true },
                 { label: '审图人', name: 'CheckTuUserName', index: 'CheckTuUserName', width: 60, align: 'center', sortable: true },
                 {
                     label: "审图", name: "CheckTuMark", index: "CheckTuMark", width: 60, align: "center", sortable: false,

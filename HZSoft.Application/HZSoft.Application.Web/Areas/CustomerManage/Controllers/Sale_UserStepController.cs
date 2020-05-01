@@ -36,6 +36,24 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 添加工人
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult AddStepForm()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 修改工序
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult UpdateStepForm()
+        {
+            return View();
+        }
         #endregion
 
         #region 获取数据

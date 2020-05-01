@@ -124,6 +124,24 @@ namespace HZSoft.Application.Busines.CustomerManage
                 throw;
             }
         }
+        /// <summary>
+        /// 推单,撤单
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <param name="state">状态1推单-1撤单</param>
+        /// <param name="orderId">销售单id</param>
+        /// <returns></returns>
+        public void UpdatePushState(string keyValue, int? state, string orderId)
+        {
+            try
+            {
+                service.UpdatePushState(keyValue, state, orderId);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
         #endregion
     }
 }

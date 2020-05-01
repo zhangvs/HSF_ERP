@@ -7,6 +7,16 @@
     <script src="~/Content/scripts/jquery/jquery-1.10.2.min.js"></script>
     <link href="~/Content/styles/hzsoft-login.css" rel="stylesheet" />
     <link href="~/Content/styles/font-awesome.min.css" rel="stylesheet" />
+
+
+    <link rel="stylesheet" type="text/css" href="~/Content/canvas/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="~/Content/canvas/css/demo.css" />
+    <link rel="stylesheet" type="text/css" href="~/Content/canvas/css/component.css" />
+    <!-- <link href='http://fonts.googleapis.com/css?family=Raleway:200,400,800|Clicker+Script' rel='stylesheet' type='text/css'> -->
+    <!--[if IE]>
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
     <script src="~/Content/scripts/plugins/jquery.md5.js"></script>
     <script src="~/Content/scripts/plugins/cookie/jquery.cookie.js"></script>
     <script src="~/Content/scripts/plugins/dialog/dialog.js"></script>
@@ -124,14 +134,13 @@
 
             var username = $.trim($("#username").val());
             var password = $.trim($("#password").val());
-            //var verifycode = $.trim($("#verifycode").val());
+            var verifycode = $.trim($("#verifycode").val());
             if (top.$.cookie('learn_password') == "" || top.$.cookie('learn_password') == null) {
                 password = $.md5(password);
             }
             $.ajax({
                 url: contentPath + "/Login/CheckLogin",
-                //data: { username: $.trim(username), password: $.trim(password), verifycode: verifycode, autologin: autologin },
-                data: { username: $.trim(username), password: $.trim(password), autologin: autologin },
+                data: { username: $.trim(username), password: $.trim(password), verifycode: verifycode, autologin: autologin },
                 type: "post",
                 dataType: "json",
                 success: function (data) {
@@ -284,96 +293,111 @@
             在线体验，基于阿里巴巴云主机，采用独立运行环境，提供持续稳定安全服务，24小时均可以访问<br>
             用户名 System 或 guest 或 oldlee，密码 0000，请勿在系统内发表不文明信息
         </div>*@
-    <div class="wrap">
-        <div style="text-align: center;">
-            @*<img src="~/Content/images/on-line.png" style="border-radius: 96px; margin-bottom: -48px;" />*@
-            <img src="~/Content/images/icon/logo0.jpg" style="border-radius: 96px; margin-bottom: -48px;"  />
-        </div>
-        <div id="loginform" class="container">
-            <fieldset class="box">
-                <legend>思科莱，为美好生活而来</legend>
-                <dl class="form">
-                    <dd>
-                        <input id="username" type="text" class="px" placeholder="账户">
-                    </dd>
-                    <dd>
-                        <input id="password" type="password" class="px" placeholder="密码">
-                    </dd>
-                    @*<dd style="overflow: hidden;">
-                        <div style="float: left; width: 65%">
-                            <input id="verifycode" maxlength="4" type="text" class="px" placeholder="图片验证码">
-                        </div>
-                        <div style="float: left; width: 35%">
-                            <img id="login_verifycode" class="img_verifycode" src="~/Login/VerifyCode" width="100" height="30" alt="点击切换验证码"
-                                 title="点击切换验证码" style="cursor: pointer; padding-top: 2px; padding-left: 5px;" />
-                        </div>
-                    </dd>*@
-                    <dd style="display:none">
-                        <select id="UItheme" class="ps" style="padding-left:2px;">
-                            <option selected="selected" value="1">主题风格-经典版</option>
-                            @*<option value="2">主题风格-风尚版</option>*@
-                            @*<option value="3">主题风格-炫动版</option>*@
-                        </select>
-                    </dd>
-                    <dd>
-                        <span class="y"><a href="#" onclick="alert('请联系管理员')">忘记密码了？</a></span>
-                        @*<label style="cursor: pointer;">
-                            <input id="autologin" type="checkbox" class="pc" style="margin-bottom: 4.5px; margin-right: 0px; vertical-align: middle;">
-                            <span>下次自动登录</span>
-                        </label>*@
-                    </dd>
-                    <dd class="btn">
-                        <button id="btnlogin" type="button" class="pn"><span>登录</span></button>
 
-                    </dd>
-                    <dd class="ft" style="display:none">
-                        <span>还没有系统帐号？</span><a id="a_register" style="cursor: pointer;">立即注册</a>
-                    </dd>
-                </dl>
-            </fieldset>
+    <div class="container demo-2" style="padding:0px;">
+        <div class="content">
+            <div id="large-header" class="large-header" style="background-image: url(/Content/canvas/img/demo-4-bg.jpg);">
+                <canvas id="demo-canvas"></canvas>
+
+
+                @*<h1 class="main-title" style="font-size: 13em;"></h1>*@
+                <div style="position: absolute;margin: 0;padding: 0;text-align: center;top: calc(50% - 192px);left: calc(50% - 167px);">
+                    @*-webkit-transform: translate3d(-50%,-50%,0);transform: translate3d(-50%,-50%,0);*@
+                    <div style="text-align: center;">
+                        <img src="~/Content/images/icon/logo0.jpg" style="border-radius: 96px; margin-bottom: -48px;" />
+                    </div>
+                    <div id="loginform" class="container" style="background-color: rgba(0,0,0,.2);width:350px">
+                        <fieldset class="box">
+                            <legend style="color:#fff">思科莱，为美好生活而来</legend>
+                            <dl class="form">
+                                <dd>
+                                    <input id="username" type="text" class="px" placeholder="账户">
+                                </dd>
+                                <dd>
+                                    <input id="password" type="password" class="px" placeholder="密码">
+                                </dd>
+                                @*<dd style="overflow: hidden;">
+                                    <div style="float: left; width: 55%">
+                                        <input id="verifycode" maxlength="4" type="text" class="px" placeholder="图片验证码">
+                                    </div>
+                                    <div style="float: left; width: 35%">
+                                        <img id="login_verifycode" class="img_verifycode" src="~/Login/VerifyCode" width="100" height="30" alt="点击切换验证码"
+                                             title="点击切换验证码" style="cursor: pointer; padding-top: 2px; padding-left: 5px;" />
+                                    </div>
+                                </dd>*@
+                                <dd style="display:none">
+                                    <select id="UItheme" class="ps" style="padding-left:2px;">
+                                        <option value="1">主题风格-经典版</option>
+                                        @*<option value="2">主题风格-风尚版</option>*@
+                                        @*<option value="3">主题风格-炫动版</option>*@
+                                    </select>
+                                </dd>
+                                @*<dd>
+                                        <span class="y"><a href="#" onclick="alert('请联系管理员')">忘记密码了？</a></span>
+                                        <label style="cursor: pointer;">
+                                            <input id="autologin" type="checkbox" class="pc" style="margin-bottom: 4.5px; margin-right: 0px; vertical-align: middle;">
+                                            <span>下次自动登录</span>#896928
+                                        </label>
+                                    </dd>*@
+                                <dd class="btn">
+                                    <button id="btnlogin" type="button" class="pn"><span>登  录</span></button>
+                                    @*#896928;黄，#1061EE 蓝*@
+                                </dd>
+                                @*<dd class="ft">
+                                        <span>还没有系统帐号？</span><a id="a_register" style="cursor: pointer;">立即注册</a>
+                                    </dd>*@
+                            </dl>
+                        </fieldset>
+                    </div>
+                    <div id="registerform" class="container" style="display: none;">
+                        <fieldset class="box">
+                            <legend>注册信息</legend>
+                            <dl class="form">
+                                <dd>
+                                    <input id="txt_register_account" maxlength="11" type="text" class="px" placeholder="手机号">
+                                </dd>
+                                <dd style="overflow: hidden;">
+                                    <div style="float: left; width: 223px;">
+                                        <input id="txt_register_code" maxlength="6" type="text" class="px" placeholder="短信验证码">
+                                    </div>
+                                    <div style="float: left;">
+                                        <button id="register_getcode" type="button" class="pn_getcode">获取验证码</button>
+                                    </div>
+                                </dd>
+                                <dd>
+                                    <input id="txt_register_name" type="text" class="px" placeholder="姓名">
+                                </dd>
+                                <dd style="margin-bottom: 5px;">
+                                    <input id="txt_register_password" type="password" class="px" placeholder="密码">
+                                    <p class="info">密码长度为8~30个字符，需包含字母和数字</p>
+                                    <span class="passlevel"><em></em><em></em><em></em></span>
+                                </dd>
+                                <dd style="overflow: hidden;">
+                                    <div style="float: left; width: 55%">
+                                        <input id="txt_register_verifycode" maxlength="4" type="text" class="px" placeholder="图片验证码">
+                                    </div>
+                                    <div style="float: left; width: 35%;">
+                                        <img id="register_verifycode" width="100" height="30" alt="点击切换验证码" title="点击切换验证码" style="cursor: pointer; padding-top: 2px; padding-left: 5px;" />
+                                    </div>
+                                </dd>
+                                <dd class="tos"><span>点击注册表示您已阅读并同意</span><a href="" target="_blank">《服务条款》</a></dd>
+                                <dd class="btn">
+                                    <button id="btnregister" type="button" class="pn"><span>注册</span></button>
+                                </dd>
+                                <dd class="ft">
+                                    <span>已有系统帐号？</span><a id="a_login" style="cursor: pointer;">直接登录</a>
+                                </dd>
+                            </dl>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div id="registerform" class="container" style="display: none;">
-            <fieldset class="box">
-                <legend>注册信息</legend>
-                <dl class="form">
-                    <dd>
-                        <input id="txt_register_account" maxlength="11" type="text" class="px" placeholder="手机号">
-                    </dd>
-                    <dd style="overflow: hidden;">
-                        <div style="float: left; width: 223px;">
-                            <input id="txt_register_code" maxlength="6" type="text" class="px" placeholder="短信验证码">
-                        </div>
-                        <div style="float: left;">
-                            <button id="register_getcode" type="button" class="pn_getcode">获取验证码</button>
-                        </div>
-                    </dd>
-                    <dd>
-                        <input id="txt_register_name" type="text" class="px" placeholder="姓名">
-                    </dd>
-                    <dd style="margin-bottom: 5px;">
-                        <input id="txt_register_password" type="password" class="px" placeholder="密码">
-                        <p class="info">密码长度为8~30个字符，需包含字母和数字</p>
-                        <span class="passlevel"><em></em><em></em><em></em></span>
-                    </dd>
-                    <dd style="overflow: hidden;">
-                        <div style="float: left; width: 65%">
-                            <input id="txt_register_verifycode" maxlength="4" type="text" class="px" placeholder="图片验证码">
-                        </div>
-                        <div style="float: left; width: 35%;">
-                            <img id="register_verifycode" width="100" height="30" alt="点击切换验证码" title="点击切换验证码" style="cursor: pointer; padding-top: 2px; padding-left: 5px;" />
-                        </div>
-                    </dd>
-                    <dd class="tos"><span>点击注册表示您已阅读并同意</span><a href="" target="_blank">《服务条款》</a></dd>
-                    <dd class="btn">
-                        <button id="btnregister" type="button" class="pn"><span>注册</span></button>
-                    </dd>
-                    <dd class="ft">
-                        <span>已有系统帐号？</span><a id="a_login" style="cursor: pointer;">直接登录</a>
-                    </dd>
-                </dl>
-            </fieldset>
-        </div>
-    </div>
+    </div><!-- /container -->
+    <script src="~/Content/canvas/js/rAF.js"></script>
+    <script src="~/Content/canvas/js/demo-2.js"></script>
+
+
     <script>
         $(".floatL .btnOpen,.floatL .btnCtn").click(function () {
             if ($(this).hasClass('btnOpen')) {

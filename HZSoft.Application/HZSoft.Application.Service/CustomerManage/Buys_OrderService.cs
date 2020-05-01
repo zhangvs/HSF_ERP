@@ -246,6 +246,7 @@ namespace HZSoft.Application.Service.CustomerManage
                     Code=entity.OrderCode,
                     OrderId = entity.OrderId,
                     OrderCode = entity.OrderCode,
+                    OrderTitle = entity.OrderTitle,
                     ProduceId = entity.ProduceId,
                     ProduceCode = entity.ProduceCode,
                     CompanyId = entity.CompanyId,
@@ -362,11 +363,20 @@ namespace HZSoft.Application.Service.CustomerManage
                     //wXTemplate.SendToTemplate(buyEntity.OrderCode);
                     if (!string.IsNullOrEmpty(buyEntity.SalesmanUserName))
                     {
-                        Hsf_CardEntity hsf_CardEntity = db.IQueryable<Hsf_CardEntity>(t => t.Name.Equals(buyEntity.SalesmanUserName)).First();
-                        if (hsf_CardEntity != null)
+                        var hsf_CardList = db.IQueryable<Hsf_CardEntity>(t => t.Name.Equals(buyEntity.SalesmanUserName));
+                        if (hsf_CardList.Count() != 0)
                         {
-                            TemplateApp.SendTemplateURL(TemplateApp.AccessToken, hsf_CardEntity.OpenId, "OWtHeoHLSNzPj8FJ1Bp6vbD4k0WfIbRqYhELB0wtMmY",
-                                "您好，您的订单已经入库!", buyEntity.OrderCode,  buyEntity.CustomerName + "，共" + buyEntity.TotalQty + "包，请确认尾款。");
+                            var hsf_CardEntity = hsf_CardList.First();
+                            //只有关注公众号的业务员才能收到消息
+                            string backMsg= TemplateApp.SendTemplateURL(TemplateApp.AccessToken, hsf_CardEntity.OpenId, "OWtHeoHLSNzPj8FJ1Bp6vbD4k0WfIbRqYhELB0wtMmY",
+                                "您好，您的订单已经入库!", buyEntity.OrderCode, buyEntity.CustomerName + "，共" + buyEntity.TotalQty + "包，请确认尾款。");
+                            if (backMsg!="ok")
+                            {
+                                //业务员没有关注公众号
+                                //微信Post请求发生错误！错误代码：43004，说明：require subscribe hint: [ziWtva03011295]
+                                LogHelper.AddLog(buyEntity.SalesmanUserName+"没有关注公众号");//记录日志
+                            }
+
                         }
                     }
                 }
@@ -435,7 +445,7 @@ namespace HZSoft.Application.Service.CustomerManage
                     entity.SendOutUserId = OperatorProvider.Provider.Current().UserId;
                     entity.SendOutUserName = OperatorProvider.Provider.Current().UserName;
                     this.BaseRepository().Update(entity);
-                    db.Update<Buys_OrderEntity>(entity);
+                    //db.Update<Buys_OrderEntity>(entity);
 
                     //同步到接单表-入库状态
                     DZ_OrderEntity dZ_OrderEntity = new DZ_OrderEntity

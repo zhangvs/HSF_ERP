@@ -2,10 +2,49 @@
     ViewBag.Title = "收款表单";
     Layout = "~/Views/Shared/_Form.cshtml";
 }
+<link href="~/Content/layui/css/layui.css" rel="stylesheet" />
+<script src="~/Content/layui/layui.js"></script>
+<style>
+        img {
+            max-width: 650px;
+            max-height: 380px;
+            height: auto;
+            zoom: expression( function(e) {
+    if(e.width>e.height) {if (e.width>650) { e.height = e.height*(380 /e.width); e.width=650; }}
+    else {if (e.height>380) { e.width = e.width*(650 /e.height); e.height=380; }}
+    e.style.zoom = '1';     }(this));
+            overflow: hidden;
+        }
+</style>
 <script>
     var orderId = request('orderId');
     $(function () {
         initControl();
+        layui.use('upload', function () {
+            var $ = layui.jquery
+                , upload = layui.upload;
+            //拖拽上传
+            upload.render({
+                elem: ".upload"
+                , url: '/CustomerManage/ReceivableSkl/UploadPicture'
+                , done: function (data) {
+                    console.log(data);
+                    if (data.Success) {
+                        this.item
+                        $("#" + this.item.context.id).attr("imgsrc", data.Message).html("<img src='" + data.Message + "' class='img' />");
+                    } else {
+                        layer.alert('上传失败:' + data.Message, {
+                            skin: 'layui-layer-molv', closeBtn: 0
+                        });
+                    }
+                }
+                , error: function () {
+                    layer.alert('上传异常', {
+                        skin: 'layui-layer-molv', closeBtn: 0
+                    });
+                }
+            });
+        });
     })
     //初始化控件
     function initControl() {
@@ -15,6 +54,9 @@
             success: function (data) {
                 $("#ReceivedAmount").val(toDecimal(data.ReceivedAmount));
                 $("#Uncollected").val(toDecimal(data.Accounts - data.ReceivedAmount));
+                if (data.ReceiptPath != undefined) {
+                    $("#UploadReceiptPath").attr("imgsrc", data.ReceiptPath).html("<img src='" + data.ReceiptPath + "' class='img' />");
+                }
             }
         });
     }
@@ -29,6 +71,10 @@
         }
         var postData = $("#form1").GetWebControls("");
         postData["OrderId"] = orderId;
+        //图片为空并且上传图不为空
+        if (!!$("#UploadReceiptPath").attr("imgsrc")) {
+            postData.ReceiptPath = $("#UploadReceiptPath").attr("imgsrc");
+        }
         $.SaveForm({
             url: "../../CustomerManage/ReceivableSkl/SaveForm",
             param: postData,
@@ -69,6 +115,15 @@
             <th class="formTitle" valign="top" style="padding-top: 4px;">备注信息</th>
             <td class="formValue">
                 <textarea id="Description" class="form-control" style="height: 60px;"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td class="formValue" colspan="2" style="text-align:center">
+                <input id="ReceiptPath" type="hidden" class="form-control" />
+                <div class="layui-upload-drag upload " id="UploadReceiptPath" style="width:660px;height:390px">
+                    <i class="layui-icon"></i>
+                    <p>点击上传收款凭证</p>
+                </div>
             </td>
         </tr>
     </table>

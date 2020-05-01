@@ -30,12 +30,12 @@
             colModel: [
                 { label: '主键', name: 'Id', hidden: true },
                 { label: '姓名', name: 'Name', index: 'Name', width: 100, align: 'left', sortable: true },
-                { label: '英文', name: 'NameEn', index: 'NameEn', width: 100, align: 'left', sortable: true },
+                //{ label: '英文', name: 'NameEn', index: 'NameEn', width: 100, align: 'left', sortable: true },
                 { label: '职位', name: 'Position', index: 'Position', width: 100, align: 'left',sortable: true  },
                 { label: '手机', name: 'Mobile1', index: 'Mobile1', width: 100, align: 'left', sortable: true },
-                { label: '制作者昵称', name: 'NickName', index: 'NickName', width: 100, align: 'left', sortable: true },
+                { label: '微信昵称', name: 'NickName', index: 'NickName', width: 200, align: 'left', sortable: true },
                 {
-                    label: "制作者头像", name: "HeadimgUrl", index: "HeadimgUrl", width: 80, align: "center", sortable: false,
+                    label: "微信头像", name: "HeadimgUrl", index: "HeadimgUrl", width: 80, align: "center", sortable: false,
                     formatter: function (cellvalue) {
                         if (typeof (cellvalue) != "undefined" && cellvalue != "") {
                             return "<img src='" + cellvalue + "' height='50px' width='50px'/>";
@@ -44,7 +44,7 @@
                         }
                     }
                 },
-                { label: '邮箱', name: 'Email', index: 'Email', width: 150, align: 'left',sortable: true  },
+                //{ label: '邮箱', name: 'Email', index: 'Email', width: 150, align: 'left',sortable: true  },
                 { label: '创建日期', name: 'CreateDate', index: 'CreateDate', width: 150, align: 'left', sortable: true },
                 { label: '电子名片', name: 'Description', index: 'Description', width: 100, align: 'left', sortable: true },
             ],
@@ -72,9 +72,9 @@
     function btn_add() {
         dialogOpen({
             id: 'Form',
-            title: '添加电子名片',
-            url: '/BaseManage/Hsf_Card/Hsf_CardForm',
-            width: '700px',
+            title: '使用个人手机扫码添加',
+            url: '/BaseManage/Hsf_Card/AddCardForm',
+            width: '550px',
             height: '550px',
             callBack: function (iframeId) {
                 top.frames[iframeId].AcceptClick();

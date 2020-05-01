@@ -1,3 +1,4 @@
+using HZSoft.Application.Code;
 using HZSoft.Application.Entity.BaseManage;
 using HZSoft.Application.IService.BaseManage;
 using HZSoft.Data.Repository;
@@ -27,9 +28,18 @@ namespace HZSoft.Application.Service.BaseManage
         /// <returns>返回分页列表</returns>
         public IEnumerable<Hsf_CardEntity> GetPageList(Pagination pagination, string queryJson)
         {
+            //var expression = LinqExtensions.True<Hsf_CardEntity>();
+            //expression = expression.And(t => t.DeleteMark != 1);
+            //return this.BaseRepository().FindList(expression, pagination);
+
+            string strSql = "select * from Hsf_Card where (DeleteMark<>1 or DeleteMark IS NULL) ";
             var expression = LinqExtensions.True<Hsf_CardEntity>();
-            expression = expression.And(t => t.DeleteMark != 1);
-            return this.BaseRepository().FindList(expression, pagination);
+            var queryParam = queryJson.ToJObject();
+            if (!OperatorProvider.Provider.Current().IsSystem)
+            {
+                strSql += " and Name ='"+ OperatorProvider.Provider.Current().UserName + "'";
+            }
+            return this.BaseRepository().FindList(strSql.ToString(), pagination);
         }
         /// <summary>
         /// 获取列表

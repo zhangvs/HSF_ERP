@@ -25,18 +25,37 @@ namespace HZSoft.Application.Busines.CustomerManage
         /// <param name="pagination">分页</param>
         /// <param name="queryJson">查询参数</param>
         /// <returns>返回分页列表</returns>
+        public IEnumerable<ReceivableEntity> GetPageList(Pagination pagination, string queryJson)
+        {
+            return service.GetPageList(pagination, queryJson);
+        }
+        /// <summary>
+        /// 获取收款单列表
+        /// </summary>
+        /// <param name="pagination">分页</param>
+        /// <param name="queryJson">查询参数</param>
+        /// <returns>返回分页列表</returns>
         public IEnumerable<DZ_OrderEntity> GetPaymentPageList(Pagination pagination, string queryJson)
         {
             return service.GetPaymentPageList(pagination, queryJson);
         }
         /// <summary>
-        /// 获取收款记录列表
+        /// 获取子收款记录
         /// </summary>
         /// <param name="orderId">订单主键</param>
         /// <returns></returns>
         public IEnumerable<ReceivableEntity> GetPaymentRecord(string orderId)
         {
             return service.GetPaymentRecord(orderId);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="orderId">订单子主键</param>
+        /// <returns></returns>
+        public ReceivableEntity GetEntity(string orderId)
+        {
+            return service.GetEntity(orderId);
         }
         #endregion
 
@@ -51,6 +70,24 @@ namespace HZSoft.Application.Busines.CustomerManage
             try
             {
                 service.SaveForm(entity);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
+        /// <summary>
+        /// 保存表单（新增）
+        /// </summary>
+        /// <param name="entity">实体对象</param>
+        /// <returns></returns>
+        public void UpdateStateForm(string keyValue, ReceivableEntity entity)
+        {
+            try
+            {
+                service.UpdateStateForm(keyValue, entity);
             }
             catch (Exception)
             {

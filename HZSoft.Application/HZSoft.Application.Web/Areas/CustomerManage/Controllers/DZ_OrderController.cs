@@ -58,7 +58,7 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
             return View();
         }
         /// <summary>
-        /// 列表页面
+        /// 接单
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -67,7 +67,16 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
             return View();
         }
         /// <summary>
-        /// 表单页面
+        /// 报价对比
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult DZ_OrderIndex12()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 接单
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -84,7 +93,7 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
 
 
         /// <summary>
-        /// 列表页面
+        /// 审图
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -93,7 +102,7 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
             return View();
         }
         /// <summary>
-        /// 表单页面
+        /// 审图
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -103,7 +112,7 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         }
 
         /// <summary>
-        /// 列表页面
+        /// 拆单
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -112,7 +121,7 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
             return View();
         }
         /// <summary>
-        /// 表单页面
+        /// 拆单
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -123,7 +132,7 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
 
 
         /// <summary>
-        /// 列表页面
+        /// 审核
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -132,7 +141,7 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
             return View();
         }
         /// <summary>
-        /// 表单页面
+        /// 审核
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -142,7 +151,7 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         }
 
         /// <summary>
-        /// 列表页面
+        /// 报价
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -152,7 +161,7 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         }
 
         /// <summary>
-        /// 表单页面
+        /// 报价
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -160,6 +169,28 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         {
             return View();
         }
+
+        /// <summary>
+        /// 报价审核（财务中心）
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult MoneyOkIndex()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// 报价审核（财务中心）
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult MoneyOkForm()
+        {
+            return View();
+        }
+
+
 
         /// <summary>
         /// 签收页面
@@ -259,6 +290,18 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         public ActionResult SaveSigned(string keyValue, DZ_OrderEntity entity)
         {
             dz_orderbll.SaveSigned(keyValue, entity);
+            return Success("操作成功。");
+        }
+
+
+        /// <summary>
+        /// 报价审核
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <returns></returns>
+        public ActionResult UpdateMoneyOkState(string keyValue,int? state)
+        {
+            dz_orderbll.UpdateMoneyOkState(keyValue, state);
             return Success("操作成功。");
         }
         #endregion

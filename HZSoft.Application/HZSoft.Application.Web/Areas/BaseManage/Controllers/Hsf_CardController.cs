@@ -36,6 +36,15 @@ namespace HZSoft.Application.Web.Areas.BaseManage.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        public ActionResult AddCardForm()
+        {
+            return View();
+        }
+        /// <summary>
+        /// ±íµ¥Ò³Ãæ
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
         public ActionResult Hsf_CardForm()
         {
             return View();

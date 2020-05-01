@@ -24,6 +24,26 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// <returns></returns>
         public string OrderId { get; set; }
         /// <summary>
+        /// 单据编号
+        /// </summary>
+        /// <returns></returns>
+        public string Code { get; set; }
+        /// <summary>
+        /// 经销商
+        /// </summary>
+        /// <returns></returns>
+        public string CompanyName { get; set; }
+        /// <summary>
+        /// 客户名称
+        /// </summary>
+        /// <returns></returns>
+        public string CustomerName { get; set; }
+        /// <summary>
+        /// 销售人员
+        /// </summary>
+        /// <returns></returns>
+        public string SalesmanUserName { get; set; }
+        /// <summary>
         /// 收款日期
         /// </summary>
         /// <returns></returns>
@@ -43,6 +63,12 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// </summary>
         /// <returns></returns>
         public string PaymentAccount { get; set; }
+        /// <summary>
+        /// 收据
+        /// </summary>
+        /// <returns></returns>
+        public string ReceiptPath { get; set; }
+
         /// <summary>
         /// 排序码
         /// </summary>
@@ -105,6 +131,8 @@ namespace HZSoft.Application.Entity.CustomerManage
             this.CreateDate = DateTime.Now;
             this.CreateUserId = OperatorProvider.Provider.Current().UserId;
             this.CreateUserName = OperatorProvider.Provider.Current().UserName;
+            this.DeleteMark = 0;
+            this.EnabledMark = 0;//未确认                                      数据库设置默认值是不靠谱的，不能赋值
         }
         /// <summary>
         /// 编辑调用

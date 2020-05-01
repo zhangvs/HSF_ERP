@@ -52,6 +52,14 @@ namespace HZSoft.Application.IService.CustomerManage
         void UpdateStepState(Sale_CustomerEntity entity);
         void SaveDownForm(string keyValue, Sale_CustomerEntity entity);
         void SavePlanForm(string keyValue, Sale_CustomerEntity entity);
+        /// <summary>
+        /// 推单,撤单
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <param name="state">状态1推单，-1撤单</param>
+        /// <param name="orderId">销售单id</param>
+        /// <returns></returns>
+        void UpdatePushState(string keyValue, int? state, string orderId);
         #endregion
     }
 }

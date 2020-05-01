@@ -37,6 +37,17 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         {
             return View();
         }
+
+        /// <summary>
+        /// 生产推单
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult OrderPushIndex()
+        {
+            return View();
+        }
+        
         /// <summary>
         /// 生产单
         /// </summary>
@@ -158,7 +169,8 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         /// 生产单编辑
         /// </summary>
         /// <param name="keyValue">主键值</param>
-        /// <param name="entity">实体对象</param>
+        /// <param name="strEntity">实体对象</param>
+        /// <param name="strChildEntitys">实体对象</param>
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -174,6 +186,22 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
 
 
         /// <summary>
+        /// 推单,撤单
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <param name="state">状态1推单-1撤单</param>
+        /// <param name="orderId">销售单id</param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AjaxOnly]
+        public ActionResult UpdatePushState(string keyValue, int? state, string orderId)
+        {
+            sale_customerbll.UpdatePushState(keyValue, state, orderId);
+            return Success("操作成功。");
+        }
+
+        /// <summary>
         /// 下单
         /// </summary>
         /// <param name="keyValue">主键值</param>
@@ -187,6 +215,7 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
             sale_customerbll.SaveDownForm(keyValue,entity);
             return Success("操作成功。");
         }
+
         /// <summary>
         /// 排产
         /// </summary>

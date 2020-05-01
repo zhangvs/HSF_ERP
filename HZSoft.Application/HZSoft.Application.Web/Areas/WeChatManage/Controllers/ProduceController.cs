@@ -194,7 +194,7 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
                         }
                         break;
                     case 3:
-                        if (proEntity.FengBianMark == 1)
+                        if (proEntity.KaiLiaoMark == 1 || proEntity.FengBianMark == 1)
                         {
                             return RedirectToAction("Error", new { msg = "前一道工序还未扫码！" });
                         }
@@ -219,7 +219,7 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
                         }
                         break;
                     case 4:
-                        if (proEntity.PaiZuanMark == 1)
+                        if (proEntity.KaiLiaoMark == 1 || proEntity.FengBianMark == 1 || proEntity.PaiZuanMark == 1)
                         {
                             return RedirectToAction("Error", new { msg = "前一道工序还未扫码！" });
                         }
@@ -244,7 +244,7 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
                         }
                         break;
                     case 5:
-                        if (proEntity.ShiZhuangMark == 1)
+                        if (proEntity.KaiLiaoMark == 1 || proEntity.FengBianMark == 1 || proEntity.PaiZuanMark == 1 || proEntity.ShiZhuangMark == 1)
                         {
                             return RedirectToAction("Error", new { msg = "前一道工序还未扫码！" });
                         }

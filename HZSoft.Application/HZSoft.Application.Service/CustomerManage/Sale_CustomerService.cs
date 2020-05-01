@@ -36,7 +36,7 @@ namespace HZSoft.Application.Service.CustomerManage
         public IEnumerable<Sale_CustomerEntity> GetPageList(Pagination pagination, string queryJson)
         {
             var queryParam = queryJson.ToJObject();
-            string strSql = "select * from Sale_Customer  where DeleteMark=0 ";
+            string strSql = "select * from Sale_Customer where DeleteMark=0 ";
             //单据日期
             if (!queryParam["StartTime"].IsEmpty() && !queryParam["EndTime"].IsEmpty())
             {
@@ -86,6 +86,12 @@ namespace HZSoft.Application.Service.CustomerManage
             {
                 int DownMark = queryParam["DownMark"].ToInt();
                 strSql += " and DownMark  = " + DownMark;
+            }
+            //推单
+            if (!queryParam["PushMark"].IsEmpty())
+            {
+                int PushMark = queryParam["PushMark"].ToInt();
+                strSql += " and PushMark  = " + PushMark;
             }
             //包装
             if (!queryParam["BaoZhuangMark"].IsEmpty())
@@ -287,6 +293,7 @@ namespace HZSoft.Application.Service.CustomerManage
                 {
                     OrderId = orderEntity.Id,
                     OrderCode = orderEntity.Code,
+                    OrderTitle=orderEntity.OrderTitle,
                     ProduceCode = orderEntity.Code,//生产单号默认和销售单号一样
                     OrderType = orderEntity.OrderType,
                     CompanyId = orderEntity.CompanyId,
@@ -306,6 +313,9 @@ namespace HZSoft.Application.Service.CustomerManage
                     PaiZuanMark = 1,
                     ShiZhuangMark = 1,
                     BaoZhuangMark = 1,
+
+                    MoneyOkMark = orderEntity.MoneyOkMark,
+                    MoneyOkDate =orderEntity.MoneyOkDate//报价审核
                 };
                 sale_CustomerEntity.Create();//付款时间
 
@@ -372,12 +382,12 @@ namespace HZSoft.Application.Service.CustomerManage
             {
                 if (!string.IsNullOrEmpty(keyValue))
                 {
-                    Sale_CustomerEntity oldEntity = GetEntity(keyValue);
+                    //Sale_CustomerEntity oldEntity = GetEntity(keyValue);
                     //原生产单没有下单文件，第一次上传下单文件，则修改下单状态
-                    if (!string.IsNullOrEmpty(entity.DownPath) && string.IsNullOrEmpty(oldEntity.DownPath))
+                    if (!string.IsNullOrEmpty(entity.DownPath))// && string.IsNullOrEmpty(oldEntity.DownPath)//不管之前有没有上传都修改下单状态
                     {
                         //修改生产单下单状态
-                        entity.DownMark = 1;
+                        entity.DownMark = entity.DownMark;
                         entity.DownDate = DateTime.Now;
                         entity.DownUserId = OperatorProvider.Provider.Current().UserId;
                         entity.DownUserName = OperatorProvider.Provider.Current().UserName;
@@ -385,13 +395,13 @@ namespace HZSoft.Application.Service.CustomerManage
                         //修改销售单下单状态
                         DZ_OrderEntity dZ_OrderEntity = new DZ_OrderEntity
                         {
-                            DownMark = 1,
+                            DownMark = entity.DownMark,
                             DownDate = DateTime.Now,
                             DownUserId = OperatorProvider.Provider.Current().UserId,
                             DownUserName = OperatorProvider.Provider.Current().UserName,
                             DownPath = entity.DownPath
                         };
-                        dZ_OrderEntity.Modify(oldEntity.OrderId);//原生产单实体才对
+                        dZ_OrderEntity.Modify(entity.OrderId);//原生产单实体才对
                         db.Update<DZ_OrderEntity>(dZ_OrderEntity);
                     }
                     entity.Modify(keyValue);
@@ -401,6 +411,54 @@ namespace HZSoft.Application.Service.CustomerManage
             }
             catch (Exception)
             {
+                db.Rollback();
+                throw;
+            }
+        }
+
+
+        /// <summary>
+        /// 推单,撤单
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <param name="state">状态1推单-1撤单</param>
+        /// <param name="orderId">销售单id</param>
+        /// <returns></returns>
+        public void UpdatePushState(string keyValue, int? state,string orderId)
+        {
+            IRepository db = this.BaseRepository().BeginTrans();
+            try
+            {
+                if (!string.IsNullOrEmpty(keyValue))
+                {
+                    Sale_CustomerEntity entity = new Sale_CustomerEntity()
+                    {
+                        PushMark = state,
+                        PushDate = DateTime.Now,
+                        PushUserId = OperatorProvider.Provider.Current().UserId,
+                        PushUserName = OperatorProvider.Provider.Current().UserName
+                    };
+                    entity.Modify(keyValue);
+                    db.Update<Sale_CustomerEntity>(entity);
+
+                    if (!string.IsNullOrEmpty(orderId))
+                    {
+                        //修改销售单推单状态
+                        DZ_OrderEntity dZ_OrderEntity = new DZ_OrderEntity
+                        {
+                            PushMark = state,
+                            PushDate = DateTime.Now
+                        };
+                        dZ_OrderEntity.Modify(orderId);//原生产单实体才对
+                        db.Update<DZ_OrderEntity>(dZ_OrderEntity);
+                    }
+
+                    db.Commit();
+                }
+            }
+            catch (Exception)
+            {
+                db.Rollback();
                 throw;
             }
         }
@@ -510,6 +568,7 @@ namespace HZSoft.Application.Service.CustomerManage
                 db.Insert(entity1);
             }
         }
+
         #endregion
 
 
