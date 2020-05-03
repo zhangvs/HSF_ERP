@@ -3,6 +3,19 @@
     Layout = "~/Views/Shared/_Form.cshtml";
 }
 <link href="~/Content/layui/css/layui.css" rel="stylesheet" />
+
+<style>
+        img {
+            max-width: 350px;
+            max-height: 450px;
+            height: auto;
+            zoom: expression( function(e) {
+    if(e.width>e.height) {if (e.width>350) { e.height = e.height*(450 /e.width); e.width=350; }}
+    else {if (e.height>450) { e.width = e.width*(350 /e.height); e.height=450; }}
+    e.style.zoom = '1';     }(this));
+            overflow: hidden;
+        }
+</style>
 <script src="~/Content/layui/layui.js"></script>
 <script>
     var keyValue = request('keyValue');
@@ -19,7 +32,7 @@
                     console.log(data);
                     if (data.Success) {
                         this.item
-                        $("#" + this.item.context.id).attr("imgsrc", data.Message).html("<img src='" + data.Message + "' style='height:400px;' />");
+                        $("#" + this.item.context.id).attr("imgsrc", data.Message).html("<img src='" + data.Message + "' style='height:430px;' />");
                     } else {
                         layer.alert('上传失败:' + data.Message, {
                             skin: 'layui-layer-molv', closeBtn: 0
@@ -44,7 +57,7 @@
                 success: function (data) {
                     $("#form1").SetWebControls(data.entity);
                     if (data.SignedImg != undefined) {
-                        $("#UploadSignedImg").attr("imgsrc", data.SignedImg).html("<img src='" + data.SignedImg + "' style='height:400px;' />");
+                        $("#UploadSignedImg").attr("imgsrc", data.SignedImg).html("<img src='" + data.SignedImg + "' style='height:430px;' />");
                     }
                 }
             })
@@ -75,7 +88,7 @@
         <tr>
             <td class="formValue" colspan="2" style="text-align:center">
                 <input id="SignedImg" type="hidden" class="form-control" />
-                <div class="layui-upload-drag upload" id="UploadSignedImg" style="width:350px;height:400px">
+                <div class="layui-upload-drag upload" id="UploadSignedImg" style="width:350px;height:450px">
                     <i class="layui-icon"></i>
                     <p>点击上传签收单</p>
                 </div>
