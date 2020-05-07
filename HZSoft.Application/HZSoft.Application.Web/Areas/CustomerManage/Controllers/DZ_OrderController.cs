@@ -161,6 +161,16 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         }
 
         /// <summary>
+        /// 结束
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult OverIndex()
+        {
+            return View();
+        }
+
+        /// <summary>
         /// 报价
         /// </summary>
         /// <returns></returns>
@@ -189,8 +199,6 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         {
             return View();
         }
-
-
 
         /// <summary>
         /// 签收页面
@@ -302,6 +310,16 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         public ActionResult UpdateMoneyOkState(string keyValue,int? state)
         {
             dz_orderbll.UpdateMoneyOkState(keyValue, state);
+            return Success("操作成功。");
+        }
+        /// <summary>
+        /// 完成
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <returns></returns>
+        public ActionResult UpdateOverState(string keyValue, int? state)
+        {
+            dz_orderbll.UpdateOverState(keyValue, state);
             return Success("操作成功。");
         }
         #endregion

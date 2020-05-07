@@ -215,6 +215,12 @@ namespace HZSoft.Application.Service.CustomerManage
                 int SendMark = queryParam["SendMark"].ToInt();
                 strSql += " and SendMark  = " + SendMark;
             }
+            //结束
+            if (!queryParam["OverMark"].IsEmpty())
+            {
+                int OverMark = queryParam["OverMark"].ToInt();
+                strSql += " and OverMark  = " + OverMark;
+            }
             return this.BaseRepository().FindList(strSql.ToString(), pagination);
         }
         /// <summary>
@@ -509,6 +515,33 @@ namespace HZSoft.Application.Service.CustomerManage
                         db.Commit();
                     }
 
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
+        /// <summary>
+        /// 报价审核
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <returns></returns>
+        public void UpdateOverState(string keyValue, int? state)
+        {
+            IRepository db = new RepositoryFactory().BaseRepository().BeginTrans();
+            try
+            {
+                if (!string.IsNullOrEmpty(keyValue))
+                {
+                    DZ_OrderEntity entity = new DZ_OrderEntity()
+                    {
+                        OverMark = state
+                    };
+                    entity.Modify(keyValue);
+                    this.BaseRepository().Update(entity);
                 }
             }
             catch (Exception)

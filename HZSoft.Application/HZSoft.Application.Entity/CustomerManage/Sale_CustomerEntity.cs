@@ -530,6 +530,11 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// </summary>
         /// <returns></returns>
         public int? SortCode { get; set; }
+        /// <summary>
+        /// 完成标识
+        /// </summary>
+        /// <returns></returns>
+        public int? OverMark { get; set; }
         #endregion
 
         #region 扩展操作

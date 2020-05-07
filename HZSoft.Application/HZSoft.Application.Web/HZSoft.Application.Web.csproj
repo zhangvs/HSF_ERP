@@ -2025,6 +2025,9 @@
     <Content Include="Areas\CustomerManage\Views\ReceivableSkl\ReceiptItemForm.cshtml" />
     <Content Include="Areas\CustomerManage\Views\Sale_Customer\OrderPushIndex.cshtml" />
     <Content Include="Areas\CustomerManage\Views\DZ_Order\DZ_OrderIndex12.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\DZ_Order\OverIndex.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\Sale_Customer\OverIndex.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\Buys_Order\OverIndex.cshtml" />
     <None Include="Properties\PublishProfiles\6.1.pubxml" />
     <Content Include="Areas\FlowManage\Views\FlowLaunch\Index.cshtml" />
     <Content Include="Areas\FlowManage\Views\FormDesign\FormPreview.cshtml" />

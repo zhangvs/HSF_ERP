@@ -281,6 +281,11 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// <returns></returns>
         [Column("MODIFYUSERNAME")]
         public string ModifyUserName { get; set; }
+        /// <summary>
+        /// 完成标识
+        /// </summary>
+        /// <returns></returns>
+        public int? OverMark { get; set; }
         #endregion
 
         #region 扩展操作

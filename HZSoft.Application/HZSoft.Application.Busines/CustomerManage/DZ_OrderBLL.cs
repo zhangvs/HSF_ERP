@@ -116,6 +116,23 @@ namespace HZSoft.Application.Busines.CustomerManage
                 throw;
             }
         }
+        /// <summary>
+        /// 完成
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <param name="entity">实体对象</param>
+        /// <returns></returns>
+        public void UpdateOverState(string keyValue, int? state)
+        {
+            try
+            {
+                service.UpdateOverState(keyValue, state);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
         #endregion
     }
 }

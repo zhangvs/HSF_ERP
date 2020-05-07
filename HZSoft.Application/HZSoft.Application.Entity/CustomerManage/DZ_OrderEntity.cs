@@ -418,6 +418,11 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// </summary>
         /// <returns></returns>
         public string ModifyUserName { get; set; }
+        /// <summary>
+        /// 完成标识
+        /// </summary>
+        /// <returns></returns>
+        public int? OverMark { get; set; }
         #endregion
 
         #region 扩展操作
@@ -444,6 +449,7 @@ namespace HZSoft.Application.Entity.CustomerManage
             this.DeleteMark = 0;
             this.EnabledMark = 1;
             this.MoneyOkMark = 0;
+            this.OverMark = 0;//结束完成
         }
         /// <summary>
         /// 编辑调用

@@ -111,6 +111,12 @@ namespace HZSoft.Application.Service.CustomerManage
                 int SendMark = queryParam["SendMark"].ToInt();
                 strSql += " and SendMark  = " + SendMark;
             }
+            //结束
+            if (!queryParam["OverMark"].IsEmpty())
+            {
+                int OverMark = queryParam["OverMark"].ToInt();
+                strSql += " and OverMark  = " + OverMark;
+            }
 
             return this.BaseRepository().FindList<Sale_CustomerEntity>(strSql.ToString(), pagination);
         }
@@ -194,6 +200,12 @@ namespace HZSoft.Application.Service.CustomerManage
             {
                 int SendMark = queryParam["SendMark"].ToInt();
                 strSql += " and SendMark  = " + SendMark;
+            }
+            //结束
+            if (!queryParam["OverMark"].IsEmpty())
+            {
+                int OverMark = queryParam["OverMark"].ToInt();
+                strSql += " and OverMark  = " + OverMark;
             }
             return this.BaseRepository().FindList<Sale_CustomerEntity>(strSql.ToString());
         }
@@ -566,6 +578,34 @@ namespace HZSoft.Application.Service.CustomerManage
                     Sort = Sort
                 };
                 db.Insert(entity1);
+            }
+        }
+
+
+
+        /// <summary>
+        /// 完成
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <returns></returns>
+        public void UpdateOverState(string keyValue, int? state)
+        {
+            IRepository db = new RepositoryFactory().BaseRepository().BeginTrans();
+            try
+            {
+                if (!string.IsNullOrEmpty(keyValue))
+                {
+                    Sale_CustomerEntity entity = new Sale_CustomerEntity()
+                    {
+                        OverMark = state
+                    };
+                    entity.Modify(keyValue);
+                    this.BaseRepository().Update(entity);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 

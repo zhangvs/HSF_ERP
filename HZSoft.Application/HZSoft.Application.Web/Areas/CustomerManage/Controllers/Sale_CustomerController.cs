@@ -84,6 +84,16 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         {
             return View();
         }
+
+        /// <summary>
+        /// 完成
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult OverIndex()
+        {
+            return View();
+        }
         #endregion
 
         #region 获取数据

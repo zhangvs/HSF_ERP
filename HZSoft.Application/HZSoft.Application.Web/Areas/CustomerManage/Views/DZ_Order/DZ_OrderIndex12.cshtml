@@ -73,6 +73,17 @@
                     }
                 },
                 { label: "报价金额", name: "MoneyAccounts", width: 80, align: "left", formatter: 'number', formatoptions: { thousandsSeparator: "", decimalPlaces: 2 } },
+                {
+                    label: '报价附件', name: 'MoneyPath', index: 'MoneyPath', width: 300, align: 'left', sortable: true,
+                    formatter: function (cellvalue) {
+                        if (cellvalue != null) {
+                            return "<a style='text-decoration:underline' href='" + cellvalue.replace('~', '') + "'>报价附件下载</a>";
+                        }
+                        else {
+                            return "";
+                        }
+                    }
+                },
                 { label: '报价日期', name: 'MoneyDate', index: 'MoneyDate', width: 118, align: 'left', sortable: true },
                 {
                     label: "报价审核", name: "MoneyOkMark", index: "MoneyOkMark", width: 60, align: "center", sortable: false,
