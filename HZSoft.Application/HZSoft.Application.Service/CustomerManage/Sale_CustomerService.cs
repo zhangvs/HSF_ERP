@@ -296,7 +296,7 @@ namespace HZSoft.Application.Service.CustomerManage
         /// </summary>
         /// <param name="orderEntity">实体对象</param>
         /// <returns></returns>
-        public void SaveBuyMain(IRepository db,DZ_OrderEntity orderEntity)
+        public void SaveSaleMain(IRepository db,DZ_OrderEntity orderEntity)
         {
             try
             {
@@ -399,7 +399,6 @@ namespace HZSoft.Application.Service.CustomerManage
                     if (!string.IsNullOrEmpty(entity.DownPath))// && string.IsNullOrEmpty(oldEntity.DownPath)//不管之前有没有上传都修改下单状态
                     {
                         //修改生产单下单状态
-                        entity.DownMark = entity.DownMark;
                         entity.DownDate = DateTime.Now;
                         entity.DownUserId = OperatorProvider.Provider.Current().UserId;
                         entity.DownUserName = OperatorProvider.Provider.Current().UserName;
@@ -412,6 +411,51 @@ namespace HZSoft.Application.Service.CustomerManage
                             DownUserId = OperatorProvider.Provider.Current().UserId,
                             DownUserName = OperatorProvider.Provider.Current().UserName,
                             DownPath = entity.DownPath
+                        };
+                        dZ_OrderEntity.Modify(entity.OrderId);//原生产单实体才对
+                        db.Update<DZ_OrderEntity>(dZ_OrderEntity);
+                    }
+                    entity.Modify(keyValue);
+                    db.Update<Sale_CustomerEntity>(entity);
+                    db.Commit();
+                }
+            }
+            catch (Exception)
+            {
+                db.Rollback();
+                throw;
+            }
+        }
+
+
+        /// <summary>
+        /// 撤单
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <param name="entity">实体对象</param>
+        /// <returns></returns>
+        public void SavePushBackForm(string keyValue, Sale_CustomerEntity entity)
+        {
+            IRepository db = this.BaseRepository().BeginTrans();
+            try
+            {
+                if (!string.IsNullOrEmpty(keyValue))
+                {
+                    if (!string.IsNullOrEmpty(entity.PushBackPath))
+                    {
+                        //修改生产单撤单状态
+                        entity.PushMark = -1;
+                        entity.PushDate = DateTime.Now;
+                        entity.PushUserId = OperatorProvider.Provider.Current().UserId;
+                        entity.PushUserName = OperatorProvider.Provider.Current().UserName;
+
+                        //修改销售单撤单状态
+                        DZ_OrderEntity dZ_OrderEntity = new DZ_OrderEntity
+                        {
+                            PushMark = -1,
+                            PushDate = DateTime.Now,
+                            PushBackReason = entity.PushBackReason,
+                            PushBackPath = entity.PushBackPath
                         };
                         dZ_OrderEntity.Modify(entity.OrderId);//原生产单实体才对
                         db.Update<DZ_OrderEntity>(dZ_OrderEntity);
@@ -475,6 +519,7 @@ namespace HZSoft.Application.Service.CustomerManage
             }
         }
 
+
         /// <summary>
         /// 排产（主单）
         /// </summary>
@@ -536,28 +581,6 @@ namespace HZSoft.Application.Service.CustomerManage
         /// <param name="Sort"></param>
         public void AddItem(IRepository db,  List<Sale_Customer_ItemEntity> entryList, string MainId, int StepId, string Step, int Sort)
         {
-            //明细表，每道工序都需要材料
-            //int sort = 1;
-            //if (entity.KaiLiaoMark == 1)
-            //{
-            //    AddItem(db, entryList, entity.ProduceId, 1,"开料", sort++);
-            //}
-            //if (entity.FengBianMark == 1)
-            //{
-            //    AddItem(db, entryList, entity.ProduceId, 2, "封边", sort++);
-            //}
-            //if (entity.PaiZuanMark == 1)
-            //{
-            //    AddItem(db, entryList, entity.ProduceId, 3, "排钻", sort++);
-            //}
-            //if (entity.ShiZhuangMark == 1)
-            //{
-            //    AddItem(db, entryList, entity.ProduceId, 4, "试装", sort++);
-            //}
-            //if (entity.BaoZhuangMark == 1)
-            //{
-            //    AddItem(db, entryList, entity.ProduceId, 5, "包装", sort++);
-            //}
             foreach (Sale_Customer_ItemEntity item1 in entryList)
             {
                 Sale_Customer_ItemEntity entity1 = new Sale_Customer_ItemEntity

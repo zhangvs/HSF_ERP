@@ -142,6 +142,19 @@ namespace HZSoft.Application.Busines.CustomerManage
                 throw;
             }
         }
+
+
+        public void SavePushBackForm(string keyValue, Sale_CustomerEntity entity)
+        {
+            try
+            {
+                service.SavePushBackForm(keyValue, entity);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
         #endregion
     }
 }

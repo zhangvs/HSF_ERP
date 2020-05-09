@@ -152,6 +152,11 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// </summary>
         /// <returns></returns>
         public int? WuEnterMark { get; set; }
+        /// <summary>
+        /// 外协入库状态，0：正在包装，1：入库
+        /// </summary>
+        /// <returns></returns>
+        public int? WaiEnterMark { get; set; }
 
         /// <summary>
         /// 完全入库状态，0：正在包装，1：入库
@@ -298,10 +303,11 @@ namespace HZSoft.Application.Entity.CustomerManage
             this.CreateDate = DateTime.Now;
             this.CreateUserId = OperatorProvider.Provider.Current().UserId;
             this.CreateUserName = OperatorProvider.Provider.Current().UserName;
-            this.PaymentState = 0;
+            //this.PaymentState = 0;
             this.SendMark = 0;
             this.DeleteMark = 0;
             this.EnabledMark = 1;
+            this.OverMark = 0;
         }
         /// <summary>
         /// 编辑调用

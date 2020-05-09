@@ -47,7 +47,16 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         {
             return View();
         }
-        
+        /// <summary>
+        /// 撤单页面
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult OrderPushBackForm()
+        {
+            return View();
+        }
+
         /// <summary>
         /// 生产单
         /// </summary>
@@ -240,6 +249,23 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
             sale_customerbll.SavePlanForm(keyValue, entity);
             return Success("操作成功。");
         }
+
+
+        /// <summary>
+        /// 撤单
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <param name="entity">实体对象</param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AjaxOnly]
+        public ActionResult SavePushBackForm(string keyValue, Sale_CustomerEntity entity)
+        {
+            sale_customerbll.SavePushBackForm(keyValue, entity);
+            return Success("操作成功。");
+        }
+        
         #endregion
 
 

@@ -27,7 +27,7 @@
                 <option value="3">排钻</option>
                 <option value="4">试装</option>
                 <option value="5">包装</option>
-                <option value="6">吸塑</option>
+                <option value="6">仓库</option>
             </select>
             <input class="txt" id="Tel" type="text" placeholder="请输入您的手机号" />
             <p style="color:red" id="ErrorMessage"></p>
@@ -93,7 +93,7 @@
                     layer.alert(responseText, {
                         icon: 1, skin: 'layui-layer-lan', closeBtn: 0
                     }, function () {
-                        window.location.href = "/WeChatManage/Produce/Success?msg=个人资料补充完成！请进行工序扫码";
+                        window.location.href = "/WeChatManage/Produce/Success?msg=个人资料补充完成！";
                     });
                 },
                 error: function () {

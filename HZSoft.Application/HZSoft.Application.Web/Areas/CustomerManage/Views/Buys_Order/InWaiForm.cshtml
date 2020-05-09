@@ -13,7 +13,7 @@
         if (!!keyValue) {
             $.SetForm({
                 url: "../../CustomerManage/Buys_Order/GetDetailJson",
-                param: { keyValue: keyValue, sortCode: 2 },
+                param: { keyValue: keyValue, sortCode: 4 },
                 success: function (data) {
                     $("#form1").SetWebControls(data);
                 }
@@ -49,10 +49,10 @@
             <th class="formTitle" style="width: 60px;">单位</th>
             <td class="formValue">
                 <input id="Unit" type="text" class="form-control" value="包" />
-                <input id="ProductId" type="hidden" class="form-control" value="2002" />
-                <input id="ProductCode" type="hidden" class="form-control" value="2002" />
-                <input id="ProductName" type="hidden" class="form-control" value="门板" />
-                <input id="SortCode" type="hidden" class="form-control" value="2" />
+                <input id="ProductId" type="hidden" class="form-control" value="2004" />
+                <input id="ProductCode" type="hidden" class="form-control" value="2004" />
+                <input id="ProductName" type="hidden" class="form-control" value="外协" />
+                <input id="SortCode" type="hidden" class="form-control" value="4" />
             </td>
         </tr>
         <tr>

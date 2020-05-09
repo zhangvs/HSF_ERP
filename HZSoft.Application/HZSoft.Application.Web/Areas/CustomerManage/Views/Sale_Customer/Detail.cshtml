@@ -45,8 +45,11 @@
                     order.PaiZuanMark = order.PaiZuanMark == 2 ? 1 : order.PaiZuanMark;
                     order.ShiZhuangMark = order.ShiZhuangMark == 2 ? 1 : order.ShiZhuangMark;
                     order.BaoZhuangMark = order.BaoZhuangMark == 2 ? 1 : order.BaoZhuangMark;
-                    order.XiSuMark = order.XiSuMark == 2 ? 1 : order.XiSuMark;
+                    //order.XiSuMark = order.XiSuMark == 2 ? 1 : order.XiSuMark;
                     $("#form1").SetWebControls(order);
+                    if (!!order.DownPath) {
+                        $("#DownPath_a").attr("href", order.DownPath).text(order.DownPath.substring(order.DownPath.lastIndexOf("/") + 1));
+                    }
 
                     //明细
                     var childEntity = data.childEntity;
@@ -198,6 +201,7 @@
                         <label><input id="GuiTiMark" type="checkbox" />&nbsp;柜体 </label>
                         <label><input id="MenBanMark" type="checkbox" />&nbsp;门板 </label>
                         <label><input id="WuJinMark" type="checkbox" />&nbsp;五金 </label>
+                        <label><input id="WaiXieMark" type="checkbox" />&nbsp;外协 </label>
                     </div>
                 </td>
                 <td class="formTitle">工序</td>
@@ -213,6 +217,7 @@
             </tr>
         </table>
     </div>
+    下单附件：<a id="DownPath_a" style='text-decoration:underline;color: #337ab7;height:38px;line-height:38px;' href=""></a>
     <div class="gridPanel printArea">
         <table id="gridTable"></table>
     </div>

@@ -81,8 +81,7 @@
             autowidth: true,
             colModel: [
                 { label: '主键', name: 'OrderEntryId', hidden: true },
-                { label: '商品名称', name: "ProductName", width: 260, align: 'left', sortable: false, resizable: false },
-                { label: '商品单', name: "ProductCode", width: 100, align: 'center', sortable: false, resizable: false },
+                { label: '材料名称', name: "ProductName", width: 260, align: 'left', sortable: false, resizable: false },
                 { label: '单位', name: "Unit", width: 100, align: 'center', sortable: false, resizable: false },
                 { label: '数量', name: 'Qty', width: 80, align: 'center', sortable: false, resizable: false },
                 { label: '说明信息', name: 'Description', width: 200, align: 'left', sortable: false, resizable: false }
@@ -105,8 +104,8 @@
         $grid.jqGrid('setGroupHeaders', {
             useColSpanStyle: true,
             groupHeaders: [
-                { startColumnName: 'ProductName', numberOfColumns: 3, titleText: '商品信息' },
-                { startColumnName: 'Qty', numberOfColumns: 7, titleText: '价格信息' }
+                { startColumnName: 'ProductName', numberOfColumns: 2, titleText: '商品信息' },
+                { startColumnName: 'Qty', numberOfColumns: 6, titleText: '数量信息' }
             ]
         });
         //默认添加13行 空行
@@ -136,23 +135,17 @@
                 <td class="formValue">
                     <input id="Code" type="text" class="form-control" readonly />
                 </td>
+                <th class="formTitle">订单标题</th>
+                <td class="formValue">
+                    <input id="OrderTitle" type="text" class="form-control" readonly />
+                </td>
+            </tr>
+            <tr>
                 <td class="formTitle">经销商</td>
                 <td class="formValue">
                     <input id="CompanyName" type="text" class="form-control" readonly />
                     <input id="CompanyId" type="hidden" class="form-control" />
                 </td>
-                @*<th class="formTitle" style="width: 60px;">生产单</th>
-        <td class="formValue">
-            <input id="ProduceId" type="hidden" class="form-control" />
-            <input id="ProduceCode" type="text" class="form-control" readonly />
-        </td>
-        <th class="formTitle" style="width: 60px;">销售单</th>
-        <td class="formValue">
-            <input id="OrderId" type="hidden" class="form-control" />
-            <input id="OrderCode" type="text" class="form-control" readonly />
-        </td>*@
-            </tr>
-            <tr>
                 <td class="formTitle">客户</td>
                 <td class="formValue">
                     <input id="CustomerName" type="text" class="form-control" readonly />

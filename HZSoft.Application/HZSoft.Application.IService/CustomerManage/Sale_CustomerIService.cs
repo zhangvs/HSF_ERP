@@ -60,6 +60,7 @@ namespace HZSoft.Application.IService.CustomerManage
         /// <param name="orderId">œ˙ €µ•id</param>
         /// <returns></returns>
         void UpdatePushState(string keyValue, int? state, string orderId);
+        void SavePushBackForm(string keyValue, Sale_CustomerEntity entity);
         #endregion
     }
 }

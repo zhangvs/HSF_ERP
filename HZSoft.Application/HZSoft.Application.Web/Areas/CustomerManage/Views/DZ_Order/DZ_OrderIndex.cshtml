@@ -156,6 +156,20 @@
                     }
                 },
                 { label: '下单日期', name: 'DownDate', index: 'DownDate', width: 118, align: 'left', sortable: true },
+
+                {
+                    label: "推单", name: "PushMark", index: "PushMark", width: 60, align: "center", sortable: false,
+                    formatter: function (cellvalue) {
+                        if (cellvalue == 1) {
+                            return "<i class=\"fa fa-toggle-on\"></i>";
+                        } else if (cellvalue == -1) {
+                            return "<span style='color:red'>撤单</span>";
+                        } else {
+                            return "<i class=\"fa fa-toggle-off\"></i>";
+                        }
+                    }
+                },
+                { label: '推单日期', name: 'PushDate', index: 'PushDate', width: 118, align: 'left', sortable: true },
                 {
                     label: '当前工序', name: 'StepState', index: 'StepState', width: 80, align: 'center', sortable: true,
                     formatter: function (cellvalue, options, rowObject) {

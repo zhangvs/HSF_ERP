@@ -93,7 +93,7 @@
                     order.PaiZuanMark = order.PaiZuanMark == 2 ? 1 : order.PaiZuanMark;
                     order.ShiZhuangMark = order.ShiZhuangMark == 2 ? 1 : order.ShiZhuangMark;
                     order.BaoZhuangMark = order.BaoZhuangMark == 2 ? 1 : order.BaoZhuangMark;
-                    order.XiSuMark = order.XiSuMark == 2 ? 1 : order.XiSuMark;
+                    //order.XiSuMark = order.XiSuMark == 2 ? 1 : order.XiSuMark;
 
                     $("#form1").SetWebControls(order);
                     if (!!order.DownPath) {
@@ -356,6 +356,7 @@
                     <label><input id="GuiTiMark" type="checkbox" checked />&nbsp;柜体 </label>
                     <label><input id="MenBanMark" type="checkbox" />&nbsp;门板 </label>
                     <label><input id="WuJinMark" type="checkbox" />&nbsp;五金 </label>
+                    <label><input id="WaiXieMark" type="checkbox" />&nbsp;外协 </label>
                 </div>
             </td>
             <td class="formTitle">工序<font face="宋体">*</font></td>

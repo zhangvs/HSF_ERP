@@ -304,6 +304,12 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// <returns></returns>
         [Column("WuJinMark")]
         public int? WuJinMark { get; set; }
+        /// <summary>
+        /// 材料--外协
+        /// </summary>
+        /// <returns></returns>
+        [Column("WaiXieMark")]
+        public int? WaiXieMark { get; set; }
 
 
 
@@ -452,6 +458,16 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// </summary>
         /// <returns></returns>
         public DateTime? PushDate { get; set; }
+        /// <summary>
+        /// 撤单原因
+        /// </summary>
+        /// <returns></returns>
+        public string PushBackReason { get; set; }
+        /// <summary>
+        /// 撤单附件
+        /// </summary>
+        /// <returns></returns>
+        public string PushBackPath { get; set; }
 
         /// <summary>
         /// 添加时间
@@ -560,6 +576,7 @@ namespace HZSoft.Application.Entity.CustomerManage
             this.DeleteMark = 0;
             this.EnabledMark = 1;
             this.MoneyOkMark = this.MoneyOkMark == null ? 0 : this.MoneyOkMark;//报价审核
+            this.OverMark = 0;
         }
         /// <summary>
         /// 编辑调用

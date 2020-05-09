@@ -1,10 +1,12 @@
 ﻿using HZSoft.Application.Code;
+using HZSoft.Application.Entity.BaseManage;
 using HZSoft.Application.Entity.CustomerManage;
 using HZSoft.Application.IService.CustomerManage;
 using HZSoft.Data.Repository;
 using HZSoft.Util;
 using HZSoft.Util.Extension;
 using HZSoft.Util.WebControl;
+using HZSoft.Util.WeChat.Comm;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -167,51 +169,10 @@ namespace HZSoft.Application.Service.CustomerManage
             entity.Create();
             this.BaseRepository().Insert(entity);
 
-            //ICashBalanceService icashbalanceservice = new CashBalanceService();
-            //DZ_OrderEntity orderEntity = orderIService.GetEntity(entity.OrderId);
 
-            //IRepository db = new RepositoryFactory().BaseRepository().BeginTrans();
-            //try
-            //{
-            //    //更改订单状态
-            //    orderEntity.ReceivedAmount = orderEntity.ReceivedAmount + entity.PaymentPrice;//收款金额
-            //    orderEntity.PaymentDate = DateTime.Now;//收款日期
-            //    if (orderEntity.ReceivedAmount == orderEntity.Accounts)
-            //    {
-            //        orderEntity.PaymentState = 3;//收款状态
-
-            //        //全部收款之后更新【入库单】中的尾款状态
-            //        Buys_OrderEntity buyEntity = buyIService.GetEntityByOrderId(orderEntity.Id);
-            //        if (buyEntity != null)
-            //        {
-            //            buyEntity.PaymentDate = DateTime.Now;
-            //            buyEntity.PaymentState = 3;//全部收款
-            //            db.Update(buyEntity);
-            //        }
-            //    }
-            //    else
-            //    {
-            //        orderEntity.PaymentState = 2;//部分收款
-            //    }
-            //    db.Update(orderEntity);
-
-            //    //添加【收款】
-            //    entity.Create();
-            //    db.Insert(entity);
-
-            //    //修改【下单状态】，第一次收款的时候才创建
-            //    if (orderEntity.DownMark != 1)
-            //    {
-            //        //付了预付款，自动创建【生产单】主单部分*****************
-            //        saleIService.SaveBuyMain(db, orderEntity);
-            //    }
-            //    db.Commit();
-            //}
-            //catch (Exception)
-            //{
-            //    db.Rollback();
-            //    throw;
-            //}
+            //发微信模板消息---营销收款之后，给财务提醒--刘一珠（收款提醒）
+            TemplateApp.SendTemplateReceivable(TemplateApp.AccessToken, "", "uciE_-vnHbhkdqbIHfdpmTQG5g568pDAw90qmjNXHGY",
+                "您好，有新的收款需要确认!", entity.Title, entity.PaymentPrice.ToString(), entity.Description);
         }
 
 
@@ -244,7 +205,20 @@ namespace HZSoft.Application.Service.CustomerManage
                         //已收款金额=订单金额
                         if (orderEntity.ReceivedAmount == orderEntity.Accounts)
                         {
-                            orderEntity.PaymentState = 3;//收款状态
+                            orderEntity.PaymentState = 3;//全部收款
+
+                            //发微信模板消息
+                            if (!string.IsNullOrEmpty(oldEntity.CreateUserName))
+                            {
+                                var hsf_CardList = db.IQueryable<Hsf_CardEntity>(t => t.Name.Equals(oldEntity.CreateUserName));//发送给创建订单的人，店长代替店员创建，所以店长能看见拆单报价
+                                if (hsf_CardList.Count() != 0)
+                                {
+                                    var hsf_CardEntity = hsf_CardList.First();
+                                    //发微信模板消息---营销收款之后，给销售员提醒--（收款确认提醒）
+                                    TemplateApp.SendTemplateReceivableOk(TemplateApp.AccessToken, hsf_CardEntity.OpenId, "PxdaZK82LHdat5u7zYzEbt4rOmLVIVFIC90We2YDXZ8",
+                                        "您好，有的收款已经确认!", "通过", "已全部收款");
+                                }
+                            }
 
                             //全部收款之后更新【入库单】中的【尾款】状态
                             Buys_OrderEntity buyEntity = buyIService.GetEntityByOrderId(orderEntity.Id);
@@ -258,6 +232,19 @@ namespace HZSoft.Application.Service.CustomerManage
                         else
                         {
                             orderEntity.PaymentState = 2;//部分收款
+
+                            //发微信模板消息
+                            if (!string.IsNullOrEmpty(oldEntity.CreateUserName))
+                            {
+                                var hsf_CardList = db.IQueryable<Hsf_CardEntity>(t => t.Name.Equals(oldEntity.CreateUserName));//发送给创建订单的人，店长代替店员创建，所以店长能看见拆单报价
+                                if (hsf_CardList.Count() != 0)
+                                {
+                                    var hsf_CardEntity = hsf_CardList.First();
+                                    //发微信模板消息---营销收款之后，给销售员提醒--（收款确认提醒）
+                                    TemplateApp.SendTemplateReceivableOk(TemplateApp.AccessToken, hsf_CardEntity.OpenId, "PxdaZK82LHdat5u7zYzEbt4rOmLVIVFIC90We2YDXZ8",
+                                        "您好，有的收款已经确认!", "通过", "部分收款");
+                                }
+                            }
                         }
                         db.Update(orderEntity);
 
@@ -265,8 +252,9 @@ namespace HZSoft.Application.Service.CustomerManage
                         if (orderEntity.DownMark != 1)
                         {
                             //付了预付款，自动创建【生产单】主单部分*****************
-                            saleIService.SaveBuyMain(db, orderEntity);
+                            saleIService.SaveSaleMain(db, orderEntity);
                         }
+
                     }
 
                     entity.Modify(keyValue);

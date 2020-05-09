@@ -287,6 +287,16 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// </summary>
         /// <returns></returns>
         public DateTime? DownDate { get; set; }
+        /// <summary>
+        /// 撤单原因
+        /// </summary>
+        /// <returns></returns>
+        public string PushBackReason { get; set; }
+        /// <summary>
+        /// 撤单原因附件
+        /// </summary>
+        /// <returns></returns>
+        public string PushBackPath { get; set; }
 
 
         /// <summary>
