@@ -60,9 +60,13 @@
     //加载表格
     function GetGrid() {
         var selectedRowIndex = 0;
+        var queryJson = {};
+        queryJson.OverMark = 0;//未完成的才显示出来
+
         var $gridTable = $('#gridTable');
         $gridTable.jqGrid({
             autowidth: true,
+            postData: { queryJson: JSON.stringify(queryJson) },
             height: $(window).height() - 156.5,
             url: "../../CustomerManage/Sale_Customer/GetPageListJson",
             datatype: "json",
@@ -146,7 +150,7 @@
                 { label: '计划开始', name: 'StatePlanDate', index: 'StatePlanDate', width: 80, align: '', sortable: true, formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' },
                     formatter: function (cellvalue, options, rowObject) {
                         if (cellvalue!=null) {
-                            if (getDate(cellvalue, 1) < "@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")" && rowObject.FengBianMark != 2) {
+                            if (getDate(cellvalue, 1) < "@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")" && (rowObject.KaiLiaoMark != 2 && rowObject.FengBianMark != 2 && rowObject.PaiZuanMark != 2 && rowObject.ShiZhuangMark != 2 && rowObject.BaoZhuangMark != 2)) {
                                 return "<span style='color:red'>" + cellvalue + "</span>";
                             } else {
                                 return cellvalue;

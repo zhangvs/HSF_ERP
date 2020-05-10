@@ -274,7 +274,7 @@ namespace HZSoft.Application.Service.CustomerManage
 
                         Id = Guid.NewGuid().ToString(),
                         CreateDate = DateTime.Now,
-                        PaymentState = orderEntity.PaymentState == 3 ? 1 : 0,//确认是否全部收款
+                        PaymentState = orderEntity.PaymentState,//确认是否全部收款
                         SendMark = 0,
                         DeleteMark = 0,
                         EnabledMark = 1,
@@ -375,25 +375,36 @@ namespace HZSoft.Application.Service.CustomerManage
                     db.Update<Sale_CustomerEntity>(produceEntity);
 
 
-                    //发微信模板消息
-                    //WXTemplate wXTemplate = new WXTemplate();
-                    //wXTemplate.SendToTemplate(buyEntity.OrderCode);
+
+                    string wk = "";
+                    //发微信模板消息--给销售人提醒(完全入库提醒)
+                    if (buyEntity.PaymentState==3)
+                    {
+                        //发微信模板消息---入库+收齐尾款之后，给胡鲁鲁发消息提醒????
+                        //订单生成通知（9完全入库提醒）
+                        TemplateApp.SendTemplateAllIn(TemplateApp.AccessToken, "oA-EC1Ucth5a3bkvcJSdiTCizz_g", "OWtHeoHLSNzPj8FJ1Bp6vbD4k0WfIbRqYhELB0wtMmY",
+                            "您好，有新的订单已经入库!", buyEntity.OrderTitle, "共" + buyEntity.TotalQty + "包，请进行发货通知");
+                    }
+                    else
+                    {
+                        wk = "请确认尾款。";
+                    }
+
+                    //发微信模板消息--给销售人提醒(完全入库提醒)
                     if (!string.IsNullOrEmpty(buyEntity.SalesmanUserName))
                     {
                         var hsf_CardList = db.IQueryable<Hsf_CardEntity>(t => t.Name.Equals(buyEntity.SalesmanUserName));
                         if (hsf_CardList.Count() != 0)
                         {
                             var hsf_CardEntity = hsf_CardList.First();
-                            //只有关注公众号的业务员才能收到消息
-                            string backMsg= TemplateApp.SendTemplateURL(TemplateApp.AccessToken, hsf_CardEntity.OpenId, "OWtHeoHLSNzPj8FJ1Bp6vbD4k0WfIbRqYhELB0wtMmY",
-                                "您好，您的订单已经入库!", buyEntity.OrderCode, buyEntity.CustomerName + "，共" + buyEntity.TotalQty + "包，请确认尾款。");
-                            if (backMsg!="ok")
+                            //订单生成通知，只有关注公众号的业务员才能收到消息(8完全入库提醒)
+                            string backMsg = TemplateApp.SendTemplateAllIn(TemplateApp.AccessToken, hsf_CardEntity.OpenId, "OWtHeoHLSNzPj8FJ1Bp6vbD4k0WfIbRqYhELB0wtMmY",
+                                "您好，您的订单已经全部入库!", buyEntity.OrderTitle, "共" + buyEntity.TotalQty + "包。"+ wk);
+                            if (backMsg != "ok")
                             {
-                                //业务员没有关注公众号
-                                //微信Post请求发生错误！错误代码：43004，说明：require subscribe hint: [ziWtva03011295]
-                                LogHelper.AddLog(buyEntity.SalesmanUserName+"没有关注公众号");//记录日志
+                                //业务员没有关注公众号，报错：微信Post请求发生错误！错误代码：43004，说明：require subscribe hint: [ziWtva03011295]
+                                LogHelper.AddLog(buyEntity.SalesmanUserName + "没有关注公众号");//记录日志
                             }
-
                         }
                     }
                 }
@@ -434,6 +445,12 @@ namespace HZSoft.Application.Service.CustomerManage
                     this.BaseRepository().Update(entity);
                     db.Update<Buys_OrderEntity>(entity);
                     db.Commit();
+
+
+                    //发微信模板消息---发货通知之后，给公维才发消息提醒?????
+                    //订单生成通知（10发货通知提醒）
+                    TemplateApp.SendTemplateSend(TemplateApp.AccessToken, "oA-EC1Ucth5a3bkvcJSdiTCizz_g", "Pw7phZTv4ly_C9-ayUHKFBq8xPMJG-E0D5rxzBKi_xg",
+                        "您好，有新的发货通知!", entity.Code, entity.OrderTitle + "，请在" + entity.SendPlanDate + "之前安排发货。");
                 }
             }
             catch (Exception)
@@ -482,6 +499,25 @@ namespace HZSoft.Application.Service.CustomerManage
                     produceEntity.Modify(entity.ProduceId);
                     db.Update<Sale_CustomerEntity>(produceEntity);
                     db.Commit();
+
+
+                    //发微信模板消息--给销售人提醒(10实际发货提醒)
+                    if (!string.IsNullOrEmpty(entity.SalesmanUserName))
+                    {
+                        var hsf_CardList = db.IQueryable<Hsf_CardEntity>(t => t.Name.Equals(entity.SalesmanUserName));
+                        if (hsf_CardList.Count() != 0)
+                        {
+                            var hsf_CardEntity = hsf_CardList.First();
+                            //订单生成通知，只有关注公众号的业务员才能收到消息(11实际发货提醒)
+                            string backMsg = TemplateApp.SendTemplateSend(TemplateApp.AccessToken, hsf_CardEntity.OpenId, "Pw7phZTv4ly_C9-ayUHKFBq8xPMJG-E0D5rxzBKi_xg",
+                                "您好，您的订单已经发货!", entity.Code, entity.OrderTitle+"，共" + entity.TotalQty + "包。");
+                            if (backMsg != "ok")
+                            {
+                                //业务员没有关注公众号，报错：微信Post请求发生错误！错误代码：43004，说明：require subscribe hint: [ziWtva03011295]
+                                LogHelper.AddLog(entity.SalesmanUserName + "没有关注公众号");//记录日志
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception)

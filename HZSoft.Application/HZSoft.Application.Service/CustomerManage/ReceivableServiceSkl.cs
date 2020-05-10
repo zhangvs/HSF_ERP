@@ -171,7 +171,7 @@ namespace HZSoft.Application.Service.CustomerManage
 
 
             //发微信模板消息---营销收款之后，给财务提醒--刘一珠（收款提醒）
-            TemplateApp.SendTemplateReceivable(TemplateApp.AccessToken, "", "uciE_-vnHbhkdqbIHfdpmTQG5g568pDAw90qmjNXHGY",
+            TemplateApp.SendTemplateReceivable(TemplateApp.AccessToken, "oA-EC1X0OoVmzyowOqxYHlY5NHX4", "uciE_-vnHbhkdqbIHfdpmTQG5g568pDAw90qmjNXHGY",
                 "您好，有新的收款需要确认!", entity.Title, entity.PaymentPrice.ToString(), entity.Description);
         }
 
@@ -214,7 +214,7 @@ namespace HZSoft.Application.Service.CustomerManage
                                 if (hsf_CardList.Count() != 0)
                                 {
                                     var hsf_CardEntity = hsf_CardList.First();
-                                    //发微信模板消息---营销收款之后，给销售员提醒--（收款确认提醒）
+                                    //发微信模板消息---营销收款之后，给销售员提醒--（收款确认提醒：已全部收款）
                                     TemplateApp.SendTemplateReceivableOk(TemplateApp.AccessToken, hsf_CardEntity.OpenId, "PxdaZK82LHdat5u7zYzEbt4rOmLVIVFIC90We2YDXZ8",
                                         "您好，有的收款已经确认!", "通过", "已全部收款");
                                 }
@@ -240,7 +240,7 @@ namespace HZSoft.Application.Service.CustomerManage
                                 if (hsf_CardList.Count() != 0)
                                 {
                                     var hsf_CardEntity = hsf_CardList.First();
-                                    //发微信模板消息---营销收款之后，给销售员提醒--（收款确认提醒）
+                                    //发微信模板消息---营销收款之后，给销售员提醒--（收款确认提醒：部分收款）
                                     TemplateApp.SendTemplateReceivableOk(TemplateApp.AccessToken, hsf_CardEntity.OpenId, "PxdaZK82LHdat5u7zYzEbt4rOmLVIVFIC90We2YDXZ8",
                                         "您好，有的收款已经确认!", "通过", "部分收款");
                                 }

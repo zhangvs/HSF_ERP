@@ -165,22 +165,22 @@ namespace HZSoft.Application.Entity.CustomerManage
         public int? AllEnterMark { get; set; }
 
         /// <summary>
-        /// 发货
+        /// 发货通知
         /// </summary>
         /// <returns></returns>
         public int? SendMark { get; set; }
         /// <summary>
-        /// 发货人Id
+        /// 发货通知人Id
         /// </summary>
         /// <returns></returns>
         public string SendUserId { get; set; }
         /// <summary>
-        /// 发货人
+        /// 发货通知人
         /// </summary>
         /// <returns></returns>
         public string SendUserName { get; set; }
         /// <summary>
-        /// 发货日期
+        /// 发货通知日期
         /// </summary>
         /// <returns></returns>
         public DateTime? SendDate { get; set; }

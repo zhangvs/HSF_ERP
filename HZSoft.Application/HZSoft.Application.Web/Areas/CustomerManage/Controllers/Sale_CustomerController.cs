@@ -95,11 +95,40 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         }
 
         /// <summary>
-        /// 完成
+        /// 下单完成
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult OverIndex()
+        public ActionResult OrderDownOverIndex()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// 推单完成
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult OrderPushOverIndex()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// 生产单只读
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult OrderOnlyReadIndex()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 生产单完成
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult OrderOverIndex()
         {
             return View();
         }

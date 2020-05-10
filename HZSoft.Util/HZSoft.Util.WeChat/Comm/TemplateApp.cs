@@ -29,7 +29,7 @@ namespace HZSoft.Util.WeChat.Comm
         /// <param name="keyword2">商品名称</param>
         /// <param name="keyword3">订单号</param>
         /// <returns></returns>
-        public static string SendTemplateShenTu(string accessToken, string openId, string template_id, string first, string keyword2, string keyword3, string remark)
+        public static string SendTemplateNew(string accessToken, string openId, string template_id, string first, string keyword2, string keyword3, string remark)
         {
             try
             {
@@ -184,7 +184,7 @@ namespace HZSoft.Util.WeChat.Comm
         /// <param name="openId"></param>
         /// <param name="template_id"></param>
         /// <returns></returns>
-        public static string SendTemplateURL(string accessToken, string openId, string template_id, string first, string keyword1, string remark)
+        public static string SendTemplateAllIn(string accessToken, string openId, string template_id, string first, string keyword1, string remark)
         {
             try
             {
@@ -203,8 +203,41 @@ namespace HZSoft.Util.WeChat.Comm
             {
                 return ex.Message;
             }
-
         }
+
+
+
+        /// <summary>
+        /// 发货通知，实际发货
+        /// </summary>
+        /// <param name="openId"></param>
+        /// <param name="template_id"></param>
+        /// <returns></returns>
+        public static string SendTemplateSend(string accessToken, string openId, string template_id, string first, string keyword1, string remark)
+        {
+            try
+            {
+                var data = new
+                {
+                    first = new TemplateDataItem(first),
+                    keyword1 = new TemplateDataItem(keyword1),
+                    keyword2 = new TemplateDataItem(DateTime.Now.ToString("yyyy年MM月dd日 HH:mm")),
+                    remark = new TemplateDataItem(remark),
+                };
+                //string url = "https://baidu.com";
+                SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(accessToken, openId, template_id, null, data, null);
+                return sendTemplateMessageResult.errmsg;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+
+
+
+
         /// <summary>
         /// 小程序跳转
         /// </summary>

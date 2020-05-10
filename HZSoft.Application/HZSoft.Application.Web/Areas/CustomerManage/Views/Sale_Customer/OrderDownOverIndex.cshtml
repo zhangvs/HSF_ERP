@@ -22,9 +22,9 @@
         d.setTime(mstime);
         timeToString(d);
     }
-    
+
     //字符串转日期格式，strDate要转为日期格式的字符串
-    function getDate(strDate,day) {
+    function getDate(strDate, day) {
         var date = eval('new Date(' + strDate.replace(/\d+(?=-[^-]+$)/,
             function (a) { return parseInt(a, 10) - 1; }).match(/\d+/g) + ')');
         var date = date.setDate(date.getDate() + day);
@@ -57,11 +57,12 @@
             e.stopPropagation();
         });
     }
+
     //加载表格
     function GetGrid() {
         var selectedRowIndex = 0;
         var queryJson = {};
-        queryJson.OverMark = 1;//推单的才显示出来
+        queryJson.OverMark = 1;//结束的才显示出来
 
         var $gridTable = $('#gridTable');
         $gridTable.jqGrid({
@@ -131,11 +132,10 @@
                 },
                 { label: '推单人', name: 'PushUserName', index: 'PushUserName', width: 80, align: 'center', sortable: true },
                 { label: '推单时间', name: 'PushDate', index: 'PushDate', width: 100, align: '', sortable: true, formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' } },
-                    {
-                    label: '最迟交付', name: 'EndDate', index: 'EndDate', width: 80, align: '', sortable: true, formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' },
+                { label: '最迟交付', name: 'EndDate', index: 'EndDate', width: 80, align: '', sortable: true, formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' },
                     formatter: function (cellvalue, options, rowObject) {
                         if (cellvalue!=null) {
-                            if (getDate(cellvalue, 1) < "@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")" && rowObject.EnterMark != 2) {//时间到了还没入库的视为未交付
+                            if (getDate(cellvalue,1) < "@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")") {
                                 return "<span style='color:red'>" + cellvalue + "</span>";
                             } else {
                                 return cellvalue;
@@ -149,9 +149,9 @@
                 { label: '总数量', name: 'SumTotalCount', index: 'SumTotalCount', width: 80, align: 'center', sortable: true },              
                 { label: '计划开始', name: 'StatePlanDate', index: 'StatePlanDate', width: 80, align: '', sortable: true, formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' },
                     formatter: function (cellvalue, options, rowObject) {
-                        if (cellvalue!=null) {//后面任何一道工序均未扫码的，视为未开始
-                            if (getDate(cellvalue, 1) < "@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")" && (rowObject.FengBianMark != 2 && rowObject.FengBianMark != 2 && rowObject.PaiZuanMark != 2 && rowObject.ShiZhuangMark != 2 && rowObject.BaoZhuangMark != 2)) {
-                                return "<span style='color:red'>" + cellvalue + "</span>";
+                        if (cellvalue!=null) {
+                            if (getDate(cellvalue, 1) < "@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")" && (rowObject.KaiLiaoMark != 2 && rowObject.FengBianMark != 2 && rowObject.PaiZuanMark != 2 && rowObject.ShiZhuangMark != 2 && rowObject.BaoZhuangMark != 2)) {
+                                 return "<span style='color:red'>" + cellvalue + "</span>";
                             } else {
                                 return cellvalue;
                             }
@@ -163,7 +163,7 @@
                 { label: '计划结束', name: 'EndPlanDate', index: 'EndPlanDate', width: 80, align: '', sortable: true, formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' },
                     formatter: function (cellvalue, options, rowObject) {
                         if (cellvalue!=null) {
-                            if (getDate(cellvalue, 1) < "@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")" && rowObject.EnterMark != 2) {//时间到了还没入库的视为未完成
+                            if (getDate(cellvalue, 1) < "@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")") {
                                 return "<span style='color:red'>" + cellvalue + "</span>";
                             } else {
                                 return cellvalue;
@@ -186,7 +186,7 @@
                         }
                     }
                 },
-                { label: '开料人', name: 'KaiLiaoUserName', index: 'KaiLiaoUserName', width: 90, align: 'center', sortable: true },
+                { label: '开料人', name: 'KaiLiaoUserName', index: 'KaiLiaoUserName', width: 80, align: 'center', sortable: true },
                 {
                     label: '开料日期', name: 'KaiLiaoDate', index: 'KaiLiaoDate', width: 118, align: 'left', sortable: true,
                     formatter: function (cellvalue, options, rowObject) {
@@ -213,7 +213,7 @@
                         }
                     }
                 },
-                { label: '封边人', name: 'FengBianUserName', index: 'FengBianUserName', width: 90, align: 'center', sortable: true },
+                { label: '封边人', name: 'FengBianUserName', index: 'FengBianUserName', width: 80, align: 'center', sortable: true },
                 { label: '封边日期', name: 'FengBianDate', index: 'FengBianDate', width: 118, align: 'left', sortable: true,
                     formatter: function (cellvalue, options, rowObject) {
                         if (cellvalue!=null) {
@@ -239,7 +239,7 @@
                         }
                     }
                 },
-                { label: '排钻人', name: 'PaiZuanUserName', index: 'PaiZuanUserName', width: 90, align: 'center', sortable: true },
+                { label: '排钻人', name: 'PaiZuanUserName', index: 'PaiZuanUserName', width: 80, align: 'center', sortable: true },
                 { label: '排钻日期', name: 'PaiZuanDate', index: 'PaiZuanDate', width: 118, align: 'left', sortable: true,
                     formatter: function (cellvalue, options, rowObject) {
                         if (cellvalue!=null) {
@@ -265,7 +265,7 @@
                         }
                     }
                 },
-                { label: '试装人', name: 'ShiZhuangUserName', index: 'ShiZhuangUserName', width: 90, align: 'center', sortable: true },
+                { label: '试装人', name: 'ShiZhuangUserName', index: 'ShiZhuangUserName', width: 80, align: 'center', sortable: true },
                 { label: '试装日期', name: 'ShiZhuangDate', index: 'ShiZhuangDate', width: 118, align: 'left', sortable: true,
                     formatter: function (cellvalue, options, rowObject) {
                         if (cellvalue!=null) {
@@ -291,7 +291,7 @@
                         }
                     }
                 },
-                { label: '包装人', name: 'BaoZhuangUserName', index: 'BaoZhuangUserName', width: 90, align: 'center', sortable: true },
+                { label: '包装人', name: 'BaoZhuangUserName', index: 'BaoZhuangUserName', width: 80, align: 'center', sortable: true },
                 { label: '包装日期', name: 'BaoZhuangDate', index: 'BaoZhuangDate', width: 118, align: 'left', sortable: true},
                 //{
                 //    label: "吸塑", name: "XiSuMark", index: "XiSuMark", width: 50, align: "center",
@@ -305,7 +305,7 @@
                 //        }
                 //    }
                 //},
-                //{ label: '吸塑人', name: 'XiSuUserName', index: 'XiSuUserName', width: 90, align: 'center', sortable: true },
+                //{ label: '吸塑人', name: 'XiSuUserName', index: 'XiSuUserName', width: 80, align: 'center', sortable: true },
                 //{ label: '吸塑日期', name: 'XiSuDate', index: 'XiSuDate', width: 118, align: 'left', sortable: true },
                 {
                     label: "入库", name: "EnterMark", index: "EnterMark", width: 60, align: "center", sortable: false,
@@ -496,17 +496,16 @@
         }
     }
 
-
-    //排产
-    function btn_plan() {
+    //下单
+    function btn_down() {
         var keyValue = $('#gridTable').jqGridRowValue('ProduceId');
         if (checkedRow(keyValue)) {
             dialogOpen({
-                id: 'PlanForm',
-                title: '排产计划',
-                url: '/CustomerManage/Sale_Customer/PlanForm?keyValue=' + keyValue,
-                width: '350px',
-                height: '250px',
+                id: 'DownForm',
+                title: '下单',
+                url: '/CustomerManage/Sale_Customer/OrderDownForm?keyValue=' + keyValue,
+                width: '650px',
+                height: '350px',
                 callBack: function (iframeId) {
                     top.frames[iframeId].AcceptClick();
                 }
@@ -589,8 +588,7 @@
     <div class="toolbar">
         <div class="btn-group">
             <a id="lr-replace" class="btn btn-default" onclick="reload()"><i class="fa fa-refresh"></i>刷新</a>
-            <a id="lr-edit" class="btn btn-default" onclick="btn_edit()"><i class="fa fa-pencil-square-o"></i>&nbsp;编辑</a>
-            <a id="lr-plan" class="btn btn-default" onclick="btn_plan()"><i class="fa fa-calendar"></i>&nbsp;排产</a>
+            @*<a id="lr-edit" class="btn btn-default" onclick="btn_down()"><i class="fa fa-anchor"></i>&nbsp;下单</a>*@
             <a id="lr-detail" class="btn btn-default" onclick="btn_detail()"><i class="fa fa-print"></i>&nbsp;打印</a>
             <a id="lr-export" class="btn btn-default" onclick="btn_export()"><i class="fa fa-sign-out"></i>&nbsp;导出</a>
         </div>

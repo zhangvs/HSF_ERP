@@ -23,7 +23,8 @@
     function GetGrid() {
         var selectedRowIndex = 0;
         var queryJson = {};
-        queryJson.PaymentState = 3;
+        queryJson.PaymentState = 3;//尾款完成的
+        queryJson.OverMark = 0;//未完成的
 
         var $gridTable = $('#gridTable');
         $gridTable.jqGrid({

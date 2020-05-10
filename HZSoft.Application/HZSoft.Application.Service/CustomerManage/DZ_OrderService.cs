@@ -447,7 +447,7 @@ namespace HZSoft.Application.Service.CustomerManage
                     {
                         //发微信模板消息---接单之后，给审图人提醒--刘琛oA-EC1X6RWfW1_DNJ_VNiA3uhOYg
                         //订单生成通知（拆单提醒）
-                        TemplateApp.SendTemplateShenTu(TemplateApp.AccessToken, "oA-EC1X6RWfW1_DNJ_VNiA3uhOYg", "Y5OqvcAap6hDfUOfDA-ffgiP8VFuISg3AogTT0Z7938",
+                        TemplateApp.SendTemplateNew(TemplateApp.AccessToken, "oA-EC1X6RWfW1_DNJ_VNiA3uhOYg", "Y5OqvcAap6hDfUOfDA-ffgiP8VFuISg3AogTT0Z7938",
                             "您好，有新的订单需要拆单!", entity.OrderTitle, entity.Code, "请进行拆单。");
                     }
 
@@ -455,7 +455,7 @@ namespace HZSoft.Application.Service.CustomerManage
                     //报价之后，给财务发消息提醒
                     if (entity.MoneyMark == 1 && oldEntity.MoneyMark == 0)
                     {
-                        //发微信模板消息---接单之后，给审图人提醒--刘一珠oA-EC1X0OoVmzyowOqxYHlY5NHX4
+                        //发微信模板消息---研发报价之后，给财务提醒--刘一珠oA-EC1X0OoVmzyowOqxYHlY5NHX4
                         //订单生成通知（报价提醒）
                         TemplateApp.SendTemplateMoney(TemplateApp.AccessToken, "oA-EC1X0OoVmzyowOqxYHlY5NHX4", "pJERHW4hENanVyyzA5Kiz_fYmvAT0sc4RRLqfZE9nUM",
                             "您好，有新的报价需要审核!", "研发中心", entity.OrderTitle, entity.Code, "请进行报价审核。");
@@ -471,8 +471,8 @@ namespace HZSoft.Application.Service.CustomerManage
                              if (hsf_CardList.Count() != 0)
                              {
                                  var hsf_CardEntity = hsf_CardList.First();
-                                 //不直接给销售员报价，只有直营店店长才能知道报价
-                                 TemplateApp.SendTemplateMoneyOk(TemplateApp.AccessToken, hsf_CardEntity.OpenId, "XfKHJdlsZ66CtuQVZl5u5_K0AO2lOw0vYKsTyfSogAU",
+                                //不直接给销售员报价，只有直营店店长才能知道报价（报价确认提醒）
+                                TemplateApp.SendTemplateMoneyOk(TemplateApp.AccessToken, hsf_CardEntity.OpenId, "XfKHJdlsZ66CtuQVZl5u5_K0AO2lOw0vYKsTyfSogAU",
                                      "您好，您的订单已报价成功!", oldEntity.Code, oldEntity.OrderTitle, entity.MoneyAccounts.ToString(), "请确认预付款。");
                              }
                          }
@@ -487,7 +487,7 @@ namespace HZSoft.Application.Service.CustomerManage
 
                     //发微信模板消息---接单之后，给审图人提醒--刘明存oA-EC1WVqHl_gsBM3We2rgOHIMEQ
                     //订单生成通知（审图提醒）
-                    TemplateApp.SendTemplateShenTu(TemplateApp.AccessToken, "oA-EC1WVqHl_gsBM3We2rgOHIMEQ", "Y5OqvcAap6hDfUOfDA-ffgiP8VFuISg3AogTT0Z7938",
+                    TemplateApp.SendTemplateNew(TemplateApp.AccessToken, "oA-EC1WVqHl_gsBM3We2rgOHIMEQ", "Y5OqvcAap6hDfUOfDA-ffgiP8VFuISg3AogTT0Z7938",
                         "您好，有新的订单需要审图!", entity.OrderTitle, entity.Code, "请进行审图。");
                 }
             }

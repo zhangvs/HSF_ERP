@@ -120,11 +120,29 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         }
 
         /// <summary>
-        /// 结束
+        /// 入库完成
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult OverIndex()
+        public ActionResult Buys_OrderOverIndex()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 发货通知完成
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult KeeperOverIndex()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 发货完成
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult SendOutOverIndex()
         {
             return View();
         }
