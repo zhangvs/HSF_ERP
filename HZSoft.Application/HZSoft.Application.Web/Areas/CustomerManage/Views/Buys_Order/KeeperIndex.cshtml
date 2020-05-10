@@ -23,7 +23,7 @@
     function GetGrid() {
         var selectedRowIndex = 0;
         var queryJson = {};
-        queryJson.PaymentState = 3;//尾款完成的
+        //queryJson.PaymentState = 3;//尾款完成的
         queryJson.OverMark = 0;//未完成的
 
         var $gridTable = $('#gridTable');
@@ -41,7 +41,51 @@
                 { label: '客户', name: 'CustomerName', index: 'CustomerName', width: 130, align: 'center', sortable: true },
                 { label: '销售人', name: 'SalesmanUserName', index: 'SalesmanUserName', width: 80, align: 'center', sortable: true },
                 { label: "总包数", name: "TotalQty", width: 80, align: "center" },
-                { label: '入库日期', name: 'CreateDate', index: 'CreateDate', width: 118, align: 'left', sortable: true },
+                { label: '创建日期', name: 'CreateDate', index: 'CreateDate', width: 118, align: 'left', sortable: true },
+                {
+                    label: "柜体入库", name: "GuiEnterMark", index: "GuiEnterMark", width: 80, align: "center", sortable: false,
+                    formatter: function (cellvalue) {
+                        if (cellvalue == 0) {
+                            return "包装中";
+                        } else if (cellvalue == 1) {
+                            return "<i class=\"fa fa-toggle-on\"></i>";
+                        } else {
+                            return "";
+                        }
+                    }
+                },
+                {
+                    label: "五金入库", name: "WuEnterMark", index: "WuEnterMark", width: 80, align: "center", sortable: false,
+                    formatter: function (cellvalue) {
+                        if (cellvalue == 0) {
+                            return "<i class=\"fa fa-toggle-off\"></i>";
+                        } else if (cellvalue == 1) {
+                            return "<i class=\"fa fa-toggle-on\"></i>";
+                        } else {
+                            return "";
+                        }
+                    }
+                },
+                {
+                    label: "门板入库", name: "MenEnterMark", index: "MenEnterMark", width: 80, align: "center", sortable: false,
+                    formatter: function (cellvalue) {
+                        if (cellvalue == 0) {
+                            return "<i class=\"fa fa-toggle-off\"></i>";
+                        } else if (cellvalue == 1) {
+                            return "<i class=\"fa fa-toggle-on\"></i>";
+                        } else {
+                            return "";
+                        }
+                    }
+                },
+                {
+                    label: "全部入库", name: "AllEnterMark", index: "AllEnterMark", width: 80, align: "center", sortable: false,
+                    formatter: function (cellvalue) {
+                        return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
+                    }
+                },
+                { label: '入库完成时间', name: 'AllEnterDate', index: 'AllEnterDate', width: 118, align: 'left', sortable: true },
+
                 {
                     label: "尾款", name: "PaymentState", index: "PaymentState", width: 80, align: "center", sortable: false,
                     formatter: function (cellvalue) {
@@ -50,7 +94,7 @@
                 },
                 { label: '付款日期', name: 'PaymentDate', index: 'PaymentDate', width: 118, align: 'left', sortable: true },
                 {
-                    label: "通知", name: "SendMark", index: "SendMark", width: 80, align: "center", sortable: false,
+                    label: "发货通知", name: "SendMark", index: "SendMark", width: 80, align: "center", sortable: false,
                     formatter: function (cellvalue) {
                         return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
                     }
@@ -188,20 +232,30 @@
     }
 
 
-    //发货
+    //发货通知
     function btn_send() {
-        var keyValue = $('#gridTable').jqGridRowValue('Id');
-        if (checkedRow(keyValue)) {
-            dialogOpen({
-                id: 'SendForm',
-                title: '发货',
-                url: '/CustomerManage/Buys_Order/SendForm?keyValue=' + keyValue,
-                width: '650px',
-                height: '550px',
-                callBack: function (iframeId) {
-                    top.frames[iframeId].AcceptClick();
-                }
-            })
+        var PaymentState = $('#gridTable').jqGridRowValue('PaymentState');
+        var AllEnterMark = $('#gridTable').jqGridRowValue('AllEnterMark');
+        if (PaymentState.indexOf("fa-toggle-off") >= 0) {
+            dialogMsg('尾款还没有收齐！', 0);
+        }
+        else if (AllEnterMark.indexOf("fa-toggle-off") >= 0 ) {
+            dialogMsg('还没有完全入库！', 0);
+        }
+        else {
+            var keyValue = $('#gridTable').jqGridRowValue('Id');
+            if (checkedRow(keyValue)) {
+                dialogOpen({
+                    id: 'SendForm',
+                    title: '发货通知',
+                    url: '/CustomerManage/Buys_Order/SendForm?keyValue=' + keyValue,
+                    width: '650px',
+                    height: '550px',
+                    callBack: function (iframeId) {
+                        top.frames[iframeId].AcceptClick();
+                    }
+                })
+            }
         }
     }
 </script>

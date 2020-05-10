@@ -7,7 +7,7 @@
 
 <html>
 <head>
-    <title>个人资料</title>
+    <title>生产人员</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no" />
     <link href="~/Content/scripts/plugins/layui/css/layui.css" rel="stylesheet" />
@@ -17,7 +17,7 @@
 </head>
 <body>
     <div class="skl_containers">
-        <h2>个人资料补充</h2>
+        <h2>生产人员信息填写</h2>
         <form id="form1">
             <input class="txt" id="Name" type="text" placeholder="请输入姓名" />
             <select class="select" id="Step">
@@ -93,7 +93,7 @@
                     layer.alert(responseText, {
                         icon: 1, skin: 'layui-layer-lan', closeBtn: 0
                     }, function () {
-                        window.location.href = "/WeChatManage/Produce/Success?msg=个人资料补充完成！";
+                        window.location.href = "/WeChatManage/Produce/Success?msg=信息填写完成！";
                     });
                 },
                 error: function () {

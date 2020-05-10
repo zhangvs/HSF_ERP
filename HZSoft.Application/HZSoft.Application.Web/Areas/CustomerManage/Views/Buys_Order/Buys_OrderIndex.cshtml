@@ -54,7 +54,7 @@
                     }
                 },
                 {
-                    label: "门板入库", name: "MenEnterMark", index: "MenEnterMark", width: 80, align: "center", sortable: false,
+                    label: "五金入库", name: "WuEnterMark", index: "WuEnterMark", width: 80, align: "center", sortable: false,
                     formatter: function (cellvalue) {
                         if (cellvalue == 0) {
                             return "<i class=\"fa fa-toggle-off\"></i>";
@@ -66,7 +66,7 @@
                     }
                 },
                 {
-                    label: "五金入库", name: "WuEnterMark", index: "WuEnterMark", width: 80, align: "center", sortable: false,
+                    label: "门板入库", name: "MenEnterMark", index: "MenEnterMark", width: 80, align: "center", sortable: false,
                     formatter: function (cellvalue) {
                         if (cellvalue == 0) {
                             return "<i class=\"fa fa-toggle-off\"></i>";
@@ -83,6 +83,7 @@
                         return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
                     }
                 },
+                { label: '入库完成时间', name: 'AllEnterDate', index: 'AllEnterDate', width: 118, align: 'left', sortable: true },
                 {
                     label: "尾款", name: "PaymentState", index: "PaymentState", width: 80, align: "center", sortable: false,
                     formatter: function (cellvalue) {
@@ -413,10 +414,10 @@
     <div class="toolbar">
         <div class="btn-group">
             <a id="lr-replace" class="btn btn-default" onclick="reload()"><i class="fa fa-refresh"></i>刷新</a>
-            @*<a id="lr-edit" class="btn btn-default" onclick="btn_Gui()"><i class="fa fa-pencil-square-o"></i>柜体入库</a>
-        <a id="lr-edit" class="btn btn-default" onclick="btn_Men()"><i class="fa fa-pencil-square-o"></i>门板入库</a>
-        <a id="lr-edit" class="btn btn-default" onclick="btn_Wu()"><i class="fa fa-pencil-square-o"></i>五金入库</a>
-        <a id="lr-edit" class="btn btn-default" onclick="btn_Wai()"><i class="fa fa-pencil-square-o"></i>外协入库</a>*@
+            <a id="lr-edit" class="btn btn-default" onclick="btn_Gui()"><i class="fa fa-pencil-square-o"></i>柜体入库</a>
+            <a id="lr-edit" class="btn btn-default" onclick="btn_Wu()"><i class="fa fa-pencil-square-o"></i>五金入库</a>
+            <a id="lr-edit" class="btn btn-default" onclick="btn_Men()"><i class="fa fa-pencil-square-o"></i>门板入库</a>
+            <a id="lr-edit" class="btn btn-default" onclick="btn_Wai()"><i class="fa fa-pencil-square-o"></i>外协入库</a>
             <a id="lr-detail" class="btn btn-default" onclick="btn_detail()"><i class="fa fa-list-alt"></i>&nbsp;详细</a>
             <a id="lr-export" class="btn btn-default" onclick="btn_export()"><i class="fa fa-sign-out"></i>导出</a>
         </div>

@@ -54,7 +54,7 @@
                     }
                 },
                 {
-                    label: "门板入库", name: "MenEnterMark", index: "MenEnterMark", width: 80, align: "center", sortable: false,
+                    label: "五金入库", name: "WuEnterMark", index: "WuEnterMark", width: 80, align: "center", sortable: false,
                     formatter: function (cellvalue) {
                         if (cellvalue == 0) {
                             return "<i class=\"fa fa-toggle-off\"></i>";
@@ -66,7 +66,7 @@
                     }
                 },
                 {
-                    label: "五金入库", name: "WuEnterMark", index: "WuEnterMark", width: 80, align: "center", sortable: false,
+                    label: "门板入库", name: "MenEnterMark", index: "MenEnterMark", width: 80, align: "center", sortable: false,
                     formatter: function (cellvalue) {
                         if (cellvalue == 0) {
                             return "<i class=\"fa fa-toggle-off\"></i>";
@@ -83,6 +83,7 @@
                         return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
                     }
                 },
+                { label: '入库完成时间', name: 'AllEnterDate', index: 'AllEnterDate', width: 118, align: 'left', sortable: true },
                 {
                     label: "尾款", name: "PaymentState", index: "PaymentState", width: 80, align: "center", sortable: false,
                     formatter: function (cellvalue) {

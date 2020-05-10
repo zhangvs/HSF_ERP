@@ -163,6 +163,11 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// </summary>
         /// <returns></returns>
         public int? AllEnterMark { get; set; }
+        /// <summary>
+        /// 完全入库时间
+        /// </summary>
+        /// <returns></returns>
+        public DateTime? AllEnterDate { get; set; }
 
         /// <summary>
         /// 发货通知

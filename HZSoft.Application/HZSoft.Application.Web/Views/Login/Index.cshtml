@@ -93,7 +93,7 @@
                 var $verifycode = $("#verifycode");
                 if ($username.val() == "") {
                     $username.focus();
-                    formMessage('请输入账户或手机号或邮箱。');
+                    formMessage('请输入账号或手机号或邮箱。');
                     return false;
                 } else if ($password.val() == "") {
                     $password.focus();
@@ -185,7 +185,7 @@
 
 
 
-        /*=========注册账户（begin）================================================================*/
+        /*=========注册账号（begin）================================================================*/
         $(function () {
             //手机号离开事件
             $("#txt_register_account").blur(function () {
@@ -285,7 +285,7 @@
                 });
             });
         })
-        /*=========注册账户（end）================================================================*/
+        /*=========注册账号（end）================================================================*/
     </script>
 </head>
 <body class="aaabody">
@@ -311,7 +311,7 @@
                             <legend style="color:#fff">思科莱，为美好生活而来</legend>
                             <dl class="form">
                                 <dd>
-                                    <input id="username" type="text" class="px" placeholder="账户">
+                                    <input id="username" type="text" class="px" placeholder="账号">
                                 </dd>
                                 <dd>
                                     <input id="password" type="password" class="px" placeholder="密码">

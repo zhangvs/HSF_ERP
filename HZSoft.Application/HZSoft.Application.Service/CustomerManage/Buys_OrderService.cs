@@ -355,6 +355,7 @@ namespace HZSoft.Application.Service.CustomerManage
                 {
                     //完全入库修改状态
                     buyEntity.AllEnterMark = 1;
+                    buyEntity.AllEnterDate = DateTime.Now;
 
                     //同步到接单表-入库状态
                     DZ_OrderEntity dZ_OrderEntity = new DZ_OrderEntity
