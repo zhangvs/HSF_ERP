@@ -215,8 +215,13 @@ namespace HZSoft.Application.Service.CustomerManage
                                 {
                                     var hsf_CardEntity = hsf_CardList.First();
                                     //发微信模板消息---营销收款之后，给销售员提醒--（收款确认提醒：已全部收款）
-                                    TemplateApp.SendTemplateReceivableOk(TemplateApp.AccessToken, hsf_CardEntity.OpenId, "PxdaZK82LHdat5u7zYzEbt4rOmLVIVFIC90We2YDXZ8",
+                                    string backMsg = TemplateApp.SendTemplateReceivableOk(TemplateApp.AccessToken, hsf_CardEntity.OpenId, "PxdaZK82LHdat5u7zYzEbt4rOmLVIVFIC90We2YDXZ8",
                                         "您好，有的收款已经确认!", "通过", "已全部收款");
+                                    if (backMsg != "ok")
+                                    {
+                                        //业务员没有关注公众号，报错：微信Post请求发生错误！错误代码：43004，说明：require subscribe hint: [ziWtva03011295]
+                                        LogHelper.AddLog(entity.SalesmanUserName + "没有关注公众号");//记录日志
+                                    }
                                 }
                             }
 
@@ -241,8 +246,13 @@ namespace HZSoft.Application.Service.CustomerManage
                                 {
                                     var hsf_CardEntity = hsf_CardList.First();
                                     //发微信模板消息---营销收款之后，给销售员提醒--（收款确认提醒：部分收款）
-                                    TemplateApp.SendTemplateReceivableOk(TemplateApp.AccessToken, hsf_CardEntity.OpenId, "PxdaZK82LHdat5u7zYzEbt4rOmLVIVFIC90We2YDXZ8",
+                                    string backMsg = TemplateApp.SendTemplateReceivableOk(TemplateApp.AccessToken, hsf_CardEntity.OpenId, "PxdaZK82LHdat5u7zYzEbt4rOmLVIVFIC90We2YDXZ8",
                                         "您好，有的收款已经确认!", "通过", "部分收款");
+                                    if (backMsg != "ok")
+                                    {
+                                        //业务员没有关注公众号，报错：微信Post请求发生错误！错误代码：43004，说明：require subscribe hint: [ziWtva03011295]
+                                        LogHelper.AddLog(entity.SalesmanUserName + "没有关注公众号");//记录日志
+                                    }
                                 }
                             }
                         }

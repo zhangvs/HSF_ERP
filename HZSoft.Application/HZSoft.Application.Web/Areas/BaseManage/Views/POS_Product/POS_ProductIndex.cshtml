@@ -167,7 +167,7 @@
         var keyValue = $("#gridTable").jqGridRowValue("Id");
         if (keyValue) {
             $.RemoveForm({
-                url: "../../BaseManage/POS_Product/POS_ProductForm/RemoveForm",
+                url: "../../BaseManage/POS_Product/RemoveForm",
                 param: { keyValue: keyValue },
                 success: function (data) {
                     $("#gridTable").resetSelection();

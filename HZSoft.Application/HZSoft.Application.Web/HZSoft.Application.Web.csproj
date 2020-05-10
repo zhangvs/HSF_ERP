@@ -1970,11 +1970,6 @@
     <Content Include="Areas\WeChatManage\Views\Card\Skljm.cshtml" />
     <Content Include="Areas\CustomerManage\Views\Client_Company\Client_CompanyForm.cshtml" />
     <Content Include="Areas\CustomerManage\Views\Client_Company\Client_CompanyIndex.cshtml" />
-    <Content Include="Areas\BaseManage\POS_Product\POS_ProductDetail.cshtml" />
-    <Content Include="Areas\BaseManage\POS_Product\POS_ProductForm.cshtml" />
-    <Content Include="Areas\BaseManage\POS_Product\POS_ProductIndex.cshtml" />
-    <Content Include="Areas\BaseManage\POS_Product_Type\POS_Product_TypeForm.cshtml" />
-    <Content Include="Areas\BaseManage\POS_Product_Type\POS_Product_TypeIndex.cshtml" />
     <Content Include="Areas\BaseManage\Views\POS_Product\POS_ProductDetail.cshtml" />
     <Content Include="Areas\BaseManage\Views\POS_Product\POS_ProductForm.cshtml" />
     <Content Include="Areas\BaseManage\Views\POS_Product\POS_ProductIndex.cshtml" />
@@ -2035,6 +2030,7 @@
     <Content Include="Areas\CustomerManage\Views\Sale_Customer\OrderPushOverIndex.cshtml" />
     <Content Include="Areas\CustomerManage\Views\Sale_Customer\OrderDownOverIndex.cshtml" />
     <Content Include="Areas\CustomerManage\Views\Sale_Customer\OrderOnlyReadIndex.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\DZ_Order\DZ_OrderDetail.cshtml" />
     <None Include="Properties\PublishProfiles\6.1.pubxml" />
     <Content Include="Areas\FlowManage\Views\FlowLaunch\Index.cshtml" />
     <Content Include="Areas\FlowManage\Views\FormDesign\FormPreview.cshtml" />

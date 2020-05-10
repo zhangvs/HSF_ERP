@@ -49,6 +49,15 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         }
 
         /// <summary>
+        /// 表单页面
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult DZ_OrderDetail()
+        {
+            return View();
+        }
+        /// <summary>
         /// 列表页面
         /// </summary>
         /// <returns></returns>
