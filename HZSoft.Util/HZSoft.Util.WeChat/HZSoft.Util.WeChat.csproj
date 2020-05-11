@@ -70,6 +70,7 @@
     <Compile Include="Comm\HttpHelper.cs" />
     <Compile Include="Comm\Program.cs" />
     <Compile Include="Comm\Sample.cs" />
+    <Compile Include="Comm\TemplateWxApp.cs" />
     <Compile Include="Comm\TemplateApp.cs" />
     <Compile Include="Comm\WXBizMsgCrypt.cs" />
     <Compile Include="Comm\WXTemplate.cs" />

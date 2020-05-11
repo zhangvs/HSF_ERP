@@ -304,10 +304,10 @@ namespace HZSoft.Application.Service.CustomerManage
                 //自动创建【生产单】主单部分
                 Sale_CustomerEntity sale_CustomerEntity = new Sale_CustomerEntity
                 {
+                    ProduceCode = orderEntity.Code,//生产单号默认和销售单号一样
                     OrderId = orderEntity.Id,
                     OrderCode = orderEntity.Code,
                     OrderTitle=orderEntity.OrderTitle,
-                    ProduceCode = orderEntity.Code,//生产单号默认和销售单号一样
                     OrderType = orderEntity.OrderType,
                     CompanyId = orderEntity.CompanyId,
                     CompanyName = orderEntity.CompanyName,
@@ -337,7 +337,16 @@ namespace HZSoft.Application.Service.CustomerManage
 
                 //生成生产单id二维码
                 QRCode(sale_CustomerEntity.ProduceId);
-                
+
+                if (sale_CustomerEntity.MoneyOkMark==1)
+                {
+                    //发微信模板消息---财务已经报价审核并收款确认之后，给张宝莲发消息提醒oA-EC1bJnd0KFBuOy0joJvUOGwwk
+                    //订单生成通知（7下单提醒）
+                    TemplateWxApp.SendTemplateNew("oA-EC1bJnd0KFBuOy0joJvUOGwwk",
+                        "您好，有新的订单财务已经报价审核并收款确认!", sale_CustomerEntity.OrderTitle, sale_CustomerEntity.OrderCode, "请进行生产下单。");
+                }
+
+
             }
             catch (Exception)
             {
@@ -422,7 +431,7 @@ namespace HZSoft.Application.Service.CustomerManage
 
                     //发微信模板消息---下单之后，给程东彩发消息提醒oA-EC1W1BQZ46Wc8HPCZZUUFbE9M
                     //订单生成通知（8下单提醒）
-                    TemplateApp.SendTemplateNew(TemplateApp.AccessToken, "oA-EC1W1BQZ46Wc8HPCZZUUFbE9M", "Y5OqvcAap6hDfUOfDA-ffgiP8VFuISg3AogTT0Z7938",
+                    TemplateWxApp.SendTemplateNew("oA-EC1W1BQZ46Wc8HPCZZUUFbE9M",
                         "您好，有新的订单已经下单!", entity.OrderTitle, entity.OrderCode, "请进行审核推单。");
                 }
             }

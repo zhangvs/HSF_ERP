@@ -383,7 +383,7 @@ namespace HZSoft.Application.Service.CustomerManage
                     {
                         //发微信模板消息---入库+收齐尾款之后，给胡鲁鲁发消息提醒????
                         //订单生成通知（9完全入库提醒）
-                        TemplateApp.SendTemplateAllIn(TemplateApp.AccessToken, "oA-EC1Ucth5a3bkvcJSdiTCizz_g", "OWtHeoHLSNzPj8FJ1Bp6vbD4k0WfIbRqYhELB0wtMmY",
+                        TemplateWxApp.SendTemplateAllIn("oA-EC1Ucth5a3bkvcJSdiTCizz_g", 
                             "您好，有新的订单已经入库!", buyEntity.OrderTitle, "共" + buyEntity.TotalQty + "包，请进行发货通知");
                     }
                     else
@@ -399,7 +399,7 @@ namespace HZSoft.Application.Service.CustomerManage
                         {
                             var hsf_CardEntity = hsf_CardList.First();
                             //订单生成通知，只有关注公众号的业务员才能收到消息(8完全入库提醒)
-                            string backMsg = TemplateApp.SendTemplateAllIn(TemplateApp.AccessToken, hsf_CardEntity.OpenId, "OWtHeoHLSNzPj8FJ1Bp6vbD4k0WfIbRqYhELB0wtMmY",
+                            string backMsg = TemplateWxApp.SendTemplateAllIn(hsf_CardEntity.OpenId,
                                 "您好，您的订单已经全部入库!", buyEntity.OrderTitle, "共" + buyEntity.TotalQty + "包。"+ wk);
                             if (backMsg != "ok")
                             {
@@ -450,7 +450,7 @@ namespace HZSoft.Application.Service.CustomerManage
 
                     //发微信模板消息---发货通知之后，给公维才发消息提醒?????
                     //订单生成通知（10发货通知提醒）
-                    TemplateApp.SendTemplateSend(TemplateApp.AccessToken, "oA-EC1Ucth5a3bkvcJSdiTCizz_g", "Pw7phZTv4ly_C9-ayUHKFBq8xPMJG-E0D5rxzBKi_xg",
+                    TemplateWxApp.SendTemplateSend("oA-EC1Ucth5a3bkvcJSdiTCizz_g", 
                         "您好，有新的发货通知!", entity.Code, entity.OrderTitle + "，请在" + entity.SendPlanDate + "之前安排发货。");
                 }
             }
@@ -510,7 +510,7 @@ namespace HZSoft.Application.Service.CustomerManage
                         {
                             var hsf_CardEntity = hsf_CardList.First();
                             //订单生成通知，只有关注公众号的业务员才能收到消息(11实际发货提醒)
-                            string backMsg = TemplateApp.SendTemplateSend(TemplateApp.AccessToken, hsf_CardEntity.OpenId, "Pw7phZTv4ly_C9-ayUHKFBq8xPMJG-E0D5rxzBKi_xg",
+                            string backMsg = TemplateWxApp.SendTemplateSend(hsf_CardEntity.OpenId,
                                 "您好，您的订单已经发货!", entity.Code, entity.OrderTitle+"，共" + entity.TotalQty + "包。");
                             if (backMsg != "ok")
                             {

@@ -7,23 +7,10 @@ using System;
 
 namespace HZSoft.Util.WeChat.Comm
 {
-    public class TemplateAppX
+    public class TemplateWxApp
     {
-        public static string OpenId = "";
-        public static string Template_id = "";
-        public static string AccessToken = GetACCESS_TOKEN();
-
-
-        static void Main(string[] args)
-        {
-            //网页跳转
-            //SendTemplateMessageResult T = SendTemplateURL(AccessToken, OpenId, Template_id);
-            //小程序跳转
-            SendTemplateMessageResult T1 = SendTemplatMiniProgram(AccessToken, OpenId, Template_id);
-            //Console.WriteLine(T + "\n" + T1);
-            Console.ReadKey();
-        }
-
+        public static string appId = Config.GetValue("AppID");
+        public static string appSecret = Config.GetValue("AppSecret");
         /// <summary>
         /// 给审图，拆单提醒
         /// </summary>
@@ -32,7 +19,7 @@ namespace HZSoft.Util.WeChat.Comm
         /// <param name="keyword2">商品名称</param>
         /// <param name="keyword3">订单号</param>
         /// <returns></returns>
-        public static string SendTemplateNew(string accessToken, string openId, string template_id, string first, string keyword2, string keyword3, string remark)
+        public static string SendTemplateNew( string openId, string first, string keyword2, string keyword3, string remark)
         {
             try
             {
@@ -44,8 +31,8 @@ namespace HZSoft.Util.WeChat.Comm
                     keyword3 = new TemplateDataItem(keyword3),
                     remark = new TemplateDataItem(remark),
                 };
-                //string url = "https://baidu.com";
-                SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(accessToken, openId, template_id, null, data, null);
+                SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(
+                    AccessTokenContainer.TryGetAccessToken(appId, appSecret), openId, "Y5OqvcAap6hDfUOfDA-ffgiP8VFuISg3AogTT0Z7938", null, data, null);
                 return sendTemplateMessageResult.errmsg;
             }
             catch (Exception ex)
@@ -65,7 +52,7 @@ namespace HZSoft.Util.WeChat.Comm
         /// <param name="keyword2">商品名称</param>
         /// <param name="keyword3">订单号</param>
         /// <returns></returns>
-        public static string SendTemplateMoney(string accessToken, string openId, string template_id, string first, string keyword2, string keyword3, string keyword4, string remark)
+        public static string SendTemplateMoney( string openId, string first, string keyword2, string keyword3, string keyword4, string remark)
         {
             try
             {
@@ -78,12 +65,13 @@ namespace HZSoft.Util.WeChat.Comm
                     keyword4 = new TemplateDataItem(keyword4),
                     remark = new TemplateDataItem(remark),
                 };
-                //string url = "https://baidu.com";
-                SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(accessToken, openId, template_id, null, data, null);
+                SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(
+                    AccessTokenContainer.TryGetAccessToken(appId, appSecret), openId, "pJERHW4hENanVyyzA5Kiz_fYmvAT0sc4RRLqfZE9nUM", null, data, null);
                 return sendTemplateMessageResult.errmsg;
             }
             catch (Exception ex)
             {
+                LogHelper.AddLog(ex.Message);
                 return ex.Message;//微信Post请求发生错误！错误代码：43004，说明：require subscribe hint: [ziWtva03011295]
             }
         }
@@ -99,7 +87,7 @@ namespace HZSoft.Util.WeChat.Comm
         /// <param name="keyword4">时间</param>
         /// <param name="template_id"></param>
         /// <returns></returns>
-        public static string SendTemplateMoneyOk(string accessToken, string openId, string template_id, string first, string keyword1, string keyword2, string keyword3, string remark)
+        public static string SendTemplateMoneyOk( string openId, string first, string keyword1, string keyword2, string keyword3, string remark)
         {
             try
             {
@@ -112,12 +100,13 @@ namespace HZSoft.Util.WeChat.Comm
                     keyword4 = new TemplateDataItem(DateTime.Now.ToString("yyyy年MM月dd日 HH:mm")),
                     remark = new TemplateDataItem(remark),
                 };
-                //string url = "https://baidu.com";
-                SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(accessToken, openId, template_id, null, data, null);
+                SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(
+                    AccessTokenContainer.TryGetAccessToken(appId, appSecret), openId, "XfKHJdlsZ66CtuQVZl5u5_K0AO2lOw0vYKsTyfSogAU", null, data, null);
                 return sendTemplateMessageResult.errmsg;
             }
             catch (Exception ex)
             {
+                LogHelper.AddLog(ex.Message);
                 return ex.Message;//微信Post请求发生错误！错误代码：43004，说明：require subscribe hint: [ziWtva03011295]
             }
         }
@@ -133,7 +122,7 @@ namespace HZSoft.Util.WeChat.Comm
         /// <param name="keyword2">应收金额</param>
         /// <param name="keyword3">时间</param>
         /// <returns></returns>
-        public static string SendTemplateReceivable(string accessToken, string openId, string template_id, string first, string keyword1, string keyword2, string remark)
+        public static string SendTemplateReceivable( string openId, string first, string keyword1, string keyword2, string remark)
         {
             try
             {
@@ -145,18 +134,20 @@ namespace HZSoft.Util.WeChat.Comm
                     keyword3 = new TemplateDataItem(DateTime.Now.ToString("yyyy年MM月dd日 HH:mm")),
                     remark = new TemplateDataItem(remark),
                 };
-                SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(accessToken, openId, template_id, null, data, null);
+                SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(
+                    AccessTokenContainer.TryGetAccessToken(appId, appSecret), openId, "uciE_-vnHbhkdqbIHfdpmTQG5g568pDAw90qmjNXHGY", null, data, null);
                 return sendTemplateMessageResult.errmsg;
             }
             catch (Exception ex)
             {
+                LogHelper.AddLog(ex.Message);
                 return ex.Message;//微信Post请求发生错误！错误代码：43004，说明：require subscribe hint: [ziWtva03011295]
             }
         }
 
 
         /// <summary>
-        /// 收款提醒
+        /// 收款确认提醒
         /// </summary>
         /// <param name="openId"></param>
         /// <param name="template_id"></param>
@@ -164,7 +155,7 @@ namespace HZSoft.Util.WeChat.Comm
         /// <param name="keyword2">应收金额</param>
         /// <param name="keyword3">时间</param>
         /// <returns></returns>
-        public static string SendTemplateReceivableOk(string accessToken, string openId, string template_id, string first, string keyword1, string remark)
+        public static string SendTemplateReceivableOk( string openId, string first, string keyword1, string remark)
         {
             try
             {
@@ -175,11 +166,13 @@ namespace HZSoft.Util.WeChat.Comm
                     keyword2 = new TemplateDataItem(DateTime.Now.ToString("yyyy年MM月dd日 HH:mm")),
                     remark = new TemplateDataItem(remark),
                 };
-                SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(accessToken, openId, template_id, null, data, null);
+                SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(
+                    AccessTokenContainer.TryGetAccessToken(appId, appSecret), openId, "PxdaZK82LHdat5u7zYzEbt4rOmLVIVFIC90We2YDXZ8", null, data, null);
                 return sendTemplateMessageResult.errmsg;
             }
             catch (Exception ex)
             {
+                LogHelper.AddLog(ex.Message);
                 return ex.Message;//微信Post请求发生错误！错误代码：43004，说明：require subscribe hint: [ziWtva03011295]
             }
         }
@@ -190,7 +183,7 @@ namespace HZSoft.Util.WeChat.Comm
         /// <param name="openId"></param>
         /// <param name="template_id"></param>
         /// <returns></returns>
-        public static string SendTemplateAllIn(string accessToken, string openId, string template_id, string first, string keyword1, string remark)
+        public static string SendTemplateAllIn( string openId, string first, string keyword1, string remark)
         {
             try
             {
@@ -202,16 +195,16 @@ namespace HZSoft.Util.WeChat.Comm
                     remark = new TemplateDataItem(remark),
                 };
                 //string url = "https://baidu.com";
-                SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(accessToken, openId, template_id, null, data, null);
+                SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(
+                    AccessTokenContainer.TryGetAccessToken(appId, appSecret), openId, "OWtHeoHLSNzPj8FJ1Bp6vbD4k0WfIbRqYhELB0wtMmY", null, data, null);
                 return sendTemplateMessageResult.errmsg;
             }
             catch (Exception ex)
             {
+                LogHelper.AddLog(ex.Message);
                 return ex.Message;
             }
         }
-
-
 
         /// <summary>
         /// 发货通知，实际发货
@@ -219,7 +212,7 @@ namespace HZSoft.Util.WeChat.Comm
         /// <param name="openId"></param>
         /// <param name="template_id"></param>
         /// <returns></returns>
-        public static string SendTemplateSend(string accessToken, string openId, string template_id, string first, string keyword1, string remark)
+        public static string SendTemplateSend( string openId, string first, string keyword1, string remark)
         {
             try
             {
@@ -231,66 +224,16 @@ namespace HZSoft.Util.WeChat.Comm
                     remark = new TemplateDataItem(remark),
                 };
                 //string url = "https://baidu.com";
-                SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(accessToken, openId, template_id, null, data, null);
+                SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(
+                    AccessTokenContainer.TryGetAccessToken(appId, appSecret), openId, "Pw7phZTv4ly_C9-ayUHKFBq8xPMJG-E0D5rxzBKi_xg", null, data, null);
                 return sendTemplateMessageResult.errmsg;
             }
             catch (Exception ex)
             {
+                LogHelper.AddLog(ex.Message);
                 return ex.Message;
             }
         }
-
-
-
-
-
-        /// <summary>
-        /// 小程序跳转
-        /// </summary>
-        /// <param name="openId"></param>
-        /// <param name="template_id"></param>
-        /// <returns></returns>
-        public static SendTemplateMessageResult SendTemplatMiniProgram(string accessToken, string openId, string template_id)
-        {
-            var data = new
-            {
-                first = new TemplateDataItem("小程序跳转"),
-                keyword1 = new TemplateDataItem("keyword1"),
-                keyword2 = new TemplateDataItem(DateTime.Now.ToString("yyyy年MM月dd日 HH:mm")),
-                remark = new TemplateDataItem("remark"),
-            };
-            // 小程序
-            TempleteModel_MiniProgram miniProgram = new TempleteModel_MiniProgram
-            {
-                appid = "",
-                pagepath = ""
-            };
-            string url = string.Empty;
-            return Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(accessToken, openId, template_id, url, data, miniProgram);
-        }
-
-
-        /// <summary>
-        /// 获取 AccessToken 需保存 有次数限制
-        /// </summary>
-        /// <returns></returns>
-        public static string GetACCESS_TOKEN()
-        {
-            string appid = Config.GetValue("AppID");
-            string secret = Config.GetValue("AppSecret");
-            string apiurl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + appid + "&secret=" + secret;
-            var request = new RestRequest("", Method.GET);
-            RestClient restClient = new RestClient(apiurl);
-            //return restClient.Execute(request).Content;
-            var jd = JsonConvert.DeserializeObject<WXApi>(restClient.Execute(request).Content);
-            string token = (String)jd.access_token;
-            return token;
-        }
-
-
-        public class WXApi
-        {
-            public string access_token { set; get; }
-        }
+        
     }
 }
