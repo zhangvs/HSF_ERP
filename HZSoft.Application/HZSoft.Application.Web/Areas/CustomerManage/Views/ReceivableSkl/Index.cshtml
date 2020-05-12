@@ -38,6 +38,24 @@
                 { label: "单据编号", name: "Code", width: 130, align: "left" },
                 { label: "客户名称", name: "CustomerName", width: 150, align: "left" },
                 { label: "销售人员", name: "SalesmanUserName", width: 80, align: "left" },
+                {
+                    label: "是否月结", name: "MonthMark", index: "MonthMark", width: 60, align: "center", sortable: false,
+                    formatter: function (cellvalue) {
+                        return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
+                    }
+                },
+                {
+                    label: "下单前收款", name: "AfterMark", index: "AfterMark", width: 80, align: "center", sortable: false,
+                    formatter: function (cellvalue) {
+                        return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
+                    }
+                },
+                {
+                    label: "发货前收款", name: "AfterMark", index: "AfterMark", width: 80, align: "center", sortable: false,
+                    formatter: function (cellvalue) {
+                        return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
+                    }
+                },
                 { label: "应收金额", name: "Accounts", width: 80, align: "left", formatter: 'number', formatoptions: { thousandsSeparator: "", decimalPlaces: 2 } },
                 {
                     label: "已收金额", name: "ReceivedAmount", width: 80, align: "left",

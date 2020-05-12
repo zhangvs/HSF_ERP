@@ -260,6 +260,21 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// </summary>
         /// <returns></returns>
         public int? PaymentState { get; set; }
+        /// <summary>
+        /// 是否收取预付款
+        /// </summary>
+        /// <returns></returns>
+        public int? FrontMark { get; set; }
+        /// <summary>
+        /// 是否收取尾款
+        /// </summary>
+        /// <returns></returns>
+        public int? AfterMark { get; set; }
+        /// <summary>
+        /// 是否月结
+        /// </summary>
+        /// <returns></returns>
+        public int? MonthMark { get; set; }
 
 
         /// <summary>

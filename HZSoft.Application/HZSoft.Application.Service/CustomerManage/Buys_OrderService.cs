@@ -275,6 +275,8 @@ namespace HZSoft.Application.Service.CustomerManage
                         Id = Guid.NewGuid().ToString(),
                         CreateDate = DateTime.Now,
                         PaymentState = orderEntity.PaymentState,//确认是否全部收款
+                        AfterMark = orderEntity.AfterMark,//确认是否收取尾款
+
                         SendMark = 0,
                         DeleteMark = 0,
                         EnabledMark = 1,
@@ -379,9 +381,9 @@ namespace HZSoft.Application.Service.CustomerManage
 
                     string wk = "";
                     //发微信模板消息--给销售人提醒(完全入库提醒)
-                    if (buyEntity.PaymentState==3)
+                    if (buyEntity.PaymentState==3 || buyEntity.AfterMark==0)
                     {
-                        //发微信模板消息---入库+收齐尾款之后，给胡鲁鲁发消息提醒????
+                        //发微信模板消息---完全入库+（收齐尾款或者不需要收取尾款）之后，给胡鲁鲁发消息提醒????
                         //订单生成通知（9完全入库提醒）
                         TemplateWxApp.SendTemplateAllIn("oA-EC1Ucth5a3bkvcJSdiTCizz_g", 
                             "您好，有新的订单已经入库!", buyEntity.OrderTitle, "共" + buyEntity.TotalQty + "包，请进行发货通知");
@@ -399,8 +401,7 @@ namespace HZSoft.Application.Service.CustomerManage
                         {
                             var hsf_CardEntity = hsf_CardList.First();
                             //订单生成通知，只有关注公众号的业务员才能收到消息(8完全入库提醒)
-                            string backMsg = TemplateWxApp.SendTemplateAllIn(hsf_CardEntity.OpenId,
-                                "您好，您的订单已经全部入库!", buyEntity.OrderTitle, "共" + buyEntity.TotalQty + "包。"+ wk);
+                            string backMsg = TemplateWxApp.SendTemplateAllIn(hsf_CardEntity.OpenId,"您好，您的订单已经全部入库!", buyEntity.Code, buyEntity.OrderTitle+"：共" + buyEntity.TotalQty + "包。"+ wk);
                             if (backMsg != "ok")
                             {
                                 //业务员没有关注公众号，报错：微信Post请求发生错误！错误代码：43004，说明：require subscribe hint: [ziWtva03011295]
@@ -510,8 +511,7 @@ namespace HZSoft.Application.Service.CustomerManage
                         {
                             var hsf_CardEntity = hsf_CardList.First();
                             //订单生成通知，只有关注公众号的业务员才能收到消息(11实际发货提醒)
-                            string backMsg = TemplateWxApp.SendTemplateSend(hsf_CardEntity.OpenId,
-                                "您好，您的订单已经发货!", entity.Code, entity.OrderTitle+"，共" + entity.TotalQty + "包。");
+                            string backMsg = TemplateWxApp.SendTemplateSend(hsf_CardEntity.OpenId, "您好，您的订单已经发货!", entity.Code, entity.OrderTitle+"：共" + entity.TotalQty + "包。");
                             if (backMsg != "ok")
                             {
                                 //业务员没有关注公众号，报错：微信Post请求发生错误！错误代码：43004，说明：require subscribe hint: [ziWtva03011295]

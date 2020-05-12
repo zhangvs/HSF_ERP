@@ -85,9 +85,21 @@
                 },
                 { label: '入库完成时间', name: 'AllEnterDate', index: 'AllEnterDate', width: 118, align: 'left', sortable: true },
                 {
-                    label: "尾款", name: "PaymentState", index: "PaymentState", width: 80, align: "center", sortable: false,
+                    label: "是否收取尾款", name: "AfterMark", index: "AfterMark", width: 80, align: "center", sortable: false,
                     formatter: function (cellvalue) {
-                        return cellvalue == 3 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
+                        return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
+                    }
+                },
+                {
+                    label: "收款状态", name: "PaymentState", width: 80, align: "center",
+                    formatter: function (cellvalue, options, rowObject) {
+                        if (cellvalue == 2) {
+                            return "<span style='color:green'>部分收款</span>";
+                        } else if (cellvalue == 3) {
+                            return "<span style='color:blue'>全部收款</span>";
+                        } else {
+                            return "<span style='color:red'>未收款</span>";
+                        }
                     }
                 },
                 { label: '付款日期', name: 'PaymentDate', index: 'PaymentDate', width: 118, align: 'left', sortable: true },

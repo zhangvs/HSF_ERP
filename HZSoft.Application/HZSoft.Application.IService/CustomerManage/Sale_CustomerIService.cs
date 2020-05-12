@@ -1,4 +1,5 @@
 using HZSoft.Application.Entity.CustomerManage;
+using HZSoft.Data.Repository;
 using HZSoft.Util.WebControl;
 using System.Collections.Generic;
 
@@ -49,18 +50,37 @@ namespace HZSoft.Application.IService.CustomerManage
         /// <param name="entity">实体对象</param>
         /// <returns></returns>
         void SaveForm(string keyValue, Sale_CustomerEntity entity,List<Sale_Customer_ItemEntity> entryList);
-        void UpdateStepState(Sale_CustomerEntity entity);
-        void SaveDownForm(string keyValue, Sale_CustomerEntity entity);
-        void SavePlanForm(string keyValue, Sale_CustomerEntity entity);
         /// <summary>
-        /// 推单,撤单
+        /// 下单
+        /// </summary>
+        /// <param name="keyValue"></param>
+        /// <param name="entity"></param>
+        void SaveDownForm(string keyValue, Sale_CustomerEntity entity);
+        /// <summary>
+        /// 推单
         /// </summary>
         /// <param name="keyValue">主键值</param>
         /// <param name="state">状态1推单，-1撤单</param>
         /// <param name="orderId">销售单id</param>
         /// <returns></returns>
         void UpdatePushState(string keyValue, int? state, string orderId);
+        /// <summary>
+        /// 撤单
+        /// </summary>
+        /// <param name="keyValue"></param>
+        /// <param name="entity"></param>
         void SavePushBackForm(string keyValue, Sale_CustomerEntity entity);
+        /// <summary>
+        /// 排产
+        /// </summary>
+        /// <param name="keyValue"></param>
+        /// <param name="entity"></param>
+        void SavePlanForm(string keyValue, Sale_CustomerEntity entity);
+        /// <summary>
+        /// 工序状态修改
+        /// </summary>
+        /// <param name="entity"></param>
+        void UpdateStepState(Sale_CustomerEntity entity);
         #endregion
     }
 }

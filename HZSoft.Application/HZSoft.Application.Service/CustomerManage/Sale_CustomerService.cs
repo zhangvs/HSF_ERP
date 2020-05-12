@@ -292,104 +292,6 @@ namespace HZSoft.Application.Service.CustomerManage
             }
         }
 
-        /// <summary>
-        /// 保存生产单主单
-        /// </summary>
-        /// <param name="orderEntity">实体对象</param>
-        /// <returns></returns>
-        public void SaveSaleMain(IRepository db,DZ_OrderEntity orderEntity)
-        {
-            try
-            {
-                //自动创建【生产单】主单部分
-                Sale_CustomerEntity sale_CustomerEntity = new Sale_CustomerEntity
-                {
-                    ProduceCode = orderEntity.Code,//生产单号默认和销售单号一样
-                    OrderId = orderEntity.Id,
-                    OrderCode = orderEntity.Code,
-                    OrderTitle=orderEntity.OrderTitle,
-                    OrderType = orderEntity.OrderType,
-                    CompanyId = orderEntity.CompanyId,
-                    CompanyName = orderEntity.CompanyName,
-                    CustomerId = orderEntity.CustomerId,
-                    CustomerName = orderEntity.CustomerName,
-                    SalesmanUserId = orderEntity.SalesmanUserId,
-                    SalesmanUserName = orderEntity.SalesmanUserName,//销售单
-                    CustomerTelphone = orderEntity.CustomerTelphone,
-                    SendPlanDate = orderEntity.SendPlanDate,
-                    Address = orderEntity.Address,
-                    ShippingType = orderEntity.ShippingType,
-                    Carrier = orderEntity.Carrier,
-
-                    KaiLiaoMark = 1,//默认选择5步骤
-                    FengBianMark = 1,
-                    PaiZuanMark = 1,
-                    ShiZhuangMark = 1,
-                    BaoZhuangMark = 1,
-
-                    MoneyOkMark = orderEntity.MoneyOkMark,
-                    MoneyOkDate =orderEntity.MoneyOkDate//报价审核
-                };
-                sale_CustomerEntity.Create();//付款时间
-
-                //主表
-                db.Insert(sale_CustomerEntity);
-
-                //生成生产单id二维码
-                QRCode(sale_CustomerEntity.ProduceId);
-
-                if (sale_CustomerEntity.MoneyOkMark==1)
-                {
-                    //发微信模板消息---财务已经报价审核并收款确认之后，给张宝莲发消息提醒oA-EC1bJnd0KFBuOy0joJvUOGwwk
-                    //订单生成通知（7下单提醒）
-                    TemplateWxApp.SendTemplateNew("oA-EC1bJnd0KFBuOy0joJvUOGwwk",
-                        "您好，有新的订单财务已经报价审核并收款确认!", sale_CustomerEntity.OrderTitle, sale_CustomerEntity.OrderCode, "请进行生产下单。");
-                }
-
-
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-
-        public string QRCode(string id)
-        {
-            string url = "http://www.sikelai.cn/WeChatManage/Produce/StepSweepcode?id=" + id;
-            System.Drawing.Bitmap bt;
-            QRCodeEncoder qrCodeEncoder = new QRCodeEncoder();
-            qrCodeEncoder.QRCodeEncodeMode = QRCodeEncoder.ENCODE_MODE.BYTE;//编码方式(注意：BYTE能支持中文，ALPHA_NUMERIC扫描出来的都是数字)
-            qrCodeEncoder.QRCodeScale = 3;//大小(值越大生成的二维码图片像素越高)41的倍数
-            qrCodeEncoder.QRCodeVersion = 0;//版本(注意：设置为0主要是防止编码的字符串太长时发生错误)
-            qrCodeEncoder.QRCodeErrorCorrect = QRCodeEncoder.ERROR_CORRECTION.M;//错误效验、错误更正(有4个等级)
-            qrCodeEncoder.QRCodeBackgroundColor = Color.White;//背景色
-            qrCodeEncoder.QRCodeForegroundColor = Color.Black;//前景色
-
-            bt = qrCodeEncoder.Encode(url, Encoding.UTF8);
-            string filename = id;// "code";
-            string file_path = AppDomain.CurrentDomain.BaseDirectory + "Resource\\QRCode\\";
-            string codeUrl = file_path + filename + ".jpg";
-
-            //根据文件名称，自动建立对应目录
-            if (!System.IO.Directory.Exists(file_path))
-            {
-                System.IO.Directory.CreateDirectory(file_path);
-            }
-            ////防止内容重复，导致名称重复问题，
-            ////若要每次更新，可去掉本段代码 ↓↓↓↓↓
-            //int i = 1;
-            //while (System.IO.File.Exists(codeUrl))
-            //{               
-            //    string _filename = filename + "("+i+")";
-            //    codeUrl = file_path + _filename + ".jpg";
-            //    i++;
-            //}
-            ////   ↑↑↑↑↑↑↑
-            bt.Save(codeUrl);//保存图片
-            return codeUrl;
-        }
 
         /// <summary>
         /// 下单
@@ -424,15 +326,17 @@ namespace HZSoft.Application.Service.CustomerManage
                         };
                         dZ_OrderEntity.Modify(entity.OrderId);//原生产单实体才对
                         db.Update<DZ_OrderEntity>(dZ_OrderEntity);
+
+
+                        //发微信模板消息---下单之后，给程东彩发消息提醒oA-EC1W1BQZ46Wc8HPCZZUUFbE9M
+                        //订单生成通知（8下单提醒）
+                        TemplateWxApp.SendTemplateNew("oA-EC1W1BQZ46Wc8HPCZZUUFbE9M",
+                            "您好，有新的订单已经下单!", entity.OrderTitle, entity.OrderCode, "请进行审核推单。");
                     }
                     entity.Modify(keyValue);
                     db.Update<Sale_CustomerEntity>(entity);
                     db.Commit();
 
-                    //发微信模板消息---下单之后，给程东彩发消息提醒oA-EC1W1BQZ46Wc8HPCZZUUFbE9M
-                    //订单生成通知（8下单提醒）
-                    TemplateWxApp.SendTemplateNew("oA-EC1W1BQZ46Wc8HPCZZUUFbE9M",
-                        "您好，有新的订单已经下单!", entity.OrderTitle, entity.OrderCode, "请进行审核推单。");
                 }
             }
             catch (Exception)

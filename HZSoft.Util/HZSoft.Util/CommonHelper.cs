@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Text;
+using ThoughtWorks.QRCode.Codec;
 
 namespace HZSoft.Util
 {
@@ -119,5 +121,45 @@ namespace HZSoft.Util
             return str;
         }
         #endregion
+
+
+        /// <summary>
+        /// 生成二维码图片并保存
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static string QRCode(string url,string filename)
+        {
+            System.Drawing.Bitmap bt;
+            QRCodeEncoder qrCodeEncoder = new QRCodeEncoder();
+            qrCodeEncoder.QRCodeEncodeMode = QRCodeEncoder.ENCODE_MODE.BYTE;//编码方式(注意：BYTE能支持中文，ALPHA_NUMERIC扫描出来的都是数字)
+            qrCodeEncoder.QRCodeScale = 3;//大小(值越大生成的二维码图片像素越高)41的倍数
+            qrCodeEncoder.QRCodeVersion = 0;//版本(注意：设置为0主要是防止编码的字符串太长时发生错误)
+            qrCodeEncoder.QRCodeErrorCorrect = QRCodeEncoder.ERROR_CORRECTION.M;//错误效验、错误更正(有4个等级)
+            qrCodeEncoder.QRCodeBackgroundColor = Color.White;//背景色
+            qrCodeEncoder.QRCodeForegroundColor = Color.Black;//前景色
+
+            bt = qrCodeEncoder.Encode(url, Encoding.UTF8);
+            string file_path = AppDomain.CurrentDomain.BaseDirectory + "Resource\\QRCode\\";
+            string codeUrl = file_path + filename + ".jpg";
+
+            //根据文件名称，自动建立对应目录
+            if (!System.IO.Directory.Exists(file_path))
+            {
+                System.IO.Directory.CreateDirectory(file_path);
+            }
+            ////防止内容重复，导致名称重复问题，
+            ////若要每次更新，可去掉本段代码 ↓↓↓↓↓
+            //int i = 1;
+            //while (System.IO.File.Exists(codeUrl))
+            //{               
+            //    string _filename = filename + "("+i+")";
+            //    codeUrl = file_path + _filename + ".jpg";
+            //    i++;
+            //}
+            ////   ↑↑↑↑↑↑↑
+            bt.Save(codeUrl);//保存图片
+            return codeUrl;
+        }
     }
 }

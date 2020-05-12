@@ -26,6 +26,7 @@ namespace HZSoft.Application.Service.CustomerManage
     public class DZ_OrderService : RepositoryFactory<DZ_OrderEntity>, DZ_OrderIService
     {
         private ICodeRuleService coderuleService = new CodeRuleService();
+
         #region 获取数据
         /// <summary>
         /// 获取列表
@@ -457,8 +458,7 @@ namespace HZSoft.Application.Service.CustomerManage
                     {
                         //发微信模板消息---研发报价之后，给财务提醒--刘一珠oA-EC1X0OoVmzyowOqxYHlY5NHX4
                         //订单生成通知（报价提醒）
-                        TemplateWxApp.SendTemplateMoney("oA-EC1X0OoVmzyowOqxYHlY5NHX4", 
-                            "您好，有新的报价需要审核!", "研发中心", entity.OrderTitle, entity.Code, "请进行报价审核。");
+                        TemplateWxApp.SendTemplateMoney("oA-EC1X0OoVmzyowOqxYHlY5NHX4", "您好，有新的报价需要审核!", "研发中心", entity.OrderTitle, entity.Code, "请进行报价审核。");
                     }
                 }
                 else
@@ -470,8 +470,7 @@ namespace HZSoft.Application.Service.CustomerManage
 
                     //发微信模板消息---接单之后，给审图人提醒--刘明存oA-EC1WVqHl_gsBM3We2rgOHIMEQ
                     //订单生成通知（审图提醒）
-                    TemplateWxApp.SendTemplateNew("oA-EC1WVqHl_gsBM3We2rgOHIMEQ", 
-                        "您好，有新的订单需要审图!", entity.OrderTitle, entity.Code, "请进行审图。");
+                    TemplateWxApp.SendTemplateNew("oA-EC1WVqHl_gsBM3We2rgOHIMEQ", "您好，有新的订单需要审图!", entity.OrderTitle, entity.Code, "请进行审图。");
                 }
             }
             catch (Exception)
@@ -513,14 +512,20 @@ namespace HZSoft.Application.Service.CustomerManage
                         {
                             var hsf_CardEntity = hsf_CardList.First();
                             //不直接给销售员报价，只有店长才能知道报价
-                            string backMsg = TemplateWxApp.SendTemplateMoneyOk(hsf_CardEntity.OpenId,
-                                 "您好，您的订单已报价成功!", oldEntity.Code, oldEntity.OrderTitle, entity.MoneyAccounts.ToString(), "请确认预付款。");
+                            string backMsg = TemplateWxApp.SendTemplateMoneyOk(hsf_CardEntity.OpenId,"您好，您的订单报价已审核完成!", oldEntity.Code, oldEntity.OrderTitle, entity.MoneyAccounts.ToString(), "");
                             if (backMsg != "ok")
                             {
                                 //业务员没有关注公众号，报错：微信Post请求发生错误！错误代码：43004，说明：require subscribe hint: [ziWtva03011295]
                                 LogHelper.AddLog(entity.SalesmanUserName + "没有关注公众号");//记录日志
                             }
                         }
+                    }
+
+                    //如果不收预付款，报价审核完毕之后可以直接创建生产单，开始下单
+                    if (oldEntity.FrontMark==0 && oldEntity.DownMark != 1)
+                    {
+                        //自动创建【生产单】主单部分*****************
+                        Sale_Customer_Main.SaveSaleMain(db, oldEntity);//如果下单不及时，可能重复创建
                     }
 
                     //报价审核改变生产单报价审核状态
@@ -623,6 +628,7 @@ namespace HZSoft.Application.Service.CustomerManage
                 throw;
             }
         }
+        
         #endregion
     }
 }

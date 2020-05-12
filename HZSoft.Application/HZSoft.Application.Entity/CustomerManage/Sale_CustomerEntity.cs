@@ -559,7 +559,7 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// </summary>
         public override void Create()
         {
-            this.ProduceId = Guid.NewGuid().ToString();
+            this.ProduceId = this.ProduceCode;//¸úÏúÊÛ±àºÅÒ»ÖÂ
             this.CreateDate = DateTime.Now;
             this.CreateUserId = OperatorProvider.Provider.Current().UserId;
             this.CreateUserName = OperatorProvider.Provider.Current().UserName;

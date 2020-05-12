@@ -31,7 +31,6 @@
             var value = $(this).attr('data-value');
             $("#Carrier").ComboBoxSetValue(value);
          });
-
         //运费承担方
         $("#Carrier").ComboBox({
             description: "==请选择==",
@@ -191,19 +190,11 @@
         <tr>
             <td class="formTitle">订单类型<font face="宋体">*</font></td>
             <td class="formValue">
-            @*<div id="OrderType" type="select" class="ui-select">
-                <ul>
-                    <li data-value="1">普通单</li>
-                    <li data-value="2">补单</li>
-                    <li data-value="3">售后单</li>
-                    <li data-value="4">加急单</li>
-                </ul>
-            </div>*@
                 <div id="OrderType" type="select" class="ui-select" isvalid="yes" checkexpession="NotNull"></div>
             </td>
             <td class="formTitle">销售金额<font face="宋体">*</font></td>
             <td class="formValue">
-                <input id="Accounts" type="text" class="form-control" isvalid="yes" checkexpession="Double" />
+                <input id="Accounts" type="text" class="form-control" isvalid="yes" checkexpession="Double" value="0.00"/>
             </td>
         </tr>
         <tr>
@@ -273,6 +264,30 @@
                 </div>
                 &nbsp;<a id="CreatePath_a" style='text-decoration:underline;color: #337ab7;height:38px;line-height:38px;' href=""></a>
                 <input id="CreatePath" type="hidden" class="form-control" isvalid="yes" checkexpession="NotNull" />
+            </td>
+        </tr>
+        <tr>
+            <th class="formTitle" style="height: 37px;">是否月结</th>
+            <td class="formValue">
+                <div class="checkbox">
+                    <label>
+                        <input id="MonthMark" type="checkbox" />
+                        月结
+                    </label>
+                </div>
+            </td>
+            <th class="formTitle" style="height: 37px;">收款时间</th>
+            <td class="formValue">
+                <div class="checkbox">
+                    <label>
+                        <input id="FrontMark" type="checkbox" checked="checked" />
+                        下单前(预付款)
+                    </label>
+                    <label>
+                        <input id="AfterMark" type="checkbox" checked="checked" />
+                        发货前(尾款)
+                    </label>
+                </div>
             </td>
         </tr>
         <tr>

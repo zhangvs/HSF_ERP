@@ -79,8 +79,8 @@ namespace HZSoft.Application.Web
 
             //发微信模板消息---财务已经报价审核并收款确认之后，给张宝莲发消息提醒oA-EC1bJnd0KFBuOy0joJvUOGwwk
             //订单生成通知（7下单提醒）
-            TemplateWxApp.SendTemplateNew("oA-EC1Ucth5a3bkvcJSdiTCizz_g",
-                "您好，有新的订单财务已经报价审核并收款确认!", "联动柜", "SKL-20200506003", "请进行生产下单。");
+            //TemplateWxApp.SendTemplateNew("oA-EC1Ucth5a3bkvcJSdiTCizz_g",
+            //    "您好，有新的订单财务已经报价审核并收款确认!", "联动柜", "SKL-20200506003", "请进行生产下单。");
 
 
             ////发微信模板消息---下单之后，给程东彩发消息提醒oA-EC1W1BQZ46Wc8HPCZZUUFbE9M

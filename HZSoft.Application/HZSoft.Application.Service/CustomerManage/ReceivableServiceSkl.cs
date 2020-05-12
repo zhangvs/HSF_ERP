@@ -170,8 +170,7 @@ namespace HZSoft.Application.Service.CustomerManage
             this.BaseRepository().Insert(entity);
 
             //发微信模板消息---营销收款之后，给财务提醒--刘一珠（收款提醒）
-            TemplateWxApp.SendTemplateReceivable("oA-EC1X0OoVmzyowOqxYHlY5NHX4",
-                "您好，有新的收款需要确认!", entity.Title, entity.PaymentPrice.ToString(), entity.Description);
+            TemplateWxApp.SendTemplateReceivable("oA-EC1X0OoVmzyowOqxYHlY5NHX4","您好，有新的收款需要确认!", entity.Code, entity.PaymentPrice.ToString(), entity.OrderTitle);
         }
 
 
@@ -245,8 +244,7 @@ namespace HZSoft.Application.Service.CustomerManage
                                 {
                                     var hsf_CardEntity = hsf_CardList.First();
                                     //发微信模板消息---营销收款之后，给销售员提醒--（收款确认提醒：部分收款）
-                                    string backMsg = TemplateWxApp.SendTemplateReceivableOk(hsf_CardEntity.OpenId, 
-                                        "您好，有的收款已经确认!", "通过", "部分收款");
+                                    string backMsg = TemplateWxApp.SendTemplateReceivableOk(hsf_CardEntity.OpenId,  "您好，您的收款已经确认!", "通过", oldEntity.Code+"部分收款");
                                     if (backMsg != "ok")
                                     {
                                         //业务员没有关注公众号，报错：微信Post请求发生错误！错误代码：43004，说明：require subscribe hint: [ziWtva03011295]
@@ -261,7 +259,7 @@ namespace HZSoft.Application.Service.CustomerManage
                         if (orderEntity.DownMark != 1)
                         {
                             //付了预付款，自动创建【生产单】主单部分*****************
-                            saleIService.SaveSaleMain(db, orderEntity);
+                            Sale_Customer_Main.SaveSaleMain(db, orderEntity);//如果下单不及时，可能重复创建
                         }
 
                     }

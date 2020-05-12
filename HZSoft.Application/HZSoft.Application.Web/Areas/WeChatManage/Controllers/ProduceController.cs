@@ -263,12 +263,12 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
                         }
                         else
                         {
-                            //初次扫码
+                            //包装初次扫码，修改状态
                             proEntity.BaoZhuangDate = DateTime.Now;
                             proEntity.BaoZhuangUserName = entity.Name;
                             proEntity.BaoZhuangMark = 2;
 
-                            //扫码包装之后，自动生成一个入库单主单，正在包装***************
+                            //扫码初次包装之后，自动生成一个入库单主单，正在包装***************
                             buy_orderbll.SaveBuyMain(proEntity);
                         }
                         break;

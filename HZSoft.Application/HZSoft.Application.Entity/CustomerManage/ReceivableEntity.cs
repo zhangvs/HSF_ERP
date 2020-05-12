@@ -32,7 +32,7 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// 标题
         /// </summary>
         /// <returns></returns>
-        public string Title { get; set; }
+        public string OrderTitle { get; set; }
         /// <summary>
         /// 经销商
         /// </summary>

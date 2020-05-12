@@ -80,6 +80,11 @@
         if (!!$("#UploadReceiptPath").attr("imgsrc")) {
             postData.ReceiptPath = $("#UploadReceiptPath").attr("imgsrc");
         }
+        else {
+
+            ValidationMessage($("#UploadReceiptPath"), "收款凭证必须上传");
+            return false;
+        }
         $.SaveForm({
             url: "../../CustomerManage/ReceivableSkl/SaveForm",
             param: postData,
@@ -146,7 +151,7 @@
         </tr>
         <tr>
             <td class="formValue" colspan="2" style="text-align:center">
-                <input id="ReceiptPath" type="hidden" class="form-control"  isvalid="yes" checkexpession="NotNull" />
+                <input id="ReceiptPath" type="hidden" class="form-control"/>
                 <div class="layui-upload-drag upload " id="UploadReceiptPath" style="width:660px;height:390px">
                     <i class="layui-icon"></i>
                     <p>点击上传收款凭证</p>

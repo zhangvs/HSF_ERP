@@ -96,6 +96,7 @@
     <Compile Include="CustomerManage\ReceivableServiceSkl.cs" />
     <Compile Include="CustomerManage\ReceivableService.cs" />
     <Compile Include="CustomerManage\Sale_CustomerService.cs" />
+    <Compile Include="CustomerManage\Sale_Customer_Main.cs" />
     <Compile Include="CustomerManage\Sale_UserStepService.cs" />
     <Compile Include="CustomerManage\TrailRecordService.cs" />
     <Compile Include="CustomerManage\CustomerContactService.cs" />

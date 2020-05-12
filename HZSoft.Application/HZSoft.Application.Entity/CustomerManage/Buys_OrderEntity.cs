@@ -130,11 +130,18 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// <returns></returns>
         public DateTime? PaymentDate { get; set; }
         /// <summary>
-        /// 付款状态（1-未付款2-部分付款3-全部付款）
+        /// 付款状态（1-未付款2-部分付款3-全部付款）全部收款才能发货
         /// </summary>
         /// <returns></returns>
         [Column("PAYMENTSTATE")]
         public int? PaymentState { get; set; }
+
+
+        /// <summary>
+        /// 是否收取尾款(发货前，只关心尾款要不要收取)
+        /// </summary>
+        /// <returns></returns>
+        public int? AfterMark { get; set; }
 
 
         /// <summary>
@@ -304,7 +311,7 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// </summary>
         public override void Create()
         {
-            this.Id = Guid.NewGuid().ToString();
+            this.Id = this.Code;//Guid.NewGuid().ToString()
             this.CreateDate = DateTime.Now;
             this.CreateUserId = OperatorProvider.Provider.Current().UserId;
             this.CreateUserName = OperatorProvider.Provider.Current().UserName;
