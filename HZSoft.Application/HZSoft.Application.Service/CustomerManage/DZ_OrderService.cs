@@ -543,7 +543,7 @@ namespace HZSoft.Application.Service.CustomerManage
                         //发微信模板消息---财务已经报价审核并收款确认之后，给张宝莲发消息提醒oA-EC1bJnd0KFBuOy0joJvUOGwwk
                         //订单生成通知（7下单提醒）
                         TemplateWxApp.SendTemplateNew("oA-EC1Ucth5a3bkvcJSdiTCizz_g",
-                            "您好，有新的订单财务已经收款确认并报价审核!", oldEntity.OrderTitle, oldEntity.Code, "请进行生产下单。");
+                            "您好，有新的订单财务已审核报价!", oldEntity.OrderTitle, oldEntity.Code, "请进行生产下单。");
                     }
                 }
             }

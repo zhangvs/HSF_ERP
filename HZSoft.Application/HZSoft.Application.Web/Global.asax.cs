@@ -40,10 +40,19 @@ namespace HZSoft.Application.Web
             //var result2 = TemplateWxApp.GetACCESS_TOKEN();
             //var result3 = TemplateWxApp.GetACCESS_TOKEN();//传统的每次都不一样
 
-            ////发微信模板消息---接单之后，给审图人提醒--刘明存oA-EC1WVqHl_gsBM3We2rgOHIMEQ
-            ////订单生成通知（1审图提醒）
+            //发微信模板消息---接单之后，给审图人提醒--刘明存oA-EC1WVqHl_gsBM3We2rgOHIMEQ
+            //订单生成通知（1审图提醒）
             //TemplateWxApp.SendTemplateNew("oA-EC1Ucth5a3bkvcJSdiTCizz_g",
             //    "您好，有新的订单需要审图!", "联动柜", "SKL-20200506003", "请进行审图。");
+
+
+            //string tokenUrl = string.Format(WeixinConfig.GetTokenUrl, "snsapi_userinfo");//网页token，中间不改变普通token的获取和值
+            //var token = AnalyzeHelper.Get<WeixinToken>(tokenUrl);
+
+
+            //TemplateWxApp.SendTemplateNew("oA-EC1Ucth5a3bkvcJSdiTCizz_g",
+            //    "您好，有新的订单需要审图!", "联动柜", "SKL-20200506003", "请进行审图。");
+
 
 
             ////发微信模板消息-- - 接单之后，给审图人提醒--刘琛oA - EC1X6RWfW1_DNJ_VNiA3uhOYg

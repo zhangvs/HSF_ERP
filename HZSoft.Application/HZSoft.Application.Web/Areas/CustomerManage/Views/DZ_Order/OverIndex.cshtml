@@ -73,7 +73,7 @@
                     }
                 },
                 { label: '经销商', name: 'CompanyName', index: 'CompanyName', width: 100, align: 'center', sortable: true },
-                { label: '客户', name: 'CustomerName', index: 'CustomerName', width: 130, align: 'center', sortable: true },
+                { label: '客户', name: 'CustomerName', index: 'CustomerName', width: 100, align: 'center', sortable: true },
                 {
                     label: "是否月结", name: "MonthMark", index: "MonthMark", width: 60, align: "center", sortable: false,
                     formatter: function (cellvalue) {
@@ -106,7 +106,7 @@
                         }
                     }
                 },
-                { label: '收款日期', name: 'PaymentDate', index: 'PaymentDate', width: 118, align: 'left', sortable: true },
+                { label: '收款日期', name: 'PaymentDate', index: 'PaymentDate', width: 80, align: 'left', sortable: true, formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' } },
                 { label: '销售人', name: 'SalesmanUserName', index: 'SalesmanUserName', width: 65, align: 'center', sortable: true },
                 { label: '接单日期', name: 'CreateDate', index: 'CreateDate', width: 118, align: 'left', sortable: true },
                 {
