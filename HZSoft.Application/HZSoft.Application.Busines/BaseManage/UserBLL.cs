@@ -226,11 +226,31 @@ namespace HZSoft.Application.Busines.BaseManage
                 entity.UserId = keyValue;
                 if (userEntity != null)
                 {
-                    entity.RealName = userEntity.RealName;
-                    entity.DepartmentId = dbll.GetEntity(userEntity.DepartmentId).FullName;
-                    entity.Gender = (int)userEntity.Gender;
-                    entity.HeadIcon = userEntity.HeadIcon;
-                    entity.OrganizeId = bll.GetEntity(userEntity.OrganizeId).FullName; ;
+                    //如果只是修改个人头像，下面只有头像一个数据不为null，其它都为空dbll.GetEntity(userEntity.DepartmentId).FullName;会抛异常
+                    if (userEntity.RealName != null)
+                    {
+                        entity.RealName = userEntity.RealName;
+                    }
+
+                    if (userEntity.DepartmentId!=null)
+                    {
+                        entity.DepartmentId = dbll.GetEntity(userEntity.DepartmentId).FullName;
+                    }
+
+                    if (userEntity.Gender != null)
+                    {
+                        entity.Gender = (int)userEntity.Gender;
+                    }
+                    if (userEntity.HeadIcon != null)
+                    {
+                        entity.HeadIcon = userEntity.HeadIcon;
+                    }
+
+                    if (userEntity.OrganizeId != null)
+                    {
+                        entity.OrganizeId = bll.GetEntity(userEntity.OrganizeId).FullName;
+                    }
+                    
                 }
                 SendHubs.callMethod("upDateUserList", entity, isAdd);
             }

@@ -240,57 +240,61 @@ namespace HZSoft.Application.Service.BaseManage
                     
                 }
                 #endregion
+                //修改个人头像就会删掉个人权限，角色、岗位、职位都为null，会删掉个人配置的权限，所以只有三者有一个不为空的时候，才可以删掉之前配置的权限
+                if (!string.IsNullOrEmpty(userEntity.RoleId) || !string.IsNullOrEmpty(userEntity.DutyId)||!string.IsNullOrEmpty(userEntity.PostId))
+                {
 
-                #region 默认添加 角色、岗位、职位
-                db.Delete<UserRelationEntity>(t => t.IsDefault == 1 && t.UserId == userEntity.UserId);
-                List<UserRelationEntity> userRelationEntitys = new List<UserRelationEntity>();
-                //角色
-                if (!string.IsNullOrEmpty(userEntity.RoleId))
-                {
-                    userRelationEntitys.Add(new UserRelationEntity
+                    #region 默认添加 角色、岗位、职位
+                    db.Delete<UserRelationEntity>(t => t.IsDefault == 1 && t.UserId == userEntity.UserId);
+                    List<UserRelationEntity> userRelationEntitys = new List<UserRelationEntity>();
+                    //角色
+                    if (!string.IsNullOrEmpty(userEntity.RoleId))
                     {
-                        Category = 2,
-                        UserRelationId = Guid.NewGuid().ToString(),
-                        UserId = userEntity.UserId,
-                        ObjectId = userEntity.RoleId,
-                        CreateDate = DateTime.Now,
-                        CreateUserId = OperatorProvider.Provider.Current().UserId,
-                        CreateUserName = OperatorProvider.Provider.Current().UserName,
-                        IsDefault = 1,
-                    });
-                }
-                //岗位
-                if (!string.IsNullOrEmpty(userEntity.DutyId))
-                {
-                    userRelationEntitys.Add(new UserRelationEntity
+                        userRelationEntitys.Add(new UserRelationEntity
+                        {
+                            Category = 2,
+                            UserRelationId = Guid.NewGuid().ToString(),
+                            UserId = userEntity.UserId,
+                            ObjectId = userEntity.RoleId,
+                            CreateDate = DateTime.Now,
+                            CreateUserId = OperatorProvider.Provider.Current().UserId,
+                            CreateUserName = OperatorProvider.Provider.Current().UserName,
+                            IsDefault = 1,
+                        });
+                    }
+                    //岗位
+                    if (!string.IsNullOrEmpty(userEntity.DutyId))
                     {
-                        Category = 3,
-                        UserRelationId = Guid.NewGuid().ToString(),
-                        UserId = userEntity.UserId,
-                        ObjectId = userEntity.DutyId,
-                        CreateDate = DateTime.Now,
-                        CreateUserId = OperatorProvider.Provider.Current().UserId,
-                        CreateUserName = OperatorProvider.Provider.Current().UserName,
-                        IsDefault = 1,
-                    });
-                }
-                //职位
-                if (!string.IsNullOrEmpty(userEntity.PostId))
-                {
-                    userRelationEntitys.Add(new UserRelationEntity
+                        userRelationEntitys.Add(new UserRelationEntity
+                        {
+                            Category = 3,
+                            UserRelationId = Guid.NewGuid().ToString(),
+                            UserId = userEntity.UserId,
+                            ObjectId = userEntity.DutyId,
+                            CreateDate = DateTime.Now,
+                            CreateUserId = OperatorProvider.Provider.Current().UserId,
+                            CreateUserName = OperatorProvider.Provider.Current().UserName,
+                            IsDefault = 1,
+                        });
+                    }
+                    //职位
+                    if (!string.IsNullOrEmpty(userEntity.PostId))
                     {
-                        Category = 4,
-                        UserRelationId = Guid.NewGuid().ToString(),
-                        UserId = userEntity.UserId,
-                        ObjectId = userEntity.PostId,
-                        CreateDate = DateTime.Now,
-                        CreateUserId = OperatorProvider.Provider.Current().UserId,
-                        CreateUserName = OperatorProvider.Provider.Current().UserName,
-                        IsDefault = 1,
-                    });
+                        userRelationEntitys.Add(new UserRelationEntity
+                        {
+                            Category = 4,
+                            UserRelationId = Guid.NewGuid().ToString(),
+                            UserId = userEntity.UserId,
+                            ObjectId = userEntity.PostId,
+                            CreateDate = DateTime.Now,
+                            CreateUserId = OperatorProvider.Provider.Current().UserId,
+                            CreateUserName = OperatorProvider.Provider.Current().UserName,
+                            IsDefault = 1,
+                        });
+                    }
+                    db.Insert(userRelationEntitys);
+                    #endregion
                 }
-                db.Insert(userRelationEntitys);
-                #endregion
 
                 db.Commit();
 
