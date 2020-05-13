@@ -521,12 +521,6 @@ namespace HZSoft.Application.Service.CustomerManage
                         }
                     }
 
-                    //如果不收预付款，报价审核完毕之后可以直接创建生产单，开始下单
-                    if (oldEntity.FrontMark==0 && oldEntity.DownMark != 1)
-                    {
-                        //自动创建【生产单】主单部分*****************
-                        Sale_Customer_Main.SaveSaleMain(db, oldEntity);//如果下单不及时，可能重复创建
-                    }
 
                     //报价审核改变生产单报价审核状态
                     Sale_CustomerEntity sale_CustomerEntity = db.FindEntity<Sale_CustomerEntity>(t => t.OrderId == keyValue);
@@ -542,8 +536,17 @@ namespace HZSoft.Application.Service.CustomerManage
 
                         //发微信模板消息---财务已经报价审核并收款确认之后，给张宝莲发消息提醒oA-EC1bJnd0KFBuOy0joJvUOGwwk
                         //订单生成通知（7下单提醒）
-                        TemplateWxApp.SendTemplateNew("oA-EC1Ucth5a3bkvcJSdiTCizz_g",
-                            "您好，有新的订单财务已审核报价!", oldEntity.OrderTitle, oldEntity.Code, "请进行生产下单。");
+                        TemplateWxApp.SendTemplateNew("oA-EC1bJnd0KFBuOy0joJvUOGwwk",
+                            "您好，有新的订单需要下单!", oldEntity.OrderTitle, oldEntity.Code, "请进行生产下单。");
+                    }
+                    else
+                    {
+                        //如果不收预付款，报价审核完毕之后可以直接创建生产单，开始下单
+                        if (oldEntity.FrontMark == 0 && oldEntity.DownMark != 1)
+                        {
+                            //自动创建【生产单】主单部分*****************
+                            Sale_Customer_Main.SaveSaleMain(db, oldEntity);//如果下单不及时，可能重复创建
+                        }
                     }
                 }
             }
