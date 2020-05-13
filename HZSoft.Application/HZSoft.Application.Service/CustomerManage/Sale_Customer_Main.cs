@@ -10,9 +10,11 @@ using System.Threading.Tasks;
 
 namespace HZSoft.Application.Service.CustomerManage
 {
+    /// <summary>
+    /// 创建生产单主单
+    /// </summary>
     public class Sale_Customer_Main
     {
-
         /// <summary>
         /// 保存生产单主单
         /// </summary>
@@ -32,7 +34,7 @@ namespace HZSoft.Application.Service.CustomerManage
                     {
                         ProduceCode = orderEntity.Code,//生产单号默认和销售单号一样
                         OrderId = orderEntity.Id,
-                        OrderCode = orderEntity.Code,
+                        OrderCode = orderEntity.Code,//销售单号
                         OrderTitle = orderEntity.OrderTitle,
                         OrderType = orderEntity.OrderType,
                         CompanyId = orderEntity.CompanyId,
@@ -40,21 +42,16 @@ namespace HZSoft.Application.Service.CustomerManage
                         CustomerId = orderEntity.CustomerId,
                         CustomerName = orderEntity.CustomerName,
                         SalesmanUserId = orderEntity.SalesmanUserId,
-                        SalesmanUserName = orderEntity.SalesmanUserName,//销售单
+                        SalesmanUserName = orderEntity.SalesmanUserName,
                         CustomerTelphone = orderEntity.CustomerTelphone,
                         SendPlanDate = orderEntity.SendPlanDate,
                         Address = orderEntity.Address,
                         ShippingType = orderEntity.ShippingType,
                         Carrier = orderEntity.Carrier,
 
-                        KaiLiaoMark = 1,//默认选择5步骤
-                        FengBianMark = 1,
-                        PaiZuanMark = 1,
-                        ShiZhuangMark = 1,
-                        BaoZhuangMark = 1,
-
+                        //MoneyOkMark = orderEntity.MoneyOkMark == null ? 0 : orderEntity.MoneyOkMark,//报价审核
                         MoneyOkMark = orderEntity.MoneyOkMark,
-                        MoneyOkDate = orderEntity.MoneyOkDate//报价审核
+                        MoneyOkDate = orderEntity.MoneyOkDate
                     };
                     sale_CustomerEntity.Create();//付款时间
 

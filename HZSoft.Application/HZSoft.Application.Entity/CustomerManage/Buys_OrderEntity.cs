@@ -316,10 +316,14 @@ namespace HZSoft.Application.Entity.CustomerManage
             this.CreateUserId = OperatorProvider.Provider.Current().UserId;
             this.CreateUserName = OperatorProvider.Provider.Current().UserName;
             //this.PaymentState = 0;
-            this.SendMark = 0;
+            this.TotalQty = 0;//入库总包数
+            this.AllEnterMark = 0;//完全入库
+            this.SendMark = 0;//发货
+            this.SendOutMark = 0;//实际发货
+            this.OverMark = 0;//结束
             this.DeleteMark = 0;
             this.EnabledMark = 1;
-            this.OverMark = 0;
+                        
         }
         /// <summary>
         /// 编辑调用

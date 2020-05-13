@@ -387,6 +387,28 @@ namespace HZSoft.Application.Entity.CustomerManage
 
 
         /// <summary>
+        /// 实际发货
+        /// </summary>
+        /// <returns></returns>
+        public int? SendOutMark { get; set; }
+        /// <summary>
+        /// 实际发货人Id
+        /// </summary>
+        /// <returns></returns>
+        public string SendOutUserId { get; set; }
+        /// <summary>
+        /// 实际发货人
+        /// </summary>
+        /// <returns></returns>
+        public string SendOutUserName { get; set; }
+        /// <summary>
+        /// 实际发货日期
+        /// </summary>
+        /// <returns></returns>
+        public DateTime? SendOutDate { get; set; }
+
+
+        /// <summary>
         /// 签收确认
         /// </summary>
         /// <returns></returns>
@@ -460,21 +482,23 @@ namespace HZSoft.Application.Entity.CustomerManage
             this.CreateDate = DateTime.Now;
             this.CreateUserId = OperatorProvider.Provider.Current().UserId;
             this.CreateUserName = OperatorProvider.Provider.Current().UserName;
-            this.CheckTuMark = 0;
-            this.ChaiMark = 0;
-            this.CheckMark = 0;
-            this.MoneyMark = 0;
+            this.CheckTuMark = 0;//审图
+            this.ChaiMark = 0;//拆单
+            this.CheckMark = 0;//审核
+            this.MoneyMark = 0;//报价
+            this.MoneyOkMark = 0;//报价审核
             this.PaymentState = 1;//未收款
             this.MoneyAccounts = 0;//报价金额
             this.ReceivedAmount = 0;//收款金额
             this.DownMark = 0;//下单
             this.PushMark = 0;//推单
-            this.EnterMark = 0;
-            this.SendMark = 0;
+            this.EnterMark = 0;//入库
+            this.SendMark = 0;//发货通知
+            this.SendOutMark = 0;//实际发货
+            this.SignedMark = 0;//签收
+            this.OverMark = 0;//结束完成
             this.DeleteMark = 0;
             this.EnabledMark = 1;
-            this.MoneyOkMark = 0;
-            this.OverMark = 0;//结束完成
         }
         /// <summary>
         /// 编辑调用

@@ -271,16 +271,9 @@ namespace HZSoft.Application.Service.CustomerManage
                         ShippingType = entity.ShippingType,
                         Carrier = entity.Carrier,
                         SendPlanDate = entity.SendPlanDate,
-
-                        Id = Guid.NewGuid().ToString(),
-                        CreateDate = DateTime.Now,
+                        
                         PaymentState = orderEntity.PaymentState,//确认是否全部收款
                         AfterMark = orderEntity.AfterMark,//确认是否收取尾款
-
-                        SendMark = 0,
-                        DeleteMark = 0,
-                        EnabledMark = 1,
-                        TotalQty = 0
                     };
 
                     //材料是否选择，判断需要入库
@@ -300,7 +293,7 @@ namespace HZSoft.Application.Service.CustomerManage
                     {
                         buys_OrderEntity.WaiEnterMark = 0;//外协
                     }
-
+                    buys_OrderEntity.Create();
                     //新增入库单主表
                     this.BaseRepository().Insert(buys_OrderEntity);
                 }

@@ -110,6 +110,14 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
             return View();
         }
         /// <summary>
+        /// 外协
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult InWaiForm()
+        {
+            return View();
+        }
+        /// <summary>
         /// 订单详细页面
         /// </summary>
         /// <returns></returns>

@@ -240,10 +240,10 @@ namespace HZSoft.Application.Service.BaseManage
                     
                 }
                 #endregion
-                //修改个人头像就会删掉个人权限，角色、岗位、职位都为null，会删掉个人配置的权限，所以只有三者有一个不为空的时候，才可以删掉之前配置的权限
+                //修改个人头像就会删掉个人权限，角色、岗位、职位都为null，会删掉个人配置的权限，
+                //所以只有三者有一个不为空的时候，才可以删掉之前配置的权限
                 if (!string.IsNullOrEmpty(userEntity.RoleId) || !string.IsNullOrEmpty(userEntity.DutyId)||!string.IsNullOrEmpty(userEntity.PostId))
                 {
-
                     #region 默认添加 角色、岗位、职位
                     db.Delete<UserRelationEntity>(t => t.IsDefault == 1 && t.UserId == userEntity.UserId);
                     List<UserRelationEntity> userRelationEntitys = new List<UserRelationEntity>();

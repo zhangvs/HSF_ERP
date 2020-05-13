@@ -8,8 +8,24 @@
 
 <script>
     var keyValue = request('keyValue');
+    var customerId = request('customerId');
     $(function () {
         initControl();
+
+        if (!!customerId) {
+            $.SetForm({
+                url: "../../CustomerManage/Customer/GetFormJson",
+                param: { keyValue: customerId },
+                success: function (data) {
+                    $("#CustomerId").ComboBoxSetValue(data.CustomerId);
+                    $("#CustomerTelphone").val(data.Mobile);
+                    $("#DesignerUserName").val(data.Contact);
+                    $("#DesignerTelphone").val(data.Tel);
+                    $("#CompanyId").ComboBoxSetValue(data.CompanyId);
+                    $("#Address").val(data.ShippingAddress);
+                }
+            });
+        }
     });
 
     //³õÊ¼»¯¿Ø¼þ

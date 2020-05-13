@@ -91,7 +91,6 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         [HttpGet]
         public ActionResult DZ_OrderForm1()
         {
-
             if (Request["keyValue"] == null)
             {
                 //ViewBag.OrderCode = codeRuleBLL.GetBillCode(SystemInfo.CurrentModuleId);

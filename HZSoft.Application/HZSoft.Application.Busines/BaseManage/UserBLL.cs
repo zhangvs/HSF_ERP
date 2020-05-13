@@ -231,7 +231,6 @@ namespace HZSoft.Application.Busines.BaseManage
                     {
                         entity.RealName = userEntity.RealName;
                     }
-
                     if (userEntity.DepartmentId!=null)
                     {
                         entity.DepartmentId = dbll.GetEntity(userEntity.DepartmentId).FullName;
@@ -250,7 +249,6 @@ namespace HZSoft.Application.Busines.BaseManage
                     {
                         entity.OrganizeId = bll.GetEntity(userEntity.OrganizeId).FullName;
                     }
-                    
                 }
                 SendHubs.callMethod("upDateUserList", entity, isAdd);
             }

@@ -563,20 +563,21 @@ namespace HZSoft.Application.Entity.CustomerManage
             this.CreateDate = DateTime.Now;
             this.CreateUserId = OperatorProvider.Provider.Current().UserId;
             this.CreateUserName = OperatorProvider.Provider.Current().UserName;
-            //this.KaiLiaoMark = this.KaiLiaoMark == null ? 0 : this.KaiLiaoMark;
-            //this.FengBianMark = this.FengBianMark == null ? 0 : this.FengBianMark;
-            //this.PaiZuanMark = this.PaiZuanMark == null ? 0 : this.PaiZuanMark;
-            //this.ShiZhuangMark = this.ShiZhuangMark == null ? 0 : this.ShiZhuangMark;
-            //this.BaoZhuangMark = this.BaoZhuangMark == null ? 0 : this.BaoZhuangMark;
-            this.XiSuMark = this.XiSuMark == null ? 0 : this.XiSuMark;
+
+            this.DownMark = 0;//下单
             this.PushMark = 0;//推单
-            this.EnterMark = 0;
-            this.SendMark = 0;
+
             this.EndDate = DateTime.Now.AddDays(30).Date;//最迟交付日期
+            this.KaiLiaoMark = 1;//默认选择5工序
+            this.FengBianMark = 1;
+            this.PaiZuanMark = 1;
+            this.ShiZhuangMark = 1;
+            this.BaoZhuangMark = 1;
+            this.EnterMark = 0;//入库
+            this.SendMark = 0;//发货
+            this.OverMark = 0;//结束
             this.DeleteMark = 0;
             this.EnabledMark = 1;
-            this.MoneyOkMark = this.MoneyOkMark == null ? 0 : this.MoneyOkMark;//报价审核
-            this.OverMark = 0;
         }
         /// <summary>
         /// 编辑调用

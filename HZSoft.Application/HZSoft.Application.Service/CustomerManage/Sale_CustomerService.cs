@@ -26,7 +26,8 @@ namespace HZSoft.Application.Service.CustomerManage
     public class Sale_CustomerService : RepositoryFactory, Sale_CustomerIService
     {
         private DZ_OrderIService dz_orderService = new DZ_OrderService();
-
+        private Buys_OrderIService buyService = new Buys_OrderService();
+        
         #region 获取数据
         /// <summary>
         /// 获取列表
@@ -270,6 +271,43 @@ namespace HZSoft.Application.Service.CustomerManage
             IRepository db = this.BaseRepository().BeginTrans();
             try
             {
+                //生产扫码之后编辑
+                Sale_CustomerEntity oldEntity = GetEntity(keyValue);
+                if (oldEntity!=null)
+                {
+                    //如果生产扫码之后又修改编辑，工序的勾选状态默认==1，但是扫码之后的状态为2，不能因为编辑修改为2
+                    entity.KaiLiaoMark = oldEntity.KaiLiaoMark ==2  ? 2 : entity.KaiLiaoMark;
+                    entity.FengBianMark = oldEntity.FengBianMark == 2 ? 2 : entity.FengBianMark;
+                    entity.PaiZuanMark = oldEntity.PaiZuanMark == 2 ? 2 : entity.PaiZuanMark;
+                    entity.ShiZhuangMark = oldEntity.ShiZhuangMark == 2 ? 2 : entity.ShiZhuangMark;
+                    entity.BaoZhuangMark = oldEntity.BaoZhuangMark == 2 ? 2 : entity.BaoZhuangMark;
+                    LogHelper.AddLog("生产扫码之后又编辑，"+oldEntity.ProduceCode);
+                }
+
+                //包装扫码之后-发现勾选材料错误--又编辑
+                Buys_OrderEntity oldBuysEntity = buyService.GetEntity(keyValue);
+                if (oldBuysEntity!=null)
+                {
+                    //如果已经入库了，勾选材料错误，发现少勾选了，需要修改，要同步到入库单
+                    if (entity.GuiTiMark==1 && oldBuysEntity.GuiEnterMark==null)
+                    {
+                        oldBuysEntity.GuiEnterMark = 0;//修改柜体状态为需要入库
+                    }
+                    if (entity.WuJinMark == 1 && oldBuysEntity.WuEnterMark == null)
+                    {
+                        oldBuysEntity.WuEnterMark = 0;//修改五金状态为需要入库
+                    }
+                    if (entity.MenBanMark == 1 && oldBuysEntity.MenEnterMark == null)
+                    {
+                        oldBuysEntity.MenEnterMark = 0;//修改门板状态为需要入库
+                    }
+                    if (entity.WaiXieMark == 1 && oldBuysEntity.WaiEnterMark == null)
+                    {
+                        oldBuysEntity.WaiEnterMark = 0;//修改外协状态为需要入库
+                    }
+                    LogHelper.AddLog("包装扫码之后-发现勾选材料错误--又编辑，" + oldEntity.ProduceCode);
+                }
+
                 //主表
                 entity.Modify(keyValue);
                 db.Update(entity);
