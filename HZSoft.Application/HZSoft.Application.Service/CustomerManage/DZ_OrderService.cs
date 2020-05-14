@@ -444,12 +444,11 @@ namespace HZSoft.Application.Service.CustomerManage
                     DZ_OrderEntity oldEntity = GetEntity(keyValue);
 
                     //审图通过之后，给拆单人发消息提醒
-                    if (entity.CheckTuMark == 1 && oldEntity.CheckTuMark == 0)
+                    if (entity.CheckTuMark >0 && oldEntity.CheckTuMark == 0)
                     {
                         //发微信模板消息---接单之后，给审图人提醒--刘琛oA-EC1X6RWfW1_DNJ_VNiA3uhOYg
                         //订单生成通知（拆单提醒）
-                        TemplateWxApp.SendTemplateNew("oA-EC1X6RWfW1_DNJ_VNiA3uhOYg", 
-                            "您好，有新的订单需要拆单!", entity.OrderTitle, entity.Code, "请进行拆单。");
+                        TemplateWxApp.SendTemplateNew("oA-EC1X6RWfW1_DNJ_VNiA3uhOYg","您好，有新的订单需要拆单!", entity.OrderTitle, entity.Code, "请进行拆单。");
                     }
 
 
@@ -523,7 +522,7 @@ namespace HZSoft.Application.Service.CustomerManage
 
 
                     //报价审核改变生产单报价审核状态
-                    Sale_CustomerEntity sale_CustomerEntity = db.FindEntity<Sale_CustomerEntity>(t => t.OrderId == keyValue);
+                    Sale_CustomerEntity sale_CustomerEntity = db.FindEntity<Sale_CustomerEntity>(t => t.ProduceId == oldEntity.Code);//老销售单code会生成生产单id
                     if (sale_CustomerEntity != null)
                     {
                         //生产单存在的话，说明已经收款过
@@ -541,7 +540,7 @@ namespace HZSoft.Application.Service.CustomerManage
                     }
                     else
                     {
-                        //如果不收预付款，报价审核完毕之后可以直接创建生产单，开始下单
+                        //如果不收预付款，并且还没下单的，报价审核完毕之后可以直接创建生产单，开始提醒下单
                         if (oldEntity.FrontMark == 0 && oldEntity.DownMark != 1)
                         {
                             //自动创建【生产单】主单部分*****************

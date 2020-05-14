@@ -11,6 +11,22 @@ namespace HZSoft.Util.WeChat.Comm
     {
         public static string appId = Config.GetValue("AppID");
         public static string appSecret = Config.GetValue("AppSecret");
+
+        public static string getToken()
+        {
+            //AccessTokenContainer.cs - 一个AccessToken容器（帮助自动更新AccessToken，因为每一个AccessToken都有一个有效期）
+            //有了AccessTokenContainer，我们可以直接这样获取AccessToken：
+            if (!AccessTokenContainer.CheckRegistered(appId))//检查是否已经注册
+            {
+                AccessTokenContainer.Register(appId, appSecret);//如果没有注册则进行注册
+            }
+            var result = AccessTokenContainer.GetAccessTokenResult(appId); //获取AccessToken结果
+
+            //当然也可以更加简单地一步到位：var result = AccessTokenContainer.TryGetAccessToken(appId, appSecret);//_____________这样的存在过期现象！！！！！！！所以采用上面的判断方式
+            //上述获取到的result有access_token和expires_in两个属性，分别储存了AccessToken字符串和过期时间（秒），
+            //如果使用AccessTokenContainer.TryGetAccessToken()方法，则可以彻底忽略的expires_in存在，如果过期，系统会自动重新获取。
+            return result.access_token;
+        }
         /// <summary>
         /// 给审图，拆单提醒
         /// TemplateWxApp.SendTemplateNew("oA-EC1WVqHl_gsBM3We2rgOHIMEQ", "您好，有新的订单需要审图!", entity.OrderTitle, entity.Code, "请进行审图。");
@@ -32,10 +48,10 @@ namespace HZSoft.Util.WeChat.Comm
                     keyword3 = new TemplateDataItem(keyword3),
                     remark = new TemplateDataItem(remark),
                 };
-                string token = AccessTokenContainer.TryGetAccessToken(appId, appSecret);
+                string token = getToken();
                 SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(
                     token, openId, "Y5OqvcAap6hDfUOfDA-ffgiP8VFuISg3AogTT0Z7938", null, data, null);
-                LogHelper.AddLog(first+ keyword3 + "\r\n"+ token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
+                LogHelper.AddLog(" "+first+ keyword3 + "\r\n"+ token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
                 return sendTemplateMessageResult.errmsg;
             }
             catch (Exception ex)
@@ -69,10 +85,10 @@ namespace HZSoft.Util.WeChat.Comm
                     keyword4 = new TemplateDataItem(keyword4),
                     remark = new TemplateDataItem(remark),
                 };
-                string token = AccessTokenContainer.TryGetAccessToken(appId, appSecret);
+                string token = getToken();
                 SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(
                     token, openId, "pJERHW4hENanVyyzA5Kiz_fYmvAT0sc4RRLqfZE9nUM", null, data, null);
-                LogHelper.AddLog(first+ keyword4 + "\r\n"+ token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
+                LogHelper.AddLog(" "+first+ keyword4 + "\r\n"+ token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
                 return sendTemplateMessageResult.errmsg;
             }
             catch (Exception ex)
@@ -107,10 +123,10 @@ namespace HZSoft.Util.WeChat.Comm
                     keyword4 = new TemplateDataItem(DateTime.Now.ToString("yyyy年MM月dd日 HH:mm")),
                     remark = new TemplateDataItem(remark),
                 };
-                string token = AccessTokenContainer.TryGetAccessToken(appId, appSecret);
+                string token = getToken();
                 SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(
                     token, openId, "XfKHJdlsZ66CtuQVZl5u5_K0AO2lOw0vYKsTyfSogAU", null, data, null);
-                LogHelper.AddLog(first+ keyword1 + "\r\n"+ token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
+                LogHelper.AddLog(" "+first+ keyword1 + "\r\n"+ token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
                 return sendTemplateMessageResult.errmsg;
             }
             catch (Exception ex)
@@ -144,10 +160,10 @@ namespace HZSoft.Util.WeChat.Comm
                     keyword3 = new TemplateDataItem(DateTime.Now.ToString("yyyy年MM月dd日 HH:mm")),
                     remark = new TemplateDataItem(remark),
                 };
-                string token = AccessTokenContainer.TryGetAccessToken(appId, appSecret);
+                string token = getToken();
                 SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(
                     token, openId, "uciE_-vnHbhkdqbIHfdpmTQG5g568pDAw90qmjNXHGY", null, data, null);
-                LogHelper.AddLog(first+ keyword1 + "\r\n"+ token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
+                LogHelper.AddLog(" "+first+ keyword1 + "\r\n"+ token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
                 return sendTemplateMessageResult.errmsg;
             }
             catch (Exception ex)
@@ -179,10 +195,10 @@ namespace HZSoft.Util.WeChat.Comm
                     keyword2 = new TemplateDataItem(DateTime.Now.ToString("yyyy年MM月dd日 HH:mm")),
                     remark = new TemplateDataItem(remark),
                 };
-                string token = AccessTokenContainer.TryGetAccessToken(appId, appSecret);
+                string token = getToken();
                 SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(
                     token, openId, "PxdaZK82LHdat5u7zYzEbt4rOmLVIVFIC90We2YDXZ8", null, data, null);
-                LogHelper.AddLog(first+ remark + "\r\n"+ token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
+                LogHelper.AddLog(" "+first+ remark + "\r\n"+ token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
                 return sendTemplateMessageResult.errmsg;
             }
             catch (Exception ex)
@@ -211,10 +227,10 @@ namespace HZSoft.Util.WeChat.Comm
                     remark = new TemplateDataItem(remark),
                 };
                 //string url = "https://baidu.com";
-                string token = AccessTokenContainer.TryGetAccessToken(appId, appSecret);
+                string token = getToken();
                 SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(
                     token, openId, "OWtHeoHLSNzPj8FJ1Bp6vbD4k0WfIbRqYhELB0wtMmY", null, data, null);
-                LogHelper.AddLog(first+ keyword1 + "\r\n"+ token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
+                LogHelper.AddLog(" "+first+ keyword1 + "\r\n"+ token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
                 return sendTemplateMessageResult.errmsg;
             }
             catch (Exception ex)
@@ -243,15 +259,15 @@ namespace HZSoft.Util.WeChat.Comm
                     remark = new TemplateDataItem(remark),
                 };
                 //string url = "https://baidu.com";
-                string token = AccessTokenContainer.TryGetAccessToken(appId, appSecret);
+                string token = getToken();
                 SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(
                     token, openId, "Pw7phZTv4ly_C9-ayUHKFBq8xPMJG-E0D5rxzBKi_xg", null, data, null);
-                LogHelper.AddLog(first+ keyword1 + "\r\n"+ token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
+                LogHelper.AddLog(" "+first+ keyword1 + "\r\n"+ token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
                 return sendTemplateMessageResult.errmsg;
             }
             catch (Exception ex)
             {
-                LogHelper.AddLog(first+ex.Message);
+                LogHelper.AddLog(" "+first+ex.Message);
                 return ex.Message;
             }
         }

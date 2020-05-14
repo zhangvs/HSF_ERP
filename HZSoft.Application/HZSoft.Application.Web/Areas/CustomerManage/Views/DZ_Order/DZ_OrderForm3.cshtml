@@ -13,9 +13,14 @@
     });
     //初始化控件
     function initControl() {
-        //订单状态
+        //订单类型
         $("#OrderType").ComboBox({
+            url: "../../SystemManage/DataItemDetail/GetDataItemListJson",
+            param: { EnCode: "OrderType" },
+            id: "ItemValue",
+            text: "ItemName",
             description: "==请选择==",
+            height: "200px"
         });
         //运费承担方
         $("#Carrier").ComboBox({
@@ -150,14 +155,7 @@
                     </td>
                     <td class="formTitle">订单类型<font face="宋体">*</font></td>
                     <td class="formValue">
-                        <div id="OrderType" type="select" class="ui-select" disabled>
-                            <ul>
-                                <li data-value="1">普通单</li>
-                                <li data-value="2">补单</li>
-                                <li data-value="3">售后单</li>
-                                <li data-value="4">加急单</li>
-                            </ul>
-                        </div>
+                        <div id="OrderType" type="select" class="ui-select" isvalid="yes" checkexpession="NotNull" disabled></div>
                     </td>
                 </tr>
                 <tr>
@@ -167,7 +165,7 @@
                     </td>
                     <td class="formTitle">客户电话<font face="宋体">*</font></td>
                     <td class="formValue">
-                        <input id="CustomerTelphone" type="text" class="form-control" isvalid="yes" checkexpession="NotNull" disabled />
+                        <input id="CustomerTelphone" type="text" class="form-control" disabled />
                     </td>
                 </tr>
                 <tr>

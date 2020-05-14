@@ -454,7 +454,7 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
                 //取得chunk和chunks
                 int page = Convert.ToInt32(context.Request.Form["page"]);//当前分片在上传分片中的顺序（从0开始）
                 int totalPage = Convert.ToInt32(context.Request.Form["totalPage"]);//总分片数
-                string fileName = context.Request.Form["fileName"];
+                string fileName = context.Request.Form["fileName"].Trim();
                 fileName=fileName.Replace("#", "＃");
                 string fileExt = context.Request.Form["fileExt"];
 

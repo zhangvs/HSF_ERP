@@ -473,8 +473,8 @@ namespace HZSoft.Application.Service.CustomerManage
                     entity.SendOutDate = DateTime.Now;
                     entity.SendOutUserId = OperatorProvider.Provider.Current().UserId;
                     entity.SendOutUserName = OperatorProvider.Provider.Current().UserName;
-                    this.BaseRepository().Update(entity);
-                    //db.Update<Buys_OrderEntity>(entity);
+                    //this.BaseRepository().Update(entity);
+                    db.Update<Buys_OrderEntity>(entity);
 
                     //同步到接单表-入库状态
                     DZ_OrderEntity dZ_OrderEntity = new DZ_OrderEntity

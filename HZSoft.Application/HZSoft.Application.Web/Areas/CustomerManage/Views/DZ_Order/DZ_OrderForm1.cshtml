@@ -30,7 +30,7 @@
 
     //初始化控件
     function initControl() {
-        //订单状态
+        //订单类型
         $("#OrderType").ComboBox({
             url: "../../SystemManage/DataItemDetail/GetDataItemListJson",
             param: { EnCode: "OrderType" },
@@ -200,7 +200,7 @@
             </td>
             <td class="formTitle">订单标题<font face="宋体">*</font></td>
             <td class="formValue">
-                <input id="OrderTitle" type="text" class="form-control" isvalid="yes" checkexpession="NotNull" />
+                <input id="OrderTitle" type="text" class="form-control" isvalid="yes" checkexpession="NotNull"/>
             </td>
         </tr>
         <tr>

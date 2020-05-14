@@ -28,6 +28,8 @@ namespace HZSoft.Application.Web
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             WeixinConfig.Register();
 
+            //TemplateWxApp.SendTemplateMoney("oA-EC1Ucth5a3bkvcJSdiTCizz_g", "您好，有新的报价需要审核!", "研发中心", "LS意林公馆2-1-701李先生", "SKL-20200514001", "请进行报价审核。");
+
             //string appId = Config.GetValue("AppID");
             //string appSecret = Config.GetValue("AppSecret");
             //当然也可以更加简单地一步到位：如果过期，系统会自动重新获取。
