@@ -437,15 +437,37 @@ namespace HZSoft.Application.Service.CustomerManage
                     entity.SendDate = DateTime.Now;
                     entity.SendUserId = OperatorProvider.Provider.Current().UserId;
                     entity.SendUserName = OperatorProvider.Provider.Current().UserName;
-                    this.BaseRepository().Update(entity);
+                    //this.BaseRepository().Update(entity);
                     db.Update<Buys_OrderEntity>(entity);
-                    db.Commit();
 
+                    //同步到销售单-发货通知状态
+                    DZ_OrderEntity dZ_OrderEntity = new DZ_OrderEntity
+                    {
+                        SendMark = 1,
+                        SendDate = DateTime.Now,
+                        SendPlanDate= entity.SendPlanDate
+                    };
+                    dZ_OrderEntity.Modify(entity.OrderId);
+                    db.Update<DZ_OrderEntity>(dZ_OrderEntity);
+
+                    //同步到生产表-发货通知状态
+                    Sale_CustomerEntity produceEntity = new Sale_CustomerEntity
+                    {
+                        SendMark = 1,
+                        SendDate = DateTime.Now
+                    };
+                    produceEntity.Modify(entity.ProduceId);
+                    db.Update<Sale_CustomerEntity>(produceEntity);
+                    db.Commit();
 
                     //发微信模板消息---发货通知之后，给公维才发消息提醒?????
                     //订单生成通知（10发货通知提醒）
-                    TemplateWxApp.SendTemplateSend("oA-EC1Ucth5a3bkvcJSdiTCizz_g", 
-                        "您好，有新的发货通知!", entity.Code, entity.OrderTitle + "，请在" + entity.SendPlanDate + "之前安排发货。");
+                    //金志花
+                    TemplateWxApp.SendTemplateSend("oA-EC1UWi8i4sSkHsWV6BK7CuopA",
+                        "您好，有新的发货通知!", entity.Code, entity.OrderTitle + "，计划发货时间：" + entity.SendPlanDate);
+                    //牛霞
+                    TemplateWxApp.SendTemplateSend("oA-EC1TDoDKimuejhFlBV1U6M5bI", 
+                        "您好，有新的发货通知!", entity.Code, entity.OrderTitle + "，计划发货时间：" + entity.SendPlanDate);
                 }
             }
             catch (Exception)
@@ -476,20 +498,20 @@ namespace HZSoft.Application.Service.CustomerManage
                     //this.BaseRepository().Update(entity);
                     db.Update<Buys_OrderEntity>(entity);
 
-                    //同步到接单表-入库状态
+                    //同步到销售单-发货状态
                     DZ_OrderEntity dZ_OrderEntity = new DZ_OrderEntity
                     {
-                        SendMark = 1,
-                        SendDate = DateTime.Now
+                        SendOutMark = 1,
+                        SendOutDate = DateTime.Now
                     };
                     dZ_OrderEntity.Modify(entity.OrderId);
                     db.Update<DZ_OrderEntity>(dZ_OrderEntity);
 
-                    //同步到生产表-入库状态
+                    //同步到生产表-实际发货状态
                     Sale_CustomerEntity produceEntity = new Sale_CustomerEntity
                     {
-                        SendMark = 1,
-                        SendDate = DateTime.Now
+                        SendOutMark = 1,
+                        SendOutDate = DateTime.Now
                     };
                     produceEntity.Modify(entity.ProduceId);
                     db.Update<Sale_CustomerEntity>(produceEntity);

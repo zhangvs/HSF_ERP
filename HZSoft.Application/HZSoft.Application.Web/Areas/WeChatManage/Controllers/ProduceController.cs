@@ -122,7 +122,7 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
         /// <returns></returns>
         public ActionResult StepSweepcode(string id)
         {
-            //string OpenId = "oA-EC1Ucth5a3bkvcJSdiTCizz_g";
+            //string OpenId = "oA-EC1VOfXpxFIa3K9rvSPBwvgrQ";
             string OpenId = CurrentWxUser.OpenId;
             //JObject queryJson = new JObject {
             //            { "OpenId", CurrentWxUser.OpenId }

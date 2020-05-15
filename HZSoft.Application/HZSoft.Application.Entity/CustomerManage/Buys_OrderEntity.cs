@@ -313,8 +313,8 @@ namespace HZSoft.Application.Entity.CustomerManage
         {
             this.Id = this.Code;//Guid.NewGuid().ToString()
             this.CreateDate = DateTime.Now;
-            this.CreateUserId = OperatorProvider.Provider.Current().UserId;
-            this.CreateUserName = OperatorProvider.Provider.Current().UserName;
+            //this.CreateUserId = OperatorProvider.Provider.Current().UserId;//包装手机微信扫码创建，没有userid
+            //this.CreateUserName = OperatorProvider.Provider.Current().UserName;
             //this.PaymentState = 0;
             this.TotalQty = 0;//入库总包数
             this.AllEnterMark = 0;//完全入库

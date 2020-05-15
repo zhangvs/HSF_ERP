@@ -121,11 +121,6 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// <returns></returns>
         public int? Carrier { get; set; }
         /// <summary>
-        /// 计划发货日期
-        /// </summary>
-        /// <returns></returns>
-        public DateTime? SendPlanDate { get; set; }
-        /// <summary>
         /// 客户电话
         /// </summary>
         /// <returns></returns>
@@ -375,6 +370,32 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// <returns></returns>
         [Column("SendUserName")]
         public string SendUserName { get; set; }
+        /// <summary>
+        /// 计划发货日期
+        /// </summary>
+        /// <returns></returns>
+        public DateTime? SendPlanDate { get; set; }
+
+        /// <summary>
+        /// 实际发货
+        /// </summary>
+        /// <returns></returns>
+        public int? SendOutMark { get; set; }
+        /// <summary>
+        /// 实际发货人Id
+        /// </summary>
+        /// <returns></returns>
+        public string SendOutUserId { get; set; }
+        /// <summary>
+        /// 实际发货人
+        /// </summary>
+        /// <returns></returns>
+        public string SendOutUserName { get; set; }
+        /// <summary>
+        /// 实际发货日期
+        /// </summary>
+        /// <returns></returns>
+        public DateTime? SendOutDate { get; set; }
 
         /// <summary>
         /// 总面积
@@ -575,6 +596,7 @@ namespace HZSoft.Application.Entity.CustomerManage
             this.BaoZhuangMark = 1;
             this.EnterMark = 0;//入库
             this.SendMark = 0;//发货
+            this.SendOutMark = 0;//实际发货
             this.OverMark = 0;//结束
             this.DeleteMark = 0;
             this.EnabledMark = 1;
