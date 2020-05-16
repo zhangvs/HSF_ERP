@@ -23,7 +23,7 @@
     function GetGrid() {
         var selectedRowIndex = 0;
         var queryJson = {};
-        queryJson.OverMark = 1;//结束的才显示出来
+        queryJson.SendMark = 1;//发货通知结束的才显示出来
 
         var $gridTable = $('#gridTable');
         $gridTable.jqGrid({

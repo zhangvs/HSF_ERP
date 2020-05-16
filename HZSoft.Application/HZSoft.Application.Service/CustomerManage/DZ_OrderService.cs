@@ -512,7 +512,7 @@ namespace HZSoft.Application.Service.CustomerManage
                         {
                             var hsf_CardEntity = hsf_CardList.First();
                             //不直接给销售员报价，只有店长才能知道报价
-                            string backMsg = TemplateWxApp.SendTemplateMoneyOk(hsf_CardEntity.OpenId,"您好，您的订单报价已审核完成!", oldEntity.Code, oldEntity.OrderTitle, entity.MoneyAccounts.ToString(), "");
+                            string backMsg = TemplateWxApp.SendTemplateMoneyOk(hsf_CardEntity.OpenId, "您好，您的订单报价已审核完成!", oldEntity.Code, oldEntity.OrderTitle, entity.MoneyAccounts.ToString(), "");
                             if (backMsg != "ok")
                             {
                                 //业务员没有关注公众号，报错：微信Post请求发生错误！错误代码：43004，说明：require subscribe hint: [ziWtva03011295]
@@ -530,7 +530,6 @@ namespace HZSoft.Application.Service.CustomerManage
                         sale_CustomerEntity.MoneyOkMark = state;
                         sale_CustomerEntity.MoneyOkDate = DateTime.Now;
                         db.Update<Sale_CustomerEntity>(sale_CustomerEntity);
-                        db.Commit();
 
                         //收款+报价审核=提醒下单
 
@@ -548,6 +547,7 @@ namespace HZSoft.Application.Service.CustomerManage
                             Sale_Customer_Main.SaveSaleMain(db, oldEntity);//如果下单不及时，可能重复创建
                         }
                     }
+                    db.Commit();//放在最后
                 }
             }
             catch (Exception)

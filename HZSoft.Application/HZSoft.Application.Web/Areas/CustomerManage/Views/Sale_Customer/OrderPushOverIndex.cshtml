@@ -61,7 +61,7 @@
     function GetGrid() {
         var selectedRowIndex = 0;
         var queryJson = {};
-        queryJson.OverMark = 1;//完成的才显示出来
+        queryJson.PushMark = 1;//推单完成的才显示出来
 
         var $gridTable = $('#gridTable');
         $gridTable.jqGrid({

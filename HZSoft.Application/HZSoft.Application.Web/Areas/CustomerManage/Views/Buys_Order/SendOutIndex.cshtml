@@ -24,7 +24,7 @@
         var selectedRowIndex = 0;
         var queryJson = {};
         queryJson.SendMark = 1;//发货通知的
-        queryJson.OverMark = 0;
+        queryJson.SendOutMark = 0;//还未实际发货的
 
         var $gridTable = $('#gridTable');
         $gridTable.jqGrid({

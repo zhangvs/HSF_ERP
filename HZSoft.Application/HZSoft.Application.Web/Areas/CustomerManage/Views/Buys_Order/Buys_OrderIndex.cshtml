@@ -23,7 +23,7 @@
     function GetGrid() {
         var selectedRowIndex = 0;
         var queryJson = {};
-        queryJson.OverMark = 0;//入库单未完成的
+        queryJson.AllEnterMark = 0;//未完全入库的
 
         var $gridTable = $('#gridTable');
         $gridTable.jqGrid({
