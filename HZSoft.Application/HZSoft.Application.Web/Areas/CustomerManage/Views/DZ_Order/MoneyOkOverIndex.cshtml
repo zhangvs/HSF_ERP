@@ -25,8 +25,7 @@
     function GetGrid() {
         var selectedRowIndex = 0;
         var queryJson = {};
-        queryJson.MoneyMark = 1;//已经报价的
-        queryJson.MoneyOkMark = 0;//未报价审核的
+        queryJson.MoneyOkMark = 1;//已经报价的
 
         var $gridTable = $('#gridTable');
         $gridTable.jqGrid({

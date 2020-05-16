@@ -197,6 +197,16 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 报价审核完成记录（财务中心）
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult MoneyOkOverIndex()
+        {
+            return View();
+        }
+        
 
         /// <summary>
         /// 报价审核（财务中心）

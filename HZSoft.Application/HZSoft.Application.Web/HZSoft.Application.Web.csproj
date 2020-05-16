@@ -2031,6 +2031,8 @@
     <Content Include="Areas\CustomerManage\Views\Sale_Customer\OrderDownOverIndex.cshtml" />
     <Content Include="Areas\CustomerManage\Views\Sale_Customer\OrderOnlyReadIndex.cshtml" />
     <Content Include="Areas\CustomerManage\Views\DZ_Order\DZ_OrderDetail.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\DZ_Order\MoneyOkOverIndex.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\ReceivableSkl\CheckItemOverIndex.cshtml" />
     <None Include="Properties\PublishProfiles\6.1.pubxml" />
     <Content Include="Areas\FlowManage\Views\FlowLaunch\Index.cshtml" />
     <Content Include="Areas\FlowManage\Views\FormDesign\FormPreview.cshtml" />

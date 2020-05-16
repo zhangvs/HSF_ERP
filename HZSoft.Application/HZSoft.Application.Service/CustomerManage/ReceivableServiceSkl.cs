@@ -73,6 +73,12 @@ namespace HZSoft.Application.Service.CustomerManage
                 string SalesmanUserName = queryParam["SalesmanUserName"].ToString();
                 strSql += " and o.SalesmanUserName like '%" + SalesmanUserName + "%'";
             }
+            //收款确认标识
+            if (!queryParam["EnabledMark"].IsEmpty())
+            {
+                int EnabledMark = queryParam["EnabledMark"].ToInt();
+                strSql += " and r.EnabledMark  = " + EnabledMark;//收款表的EnabledMark
+            }
 
             return new RepositoryFactory().BaseRepository().FindList<ReceivableEntity>(strSql.ToString(), pagination);
         }

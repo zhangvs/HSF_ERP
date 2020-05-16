@@ -26,7 +26,7 @@
     function GetGrid() {
         var selectedRowIndex = 0;
         var queryJson = {};
-        queryJson.EnabledMark = 0;//未确认收款的
+        queryJson.EnabledMark = 1;//未确认收款的
 
         var $gridTable = $('#gridTable');
         $gridTable.jqGrid({

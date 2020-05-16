@@ -150,6 +150,12 @@ namespace HZSoft.Application.Service.CustomerManage
                 int MoneyMark = queryParam["MoneyMark"].ToInt();
                 strSql += " and MoneyMark  = " + MoneyMark;
             }
+            //报价审核
+            if (!queryParam["MoneyOkMark"].IsEmpty())
+            {
+                int MoneyOkMark = queryParam["MoneyOkMark"].ToInt();
+                strSql += " and MoneyOkMark  = " + MoneyOkMark;
+            }
             //下单
             if (!queryParam["DownMark"].IsEmpty())
             {

@@ -50,6 +50,15 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
             return View();
         }
         /// <summary>
+        /// 收款确认-每条
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult CheckItemOverIndex()
+        {
+            return View();
+        }
+        /// <summary>
         /// 收款页面
         /// </summary>
         /// <returns></returns>
