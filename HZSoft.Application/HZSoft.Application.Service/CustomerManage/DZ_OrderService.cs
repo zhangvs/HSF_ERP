@@ -438,9 +438,7 @@ namespace HZSoft.Application.Service.CustomerManage
             {
                 if (!string.IsNullOrEmpty(keyValue))
                 {
-                    entity.Modify(keyValue);
-                    this.BaseRepository().Update(entity);
-                    
+                    //先拿到老的销售单状态
                     DZ_OrderEntity oldEntity = GetEntity(keyValue);
 
                     //审图通过之后，给拆单人发消息提醒
@@ -459,6 +457,9 @@ namespace HZSoft.Application.Service.CustomerManage
                         //订单生成通知（报价提醒）
                         TemplateWxApp.SendTemplateMoney("oA-EC1X0OoVmzyowOqxYHlY5NHX4", "您好，有新的报价需要审核!", "研发中心", entity.OrderTitle, entity.Code, "请进行报价审核。");
                     }
+
+                    entity.Modify(keyValue);
+                    this.BaseRepository().Update(entity);//要放在oldEntity后面修改才可以，否则oldEntity和entity都是一样的了
                 }
                 else
                 {

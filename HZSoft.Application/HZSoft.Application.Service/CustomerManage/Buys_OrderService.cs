@@ -445,7 +445,9 @@ namespace HZSoft.Application.Service.CustomerManage
                     {
                         SendMark = 1,
                         SendDate = DateTime.Now,
-                        SendPlanDate= entity.SendPlanDate
+                        SendPlanDate = entity.SendPlanDate,
+                        SendUserId = entity.SendUserId,
+                        SendUserName = entity.SendUserName
                     };
                     dZ_OrderEntity.Modify(entity.OrderId);
                     db.Update<DZ_OrderEntity>(dZ_OrderEntity);
@@ -454,7 +456,10 @@ namespace HZSoft.Application.Service.CustomerManage
                     Sale_CustomerEntity produceEntity = new Sale_CustomerEntity
                     {
                         SendMark = 1,
-                        SendDate = DateTime.Now
+                        SendDate = DateTime.Now,
+                        SendPlanDate = entity.SendPlanDate,
+                        SendUserId = entity.SendUserId,
+                        SendUserName = entity.SendUserName
                     };
                     produceEntity.Modify(entity.ProduceId);
                     db.Update<Sale_CustomerEntity>(produceEntity);
@@ -502,7 +507,9 @@ namespace HZSoft.Application.Service.CustomerManage
                     DZ_OrderEntity dZ_OrderEntity = new DZ_OrderEntity
                     {
                         SendOutMark = 1,
-                        SendOutDate = DateTime.Now
+                        SendOutDate = DateTime.Now,
+                        SendUserId = entity.SendUserId,
+                        SendUserName = entity.SendUserName
                     };
                     dZ_OrderEntity.Modify(entity.OrderId);
                     db.Update<DZ_OrderEntity>(dZ_OrderEntity);
@@ -511,7 +518,9 @@ namespace HZSoft.Application.Service.CustomerManage
                     Sale_CustomerEntity produceEntity = new Sale_CustomerEntity
                     {
                         SendOutMark = 1,
-                        SendOutDate = DateTime.Now
+                        SendOutDate = DateTime.Now,
+                        SendUserId = entity.SendUserId,
+                        SendUserName = entity.SendUserName
                     };
                     produceEntity.Modify(entity.ProduceId);
                     db.Update<Sale_CustomerEntity>(produceEntity);
