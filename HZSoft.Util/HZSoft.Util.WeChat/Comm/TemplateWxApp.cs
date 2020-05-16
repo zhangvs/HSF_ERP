@@ -19,12 +19,14 @@ namespace HZSoft.Util.WeChat.Comm
             if (!AccessTokenContainer.CheckRegistered(appId))//检查是否已经注册
             {
                 AccessTokenContainer.Register(appId, appSecret);//如果没有注册则进行注册
+                LogHelper.AddLog("盛派获取新的基础token：result");
             }
             var result = AccessTokenContainer.GetAccessTokenResult(appId); //获取AccessToken结果
 
             //当然也可以更加简单地一步到位：var result = AccessTokenContainer.TryGetAccessToken(appId, appSecret);//_____________这样的存在过期现象！！！！！！！所以采用上面的判断方式
             //上述获取到的result有access_token和expires_in两个属性，分别储存了AccessToken字符串和过期时间（秒），
             //如果使用AccessTokenContainer.TryGetAccessToken()方法，则可以彻底忽略的expires_in存在，如果过期，系统会自动重新获取。
+
             return result.access_token;
         }
         /// <summary>

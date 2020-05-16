@@ -23,6 +23,7 @@ using Newtonsoft.Json;
 using HZSoft.Application.Entity.CustomerManage;
 using HZSoft.Application.Busines.CustomerManage;
 using HZSoft.Cache.Factory;
+using Senparc.Weixin.MP.Containers;
 
 namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
 {
@@ -56,7 +57,7 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
             else
             {
                 WeixinToken token = new WeixinToken();
-                //判断是否保存微信token，用户网页授权,不限制,,拿到授权access_token和openid
+                //判断是否保存微信token，用户网页授权access_token,不限制,,拿到授权access_token和openid
                 if (Session[WebSiteConfig.WXTOKEN_SESSION_NAME] != null)
                 {
                     token = Session[WebSiteConfig.WXTOKEN_SESSION_NAME] as WeixinToken;
@@ -76,16 +77,32 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
                 var userEntity = wechatUserBll.GetEntity(token.openid);
                 if (userEntity == null)
                 {
-                    //全局token
-                    var cacheToken = CacheFactory.Cache().GetCache<string>("access_token");
-                    if (cacheToken == null)
-                    {
-                        var userInfoBase = AnalyzeHelper.Get<WeixinTokenBase>(WeixinConfig.GetTokenBaseUrl);
-                        cacheToken = userInfoBase.access_token;
-                        CacheFactory.Cache().WriteCache(cacheToken, "access_token", DateTime.Now.AddSeconds(7000));
-                    }
+                    #region CacheFactory方式获取token
+                    ////全局token--基础access_token，每日限额2000
+                    //var cacheToken = CacheFactory.Cache().GetCache<string>("access_token");
+                    //if (cacheToken == null)
+                    //{
+                    //    var userInfoBase = AnalyzeHelper.Get<WeixinTokenBase>(WeixinConfig.GetTokenBaseUrl);
+                    //    cacheToken = userInfoBase.access_token;
+                    //    CacheFactory.Cache().WriteCache(cacheToken, "access_token", DateTime.Now.AddSeconds(7000));
+                    //}
+                    #endregion
 
-                    string userInfoUrl = string.Format(WeixinConfig.GetUserInfoUrl, cacheToken, token.openid);
+                    //改成盛派容器获取基础token
+                    //AccessTokenContainer.cs - 一个AccessToken容器（帮助自动更新AccessToken，因为每一个AccessToken都有一个有效期）
+                    //有了AccessTokenContainer，我们可以直接这样获取AccessToken：
+                    if (!AccessTokenContainer.CheckRegistered(WeixinConfig.AppID))//检查是否已经注册
+                    {
+                        AccessTokenContainer.Register(WeixinConfig.AppID, WeixinConfig.AppSecret);//如果没有注册则进行注册
+                        LogHelper.AddLog("盛派获取新的基础token：result");
+                    }
+                    var result = AccessTokenContainer.GetAccessTokenResult(WeixinConfig.AppID); //获取AccessToken结果
+
+                    //当然也可以更加简单地一步到位：var result = AccessTokenContainer.TryGetAccessToken(appId, appSecret);//_____________这样的存在过期现象！！！！！！！所以采用上面的判断方式
+                    //上述获取到的result有access_token和expires_in两个属性，分别储存了AccessToken字符串和过期时间（秒），
+                    //如果使用AccessTokenContainer.TryGetAccessToken()方法，则可以彻底忽略的expires_in存在，如果过期，系统会自动重新获取。
+
+                    string userInfoUrl = string.Format(WeixinConfig.GetUserInfoUrl, result, token.openid);
                     var userInfo = AnalyzeHelper.Get<WeixinUserInfo>(userInfoUrl);
                     if (userInfo.errcode != null)
                     {

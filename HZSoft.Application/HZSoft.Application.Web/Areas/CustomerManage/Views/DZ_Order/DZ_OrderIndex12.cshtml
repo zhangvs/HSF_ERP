@@ -47,9 +47,13 @@
     //加载表格
     function GetGrid() {
         var selectedRowIndex = 0;
+        var queryJson = {};
+        queryJson.MoneyOkMark = 1;//报价审核的显示出来
+
         var $gridTable = $('#gridTable');
         $gridTable.jqGrid({
             autowidth: true,
+            postData: { queryJson: JSON.stringify(queryJson) },
             height: $(window).height() - 136.5,
             url: "../../CustomerManage/DZ_Order/GetPageListJson",
             datatype: "json",
@@ -85,7 +89,7 @@
                 },
                 { label: "报价金额", name: "MoneyAccounts", width: 80, align: "left", formatter: 'number', formatoptions: { thousandsSeparator: "", decimalPlaces: 2 } },
                 {
-                    label: '报价附件', name: 'MoneyPath', index: 'MoneyPath', width: 300, align: 'left', sortable: true,
+                    label: '报价附件', name: 'MoneyPath', index: 'MoneyPath', width: 150, align: 'center', sortable: true,
                     formatter: function (cellvalue) {
                         if (cellvalue != null) {
                             return "<a style='text-decoration:underline' href='" + cellvalue.replace('~', '') + "'>报价附件下载</a>";
@@ -114,7 +118,7 @@
             rowNum: 30,
             rowList: [30, 50, 100],
             pager: "#gridPager",
-            sortname: 'CreateDate',
+            sortname: 'MoneyOkDate',
             sortorder: 'desc',
             rownumbers: true,
             shrinkToFit: false,

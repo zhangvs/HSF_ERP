@@ -87,11 +87,23 @@ namespace HZSoft.Application.Service.CustomerManage
                 int PaymentState = queryParam["PaymentState"].ToInt();
                 strSql += " and PaymentState  = " + PaymentState;
             }
-            //发货
+            //完全入库标识
+            if (!queryParam["AllEnterMark"].IsEmpty())
+            {
+                int AllEnterMark = queryParam["AllEnterMark"].ToInt();
+                strSql += " and AllEnterMark  = " + AllEnterMark;
+            }
+            //发货通知
             if (!queryParam["SendMark"].IsEmpty())
             {
                 int SendMark = queryParam["SendMark"].ToInt();
                 strSql += " and SendMark  = " + SendMark;
+            }
+            //实际发货
+            if (!queryParam["SendOutMark"].IsEmpty())
+            {
+                int SendOutMark = queryParam["SendOutMark"].ToInt();
+                strSql += " and SendOutMark  = " + SendOutMark;
             }
             //结束
             if (!queryParam["OverMark"].IsEmpty())
