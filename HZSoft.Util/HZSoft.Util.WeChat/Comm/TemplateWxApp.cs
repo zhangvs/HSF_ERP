@@ -14,7 +14,7 @@ namespace HZSoft.Util.WeChat.Comm
         public static string appId = Config.GetValue("AppID");
         public static string appSecret = Config.GetValue("AppSecret");
 
-        
+
 
         public static string getToken()
         {
@@ -55,9 +55,8 @@ namespace HZSoft.Util.WeChat.Comm
         /// <param name="keyword2">商品名称</param>
         /// <param name="keyword3">订单号</param>
         /// <returns></returns>
-        public static string SendTemplateNew( string openId, string first, string keyword2, string keyword3, string remark)
+        public static string SendTemplateNew(string openId, string first, string keyword2, string keyword3, string remark, bool retryIfFaild = true)
         {
-            bool retryIfFaild = true;
             try
             {
                 var data = new
@@ -71,7 +70,7 @@ namespace HZSoft.Util.WeChat.Comm
                 string token = getToken();
                 SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(
                     token, openId, "Y5OqvcAap6hDfUOfDA-ffgiP8VFuISg3AogTT0Z7938", null, data, null);
-                LogHelper.AddLog(first+ keyword3 + "\r\n"+ token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
+                LogHelper.AddLog(first + keyword3 + "\r\n" + token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
                 return sendTemplateMessageResult.errmsg;
             }
             catch (Exception ex)
@@ -80,8 +79,9 @@ namespace HZSoft.Util.WeChat.Comm
                 if (retryIfFaild)
                 {
                     retryIfFaild = false;//重试一次
-                    string twoResult = SendTemplateNew(openId, first, keyword2, keyword3, remark);
-                    LogHelper.AddLog("重试结果-"+ twoResult);
+                    string twoResult = SendTemplateNew(openId, first, keyword2, keyword3, remark, false);
+                    LogHelper.AddLog("重试结果-" + twoResult);
+                    return twoResult;
                 }
                 return ex.Message;
                 //微信Post请求发生错误！错误代码：43004，说明：require subscribe hint: [ziWtva03011295]
@@ -99,9 +99,8 @@ namespace HZSoft.Util.WeChat.Comm
         /// <param name="keyword2">商品名称</param>
         /// <param name="keyword3">订单号</param>
         /// <returns></returns>
-        public static string SendTemplateMoney( string openId, string first, string keyword2, string keyword3, string keyword4, string remark)
+        public static string SendTemplateMoney(string openId, string first, string keyword2, string keyword3, string keyword4, string remark, bool retryIfFaild = true)
         {
-            bool retryIfFaild = true;
             try
             {
                 var data = new
@@ -116,7 +115,7 @@ namespace HZSoft.Util.WeChat.Comm
                 string token = getToken();
                 SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(
                     token, openId, "pJERHW4hENanVyyzA5Kiz_fYmvAT0sc4RRLqfZE9nUM", null, data, null);
-                LogHelper.AddLog(first+ keyword4 + "\r\n"+ token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
+                LogHelper.AddLog(first + keyword4 + "\r\n" + token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
                 return sendTemplateMessageResult.errmsg;
             }
             catch (Exception ex)
@@ -125,7 +124,7 @@ namespace HZSoft.Util.WeChat.Comm
                 if (retryIfFaild)
                 {
                     retryIfFaild = false;//重试一次
-                    string twoResult = SendTemplateNew(openId, first, keyword2, keyword3, remark);
+                    string twoResult = SendTemplateMoney(openId, first, keyword2, keyword3, keyword4, remark, false);
                     LogHelper.AddLog("重试结果-" + twoResult);
                 }
                 return ex.Message;
@@ -144,9 +143,8 @@ namespace HZSoft.Util.WeChat.Comm
         /// <param name="keyword4">时间</param>
         /// <param name="template_id"></param>
         /// <returns></returns>
-        public static string SendTemplateMoneyOk( string openId, string first, string keyword1, string keyword2, string keyword3, string remark)
+        public static string SendTemplateMoneyOk(string openId, string first, string keyword1, string keyword2, string keyword3, string remark, bool retryIfFaild = true)
         {
-            bool retryIfFaild = true;
             try
             {
                 var data = new
@@ -161,7 +159,7 @@ namespace HZSoft.Util.WeChat.Comm
                 string token = getToken();
                 SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(
                     token, openId, "XfKHJdlsZ66CtuQVZl5u5_K0AO2lOw0vYKsTyfSogAU", null, data, null);
-                LogHelper.AddLog(first+ keyword1 + "\r\n"+ token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
+                LogHelper.AddLog(first + keyword1 + "\r\n" + token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
                 return sendTemplateMessageResult.errmsg;
             }
             catch (Exception ex)
@@ -170,7 +168,7 @@ namespace HZSoft.Util.WeChat.Comm
                 if (retryIfFaild)
                 {
                     retryIfFaild = false;//重试一次
-                    string twoResult = SendTemplateNew(openId, first, keyword2, keyword3, remark);
+                    string twoResult = SendTemplateMoneyOk(openId, first, keyword1, keyword2, keyword3, remark, false);
                     LogHelper.AddLog("重试结果-" + twoResult);
                 }
                 return ex.Message;
@@ -189,9 +187,8 @@ namespace HZSoft.Util.WeChat.Comm
         /// <param name="keyword2">应收金额</param>
         /// <param name="keyword3">时间</param>
         /// <returns></returns>
-        public static string SendTemplateReceivable( string openId, string first, string keyword1, string keyword2, string remark)
+        public static string SendTemplateReceivable(string openId, string first, string keyword1, string keyword2, string remark, bool retryIfFaild = true)
         {
-            bool retryIfFaild = true;
             try
             {
                 var data = new
@@ -205,7 +202,7 @@ namespace HZSoft.Util.WeChat.Comm
                 string token = getToken();
                 SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(
                     token, openId, "uciE_-vnHbhkdqbIHfdpmTQG5g568pDAw90qmjNXHGY", null, data, null);
-                LogHelper.AddLog(first+ keyword1 + "\r\n"+ token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
+                LogHelper.AddLog(first + keyword1 + "\r\n" + token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
                 return sendTemplateMessageResult.errmsg;
             }
             catch (Exception ex)
@@ -214,7 +211,7 @@ namespace HZSoft.Util.WeChat.Comm
                 if (retryIfFaild)
                 {
                     retryIfFaild = false;//重试一次
-                    string twoResult = SendTemplateReceivable(openId, first, keyword1, keyword2, remark);
+                    string twoResult = SendTemplateReceivable(openId, first, keyword1, keyword2, remark, false);
                     LogHelper.AddLog("重试结果-" + twoResult);
                 }
                 return ex.Message;
@@ -232,9 +229,8 @@ namespace HZSoft.Util.WeChat.Comm
         /// <param name="keyword2">应收金额</param>
         /// <param name="keyword3">时间</param>
         /// <returns></returns>
-        public static string SendTemplateReceivableOk( string openId, string first, string keyword1, string remark)
+        public static string SendTemplateReceivableOk(string openId, string first, string keyword1, string remark, bool retryIfFaild = true)
         {
-            bool retryIfFaild = true;
             try
             {
                 var data = new
@@ -247,7 +243,7 @@ namespace HZSoft.Util.WeChat.Comm
                 string token = getToken();
                 SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(
                     token, openId, "PxdaZK82LHdat5u7zYzEbt4rOmLVIVFIC90We2YDXZ8", null, data, null);
-                LogHelper.AddLog(first+ remark + "\r\n"+ token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
+                LogHelper.AddLog(first + remark + "\r\n" + token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
                 return sendTemplateMessageResult.errmsg;
             }
             catch (Exception ex)
@@ -256,7 +252,7 @@ namespace HZSoft.Util.WeChat.Comm
                 if (retryIfFaild)
                 {
                     retryIfFaild = false;//重试一次
-                    string twoResult = SendTemplateReceivableOk(openId, first, keyword1, remark);
+                    string twoResult = SendTemplateReceivableOk(openId, first, keyword1, remark, false);
                     LogHelper.AddLog("重试结果-" + twoResult);
                 }
                 return ex.Message;
@@ -270,9 +266,8 @@ namespace HZSoft.Util.WeChat.Comm
         /// <param name="openId"></param>
         /// <param name="template_id"></param>
         /// <returns></returns>
-        public static string SendTemplateAllIn( string openId, string first, string keyword1, string remark)
+        public static string SendTemplateAllIn(string openId, string first, string keyword1, string remark, bool retryIfFaild = true)
         {
-            bool retryIfFaild = true;
             try
             {
                 var data = new
@@ -286,7 +281,7 @@ namespace HZSoft.Util.WeChat.Comm
                 string token = getToken();
                 SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(
                     token, openId, "OWtHeoHLSNzPj8FJ1Bp6vbD4k0WfIbRqYhELB0wtMmY", null, data, null);
-                LogHelper.AddLog(first+ keyword1 + "\r\n"+ token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
+                LogHelper.AddLog(first + keyword1 + "\r\n" + token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
                 return sendTemplateMessageResult.errmsg;
             }
             catch (Exception ex)
@@ -295,7 +290,7 @@ namespace HZSoft.Util.WeChat.Comm
                 if (retryIfFaild)
                 {
                     retryIfFaild = false;//重试一次
-                    string twoResult = SendTemplateAllIn(openId, first, keyword1, remark);
+                    string twoResult = SendTemplateAllIn(openId, first, keyword1, remark, false);
                     LogHelper.AddLog("重试结果-" + twoResult);
                 }
                 return ex.Message;
@@ -309,9 +304,8 @@ namespace HZSoft.Util.WeChat.Comm
         /// <param name="openId"></param>
         /// <param name="template_id"></param>
         /// <returns></returns>
-        public static string SendTemplateSend( string openId, string first, string keyword1, string remark)
+        public static string SendTemplateSend(string openId, string first, string keyword1, string remark, bool retryIfFaild = true)
         {
-            bool retryIfFaild = true;
             try
             {
                 var data = new
@@ -325,7 +319,7 @@ namespace HZSoft.Util.WeChat.Comm
                 string token = getToken();
                 SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(
                     token, openId, "Pw7phZTv4ly_C9-ayUHKFBq8xPMJG-E0D5rxzBKi_xg", null, data, null);
-                LogHelper.AddLog(first+ keyword1 + "\r\n"+ token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
+                LogHelper.AddLog(first + keyword1 + "\r\n" + token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
                 return sendTemplateMessageResult.errmsg;
             }
             catch (Exception ex)
@@ -334,12 +328,12 @@ namespace HZSoft.Util.WeChat.Comm
                 if (retryIfFaild)
                 {
                     retryIfFaild = false;//重试一次
-                    string twoResult = SendTemplateSend(openId, first, keyword1, remark);
+                    string twoResult = SendTemplateSend(openId, first, keyword1, remark, false);
                     LogHelper.AddLog("重试结果-" + twoResult);
                 }
                 return ex.Message;
             }
         }
-        
+
     }
 }
