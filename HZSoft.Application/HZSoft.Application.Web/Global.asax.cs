@@ -2,6 +2,7 @@
 using HZSoft.Cache.Factory;
 using HZSoft.Util;
 using HZSoft.Util.WeChat.Comm;
+using Senparc.Weixin.MP.CommonAPIs;
 using Senparc.Weixin.MP.Containers;
 using System;
 using System.Web;
@@ -28,6 +29,16 @@ namespace HZSoft.Application.Web
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             WeixinConfig.Register();
 
+            AccessTokenContainer.Register(WeixinConfig.AppID, WeixinConfig.AppSecret);//如果没有注册则进行注册，微信基础
+            var result = AccessTokenContainer.GetAccessTokenResult(WeixinConfig.AppID); //获取AccessToken结果
+            LogHelper.AddLog("盛派注册基础token：" + result.access_token);
+
+            //var result2 = AccessTokenContainer.GetAccessToken(WeixinConfig.AppID);
+
+            //var result3 = CommonApi.GetToken(WeixinConfig.AppID, WeixinConfig.AppSecret);//这是不一样的，没有通过容器
+            //string dd = result3.access_token;
+
+            //var resul2t = CommonApi.GetMenu(dd);
             //TemplateWxApp.SendTemplateMoney("oA-EC1Ucth5a3bkvcJSdiTCizz_g", "您好，有新的报价需要审核!", "研发中心", "LS意林公馆2-1-701李先生", "SKL-20200514001", "请进行报价审核。");
 
             //string appId = Config.GetValue("AppID");
@@ -118,9 +129,6 @@ namespace HZSoft.Application.Web
             ////只有关注公众号的业务员才能收到消息(12实际发货提醒)
             //TemplateWxApp.SendTemplateSend("oA-EC1Ucth5a3bkvcJSdiTCizz_g",
             //    "您好，您的订单已经发货!", "SKL-20200506003", "联动柜，共3包。");
-
-
-
 
         }
 

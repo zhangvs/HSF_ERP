@@ -2,7 +2,9 @@
 using Newtonsoft.Json;
 using RestSharp;
 using Senparc.Weixin.MP.AdvancedAPIs.TemplateMessage;
+using Senparc.Weixin.MP.CommonAPIs;
 using Senparc.Weixin.MP.Containers;
+using Senparc.Weixin.MP.Entities;
 using System;
 
 namespace HZSoft.Util.WeChat.Comm
@@ -12,21 +14,36 @@ namespace HZSoft.Util.WeChat.Comm
         public static string appId = Config.GetValue("AppID");
         public static string appSecret = Config.GetValue("AppSecret");
 
+        
+
         public static string getToken()
         {
-            //AccessTokenContainer.cs - 一个AccessToken容器（帮助自动更新AccessToken，因为每一个AccessToken都有一个有效期）
-            //有了AccessTokenContainer，我们可以直接这样获取AccessToken：
-            if (!AccessTokenContainer.CheckRegistered(appId))//检查是否已经注册
-            {
-                AccessTokenContainer.Register(appId, appSecret);//如果没有注册则进行注册
-                LogHelper.AddLog("盛派获取新的基础token：result");
-            }
-            var result = AccessTokenContainer.GetAccessTokenResult(appId); //获取AccessToken结果
+            //AccessTokenResult result =null;
+            ////AccessTokenContainer.cs - 一个AccessToken容器（帮助自动更新AccessToken，因为每一个AccessToken都有一个有效期）
+            ////有了AccessTokenContainer，我们可以直接这样获取AccessToken：
+            //if (!AccessTokenContainer.CheckRegistered(appId))//检查是否已经注册
+            //{
+            //    var result2 = CommonApi.GetToken(appId, appSecret);
+            //    string dd = result2.access_token;
 
+
+            //    AccessTokenContainer.Register(appId, appSecret);//如果没有注册则进行注册
+            //    result = AccessTokenContainer.GetAccessTokenResult(appId); //获取AccessToken结果
+            //    LogHelper.AddLog("盛派获取新的基础token：" + result.access_token);
+            //}
+            //else
+            //{
+            //    result = AccessTokenContainer.GetAccessTokenResult(appId); //获取AccessToken结果
+            //}
             //当然也可以更加简单地一步到位：var result = AccessTokenContainer.TryGetAccessToken(appId, appSecret);//_____________这样的存在过期现象！！！！！！！所以采用上面的判断方式
             //上述获取到的result有access_token和expires_in两个属性，分别储存了AccessToken字符串和过期时间（秒），
             //如果使用AccessTokenContainer.TryGetAccessToken()方法，则可以彻底忽略的expires_in存在，如果过期，系统会自动重新获取。
 
+
+
+
+            //Global中注册，不需要再判断
+            var result = AccessTokenContainer.GetAccessTokenResult(appId); //获取AccessToken结果
             return result.access_token;
         }
         /// <summary>
@@ -40,6 +57,7 @@ namespace HZSoft.Util.WeChat.Comm
         /// <returns></returns>
         public static string SendTemplateNew( string openId, string first, string keyword2, string keyword3, string remark)
         {
+            bool retryIfFaild = true;
             try
             {
                 var data = new
@@ -53,13 +71,20 @@ namespace HZSoft.Util.WeChat.Comm
                 string token = getToken();
                 SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(
                     token, openId, "Y5OqvcAap6hDfUOfDA-ffgiP8VFuISg3AogTT0Z7938", null, data, null);
-                LogHelper.AddLog(" "+first+ keyword3 + "\r\n"+ token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
+                LogHelper.AddLog(first+ keyword3 + "\r\n"+ token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
                 return sendTemplateMessageResult.errmsg;
             }
             catch (Exception ex)
             {
                 LogHelper.AddLog(first + ex.Message);
-                return ex.Message;//微信Post请求发生错误！错误代码：43004，说明：require subscribe hint: [ziWtva03011295]
+                if (retryIfFaild)
+                {
+                    retryIfFaild = false;//重试一次
+                    string twoResult = SendTemplateNew(openId, first, keyword2, keyword3, remark);
+                    LogHelper.AddLog("重试结果-"+ twoResult);
+                }
+                return ex.Message;
+                //微信Post请求发生错误！错误代码：43004，说明：require subscribe hint: [ziWtva03011295]
                 //此appId（365465）尚未注册，请先使用AccessTokenContainer.Register完成注册（全局执行一次即可）！模块：MP
                 //微信Post请求发生错误！错误代码：40001，说明：invalid credential, access_token is invalid or not latest hints: [LGfcCbMre-bODBba!]
             }
@@ -76,6 +101,7 @@ namespace HZSoft.Util.WeChat.Comm
         /// <returns></returns>
         public static string SendTemplateMoney( string openId, string first, string keyword2, string keyword3, string keyword4, string remark)
         {
+            bool retryIfFaild = true;
             try
             {
                 var data = new
@@ -90,13 +116,19 @@ namespace HZSoft.Util.WeChat.Comm
                 string token = getToken();
                 SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(
                     token, openId, "pJERHW4hENanVyyzA5Kiz_fYmvAT0sc4RRLqfZE9nUM", null, data, null);
-                LogHelper.AddLog(" "+first+ keyword4 + "\r\n"+ token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
+                LogHelper.AddLog(first+ keyword4 + "\r\n"+ token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
                 return sendTemplateMessageResult.errmsg;
             }
             catch (Exception ex)
             {
                 LogHelper.AddLog(first + ex.Message);
-                return ex.Message;//微信Post请求发生错误！错误代码：43004，说明：require subscribe hint: [ziWtva03011295]
+                if (retryIfFaild)
+                {
+                    retryIfFaild = false;//重试一次
+                    string twoResult = SendTemplateNew(openId, first, keyword2, keyword3, remark);
+                    LogHelper.AddLog("重试结果-" + twoResult);
+                }
+                return ex.Message;
             }
         }
 
@@ -114,6 +146,7 @@ namespace HZSoft.Util.WeChat.Comm
         /// <returns></returns>
         public static string SendTemplateMoneyOk( string openId, string first, string keyword1, string keyword2, string keyword3, string remark)
         {
+            bool retryIfFaild = true;
             try
             {
                 var data = new
@@ -128,13 +161,19 @@ namespace HZSoft.Util.WeChat.Comm
                 string token = getToken();
                 SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(
                     token, openId, "XfKHJdlsZ66CtuQVZl5u5_K0AO2lOw0vYKsTyfSogAU", null, data, null);
-                LogHelper.AddLog(" "+first+ keyword1 + "\r\n"+ token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
+                LogHelper.AddLog(first+ keyword1 + "\r\n"+ token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
                 return sendTemplateMessageResult.errmsg;
             }
             catch (Exception ex)
             {
                 LogHelper.AddLog(first + ex.Message);
-                return ex.Message;//微信Post请求发生错误！错误代码：43004，说明：require subscribe hint: [ziWtva03011295]
+                if (retryIfFaild)
+                {
+                    retryIfFaild = false;//重试一次
+                    string twoResult = SendTemplateNew(openId, first, keyword2, keyword3, remark);
+                    LogHelper.AddLog("重试结果-" + twoResult);
+                }
+                return ex.Message;
             }
         }
 
@@ -152,6 +191,7 @@ namespace HZSoft.Util.WeChat.Comm
         /// <returns></returns>
         public static string SendTemplateReceivable( string openId, string first, string keyword1, string keyword2, string remark)
         {
+            bool retryIfFaild = true;
             try
             {
                 var data = new
@@ -165,13 +205,19 @@ namespace HZSoft.Util.WeChat.Comm
                 string token = getToken();
                 SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(
                     token, openId, "uciE_-vnHbhkdqbIHfdpmTQG5g568pDAw90qmjNXHGY", null, data, null);
-                LogHelper.AddLog(" "+first+ keyword1 + "\r\n"+ token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
+                LogHelper.AddLog(first+ keyword1 + "\r\n"+ token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
                 return sendTemplateMessageResult.errmsg;
             }
             catch (Exception ex)
             {
                 LogHelper.AddLog(first + ex.Message);
-                return ex.Message;//微信Post请求发生错误！错误代码：43004，说明：require subscribe hint: [ziWtva03011295]
+                if (retryIfFaild)
+                {
+                    retryIfFaild = false;//重试一次
+                    string twoResult = SendTemplateReceivable(openId, first, keyword1, keyword2, remark);
+                    LogHelper.AddLog("重试结果-" + twoResult);
+                }
+                return ex.Message;
             }
         }
 
@@ -188,6 +234,7 @@ namespace HZSoft.Util.WeChat.Comm
         /// <returns></returns>
         public static string SendTemplateReceivableOk( string openId, string first, string keyword1, string remark)
         {
+            bool retryIfFaild = true;
             try
             {
                 var data = new
@@ -200,13 +247,19 @@ namespace HZSoft.Util.WeChat.Comm
                 string token = getToken();
                 SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(
                     token, openId, "PxdaZK82LHdat5u7zYzEbt4rOmLVIVFIC90We2YDXZ8", null, data, null);
-                LogHelper.AddLog(" "+first+ remark + "\r\n"+ token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
+                LogHelper.AddLog(first+ remark + "\r\n"+ token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
                 return sendTemplateMessageResult.errmsg;
             }
             catch (Exception ex)
             {
                 LogHelper.AddLog(first + ex.Message);
-                return ex.Message;//微信Post请求发生错误！错误代码：43004，说明：require subscribe hint: [ziWtva03011295]
+                if (retryIfFaild)
+                {
+                    retryIfFaild = false;//重试一次
+                    string twoResult = SendTemplateReceivableOk(openId, first, keyword1, remark);
+                    LogHelper.AddLog("重试结果-" + twoResult);
+                }
+                return ex.Message;
             }
         }
 
@@ -219,6 +272,7 @@ namespace HZSoft.Util.WeChat.Comm
         /// <returns></returns>
         public static string SendTemplateAllIn( string openId, string first, string keyword1, string remark)
         {
+            bool retryIfFaild = true;
             try
             {
                 var data = new
@@ -232,12 +286,18 @@ namespace HZSoft.Util.WeChat.Comm
                 string token = getToken();
                 SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(
                     token, openId, "OWtHeoHLSNzPj8FJ1Bp6vbD4k0WfIbRqYhELB0wtMmY", null, data, null);
-                LogHelper.AddLog(" "+first+ keyword1 + "\r\n"+ token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
+                LogHelper.AddLog(first+ keyword1 + "\r\n"+ token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
                 return sendTemplateMessageResult.errmsg;
             }
             catch (Exception ex)
             {
                 LogHelper.AddLog(first + ex.Message);
+                if (retryIfFaild)
+                {
+                    retryIfFaild = false;//重试一次
+                    string twoResult = SendTemplateAllIn(openId, first, keyword1, remark);
+                    LogHelper.AddLog("重试结果-" + twoResult);
+                }
                 return ex.Message;
             }
         }
@@ -251,6 +311,7 @@ namespace HZSoft.Util.WeChat.Comm
         /// <returns></returns>
         public static string SendTemplateSend( string openId, string first, string keyword1, string remark)
         {
+            bool retryIfFaild = true;
             try
             {
                 var data = new
@@ -264,12 +325,18 @@ namespace HZSoft.Util.WeChat.Comm
                 string token = getToken();
                 SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(
                     token, openId, "Pw7phZTv4ly_C9-ayUHKFBq8xPMJG-E0D5rxzBKi_xg", null, data, null);
-                LogHelper.AddLog(" "+first+ keyword1 + "\r\n"+ token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
+                LogHelper.AddLog(first+ keyword1 + "\r\n"+ token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
                 return sendTemplateMessageResult.errmsg;
             }
             catch (Exception ex)
             {
-                LogHelper.AddLog(" "+first+ex.Message);
+                LogHelper.AddLog(first + ex.Message);
+                if (retryIfFaild)
+                {
+                    retryIfFaild = false;//重试一次
+                    string twoResult = SendTemplateSend(openId, first, keyword1, remark);
+                    LogHelper.AddLog("重试结果-" + twoResult);
+                }
                 return ex.Message;
             }
         }

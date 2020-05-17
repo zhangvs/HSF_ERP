@@ -24,6 +24,7 @@ using HZSoft.Application.Entity.CustomerManage;
 using HZSoft.Application.Busines.CustomerManage;
 using HZSoft.Cache.Factory;
 using Senparc.Weixin.MP.Containers;
+using HZSoft.Util.WeChat.Comm;
 
 namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
 {
@@ -89,20 +90,9 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
                     #endregion
 
                     //改成盛派容器获取基础token
-                    //AccessTokenContainer.cs - 一个AccessToken容器（帮助自动更新AccessToken，因为每一个AccessToken都有一个有效期）
-                    //有了AccessTokenContainer，我们可以直接这样获取AccessToken：
-                    if (!AccessTokenContainer.CheckRegistered(WeixinConfig.AppID))//检查是否已经注册
-                    {
-                        AccessTokenContainer.Register(WeixinConfig.AppID, WeixinConfig.AppSecret);//如果没有注册则进行注册
-                        LogHelper.AddLog("盛派获取新的基础token：result");
-                    }
-                    var result = AccessTokenContainer.GetAccessTokenResult(WeixinConfig.AppID); //获取AccessToken结果
+                    string base_token = TemplateWxApp.getToken(); //获取AccessToken结果
 
-                    //当然也可以更加简单地一步到位：var result = AccessTokenContainer.TryGetAccessToken(appId, appSecret);//_____________这样的存在过期现象！！！！！！！所以采用上面的判断方式
-                    //上述获取到的result有access_token和expires_in两个属性，分别储存了AccessToken字符串和过期时间（秒），
-                    //如果使用AccessTokenContainer.TryGetAccessToken()方法，则可以彻底忽略的expires_in存在，如果过期，系统会自动重新获取。
-
-                    string userInfoUrl = string.Format(WeixinConfig.GetUserInfoUrl, result, token.openid);
+                    string userInfoUrl = string.Format(WeixinConfig.GetUserInfoUrl, base_token, token.openid);
                     var userInfo = AnalyzeHelper.Get<WeixinUserInfo>(userInfoUrl);
                     if (userInfo.errcode != null)
                     {
