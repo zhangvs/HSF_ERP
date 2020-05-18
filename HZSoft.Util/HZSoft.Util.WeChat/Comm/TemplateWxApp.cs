@@ -18,6 +18,18 @@ namespace HZSoft.Util.WeChat.Comm
 
         public static string getToken()
         {
+            #region CacheFactory方式获取token
+            ////全局token--基础access_token，每日限额2000
+            //var cacheToken = CacheFactory.Cache().GetCache<string>("access_token");
+            //if (cacheToken == null)
+            //{
+            //    var userInfoBase = AnalyzeHelper.Get<WeixinTokenBase>(WeixinConfig.GetTokenBaseUrl);
+            //    cacheToken = userInfoBase.access_token;
+            //    CacheFactory.Cache().WriteCache(cacheToken, "access_token", DateTime.Now.AddSeconds(7000));
+            //}
+            #endregion
+
+
             //AccessTokenResult result =null;
             ////AccessTokenContainer.cs - 一个AccessToken容器（帮助自动更新AccessToken，因为每一个AccessToken都有一个有效期）
             ////有了AccessTokenContainer，我们可以直接这样获取AccessToken：

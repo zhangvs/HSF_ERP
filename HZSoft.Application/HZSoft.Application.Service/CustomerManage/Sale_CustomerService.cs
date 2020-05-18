@@ -83,6 +83,12 @@ namespace HZSoft.Application.Service.CustomerManage
                 string StepUserName = queryParam["StepUserName"].ToString();
                 strSql += " and (KaiLiaoUserName like '%" + StepUserName + "%' or  FengBianUserName like '%" + StepUserName + "%' or  PaiZuanUserName like '%" + StepUserName + "%' or  ShiZhuangUserName like '%" + StepUserName + "%' or  BaoZhuangUserName like '%" + StepUserName + "%' or  XiSuUserName like '%" + StepUserName + "%')";
             }
+            //报价审核
+            if (!queryParam["MoneyOkMark"].IsEmpty())
+            {
+                int MoneyOkMark = queryParam["MoneyOkMark"].ToInt();
+                strSql += " and MoneyOkMark  = " + MoneyOkMark;
+            }
             //下单
             if (!queryParam["DownMark"].IsEmpty())
             {
@@ -179,6 +185,12 @@ namespace HZSoft.Application.Service.CustomerManage
                 strSql += " and (KaiLiaoUserName like '%" + StepUserName + "%' or  FengBianUserName like '%" + StepUserName + "%' or  PaiZuanUserName like '%" + StepUserName + "%' or  ShiZhuangUserName like '%" + StepUserName + "%' or  BaoZhuangUserName like '%" + StepUserName + "%' or  XiSuUserName like '%" + StepUserName + "%')";
             }
 
+            //报价审核
+            if (!queryParam["MoneyOkMark"].IsEmpty())
+            {
+                int MoneyOkMark = queryParam["MoneyOkMark"].ToInt();
+                strSql += " and MoneyOkMark  = " + MoneyOkMark;
+            }
             //下单
             if (!queryParam["DownMark"].IsEmpty())
             {
