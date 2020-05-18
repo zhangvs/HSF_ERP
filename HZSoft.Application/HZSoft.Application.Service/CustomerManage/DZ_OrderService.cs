@@ -471,7 +471,7 @@ namespace HZSoft.Application.Service.CustomerManage
                 {
                     entity.Create();
                     this.BaseRepository().Insert(entity);
-                    coderuleService.UseRuleSeed(entity.CreateUserId, "", ((int)CodeRuleEnum.Customer_DZOrder).ToString(), db);//占用单据号
+                    coderuleService.UseRuleSeed(entity.CreateUserId, "", ((int)CodeRuleEnum.DZ_Order).ToString(), db);//占用单据号
                     db.Commit();
 
                     //发微信模板消息---接单之后，给审图人提醒--刘明存oA-EC1WVqHl_gsBM3We2rgOHIMEQ

@@ -84,6 +84,7 @@
     <Compile Include="CustomerManage\CashBalanceService.cs" />
     <Compile Include="CustomerManage\ChanceService.cs" />
     <Compile Include="CustomerManage\Client_CompanyService.cs" />
+    <Compile Include="CustomerManage\DZSH_OrderService.cs" />
     <Compile Include="CustomerManage\DZ_DayWorkService.cs" />
     <Compile Include="CustomerManage\DZ_OrderService.cs" />
     <Compile Include="CustomerManage\ExpensesService.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="CustomerManage\ReceivableServiceSkl.cs" />
     <Compile Include="CustomerManage\ReceivableService.cs" />
     <Compile Include="CustomerManage\Sale_CustomerService.cs" />
+    <Compile Include="CustomerManage\CreateDZOrder.cs" />
     <Compile Include="CustomerManage\Sale_Customer_Main.cs" />
     <Compile Include="CustomerManage\Sale_UserStepService.cs" />
     <Compile Include="CustomerManage\TrailRecordService.cs" />

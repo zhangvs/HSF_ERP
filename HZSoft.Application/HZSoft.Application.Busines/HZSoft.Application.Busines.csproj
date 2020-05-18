@@ -64,6 +64,7 @@
     <Compile Include="CustomerManage\CashBalanceBLL.cs" />
     <Compile Include="CustomerManage\ChanceBLL.cs" />
     <Compile Include="CustomerManage\Client_CompanyBLL.cs" />
+    <Compile Include="CustomerManage\DZSH_OrderBLL.cs" />
     <Compile Include="CustomerManage\DZ_DayWorkBLL.cs" />
     <Compile Include="CustomerManage\DZ_OrderBLL.cs" />
     <Compile Include="CustomerManage\ExpensesBLL.cs" />

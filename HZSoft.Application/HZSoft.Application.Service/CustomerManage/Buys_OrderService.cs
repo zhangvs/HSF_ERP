@@ -285,6 +285,7 @@ namespace HZSoft.Application.Service.CustomerManage
                         SendPlanDate = entity.SendPlanDate,
                         
                         PaymentState = orderEntity.PaymentState,//确认是否全部收款
+                        PaymentDate=orderEntity.PaymentDate,
                         AfterMark = orderEntity.AfterMark,//确认是否收取尾款
                     };
 

@@ -22,7 +22,7 @@
         d.setTime(mstime);
         timeToString(d);
     }
-    
+
     //字符串转日期格式，strDate要转为日期格式的字符串
     function getDate(strDate,day) {
         var date = eval('new Date(' + strDate.replace(/\d+(?=-[^-]+$)/,
@@ -146,7 +146,7 @@
                     }
                 },
                 { label: '总面积', name: 'SumTotalArea', index: 'SumTotalArea', width: 80, align: 'center', sortable: true },
-                { label: '总数量', name: 'SumTotalCount', index: 'SumTotalCount', width: 80, align: 'center', sortable: true },              
+                { label: '总数量', name: 'SumTotalCount', index: 'SumTotalCount', width: 80, align: 'center', sortable: true },
                 { label: '计划开始', name: 'StatePlanDate', index: 'StatePlanDate', width: 80, align: '', sortable: true, formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' },
                     formatter: function (cellvalue, options, rowObject) {
                         if (cellvalue!=null) {//后面任何一道工序均未扫码的，视为未开始
@@ -186,12 +186,12 @@
                         }
                     }
                 },
-                { label: '开料人', name: 'KaiLiaoUserName', index: 'KaiLiaoUserName', width: 90, align: 'center', sortable: true },
+                { label: '开料人', name: 'KaiLiaoUserName', index: 'KaiLiaoUserName', width: 80, align: 'center', sortable: true },
                 {
                     label: '开料日期', name: 'KaiLiaoDate', index: 'KaiLiaoDate', width: 118, align: 'left', sortable: true,
                     formatter: function (cellvalue, options, rowObject) {
                         if (cellvalue!=null) {
-                            if (getDate(cellvalue, 2) < "@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")" && rowObject.FengBianMark!=2) {
+                            if (getDate(cellvalue, 2) < "@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")" && rowObject.FengBianMark != 2 && rowObject.PaiZuanMark != 2 && rowObject.ShiZhuangMark != 2 && rowObject.BaoZhuangMark != 2) {
                                 return "<span style='color:red'>" + cellvalue + "</span>";
                             } else {
                                 return cellvalue;
@@ -213,11 +213,11 @@
                         }
                     }
                 },
-                { label: '封边人', name: 'FengBianUserName', index: 'FengBianUserName', width: 90, align: 'center', sortable: true },
+                { label: '封边人', name: 'FengBianUserName', index: 'FengBianUserName', width: 80, align: 'center', sortable: true },
                 { label: '封边日期', name: 'FengBianDate', index: 'FengBianDate', width: 118, align: 'left', sortable: true,
                     formatter: function (cellvalue, options, rowObject) {
                         if (cellvalue!=null) {
-                            if (getDate(cellvalue, 2) < "@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")" && rowObject.PaiZuanMark!=2) {
+                            if (getDate(cellvalue, 2) < "@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")" && rowObject.PaiZuanMark != 2 && rowObject.ShiZhuangMark != 2 && rowObject.BaoZhuangMark != 2) {
                                 return "<span style='color:red'>" + cellvalue + "</span>";
                             } else {
                                 return cellvalue;
@@ -239,11 +239,11 @@
                         }
                     }
                 },
-                { label: '排钻人', name: 'PaiZuanUserName', index: 'PaiZuanUserName', width: 90, align: 'center', sortable: true },
+                { label: '排钻人', name: 'PaiZuanUserName', index: 'PaiZuanUserName', width: 80, align: 'center', sortable: true },
                 { label: '排钻日期', name: 'PaiZuanDate', index: 'PaiZuanDate', width: 118, align: 'left', sortable: true,
                     formatter: function (cellvalue, options, rowObject) {
                         if (cellvalue!=null) {
-                            if (getDate(cellvalue, 2) < "@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")" && rowObject.ShiZhuangMark!=2) {
+                            if (getDate(cellvalue, 2) < "@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")" && rowObject.ShiZhuangMark != 2 && rowObject.BaoZhuangMark != 2) {
                                 return "<span style='color:red'>" + cellvalue + "</span>";
                             } else {
                                 return cellvalue;
@@ -265,7 +265,7 @@
                         }
                     }
                 },
-                { label: '试装人', name: 'ShiZhuangUserName', index: 'ShiZhuangUserName', width: 90, align: 'center', sortable: true },
+                { label: '试装人', name: 'ShiZhuangUserName', index: 'ShiZhuangUserName', width: 80, align: 'center', sortable: true },
                 { label: '试装日期', name: 'ShiZhuangDate', index: 'ShiZhuangDate', width: 118, align: 'left', sortable: true,
                     formatter: function (cellvalue, options, rowObject) {
                         if (cellvalue!=null) {
@@ -598,7 +598,7 @@
         <div class="btn-group">
             <a id="lr-replace" class="btn btn-default" onclick="reload()"><i class="fa fa-refresh"></i>刷新</a>
             @*<a id="lr-edit" class="btn btn-default" onclick="btn_edit()"><i class="fa fa-pencil-square-o"></i>&nbsp;编辑</a>
-        <a id="lr-plan" class="btn btn-default" onclick="btn_plan()"><i class="fa fa-calendar"></i>&nbsp;排产</a>*@
+                <a id="lr-plan" class="btn btn-default" onclick="btn_plan()"><i class="fa fa-calendar"></i>&nbsp;排产</a>*@
             <a id="lr-detail" class="btn btn-default" onclick="btn_detail()"><i class="fa fa-list-alt"></i>&nbsp;详细</a>
             <a id="lr-export" class="btn btn-default" onclick="btn_export()"><i class="fa fa-sign-out"></i>&nbsp;导出</a>
         </div>

@@ -188,6 +188,7 @@
     <Compile Include="Areas\CustomerManage\Controllers\ChanceController.cs" />
     <Compile Include="Areas\CustomerManage\Controllers\Client_CompanyController.cs" />
     <Compile Include="Areas\CustomerManage\Controllers\CustomerController.cs" />
+    <Compile Include="Areas\CustomerManage\Controllers\DZSH_OrderController.cs" />
     <Compile Include="Areas\CustomerManage\Controllers\DZ_DayWorkController.cs" />
     <Compile Include="Areas\CustomerManage\Controllers\DZ_OrderController.cs" />
     <Compile Include="Areas\CustomerManage\Controllers\ExpensesController.cs" />
@@ -2033,6 +2034,9 @@
     <Content Include="Areas\CustomerManage\Views\DZ_Order\DZ_OrderDetail.cshtml" />
     <Content Include="Areas\CustomerManage\Views\DZ_Order\MoneyOkOverIndex.cshtml" />
     <Content Include="Areas\CustomerManage\Views\ReceivableSkl\CheckItemOverIndex.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\DZSH_Order\DZSH_OrderForm.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\DZSH_Order\DZSH_OrderIndex.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\DZSH_Order\DZSH_OrderOverIndex.cshtml" />
     <None Include="Properties\PublishProfiles\6.1.pubxml" />
     <Content Include="Areas\FlowManage\Views\FlowLaunch\Index.cshtml" />
     <Content Include="Areas\FlowManage\Views\FormDesign\FormPreview.cshtml" />

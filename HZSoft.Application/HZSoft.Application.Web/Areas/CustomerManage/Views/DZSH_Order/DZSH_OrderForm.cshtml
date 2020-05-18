@@ -12,6 +12,8 @@
     $(function () {
         initControl();
 
+        $("#OrderType").ComboBoxSetValue(3);
+
         if (!!customerId) {
             $.SetForm({
                 url: "../../CustomerManage/Customer/GetFormJson",
@@ -80,7 +82,7 @@
             description: "==请选择==",
             height: "360px",
             width: "280px",
-            allowSearch: true
+            allowSearch: true//回车触发
         }).bind("change", function () {
             var value = $(this).attr('data-value');
             if (value) {
@@ -108,30 +110,13 @@
         //获取表单
         if (!!keyValue) {
             $.SetForm({
-                url: "../../CustomerManage/DZ_Order/GetFormJson",
+                url: "../../CustomerManage/DZSH_Order/GetFormJson",
                 param: { keyValue: keyValue },
                 success: function (data) {
                     $("#form1").SetWebControls(data);
                     if (!!data.CreatePath) {
                         if (!!data.CreatePath) {
                             $("#CreatePath_a").attr("href", data.CreatePath).text(data.CreatePath.substring(data.CreatePath.lastIndexOf("/") + 1));
-                        }
-                        //审图之后，不允许修改接单信息
-                        if (data.CheckTuMark >= 1) {
-                            //$("#Code").attr('disabled', 'disabled');
-                            //$("#OrderType").attr('disabled', 'disabled');
-                            //$("#OrderTitle").attr('disabled', 'disabled');
-                            //$("#Accounts").attr('disabled', 'disabled');
-                            //$("#CustomerId").attr('disabled', 'disabled');
-                            //$("#CompanyId").attr('disabled', 'disabled');
-                            //$("#CustomerTelphone").attr('disabled', 'disabled');
-                            //$("#DesignerUserName").attr('disabled', 'disabled');
-                            //$("#DesignerTelphone").attr('disabled', 'disabled');
-                            //$("#Address").attr('disabled', 'disabled');
-                            //$("#ShippingType").attr('disabled', 'disabled');
-                            //$("#Carrier").attr('disabled', 'disabled');
-                            //$("#SalesmanUserId").attr('disabled', 'disabled');
-                            $("#fileUpload").hide();
                         }
                     }
                 }
@@ -151,7 +136,7 @@
         postData["CustomerName"] = $("#CustomerId").attr('data-text');
         postData["SalesmanUserName"] = $("#SalesmanUserId").attr('data-text');
         $.SaveForm({
-            url: "../../CustomerManage/DZ_Order/SaveForm?keyValue=" + keyValue,
+            url: "../../CustomerManage/DZSH_Order/SaveForm?keyValue=" + keyValue,
             param: postData,
             loading: "正在保存数据...",
             success: function () {
@@ -200,17 +185,17 @@
             </td>
             <td class="formTitle">订单标题<font face="宋体">*</font></td>
             <td class="formValue">
-                <input id="OrderTitle" type="text" class="form-control" isvalid="yes" checkexpession="NotNull"/>
+                <input id="OrderTitle" type="text" class="form-control" isvalid="yes" checkexpession="NotNull" />
             </td>
         </tr>
         <tr>
             <td class="formTitle">订单类型<font face="宋体">*</font></td>
             <td class="formValue">
-                <div id="OrderType" type="select" class="ui-select" isvalid="yes" checkexpession="NotNull"></div>
+                <div id="OrderType" type="select" class="ui-select" isvalid="yes" checkexpession="NotNull" disabled></div>
             </td>
-            <td class="formTitle">销售金额<font face="宋体">*</font></td>
+            <td class="formTitle">售后金额<font face="宋体">*</font></td>
             <td class="formValue">
-                <input id="Accounts" type="text" class="form-control" isvalid="yes" checkexpession="Double" value="0.00"/>
+                <input id="Accounts" type="text" class="form-control" isvalid="yes" checkexpession="Double" value="0.00" />
             </td>
         </tr>
         <tr>
@@ -250,7 +235,7 @@
             </td>
         </tr>
         <tr>
-            <td class="formTitle">运输方式<font face="宋体">*</font></td>
+            <td class="formTitle">运输方式</td>
             <td class="formValue">
                 <div id="ShippingType" type="select" class="ui-select">
                     <ul>
@@ -259,7 +244,7 @@
                     </ul>
                 </div>
             </td>
-            <td class="formTitle">运费承担方<font face="宋体">*</font></td>
+            <td class="formTitle">运费承担方</td>
             <td class="formValue">
                 <div id="Carrier" type="select" class="ui-select">
                     <ul>
@@ -270,7 +255,7 @@
             </td>
         </tr>
         <tr>
-            <td class="formTitle">原图附件<font face="宋体">*</font></td>
+            <td class="formTitle">附件<font face="宋体">*</font></td>
             <td class="formValue" colspan="3">
                 <input type="hidden" id="totalPage" value="0" />
                 <input type="hidden" id="page" value="1" />
@@ -296,12 +281,23 @@
             <td class="formValue">
                 <div class="checkbox">
                     <label>
-                        <input id="FrontMark" type="checkbox" checked="checked" />
+                        <input id="FrontMark" type="checkbox" />
                         下单前(预付款)
                     </label>
                     <label>
-                        <input id="AfterMark" type="checkbox" checked="checked" />
+                        <input id="AfterMark" type="checkbox" />
                         发货前(尾款)
+                    </label>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th class="formTitle" style="height: 37px;">是否生产</th>
+            <td class="formValue">
+                <div class="checkbox">
+                    <label>
+                        <input id="NeedSale" type="checkbox" />
+                        生产
                     </label>
                 </div>
             </td>

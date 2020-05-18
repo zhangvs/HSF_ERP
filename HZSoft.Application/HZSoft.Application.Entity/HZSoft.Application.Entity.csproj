@@ -67,6 +67,7 @@
     <Compile Include="CustomerManage\CashBalanceEntity.cs" />
     <Compile Include="CustomerManage\ChanceEntity.cs" />
     <Compile Include="CustomerManage\Client_CompanyEntity.cs" />
+    <Compile Include="CustomerManage\DZSH_OrderEntity.cs" />
     <Compile Include="CustomerManage\DZ_DayWorkEntity.cs" />
     <Compile Include="CustomerManage\DZ_OrderEntity.cs" />
     <Compile Include="CustomerManage\ExpensesEntity.cs" />

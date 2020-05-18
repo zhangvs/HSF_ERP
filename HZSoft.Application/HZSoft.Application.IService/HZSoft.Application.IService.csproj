@@ -72,6 +72,7 @@
     <Compile Include="BaseManage\Supplier_InfoIService.cs" />
     <Compile Include="CustomerManage\Buys_OrderIService.cs" />
     <Compile Include="CustomerManage\Client_CompanyIService.cs" />
+    <Compile Include="CustomerManage\DZSH_OrderIService.cs" />
     <Compile Include="CustomerManage\DZ_DayWorkIService.cs" />
     <Compile Include="CustomerManage\DZ_OrderIService.cs" />
     <Compile Include="CustomerManage\Hsf_GuideIService.cs" />

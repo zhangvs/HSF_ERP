@@ -187,12 +187,12 @@
                         }
                     }
                 },
-                { label: '开料人', name: 'KaiLiaoUserName', index: 'KaiLiaoUserName', width: 90, align: 'center', sortable: true },
+                { label: '开料人', name: 'KaiLiaoUserName', index: 'KaiLiaoUserName', width: 80, align: 'center', sortable: true },
                 {
                     label: '开料日期', name: 'KaiLiaoDate', index: 'KaiLiaoDate', width: 118, align: 'left', sortable: true,
                     formatter: function (cellvalue, options, rowObject) {
                         if (cellvalue!=null) {
-                            if (getDate(cellvalue, 2) < "@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")" && rowObject.FengBianMark!=2) {
+                            if (getDate(cellvalue, 2) < "@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")" && rowObject.FengBianMark != 2 && rowObject.PaiZuanMark != 2 && rowObject.ShiZhuangMark != 2 && rowObject.BaoZhuangMark != 2) {
                                 return "<span style='color:red'>" + cellvalue + "</span>";
                             } else {
                                 return cellvalue;
@@ -214,11 +214,11 @@
                         }
                     }
                 },
-                { label: '封边人', name: 'FengBianUserName', index: 'FengBianUserName', width: 90, align: 'center', sortable: true },
+                { label: '封边人', name: 'FengBianUserName', index: 'FengBianUserName', width: 80, align: 'center', sortable: true },
                 { label: '封边日期', name: 'FengBianDate', index: 'FengBianDate', width: 118, align: 'left', sortable: true,
                     formatter: function (cellvalue, options, rowObject) {
                         if (cellvalue!=null) {
-                            if (getDate(cellvalue, 2) < "@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")" && rowObject.PaiZuanMark!=2) {
+                            if (getDate(cellvalue, 2) < "@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")" && rowObject.PaiZuanMark != 2 && rowObject.ShiZhuangMark != 2 && rowObject.BaoZhuangMark != 2) {
                                 return "<span style='color:red'>" + cellvalue + "</span>";
                             } else {
                                 return cellvalue;
@@ -240,11 +240,11 @@
                         }
                     }
                 },
-                { label: '排钻人', name: 'PaiZuanUserName', index: 'PaiZuanUserName', width: 90, align: 'center', sortable: true },
+                { label: '排钻人', name: 'PaiZuanUserName', index: 'PaiZuanUserName', width: 80, align: 'center', sortable: true },
                 { label: '排钻日期', name: 'PaiZuanDate', index: 'PaiZuanDate', width: 118, align: 'left', sortable: true,
                     formatter: function (cellvalue, options, rowObject) {
                         if (cellvalue!=null) {
-                            if (getDate(cellvalue, 2) < "@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")" && rowObject.ShiZhuangMark!=2) {
+                            if (getDate(cellvalue, 2) < "@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")" && rowObject.ShiZhuangMark != 2 && rowObject.BaoZhuangMark != 2) {
                                 return "<span style='color:red'>" + cellvalue + "</span>";
                             } else {
                                 return cellvalue;
@@ -266,7 +266,7 @@
                         }
                     }
                 },
-                { label: '试装人', name: 'ShiZhuangUserName', index: 'ShiZhuangUserName', width: 90, align: 'center', sortable: true },
+                { label: '试装人', name: 'ShiZhuangUserName', index: 'ShiZhuangUserName', width: 80, align: 'center', sortable: true },
                 { label: '试装日期', name: 'ShiZhuangDate', index: 'ShiZhuangDate', width: 118, align: 'left', sortable: true,
                     formatter: function (cellvalue, options, rowObject) {
                         if (cellvalue!=null) {

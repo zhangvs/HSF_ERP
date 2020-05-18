@@ -24,13 +24,17 @@ namespace HZSoft.Application.Code
         /// </summary>
         Customer_OrderCode = 10004,
         /// <summary>
-        /// 客户关系-接单
+        /// 销售单
         /// </summary>
-        Customer_DZOrder = 10007,
+        DZ_Order = 10007,
         /// <summary>
         /// 生产入库单
         /// </summary>
         Buy_Order = 10008,
+        /// <summary>
+        /// 客诉单
+        /// </summary>
+        DZSH_Order = 10009,
 
     }
 }

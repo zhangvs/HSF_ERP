@@ -94,7 +94,7 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
             if (Request["keyValue"] == null)
             {
                 //ViewBag.OrderCode = codeRuleBLL.GetBillCode(SystemInfo.CurrentModuleId);
-                ViewBag.OrderCode = codeRuleBLL.GetBillCode(SystemInfo.CurrentUserId, "", ((int)CodeRuleEnum.Customer_DZOrder).ToString());
+                ViewBag.OrderCode = codeRuleBLL.GetBillCode(SystemInfo.CurrentUserId, "", ((int)CodeRuleEnum.DZ_Order).ToString());
             }
             return View();
         }

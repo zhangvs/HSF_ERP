@@ -272,15 +272,35 @@
     }
 
 
-    //新增
+    //新增-销售单
     function btn_order() {
         var keyValue = $("#gridTable").jqGridRowValue('CustomerId');
         var fullName = $("#gridTable").jqGridRowValue('FullName');
         if (keyValue) {
             dialogOpen({
                 id: 'DZ_OrderForm1',
-                title: fullName + ' - 添加销售订单',
+                title: fullName + ' - 添加销售单',
                 url: '/CustomerManage/DZ_Order/DZ_OrderForm1?customerId=' + keyValue,
+                width: '750px',
+                height: '600px',
+                callBack: function (iframeId) {
+                    top.frames[iframeId].AcceptClick();
+                }
+            });
+        } else {
+            dialogMsg('请选择客户信息！', 0);
+        }
+    }
+
+    //新增-客诉单
+    function btn_ksorder() {
+        var keyValue = $("#gridTable").jqGridRowValue('CustomerId');
+        var fullName = $("#gridTable").jqGridRowValue('FullName');
+        if (keyValue) {
+            dialogOpen({
+                id: 'DZSH_OrderForm',
+                title: fullName + ' - 添加客诉单',
+                url: '/CustomerManage/DZSH_Order/DZSH_OrderForm?customerId=' + keyValue,
                 width: '750px',
                 height: '600px',
                 callBack: function (iframeId) {
@@ -370,7 +390,8 @@
         <div class="btn-group">
             <a id="lr-replace" class="btn btn-default" onclick="reload()"><i class="fa fa-refresh"></i>&nbsp;刷新</a>
             <a id="lr-add" class="btn btn-default" onclick="btn_add()"><i class="fa fa-plus"></i>&nbsp;新增</a>
-            <a id="lr-order" class="btn btn-default" onclick="btn_order()"><i class="fa fa-share-square-o"></i>&nbsp;接单</a>
+            <a id="lr-order" class="btn btn-default" onclick="btn_order()"><i class="fa fa-share-square-o"></i>&nbsp;销售单</a>
+            <a id="lr-order" class="btn btn-default" onclick="btn_ksorder()"><i class="fa fa-share-square-o"></i>&nbsp;客诉单</a>
             <a id="lr-edit" class="btn btn-default" onclick="btn_edit()"><i class="fa fa-pencil-square-o"></i>&nbsp;编辑</a>
             <a id="lr-delete" class="btn btn-default" onclick="btn_delete()"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
             <a id="lr-export" class="btn btn-default" onclick="btn_export()"><i class="fa fa-sign-out"></i>&nbsp;导出</a>
