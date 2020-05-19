@@ -287,16 +287,19 @@ namespace HZSoft.Application.Service.CustomerManage
                 Sale_CustomerEntity oldEntity = GetEntity(keyValue);
                 if (oldEntity!=null)
                 {
-                    //如果生产扫码之后又修改编辑，工序的勾选状态默认==1，但是扫码之后的状态为2，不能因为编辑修改为2
-                    entity.KaiLiaoMark = oldEntity.KaiLiaoMark ==2  ? 2 : entity.KaiLiaoMark;
-                    entity.FengBianMark = oldEntity.FengBianMark == 2 ? 2 : entity.FengBianMark;
-                    entity.PaiZuanMark = oldEntity.PaiZuanMark == 2 ? 2 : entity.PaiZuanMark;
-                    entity.ShiZhuangMark = oldEntity.ShiZhuangMark == 2 ? 2 : entity.ShiZhuangMark;
-                    entity.BaoZhuangMark = oldEntity.BaoZhuangMark == 2 ? 2 : entity.BaoZhuangMark;
-                    LogHelper.AddLog("生产扫码之后又编辑，"+oldEntity.ProduceCode);
+                    if (oldEntity.KaiLiaoMark == 2 || oldEntity.FengBianMark == 2|| oldEntity.PaiZuanMark == 2|| oldEntity.ShiZhuangMark == 2|| oldEntity.BaoZhuangMark == 2)
+                    {
+                        //如果生产扫码之后又修改编辑，工序的勾选状态默认==1，但是扫码之后的状态为2，不能因为编辑修改为2
+                        entity.KaiLiaoMark = oldEntity.KaiLiaoMark == 2 ? 2 : entity.KaiLiaoMark;
+                        entity.FengBianMark = oldEntity.FengBianMark == 2 ? 2 : entity.FengBianMark;
+                        entity.PaiZuanMark = oldEntity.PaiZuanMark == 2 ? 2 : entity.PaiZuanMark;
+                        entity.ShiZhuangMark = oldEntity.ShiZhuangMark == 2 ? 2 : entity.ShiZhuangMark;
+                        entity.BaoZhuangMark = oldEntity.BaoZhuangMark == 2 ? 2 : entity.BaoZhuangMark;
+                        LogHelper.AddLog("生产扫码之后-又编辑，" + oldEntity.ProduceCode);
+                    }
                 }
 
-                //包装扫码之后-发现勾选材料错误--又编辑
+                //包装扫码生成入库单之后-发现勾选材料错误--又编辑
                 Buys_OrderEntity oldBuysEntity = buyService.GetEntity(keyValue);
                 if (oldBuysEntity!=null)
                 {
@@ -317,7 +320,8 @@ namespace HZSoft.Application.Service.CustomerManage
                     {
                         oldBuysEntity.WaiEnterMark = 0;//修改外协状态为需要入库
                     }
-                    LogHelper.AddLog("包装扫码之后-发现勾选材料错误--又编辑，" + oldEntity.ProduceCode);
+                    LogHelper.AddLog("包装扫码之后-又编辑，" + oldEntity.ProduceCode);
+                    db.Update<Buys_OrderEntity>(oldBuysEntity);
                 }
 
                 //主表
