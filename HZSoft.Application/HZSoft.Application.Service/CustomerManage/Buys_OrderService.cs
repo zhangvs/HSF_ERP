@@ -389,10 +389,9 @@ namespace HZSoft.Application.Service.CustomerManage
                     //发微信模板消息--给销售人提醒(完全入库提醒)
                     if (buyEntity.PaymentState==3 || buyEntity.AfterMark==0)
                     {
-                        //发微信模板消息---完全入库+（收齐尾款或者不需要收取尾款）之后，给胡鲁鲁发消息提醒????
+                        //发微信模板消息---完全入库+（收齐尾款或者不需要收取尾款）之后，给胡鲁鲁发消息提醒????给程东彩发全部入库提醒
                         //订单生成通知（9完全入库提醒）
-                        TemplateWxApp.SendTemplateAllIn("oA-EC1Ucth5a3bkvcJSdiTCizz_g", 
-                            "您好，有新的订单已经入库!", buyEntity.OrderTitle, "共" + buyEntity.TotalQty + "包，请进行发货通知");
+                        TemplateWxApp.SendTemplateAllIn("oA-EC1W1BQZ46Wc8HPCZZUUFbE9M", "您好，有新的订单已经入库!", buyEntity.OrderTitle, "共" + buyEntity.TotalQty + "包，请进行发货通知");
                     }
                     else
                     {
@@ -481,11 +480,9 @@ namespace HZSoft.Application.Service.CustomerManage
                     //发微信模板消息---发货通知之后，给公维才发消息提醒?????
                     //订单生成通知（10发货通知提醒）
                     //金志花
-                    TemplateWxApp.SendTemplateSend("oA-EC1UWi8i4sSkHsWV6BK7CuopA",
-                        "您好，有新的发货通知!", entity.Code, entity.OrderTitle + "，计划发货时间：" + entity.SendPlanDate);
+                    TemplateWxApp.SendTemplateSend("oA-EC1UWi8i4sSkHsWV6BK7CuopA","您好，有新的发货通知!", entity.Code, entity.OrderTitle + "，计划发货时间：" + entity.SendPlanDate);
                     //牛霞
-                    TemplateWxApp.SendTemplateSend("oA-EC1TDoDKimuejhFlBV1U6M5bI", 
-                        "您好，有新的发货通知!", entity.Code, entity.OrderTitle + "，计划发货时间：" + entity.SendPlanDate);
+                    TemplateWxApp.SendTemplateSend("oA-EC1TDoDKimuejhFlBV1U6M5bI","您好，有新的发货通知!", entity.Code, entity.OrderTitle + "，计划发货时间：" + entity.SendPlanDate);
                 }
             }
             catch (Exception)

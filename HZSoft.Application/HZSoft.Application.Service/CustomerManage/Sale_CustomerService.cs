@@ -380,8 +380,7 @@ namespace HZSoft.Application.Service.CustomerManage
 
                         //发微信模板消息---下单之后，给程东彩发消息提醒oA-EC1W1BQZ46Wc8HPCZZUUFbE9M
                         //订单生成通知（8下单提醒）
-                        TemplateWxApp.SendTemplateNew("oA-EC1W1BQZ46Wc8HPCZZUUFbE9M",
-                            "您好，有新的订单需要推单!", entity.OrderTitle, entity.OrderCode, "请进行审核推单。");
+                        TemplateWxApp.SendTemplateNew("oA-EC1W1BQZ46Wc8HPCZZUUFbE9M","您好，有新的订单需要推单!", entity.OrderTitle, entity.OrderCode, "请进行审核推单。");
                     }
                     entity.Modify(keyValue);
                     db.Update<Sale_CustomerEntity>(entity);
