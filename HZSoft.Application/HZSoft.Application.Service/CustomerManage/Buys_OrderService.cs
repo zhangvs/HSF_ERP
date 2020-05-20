@@ -534,7 +534,6 @@ namespace HZSoft.Application.Service.CustomerManage
                     };
                     produceEntity.Modify(entity.ProduceId);
                     db.Update<Sale_CustomerEntity>(produceEntity);
-                    db.Commit();
 
 
                     //发微信模板消息--给销售人提醒(10实际发货提醒)
@@ -553,6 +552,7 @@ namespace HZSoft.Application.Service.CustomerManage
                             }
                         }
                     }
+                    db.Commit();
                 }
             }
             catch (Exception)

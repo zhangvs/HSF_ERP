@@ -64,7 +64,7 @@ namespace HZSoft.Application.Web
 
 
             //TemplateWxApp.SendTemplateNew("oA-EC1Ucth5a3bkvcJSdiTCizz_g",
-                //"您好，有新的订单需要审图!", "联动柜", "SKL-20200506003", "请进行审图。");
+            //"您好，有新的订单需要审图!", "联动柜", "SKL-20200506003", "请进行审图。");
 
 
 
