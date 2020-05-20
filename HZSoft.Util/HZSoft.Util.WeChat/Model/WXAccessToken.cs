@@ -60,7 +60,7 @@ namespace HZSoft.Util.WeChat.Model
             HttpHelper http = new HttpHelper();
 
             string respone = http.Get(string.Format(strulr, appId, appSecret), Encoding.UTF8);
-
+            LogHelper.AddLog(respone);//获取新的access_token
             var token = respone.ToObject<MPAccessToken>();
 
             MPAccessToken._Token = token;

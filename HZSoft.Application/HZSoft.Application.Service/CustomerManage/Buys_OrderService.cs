@@ -483,6 +483,9 @@ namespace HZSoft.Application.Service.CustomerManage
                     TemplateWxApp.SendTemplateSend("oA-EC1UWi8i4sSkHsWV6BK7CuopA","您好，有新的发货通知!", entity.Code, entity.OrderTitle + "，计划发货时间：" + entity.SendPlanDate);
                     //牛霞
                     TemplateWxApp.SendTemplateSend("oA-EC1TDoDKimuejhFlBV1U6M5bI","您好，有新的发货通知!", entity.Code, entity.OrderTitle + "，计划发货时间：" + entity.SendPlanDate);
+                    //胡鲁鲁
+                    TemplateWxApp.SendTemplateSend("oA-EC1aaKOSNdW2wL8lHSsr3R4Dg", "您好，有新的发货通知!", entity.Code, entity.OrderTitle + "，计划发货时间：" + entity.SendPlanDate);
+
                 }
             }
             catch (Exception)
