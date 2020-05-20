@@ -29,9 +29,9 @@ namespace HZSoft.Application.Web
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             WeixinConfig.Register();
 
-            AccessTokenContainer.Register(WeixinConfig.AppID, WeixinConfig.AppSecret);//如果没有注册则进行注册，微信基础
-            var result = AccessTokenContainer.GetAccessTokenResult(WeixinConfig.AppID); //获取AccessToken结果
-            LogHelper.AddLog("盛派注册基础token：" + result.access_token);
+            //AccessTokenContainer.Register(WeixinConfig.AppID, WeixinConfig.AppSecret);//如果没有注册则进行注册，微信基础
+            //var result = AccessTokenContainer.GetAccessTokenResult(WeixinConfig.AppID); //获取AccessToken结果
+            //LogHelper.AddLog("盛派注册基础token：" + result.access_token);
 
             //var result2 = AccessTokenContainer.GetAccessToken(WeixinConfig.AppID);
 

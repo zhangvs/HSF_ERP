@@ -1,4 +1,5 @@
 ﻿using HZSoft.Util;
+using HZSoft.Util.WeChat.Model;
 using Newtonsoft.Json;
 using RestSharp;
 using Senparc.Weixin.MP.AdvancedAPIs.TemplateMessage;
@@ -52,11 +53,13 @@ namespace HZSoft.Util.WeChat.Comm
             //如果使用AccessTokenContainer.TryGetAccessToken()方法，则可以彻底忽略的expires_in存在，如果过期，系统会自动重新获取。
 
 
+            ////Global中注册，不需要再判断
+            //var result = AccessTokenContainer.GetAccessTokenResult(appId); //获取AccessToken结果
+            //return result.access_token;
 
 
-            //Global中注册，不需要再判断
-            var result = AccessTokenContainer.GetAccessTokenResult(appId); //获取AccessToken结果
-            return result.access_token;
+            string token = MPAccessToken.GetToken();
+            return token;
         }
         /// <summary>
         /// 给审图，拆单提醒

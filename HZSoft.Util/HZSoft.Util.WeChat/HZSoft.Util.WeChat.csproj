@@ -130,10 +130,15 @@
     <Compile Include="Model\Request\UserSimplelist.cs" />
     <Compile Include="Model\Request\UserSimplelistResult.cs" />
     <Compile Include="Model\Request\UserUpdate.cs" />
+    <Compile Include="Model\WXAccessToken.cs" />
     <Compile Include="Model\Token.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\HZSoft.Cache\HZSoft.Cache.Factory\HZSoft.Cache.Factory.csproj">
+      <Project>{A68CDD21-2E12-4B11-95DB-D0A0FCED48B1}</Project>
+      <Name>HZSoft.Cache.Factory</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HZSoft.Util\HZSoft.Util.csproj">
       <Project>{07aa2566-d0e5-47af-a17d-3b1c6aee598d}</Project>
       <Name>HZSoft.Util</Name>

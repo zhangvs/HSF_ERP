@@ -7,7 +7,7 @@ using System;
 
 namespace HZSoft.Util.WeChat.Comm
 {
-    public class TemplateAppX
+    public class TemplateApp
     {
         public static string OpenId = "";
         public static string Template_id = "";

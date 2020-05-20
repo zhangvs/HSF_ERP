@@ -41,7 +41,12 @@
       <HintPath>..\..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -67,6 +72,10 @@
     <ProjectReference Include="..\..\HZSoft.Cache\HZSoft.Cache\HZSoft.Cache.csproj">
       <Project>{5af4997c-4395-48af-990c-932259111dff}</Project>
       <Name>HZSoft.Cache</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HZSoft.Util\HZSoft.Util\HZSoft.Util.csproj">
+      <Project>{07AA2566-D0E5-47AF-A17D-3B1C6AEE598D}</Project>
+      <Name>HZSoft.Util</Name>
     </ProjectReference>
     <ProjectReference Include="..\HZSoft.Application.Busines\HZSoft.Application.Busines.csproj">
       <Project>{21566527-8f54-4a8d-aa68-7662c2c31fb9}</Project>
