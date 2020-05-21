@@ -70,7 +70,7 @@ namespace HZSoft.Util.WeChat.Model
 
         public static string GetToken()
         {
-            if (_Token == null)
+            if (IsTimeOut())
             {
                 GetNewToken();
             }

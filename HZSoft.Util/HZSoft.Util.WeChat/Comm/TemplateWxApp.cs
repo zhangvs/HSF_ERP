@@ -57,8 +57,8 @@ namespace HZSoft.Util.WeChat.Comm
             //var result = AccessTokenContainer.GetAccessTokenResult(appId); //获取AccessToken结果
             //return result.access_token;
 
-
             string token = MPAccessToken.GetToken();
+            //string token = "33_Q2wZJzS8wuiieFeKGihHjwRrndkPsCBrem9JNc03-f8-05nfYbQaD5OxH_psDGZ66scu-F5NRcLMeWh_oiQbxlyQeZrTYYXbfQDVZ-3WDp6gJX2jJ7rMdrrkBQ-kVcsO2-ns_m5nZyfZEPtVJOGeAIAVAS";//MPAccessToken.GetToken();
             return token;
         }
         /// <summary>
@@ -313,13 +313,54 @@ namespace HZSoft.Util.WeChat.Comm
         }
 
         /// <summary>
-        /// 发货通知，实际发货
+        /// 配货通知
+        /// 您好，您收到了一个新的配货订单，请尽快处理
+        ///订单号：WX02302301
+        ///时间：2018-04-10 23:00
         /// TemplateWxApp.SendTemplateSend(hsf_CardEntity.OpenId, "您好，您的订单已经发货!", entity.Code, entity.OrderTitle+"：共" + entity.TotalQty + "包。");
         /// </summary>
         /// <param name="openId"></param>
         /// <param name="template_id"></param>
         /// <returns></returns>
         public static string SendTemplateSend(string openId, string first, string keyword1, string remark, bool retryIfFaild = true)
+        {
+            try
+            {
+                var data = new
+                {
+                    first = new TemplateDataItem(first),
+                    keyword1 = new TemplateDataItem(keyword1),
+                    keyword2 = new TemplateDataItem(DateTime.Now.ToString("yyyy年MM月dd日 HH:mm")),
+                    remark = new TemplateDataItem(remark),
+                };
+                //string url = "https://baidu.com";
+                string token = getToken();
+                SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(
+                    token, openId, "we_4eFusZS6KpgRM1zgtHjV5mZnSmfFPiUNUZLVnI4U", null, data, null);
+                LogHelper.AddLog(first + keyword1 + "\r\n" + token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
+                return sendTemplateMessageResult.errmsg;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.AddLog(first + ex.Message);
+                if (retryIfFaild)
+                {
+                    retryIfFaild = false;//重试一次
+                    string twoResult = SendTemplateSend(openId, first, keyword1, remark, false);
+                    LogHelper.AddLog("重试结果-" + twoResult);
+                }
+                return ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// 发货通知，实际发货
+        /// TemplateWxApp.SendTemplateSend(hsf_CardEntity.OpenId, "您好，您的订单已经发货!", entity.Code, entity.OrderTitle+"：共" + entity.TotalQty + "包。");
+        /// </summary>
+        /// <param name="openId"></param>
+        /// <param name="template_id"></param>
+        /// <returns></returns>
+        public static string SendTemplateSendOut(string openId, string first, string keyword1, string remark, bool retryIfFaild = true)
         {
             try
             {
