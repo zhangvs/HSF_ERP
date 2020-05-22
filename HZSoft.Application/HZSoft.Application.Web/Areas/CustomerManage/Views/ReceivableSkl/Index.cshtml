@@ -35,9 +35,11 @@
             colModel: [
                 { label: '主键', name: 'Id', hidden: true },
                 { label: "接单日期", name: "CreateDate", width: 100, align: "left", formatter: "date", formatoptions: { newformat: 'Y-m-d' } },
-                { label: "单据编号", name: "Code", width: 130, align: "left" },
-                { label: "客户名称", name: "CustomerName", width: 150, align: "left" },
-                { label: "销售人员", name: "SalesmanUserName", width: 80, align: "left" },
+                { label: "销售单", name: "Code", width: 130, align: "left" },
+                { label: "标题", name: "OrderTitle", width: 180, align: "left" },
+                { label: '经销商', name: 'CompanyName', index: 'CompanyName', width: 100, align: 'center', sortable: true },
+                { label: '客户', name: 'CustomerName', index: 'CustomerName', width: 100, align: 'center', sortable: true },
+                { label: "销售人员", name: "SalesmanUserName", width: 80, align: "center" },
                 {
                     label: "是否月结", name: "MonthMark", index: "MonthMark", width: 60, align: "center", sortable: false,
                     formatter: function (cellvalue) {

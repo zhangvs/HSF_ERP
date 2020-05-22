@@ -1,5 +1,5 @@
 @{;
-    ViewBag.Title = "列表页面";
+    ViewBag.Title = "订单汇总";
     Layout = "~/Views/Shared/_Index.cshtml";
 }
 <script>;
@@ -15,6 +15,10 @@
         });
         //下单状态
         $("#DownMark").ComboBox({
+            description: "==请选择==",
+        });
+        //推单状态
+        $("#PushMark").ComboBox({
             description: "==请选择==",
         });
         $("#PaymentState").ComboBox({
@@ -38,6 +42,7 @@
     //加载表格
     function GetGrid() {
         var selectedRowIndex = 0;
+
         var $gridTable = $('#gridTable');
         $gridTable.jqGrid({
             autowidth: true,
@@ -205,7 +210,7 @@
                 $('#' + this.id).setSelection(selectedRowIndex, false);
             }
         });
-        
+
         //点击时间范围（今天、近7天、近一个月、近三个月）
         $("#time_horizon a.btn-default").click(function () {
             $("#time_horizon a.btn-default").removeClass("active");
@@ -247,8 +252,12 @@
                 page: 1
             }).trigger('reloadGrid');
         });
-
-
+        //查询回车
+        $('#txt_Keyword').bind('keypress', function (event) {
+            if (event.keyCode == "13") {
+                $('#btn_Search').trigger("click");
+            }
+        });
 
         ////查询条件
         //$("#queryCondition .dropdown-menu li").click(function () {
@@ -273,12 +282,6 @@
         //        page: 1
         //    }).trigger('reloadGrid');
         //});
-        //查询回车
-        $('#txt_Keyword').bind('keypress', function (event) {
-            if (event.keyCode == "13") {
-                $('#btn_Search').trigger("click");
-            }
-        });
     }
 
     //详细
@@ -420,8 +423,9 @@
                                     <td class="formValue">
                                         <div id="MoneyMark" type="select" class="ui-select">
                                             <ul>
-                                                <li data-value="0">未报价</li>
-                                                <li data-value="1">已报价</li>
+                                                <li data-value="">全部</li>
+                                                <li data-value="0">否</li>
+                                                <li data-value="1">是</li>
                                             </ul>
                                         </div>
                                     </td>
@@ -431,8 +435,21 @@
                                     <td class="formValue">
                                         <div id="DownMark" type="select" class="ui-select">
                                             <ul>
-                                                <li data-value="0">未下单</li>
-                                                <li data-value="1">已下单</li>
+                                                <li data-value="">全部</li>
+                                                <li data-value="0">否</li>
+                                                <li data-value="1">是</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">推单：</td>
+                                    <td class="formValue">
+                                        <div id="PushMark" type="select" class="ui-select">
+                                            <ul>
+                                                <li data-value="">全部</li>
+                                                <li data-value="0">否</li>
+                                                <li data-value="1">是</li>
                                             </ul>
                                         </div>
                                     </td>
@@ -442,8 +459,9 @@
                                     <td class="formValue">
                                         <div id="EnterMark" type="select" class="ui-select">
                                             <ul>
-                                                <li data-value="0">未入库</li>
-                                                <li data-value="1">已入库</li>
+                                                <li data-value="">全部</li>
+                                                <li data-value="0">否</li>
+                                                <li data-value="1">是</li>
                                             </ul>
                                         </div>
                                     </td>
@@ -453,8 +471,9 @@
                                     <td class="formValue">
                                         <div id="SendMark" type="select" class="ui-select">
                                             <ul>
-                                                <li data-value="0">未发货</li>
-                                                <li data-value="1">已发货</li>
+                                                <li data-value="">全部</li>
+                                                <li data-value="0">否</li>
+                                                <li data-value="1">是</li>
                                             </ul>
                                         </div>
                                     </td>

@@ -38,7 +38,7 @@ namespace HZSoft.Application.Service.CustomerManage
         public IEnumerable<ReceivableEntity> GetPageList(Pagination pagination, string queryJson)
         {
             string strSql = "select r.ReceivableId,r.PaymentTime,r.PaymentPrice,r.ReceiptPath,r.EnabledMark,r.Description,r.DeleteMark,r.CreateDate," +
-                "o.Code,o.CustomerName,o.SalesmanUserName,o.Accounts,o.ReceivedAmount from Client_Receivable r " +
+                "o.Code,o.OrderTitle,o.CompanyName,o.CustomerName,o.SalesmanUserName,o.Accounts,o.ReceivedAmount from Client_Receivable r " +
                 "LEFT JOIN DZ_Order o ON r.OrderId=o.Id where r.DeleteMark=0 ";//报价的才显示 and MoneyMark = 1,,,不一定报价的显示，可以先收款，收款研发没有料单就不会到生产单
             var queryParam = queryJson.ToJObject();
             //成立日期

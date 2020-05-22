@@ -21,8 +21,7 @@
         $("#CheckMark").ComboBox({
             description: "==请选择==",
         });
-        $("#CheckTuMark").ComboBoxSetValue(1);
-        $("#ChaiMark").ComboBoxSetValue(0);
+        $("#ChaiMark").ComboBoxSetValue(1);
         //resize重设布局;
         $(window).resize(function (e) {
             window.setTimeout(function () {
@@ -36,8 +35,7 @@
     function GetGrid() {
         var selectedRowIndex = 0;
         var queryJson = {};
-        queryJson.CheckTuMark = 1;//审图的
-        queryJson.ChaiMark = 0;//还没拆单的
+        queryJson.ChaiMark = 1;//还没拆单的
 
         var $gridTable = $('#gridTable');
         $gridTable.jqGrid({

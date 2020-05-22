@@ -38,9 +38,10 @@
             autowidth: true,
             colModel: [
                 { label: '主键', name: 'ReceivableId', hidden: true },
-                { label: '收款日期', name: "PaymentTime", width: 100, align: "left", formatter: "date", formatoptions: { newformat: 'Y-m-d' } },
-                { label: "单据编号", name: "Code", width: 130, align: "left" },
-                { label: "客户名称", name: "CustomerName", width: 150, align: "left" },
+                { label: '单号', name: 'Code', index: 'Code', width: 130, align: 'left', sortable: true },
+                { label: '标题', name: 'OrderTitle', index: 'OrderTitle', width: 180, align: 'left', sortable: true },
+                { label: '经销商', name: 'CompanyName', index: 'CompanyName', width: 100, align: 'center', sortable: true },
+                { label: '客户', name: 'CustomerName', index: 'CustomerName', width: 100, align: 'center', sortable: true },
                 { label: "销售人员", name: "SalesmanUserName", width: 80, align: "left" },
                 { label: '收款金额', name: 'PaymentPrice', width: 100, align: 'left', formatter: 'number', formatoptions: { thousandsSeparator: "", decimalPlaces: 2 } },
                 { label: "创建人员", name: "CreateUserName", width: 100, align: "left" },

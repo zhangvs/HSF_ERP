@@ -1,5 +1,5 @@
 @{;
-    ViewBag.Title = "列表页面";
+    ViewBag.Title = "报价审核";
     Layout = "~/Views/Shared/_Index.cshtml";
 }
 <script>;
@@ -12,6 +12,14 @@
         $("#PaymentState").ComboBox({
             description: "==请选择==",
         });
+        $("#MoneyMark").ComboBox({
+            description: "==请选择==",
+        });
+        $("#MoneyOkMark").ComboBox({
+            description: "==请选择==",
+        });
+        $("#MoneyMark").ComboBoxSetValue(1);
+        $("#MoneyOkMark").ComboBoxSetValue(0);
         //resize重设布局;
         $(window).resize(function (e) {
             window.setTimeout(function () {
@@ -67,7 +75,7 @@
                     }
                 },
                 { label: '报价日期', name: 'MoneyDate', index: 'MoneyDate', width: 118, align: 'left', sortable: true },
-                { label: "报价金额", name: "MoneyAccounts", width: 80, align: "left", formatter: 'number', formatoptions: { thousandsSeparator: "", decimalPlaces: 2 } },
+                { label: "报价金额", name: "MoneyAccounts", width: 80, align: "right", formatter: 'number', formatoptions: { thousandsSeparator: "", decimalPlaces: 2 } },
                 {
                     label: "报价审核", name: "MoneyOkMark", index: "MoneyOkMark", width: 60, align: "center", sortable: false,
                     formatter: function (cellvalue) {
@@ -222,6 +230,30 @@
                                                 <li data-value="1">未收款</li>
                                                 <li data-value="2">部分收款</li>
                                                 <li data-value="3">全部收款</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">报价：</td>
+                                    <td class="formValue">
+                                        <div id="MoneyMark" type="select" class="ui-select">
+                                            <ul>
+                                                <li data-value="">全部</li>
+                                                <li data-value="0">否</li>
+                                                <li data-value="1">是</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">报价审核：</td>
+                                    <td class="formValue">
+                                        <div id="MoneyOkMark" type="select" class="ui-select">
+                                            <ul>
+                                                <li data-value="">全部</li>
+                                                <li data-value="0">否</li>
+                                                <li data-value="1">是</li>
                                             </ul>
                                         </div>
                                     </td>

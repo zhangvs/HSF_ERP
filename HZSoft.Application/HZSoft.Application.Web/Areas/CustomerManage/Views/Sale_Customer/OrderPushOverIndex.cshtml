@@ -48,6 +48,19 @@
     });
     //初始化页面
     function InitialPage() {
+        $("#PushMark").ComboBox({
+            description: "==请选择==",
+        });
+        $("#EnterMark").ComboBox({
+            description: "==请选择==",
+        });
+        $("#SendMark").ComboBox({
+            description: "==请选择==",
+        });
+        $("#SendOutMark").ComboBox({
+            description: "==请选择==",
+        });
+        $("#PushMark").ComboBoxSetValue(1);
         //resize重设布局;
         $(window).resize(function (e) {
             window.setTimeout(function () {
@@ -606,6 +619,54 @@
                                     <td class="formTitle">生产人员：</td>
                                     <td class="formValue">
                                         <input id="StepUserName" type="text" class="form-control">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">推单：</td>
+                                    <td class="formValue">
+                                        <div id="PushMark" type="select" class="ui-select">
+                                            <ul>
+                                                <li data-value="">全部</li>
+                                                <li data-value="0">否</li>
+                                                <li data-value="1">是</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">入库：</td>
+                                    <td class="formValue">
+                                        <div id="EnterMark" type="select" class="ui-select">
+                                            <ul>
+                                                <li data-value="">全部</li>
+                                                <li data-value="0">否</li>
+                                                <li data-value="1">是</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">发货通知：</td>
+                                    <td class="formValue">
+                                        <div id="SendMark" type="select" class="ui-select">
+                                            <ul>
+                                                <li data-value="">全部</li>
+                                                <li data-value="0">否</li>
+                                                <li data-value="1">是</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">发货：</td>
+                                    <td class="formValue">
+                                        <div id="SendOutMark" type="select" class="ui-select">
+                                            <ul>
+                                                <li data-value="">全部</li>
+                                                <li data-value="0">否</li>
+                                                <li data-value="1">是</li>
+                                            </ul>
+                                        </div>
                                     </td>
                                 </tr>
                             </table>

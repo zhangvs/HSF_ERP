@@ -31,6 +31,15 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
             return View();
         }
         /// <summary>
+        /// 列表页面（客诉查看）
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult DZSH_OrderReadIndex()
+        {
+            return View();
+        }
+        /// <summary>
         /// 列表页面（客诉记录）
         /// </summary>
         /// <returns></returns>
@@ -39,6 +48,7 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         {
             return View();
         }
+        
         /// <summary>
         /// 表单页面
         /// </summary>

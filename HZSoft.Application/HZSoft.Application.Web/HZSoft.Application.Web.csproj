@@ -1962,7 +1962,6 @@
     <Content Include="Areas\CustomerManage\Views\DZ_Order\DZ_OrderIndex4.cshtml" />
     <Content Include="Areas\CustomerManage\Views\DZ_Order\DZ_OrderIndex5.cshtml" />
     <Content Include="Areas\CustomerManage\Views\DZ_Order\DZ_OrderForm5.cshtml" />
-    <Content Include="Areas\CustomerManage\Views\DZ_Order\DZ_OrderIndex0.cshtml" />
     <Content Include="Areas\WeChatManage\Views\Card\Skl.cshtml" />
     <Content Include="Areas\WeChatManage\Views\Card\Guide.cshtml" />
     <Content Include="Areas\CustomerManage\Views\Hsf_Guide\Hsf_GuideForm.cshtml" />
@@ -2037,6 +2036,11 @@
     <Content Include="Areas\CustomerManage\Views\DZSH_Order\DZSH_OrderForm.cshtml" />
     <Content Include="Areas\CustomerManage\Views\DZSH_Order\DZSH_OrderIndex.cshtml" />
     <Content Include="Areas\CustomerManage\Views\DZSH_Order\DZSH_OrderOverIndex.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\DZSH_Order\DZSH_OrderReadIndex.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\DZ_Order\DZ_OrderIndex2Tu.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\DZ_Order\DZ_OrderIndex3Chai.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\DZ_Order\DZ_OrderIndex4Check.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\DZ_Order\DZ_OrderIndex5Money.cshtml" />
     <None Include="Properties\PublishProfiles\6.1.pubxml" />
     <Content Include="Areas\FlowManage\Views\FlowLaunch\Index.cshtml" />
     <Content Include="Areas\FlowManage\Views\FormDesign\FormPreview.cshtml" />

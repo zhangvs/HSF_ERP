@@ -9,23 +9,13 @@
     });
     //初始化页面
     function InitialPage() {
-        //报价状态
-        $("#MoneyMark").ComboBox({
+        //报价审核状态
+        $("#MoneyOkMark").ComboBox({
             description: "==请选择==",
         });
-        //下单状态
-        $("#DownMark").ComboBox({
-            description: "==请选择==",
-        });
-        $("#PaymentState").ComboBox({
-            description: "==请选择==",
-        });
-        $("#EnterMark").ComboBox({
-            description: "==请选择==",
-        });
-        $("#SendMark").ComboBox({
-            description: "==请选择==",
-        });
+        $("#MoneyOkMark").ComboBoxSetValue(1);
+
+
         //工序状态
         $("#Step").ComboBox({
             url: "../../SystemManage/DataItemDetail/GetDataItemListJson",
@@ -180,62 +170,13 @@
             }
         });
     }
-    //新增
-    function btn_add() {
-        dialogOpen({
-            id: 'Form',
-            title: '接单',
-            url: '/CustomerManage/DZ_Order/DZ_OrderForm1',
-            width: '750px',
-            height: '600px',
-            callBack: function (iframeId) {
-                top.frames[iframeId].AcceptClick();
-            }
-        });
-    }
-    //编辑
-    function btn_edit() {
-        var keyValue = $('#gridTable').jqGridRowValue( 'Id');
-        if (checkedRow(keyValue)) {
-            dialogOpen({
-                id: 'Form',
-                title: '编辑',
-                url: '/CustomerManage/DZ_Order/DZ_OrderForm1?keyValue=' + keyValue,
-                width: '750px',
-                height: '600px',
-                callBack: function (iframeId) {
-                    top.frames[iframeId].AcceptClick();
-                }
-            })
-        }
-    }
-    //删除
-    function btn_delete() {
-        var checkTuMark = $('#gridTable').jqGridRowValue('CheckTuMark');
-        if (checkTuMark.indexOf("fa-toggle-on") >= 0 || checkTuMark.indexOf("通过") >= 0 || checkTuMark.indexOf("无需审核") >= 0) {
-            dialogMsg('已经通过审图的订单无法删除！', 0);
-        }
-        else {
-            var keyValue = $('#gridTable').jqGridRowValue('Id');
-            if (keyValue) {
-                $.RemoveForm({
-                    url: '../../CustomerManage/DZ_Order/RemoveForm',
-                    param: { keyValue: keyValue },
-                    success: function (data) {
-                        $('#gridTable').trigger('reloadGrid');
-                    }
-                })
-            } else {
-                dialogMsg('请选择需要删除的订单！', 0);
-            }
-        }
-    }
+
     //导出
     function btn_export() {
         dialogOpen({
             id: "ExcelIExportDialog",
-            title: '导出销售单',
-            url: '/Utility/ExcelExportForm?gridId=gridTable&filename=销售单',
+            title: '导出报价对比单',
+            url: '/Utility/ExcelExportForm?gridId=gridTable&filename=报价对比单',
             width: "500px",
             height: "380px",
             callBack: function (iframeId) {
@@ -243,24 +184,6 @@
             }, btn: ['导出Excel', '关闭']
         });
     }
-
-    //签收
-    function btn_signed() {
-        var keyValue = $('#gridTable').jqGridRowValue('Id');
-        if (checkedRow(keyValue)) {
-            dialogOpen({
-                id: 'SignedForm',
-                title: '签收确认',
-                url: '/CustomerManage/DZ_Order/SignedForm?keyValue=' + keyValue,
-                width: '650px',
-                height: '550px',
-                callBack: function (iframeId) {
-                    top.frames[iframeId].AcceptClick();
-                }
-            })
-        }
-    }
-    
 </script>
 <div class="titlePanel">
     <div class="title-search">
@@ -299,57 +222,12 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="formTitle">收款状态：</td>
+                                    <td class="formTitle">报价审核：</td>
                                     <td class="formValue">
-                                        <div id="PaymentState" type="select" class="ui-select">
+                                        <div id="MoneyOkMark" type="select" class="ui-select">
                                             <ul>
-                                                <li data-value="1">未收款</li>
-                                                <li data-value="2">部分收款</li>
-                                                <li data-value="3">全部收款</li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="formTitle">报价：</td>
-                                    <td class="formValue">
-                                        <div id="MoneyMark" type="select" class="ui-select">
-                                            <ul>
-                                                <li data-value="0">未报价</li>
-                                                <li data-value="1">已报价</li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="formTitle">下单：</td>
-                                    <td class="formValue">
-                                        <div id="DownMark" type="select" class="ui-select">
-                                            <ul>
-                                                <li data-value="0">未下单</li>
-                                                <li data-value="1">已下单</li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="formTitle">入库：</td>
-                                    <td class="formValue">
-                                        <div id="EnterMark" type="select" class="ui-select">
-                                            <ul>
-                                                <li data-value="0">未入库</li>
-                                                <li data-value="1">已入库</li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="formTitle">发货：</td>
-                                    <td class="formValue">
-                                        <div id="SendMark" type="select" class="ui-select">
-                                            <ul>
-                                                <li data-value="0">未发货</li>
-                                                <li data-value="1">已发货</li>
+                                                <li data-value="0">否</li>
+                                                <li data-value="1">是</li>
                                             </ul>
                                         </div>
                                     </td>
@@ -375,6 +253,7 @@
     <div class="toolbar">
         <div class="btn-group">
             <a id="lr-replace" class="btn btn-default" onclick="reload()"><i class="fa fa-refresh"></i>&nbsp;刷新</a>
+            @*<a id="lr-export" class="btn btn-default" onclick="btn_export()"><i class="fa fa-sign-out"></i>&nbsp;导出</a>*@
         </div>
     </div>
     @*<script>$('.toolbar').authorizeButton()</script>*@

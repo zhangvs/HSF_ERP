@@ -1,5 +1,5 @@
 @{;
-    ViewBag.Title = "拆单";
+    ViewBag.Title = "审图列表页面";
     Layout = "~/Views/Shared/_Index.cshtml";
 }
 <script>;
@@ -17,12 +17,7 @@
         $("#ChaiMark").ComboBox({
             description: "==请选择==",
         });
-        //审核状态
-        $("#CheckMark").ComboBox({
-            description: "==请选择==",
-        });
         $("#CheckTuMark").ComboBoxSetValue(1);
-        $("#ChaiMark").ComboBoxSetValue(0);
         //resize重设布局;
         $(window).resize(function (e) {
             window.setTimeout(function () {
@@ -37,7 +32,6 @@
         var selectedRowIndex = 0;
         var queryJson = {};
         queryJson.CheckTuMark = 1;//审图的
-        queryJson.ChaiMark = 0;//还没拆单的
 
         var $gridTable = $('#gridTable');
         $gridTable.jqGrid({
@@ -92,21 +86,7 @@
                         }
                     }
                 },
-                { label: '拆单日期', name: 'ChaiDate', index: 'ChaiDate', width: 118, align: 'left', sortable: true },
-                { label: '审核人', name: 'CheckUserName', index: 'CheckUserName', width: 60, align: 'center', sortable: true },
-                {
-                    label: "审核", name: "CheckMark", index: "CheckMark", width: 60, align: "center", sortable: false,
-                    formatter: function (cellvalue, options, rowObject) {
-                        if (cellvalue == 1) {
-                            return "<i class=\"fa fa-toggle-on\"></i>";
-                        } else if (cellvalue == -1) {
-                            return "<span style='color:red'>驳回</span>";
-                        } else {
-                            return "<i class=\"fa fa-toggle-off\"></i>";
-                        }
-                    }
-                },
-                { label: '审核日期', name: 'CheckDate', index: 'CheckDate', width: 118, align: 'left', sortable: true }
+                { label: '拆单日期', name: 'ChaiDate', index: 'ChaiDate', width: 118, align: 'left', sortable: true }
             ],
             viewrecords: true,
             rowNum: 30,
@@ -179,8 +159,8 @@
         if (checkedRow(keyValue)) {
             dialogOpen({
                 id: 'Form',
-                title: '拆单',
-                url: '/CustomerManage/DZ_Order/DZ_OrderForm3?keyValue=' + keyValue,
+                title: '审图',
+                url: '/CustomerManage/DZ_Order/DZ_OrderForm2?keyValue=' + keyValue,
                 width: '750px',
                 height: '600px',
                 callBack: function (iframeId) {
@@ -250,18 +230,6 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td class="formTitle">审核：</td>
-                                    <td class="formValue">
-                                        <div id="CheckMark" type="select" class="ui-select">
-                                            <ul>
-                                                <li data-value="">全部</li>
-                                                <li data-value="0">否</li>
-                                                <li data-value="1">是</li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
                             </table>
                             <div class="ui-filter-list-bottom">
                                 <a id="btn_Search" class="btn btn-primary">&nbsp;查&nbsp;&nbsp;询</a>
@@ -283,7 +251,7 @@
     <div class="toolbar">
         <div class="btn-group">
             <a id="lr-replace" class="btn btn-default" onclick="reload()"><i class="fa fa-refresh"></i>&nbsp;刷新</a>
-            <a id="lr-edit" class="btn btn-default" onclick="btn_edit()"><i class="fa fa-pencil-square-o"></i>&nbsp;拆单</a>
+            <a id="lr-edit" class="btn btn-default" onclick="btn_edit()"><i class="fa fa-pencil-square-o"></i>&nbsp;审图</a>
         </div>
     </div>
     @*<script>$('.toolbar').authorizeButton()</script>*@

@@ -48,6 +48,20 @@
     });
     //初始化页面
     function InitialPage() {
+        $("#PushMark").ComboBox({
+            description: "==请选择==",
+        });
+        $("#EnterMark").ComboBox({
+            description: "==请选择==",
+        });
+        $("#SendMark").ComboBox({
+            description: "==请选择==",
+        });
+        $("#SendOutMark").ComboBox({
+            description: "==请选择==",
+        });
+        $("#PushMark").ComboBoxSetValue(1);
+        $("#EnterMark").ComboBoxSetValue(0);
         //resize重设布局;
         $(window).resize(function (e) {
             window.setTimeout(function () {
@@ -90,47 +104,47 @@
                 { label: '经销商', name: 'CompanyName', index: 'CompanyName', width: 130, align: 'center', sortable: true },
                 { label: '客户', name: 'CustomerName', index: 'CustomerName', width: 100, align: 'center', sortable: true },
                 { label: '销售人', name: 'SalesmanUserName', index: 'SalesmanUserName', width: 80, align: 'center', sortable: true },
-                { label: '创建日期', name: 'CreateDate', index: 'CreateDate', width: 90, align: 'center', sortable: true, formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' } },
-                {
-                    label: "报价审核", name: "MoneyOkMark", index: "MoneyOkMark", width: 60, align: "center", sortable: false,
-                    formatter: function (cellvalue) {
-                        if (cellvalue >= 1) {
-                            return "<i class=\"fa fa-toggle-on\"></i>";
-                        } else if (cellvalue == -1) {
-                            return "<span style='color:red'>驳回</span>";
-                        } else {
-                            return "<i class=\"fa fa-toggle-off\"></i>";
-                        }
-                    }
-                },
-                { label: '审核日期', name: 'MoneyOkDate', index: 'MoneyOkDate', width: 90, align: 'center', sortable: true, formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' } },
-                {
-                    label: "下单", name: "DownMark", index: "DownMark", width: 60, align: "center", sortable: false,
-                    formatter: function (cellvalue) {
-                        if (cellvalue >= 1) {
-                            return "<i class=\"fa fa-toggle-on\"></i>";
-                        } else if (cellvalue == -1) {
-                            return "<span style='color:red'>驳回</span>";
-                        } else {
-                            return "<i class=\"fa fa-toggle-off\"></i>";
-                        }
-                    }
-                },
-                { label: '下单人', name: 'DownUserName', index: 'DownUserName', width: 80, align: 'center', sortable: true },
-                { label: '下单时间', name: 'DownDate', index: 'DownDate', width: 90, align: 'center', sortable: true, formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' } },
-                {
-                    label: "推单", name: "PushMark", index: "PushMark", width: 60, align: "center", sortable: false,
-                    formatter: function (cellvalue) {
-                        if (cellvalue >= 1) {
-                            return "<i class=\"fa fa-toggle-on\"></i>";
-                        } else if (cellvalue == -1) {
-                            return "<span style='color:red'>驳回</span>";
-                        } else {
-                            return "<i class=\"fa fa-toggle-off\"></i>";
-                        }
-                    }
-                },
-                { label: '推单人', name: 'PushUserName', index: 'PushUserName', width: 80, align: 'center', sortable: true },
+                //{ label: '创建日期', name: 'CreateDate', index: 'CreateDate', width: 90, align: 'center', sortable: true, formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' } },
+                //{
+                //    label: "报价审核", name: "MoneyOkMark", index: "MoneyOkMark", width: 60, align: "center", sortable: false,
+                //    formatter: function (cellvalue) {
+                //        if (cellvalue >= 1) {
+                //            return "<i class=\"fa fa-toggle-on\"></i>";
+                //        } else if (cellvalue == -1) {
+                //            return "<span style='color:red'>驳回</span>";
+                //        } else {
+                //            return "<i class=\"fa fa-toggle-off\"></i>";
+                //        }
+                //    }
+                //},
+                //{ label: '审核日期', name: 'MoneyOkDate', index: 'MoneyOkDate', width: 90, align: 'center', sortable: true, formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' } },
+                //{
+                //    label: "下单", name: "DownMark", index: "DownMark", width: 60, align: "center", sortable: false,
+                //    formatter: function (cellvalue) {
+                //        if (cellvalue >= 1) {
+                //            return "<i class=\"fa fa-toggle-on\"></i>";
+                //        } else if (cellvalue == -1) {
+                //            return "<span style='color:red'>驳回</span>";
+                //        } else {
+                //            return "<i class=\"fa fa-toggle-off\"></i>";
+                //        }
+                //    }
+                //},
+                //{ label: '下单人', name: 'DownUserName', index: 'DownUserName', width: 80, align: 'center', sortable: true },
+                //{ label: '下单时间', name: 'DownDate', index: 'DownDate', width: 90, align: 'center', sortable: true, formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' } },
+                //{
+                //    label: "推单", name: "PushMark", index: "PushMark", width: 60, align: "center", sortable: false,
+                //    formatter: function (cellvalue) {
+                //        if (cellvalue >= 1) {
+                //            return "<i class=\"fa fa-toggle-on\"></i>";
+                //        } else if (cellvalue == -1) {
+                //            return "<span style='color:red'>驳回</span>";
+                //        } else {
+                //            return "<i class=\"fa fa-toggle-off\"></i>";
+                //        }
+                //    }
+                //},
+                //{ label: '推单人', name: 'PushUserName', index: 'PushUserName', width: 80, align: 'center', sortable: true },
                 { label: '推单时间', name: 'PushDate', index: 'PushDate', width: 90, align: 'center', sortable: true, formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' } },
                     {
                     label: '最迟交付', name: 'EndDate', index: 'EndDate', width: 80, align: '', sortable: true, formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' },
@@ -315,28 +329,28 @@
                     }
                 },
                 { label: '入库日期', name: 'EnterDate', index: 'EnterDate', width: 118, align: 'left', sortable: true },
-                {
-                    label: "发货通知", name: "SendMark", index: "SendMark", width: 60, align: "center", sortable: false,
-                    formatter: function (cellvalue) {
-                        return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
-                    }
-                },
-                { label: '发货通知日期', name: 'SendDate', index: 'SendDate', width: 118, align: 'left', sortable: true },
-                { label: '计划发货日期', name: 'SendPlanDate', index: 'SendPlanDate', width: 90, align: 'center', sortable: true, formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' } },
-                {
-                    label: "发货", name: "SendOutMark", index: "SendOutMark", width: 80, align: "center", sortable: false,
-                    formatter: function (cellvalue) {
-                        return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
-                    }
-                },
-                { label: '发货日期', name: 'SendOutDate', index: 'SendOutDate', width: 118, align: 'left', sortable: true },
+                //{
+                //    label: "发货通知", name: "SendMark", index: "SendMark", width: 60, align: "center", sortable: false,
+                //    formatter: function (cellvalue) {
+                //        return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
+                //    }
+                //},
+                //{ label: '发货通知日期', name: 'SendDate', index: 'SendDate', width: 118, align: 'left', sortable: true },
+                //{ label: '计划发货日期', name: 'SendPlanDate', index: 'SendPlanDate', width: 90, align: 'center', sortable: true, formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' } },
+                //{
+                //    label: "发货", name: "SendOutMark", index: "SendOutMark", width: 80, align: "center", sortable: false,
+                //    formatter: function (cellvalue) {
+                //        return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
+                //    }
+                //},
+                //{ label: '发货日期', name: 'SendOutDate', index: 'SendOutDate', width: 118, align: 'left', sortable: true },
 
             ],
             viewrecords: true,
             rowNum: 30,
             rowList: [30, 50, 100],
             pager: "#gridPager",
-            sortname: 'CreateDate',
+            sortname: 'PushDate',
             sortorder: 'desc',
             rownumbers: true,
             shrinkToFit: false,
@@ -575,6 +589,54 @@
                                     <td class="formTitle">生产人员：</td>
                                     <td class="formValue">
                                         <input id="StepUserName" type="text" class="form-control">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">推单：</td>
+                                    <td class="formValue">
+                                        <div id="PushMark" type="select" class="ui-select">
+                                            <ul>
+                                                <li data-value="">全部</li>
+                                                <li data-value="0">否</li>
+                                                <li data-value="1">是</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">入库：</td>
+                                    <td class="formValue">
+                                        <div id="EnterMark" type="select" class="ui-select">
+                                            <ul>
+                                                <li data-value="">全部</li>
+                                                <li data-value="0">否</li>
+                                                <li data-value="1">是</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">发货通知：</td>
+                                    <td class="formValue">
+                                        <div id="SendMark" type="select" class="ui-select">
+                                            <ul>
+                                                <li data-value="">全部</li>
+                                                <li data-value="0">否</li>
+                                                <li data-value="1">是</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">发货：</td>
+                                    <td class="formValue">
+                                        <div id="SendOutMark" type="select" class="ui-select">
+                                            <ul>
+                                                <li data-value="">全部</li>
+                                                <li data-value="0">否</li>
+                                                <li data-value="1">是</li>
+                                            </ul>
+                                        </div>
                                     </td>
                                 </tr>
                             </table>

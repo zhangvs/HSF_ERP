@@ -479,6 +479,8 @@ namespace HZSoft.Application.Service.CustomerManage
 
                     //发微信模板消息---发货通知之后，给公维才发消息提醒?????
                     //订单生成通知（10发货通知提醒）
+                    //公维才
+                    TemplateWxApp.SendTemplateSend("oA-EC1Z5tDaD1-ejnQe_l_gJK1Us", "您好，有新的发货通知!", entity.Code, entity.OrderTitle + "，计划发货时间：" + entity.SendPlanDate);
                     //金志花
                     TemplateWxApp.SendTemplateSend("oA-EC1UWi8i4sSkHsWV6BK7CuopA","您好，有新的发货通知!", entity.Code, entity.OrderTitle + "，计划发货时间：" + entity.SendPlanDate);
                     //牛霞

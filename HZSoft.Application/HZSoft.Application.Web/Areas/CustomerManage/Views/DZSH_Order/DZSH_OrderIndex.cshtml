@@ -13,6 +13,10 @@
         $("#PaymentState").ComboBox({
             description: "==请选择==",
         });
+        $("#OverMark").ComboBox({
+            description: "==请选择==",
+        });
+        $("#OverMark").ComboBoxSetValue(0);
         //resize重设布局;
         $(window).resize(function (e) {
             window.setTimeout(function () {
@@ -52,41 +56,47 @@
                 },
                 { label: '经销商', name: 'CompanyName', index: 'CompanyName', width: 100, align: 'center', sortable: true },
                 { label: '客户', name: 'CustomerName', index: 'CustomerName', width: 100, align: 'center', sortable: true },
-                {
-                    label: "是否月结", name: "MonthMark", index: "MonthMark", width: 60, align: "center", sortable: false,
-                    formatter: function (cellvalue) {
-                        return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
-                    }
-                },
-                {
-                    label: "下单前收款", name: "FrontMark", index: "FrontMark", width: 80, align: "center", sortable: false,
-                    formatter: function (cellvalue) {
-                        return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
-                    }
-                },
-                {
-                    label: "发货前收款", name: "AfterMark", index: "AfterMark", width: 80, align: "center", sortable: false,
-                    formatter: function (cellvalue) {
-                        return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
-                    }
-                },
-                { label: "销售金额", name: "Accounts", width: 80, align: "left", formatter: 'number', formatoptions: { thousandsSeparator: "", decimalPlaces: 2 } },
-                { label: "已收金额", name: "ReceivedAmount", width: 80, align: "left", formatter: 'number', formatoptions: { thousandsSeparator: "", decimalPlaces: 2 } },
-                {
-                    label: "收款状态", name: "PaymentState", width: 80, align: "center",
-                    formatter: function (cellvalue, options, rowObject) {
-                        if (cellvalue == 2) {
-                            return "<span style='color:green'>部分收款</span>";
-                        } else if (cellvalue == 3) {
-                            return "<span style='color:blue'>全部收款</span>";
-                        } else {
-                            return "<span style='color:red'>未收款</span>";
-                        }
-                    }
-                },
-                { label: '收款日期', name: 'PaymentDate', index: 'PaymentDate', width: 80, align: 'left', sortable: true, formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' } },
+                //{
+                //    label: "是否月结", name: "MonthMark", index: "MonthMark", width: 60, align: "center", sortable: false,
+                //    formatter: function (cellvalue) {
+                //        return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
+                //    }
+                //},
+                //{
+                //    label: "下单前收款", name: "FrontMark", index: "FrontMark", width: 80, align: "center", sortable: false,
+                //    formatter: function (cellvalue) {
+                //        return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
+                //    }
+                //},
+                //{
+                //    label: "发货前收款", name: "AfterMark", index: "AfterMark", width: 80, align: "center", sortable: false,
+                //    formatter: function (cellvalue) {
+                //        return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
+                //    }
+                //},
+                { label: "售后金额", name: "Accounts", width: 80, align: "left", formatter: 'number', formatoptions: { thousandsSeparator: "", decimalPlaces: 2 } },
+                //{ label: "已收金额", name: "ReceivedAmount", width: 80, align: "left", formatter: 'number', formatoptions: { thousandsSeparator: "", decimalPlaces: 2 } },
+                //{
+                //    label: "收款状态", name: "PaymentState", width: 80, align: "center",
+                //    formatter: function (cellvalue, options, rowObject) {
+                //        if (cellvalue == 2) {
+                //            return "<span style='color:green'>部分收款</span>";
+                //        } else if (cellvalue == 3) {
+                //            return "<span style='color:blue'>全部收款</span>";
+                //        } else {
+                //            return "<span style='color:red'>未收款</span>";
+                //        }
+                //    }
+                //},
+                //{ label: '收款日期', name: 'PaymentDate', index: 'PaymentDate', width: 80, align: 'left', sortable: true, formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' } },
                 {
                     label: "生产", name: "NeedSale", index: "NeedSale", width: 80, align: "center", sortable: false,
+                    formatter: function (cellvalue) {
+                        return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
+                    }
+                },
+                {
+                    label: "结单", name: "OverMark", index: "OverMark", width: 80, align: "center", sortable: false,
                     formatter: function (cellvalue) {
                         return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
                     }
@@ -205,19 +215,6 @@
             dialogMsg('请选择需要删除的订单！', 0);
         }
     }
-    //导出
-    function btn_export() {
-        dialogOpen({
-            id: "ExcelIExportDialog",
-            title: '导出销售单',
-            url: '/Utility/ExcelExportForm?gridId=gridTable&filename=客诉单',
-            width: "500px",
-            height: "380px",
-            callBack: function (iframeId) {
-                top.frames[iframeId].AcceptClick();
-            }, btn: ['导出Excel', '关闭']
-        });
-    }
 
     //完成
     function btn_over() {
@@ -232,6 +229,19 @@
                 }
             })
         }
+    }
+    //导出
+    function btn_export() {
+        dialogOpen({
+            id: "ExcelIExportDialog",
+            title: '导出客诉单',
+            url: '/Utility/ExcelExportForm?gridId=gridTable&filename=客诉单',
+            width: "500px",
+            height: "380px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].AcceptClick();
+            }, btn: ['导出Excel', '关闭']
+        });
     }
 </script>
 <div class="titlePanel">

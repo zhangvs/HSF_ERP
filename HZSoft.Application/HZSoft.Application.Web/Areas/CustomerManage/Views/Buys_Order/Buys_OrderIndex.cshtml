@@ -10,6 +10,16 @@
     });
     //初始化页面
     function InitialPage() {
+        $("#AllEnterMark").ComboBox({
+            description: "==请选择==",
+        });
+        $("#SendMark").ComboBox({
+            description: "==请选择==",
+        });
+        $("#SendOutMark").ComboBox({
+            description: "==请选择==",
+        });
+        $("#AllEnterMark").ComboBoxSetValue(0);
         //resize重设布局;
         $(window).resize(function (e) {
             window.setTimeout(function () {
@@ -114,8 +124,7 @@
                     }
                 },
                 { label: "总包数", name: "TotalQty", width: 80, align: "center" },
-                { label: '入库完成时间', name: 'AllEnterDate', index: 'AllEnterDate', width: 118, align: 'left', sortable: true },
-                { label: '入库人', name: 'ModifyUserName', index: 'ModifyUserName', width: 80, align: 'left', sortable: true }
+                { label: '入库完成时间', name: 'AllEnterDate', index: 'AllEnterDate', width: 118, align: 'left', sortable: true }
             ],
             viewrecords: true,
             rowNum: 30,
@@ -408,6 +417,42 @@
                                     <td class="formTitle">销售：</td>
                                     <td class="formValue">
                                         <input id="SalesmanUserName" type="text" class="form-control">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">入库：</td>
+                                    <td class="formValue">
+                                        <div id="AllEnterMark" type="select" class="ui-select">
+                                            <ul>
+                                                <li data-value="">全部</li>
+                                                <li data-value="0">否</li>
+                                                <li data-value="1">是</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">发货通知：</td>
+                                    <td class="formValue">
+                                        <div id="SendMark" type="select" class="ui-select">
+                                            <ul>
+                                                <li data-value="">全部</li>
+                                                <li data-value="0">否</li>
+                                                <li data-value="1">是</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">发货：</td>
+                                    <td class="formValue">
+                                        <div id="SendOutMark" type="select" class="ui-select">
+                                            <ul>
+                                                <li data-value="">全部</li>
+                                                <li data-value="0">否</li>
+                                                <li data-value="1">是</li>
+                                            </ul>
+                                        </div>
                                     </td>
                                 </tr>
                             </table>

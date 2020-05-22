@@ -1,5 +1,5 @@
 @{;
-    ViewBag.Title = "列表页面";
+    ViewBag.Title = "接单";
     Layout = "~/Views/Shared/_Index.cshtml";
 }
 <script>;
@@ -26,6 +26,10 @@
         $("#SendMark").ComboBox({
             description: "==请选择==",
         });
+        $("#OverMark").ComboBox({
+            description: "==请选择==",
+        });
+        $("#OverMark").ComboBoxSetValue(0);
         //工序状态
         $("#Step").ComboBox({
             url: "../../SystemManage/DataItemDetail/GetDataItemListJson",
@@ -455,8 +459,9 @@
                                     <td class="formValue">
                                         <div id="MoneyMark" type="select" class="ui-select">
                                             <ul>
-                                                <li data-value="0">未报价</li>
-                                                <li data-value="1">已报价</li>
+                                                <li data-value="">全部</li>
+                                                <li data-value="0">否</li>
+                                                <li data-value="1">是</li>
                                             </ul>
                                         </div>
                                     </td>
@@ -466,8 +471,9 @@
                                     <td class="formValue">
                                         <div id="DownMark" type="select" class="ui-select">
                                             <ul>
-                                                <li data-value="0">未下单</li>
-                                                <li data-value="1">已下单</li>
+                                                <li data-value="">全部</li>
+                                                <li data-value="0">否</li>
+                                                <li data-value="1">是</li>
                                             </ul>
                                         </div>
                                     </td>
@@ -477,8 +483,9 @@
                                     <td class="formValue">
                                         <div id="EnterMark" type="select" class="ui-select">
                                             <ul>
-                                                <li data-value="0">未入库</li>
-                                                <li data-value="1">已入库</li>
+                                                <li data-value="">全部</li>
+                                                <li data-value="0">否</li>
+                                                <li data-value="1">是</li>
                                             </ul>
                                         </div>
                                     </td>
@@ -488,8 +495,21 @@
                                     <td class="formValue">
                                         <div id="SendMark" type="select" class="ui-select">
                                             <ul>
-                                                <li data-value="0">未发货</li>
-                                                <li data-value="1">已发货</li>
+                                                <li data-value="">全部</li>
+                                                <li data-value="0">否</li>
+                                                <li data-value="1">是</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">结单：</td>
+                                    <td class="formValue">
+                                        <div id="OverMark" type="select" class="ui-select">
+                                            <ul>
+                                                <li data-value="">全部</li>
+                                                <li data-value="0">否</li>
+                                                <li data-value="1">是</li>
                                             </ul>
                                         </div>
                                     </td>

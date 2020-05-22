@@ -1,5 +1,5 @@
 @{;
-    ViewBag.Title = "列表页面";
+    ViewBag.Title = "审核";
     Layout = "~/Views/Shared/_Index.cshtml";
 }
 <script>;
@@ -9,36 +9,19 @@
     });
     //初始化页面
     function InitialPage() {
+        //拆单状态
+        $("#ChaiMark").ComboBox({
+            description: "==请选择==",
+        });
+        //审核状态
+        $("#CheckMark").ComboBox({
+            description: "==请选择==",
+        });
         //报价状态
         $("#MoneyMark").ComboBox({
             description: "==请选择==",
         });
-        //下单状态
-        $("#DownMark").ComboBox({
-            description: "==请选择==",
-        });
-        $("#PaymentState").ComboBox({
-            description: "==请选择==",
-        });
-        $("#EnterMark").ComboBox({
-            description: "==请选择==",
-        });
-        $("#SendMark").ComboBox({
-            description: "==请选择==",
-        });
-        $("#OverMark").ComboBox({
-            description: "==请选择==",
-        });
-        $("#OverMark").ComboBoxSetValue(1);
-        //工序状态
-        $("#Step").ComboBox({
-            url: "../../SystemManage/DataItemDetail/GetDataItemListJson",
-            param: { EnCode: "Step" },
-            id: "ItemValue",
-            text: "ItemName",
-            description: "==请选择==",
-            height: "200px"
-        });
+        $("#CheckMark").ComboBoxSetValue(1);
         //resize重设布局;
         $(window).resize(function (e) {
             window.setTimeout(function () {
@@ -52,7 +35,7 @@
     function GetGrid() {
         var selectedRowIndex = 0;
         var queryJson = {};
-        queryJson.OverMark = 1;//完成的
+        queryJson.CheckMark = 1;
 
         var $gridTable = $('#gridTable');
         $gridTable.jqGrid({
@@ -78,41 +61,9 @@
                 },
                 { label: '经销商', name: 'CompanyName', index: 'CompanyName', width: 100, align: 'center', sortable: true },
                 { label: '客户', name: 'CustomerName', index: 'CustomerName', width: 100, align: 'center', sortable: true },
-                {
-                    label: "是否月结", name: "MonthMark", index: "MonthMark", width: 60, align: "center", sortable: false,
-                    formatter: function (cellvalue) {
-                        return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
-                    }
-                },
-                {
-                    label: "下单前收款", name: "FrontMark", index: "FrontMark", width: 80, align: "center", sortable: false,
-                    formatter: function (cellvalue) {
-                        return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
-                    }
-                },
-                {
-                    label: "发货前收款", name: "AfterMark", index: "AfterMark", width: 80, align: "center", sortable: false,
-                    formatter: function (cellvalue) {
-                        return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
-                    }
-                },
-                { label: "销售金额", name: "Accounts", width: 80, align: "left", formatter: 'number', formatoptions: { thousandsSeparator: "", decimalPlaces: 2 } },
-                { label: "已收金额", name: "ReceivedAmount", width: 80, align: "left", formatter: 'number', formatoptions: { thousandsSeparator: "", decimalPlaces: 2 } },
-                {
-                    label: "收款状态", name: "PaymentState", width: 80, align: "center",
-                    formatter: function (cellvalue, options, rowObject) {
-                        if (cellvalue == 2) {
-                            return "<span style='color:green'>部分收款</span>";
-                        } else if (cellvalue == 3) {
-                            return "<span style='color:blue'>全部收款</span>";
-                        } else {
-                            return "<span style='color:red'>未收款</span>";
-                        }
-                    }
-                },
-                { label: '收款日期', name: 'PaymentDate', index: 'PaymentDate', width: 80, align: 'left', sortable: true, formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' } },
                 { label: '销售人', name: 'SalesmanUserName', index: 'SalesmanUserName', width: 65, align: 'center', sortable: true },
                 { label: '接单日期', name: 'CreateDate', index: 'CreateDate', width: 118, align: 'left', sortable: true },
+                { label: '审图人', name: 'CheckTuUserName', index: 'CheckTuUserName', width: 60, align: 'center', sortable: true },
                 {
                     label: "审图", name: "CheckTuMark", index: "CheckTuMark", width: 60, align: "center", sortable: false,
                     formatter: function (cellvalue, options, rowObject) {
@@ -125,6 +76,8 @@
                         }
                     }
                 },
+                { label: '审图日期', name: 'CheckTuDate', index: 'CheckTuDate', width: 118, align: 'left', sortable: true },
+                { label: '拆单人', name: 'ChaiUserName', index: 'ChaiUserName', width: 60, align: 'center', sortable: true },
                 {
                     label: "拆单", name: "ChaiMark", index: "ChaiMark", width: 60, align: "center", sortable: false,
                     formatter: function (cellvalue, options, rowObject) {
@@ -137,6 +90,8 @@
                         }
                     }
                 },
+                { label: '拆单日期', name: 'ChaiDate', index: 'ChaiDate', width: 118, align: 'left', sortable: true },
+                { label: '审核人', name: 'CheckUserName', index: 'CheckUserName', width: 60, align: 'center', sortable: true },
                 {
                     label: "审核", name: "CheckMark", index: "CheckMark", width: 60, align: "center", sortable: false,
                     formatter: function (cellvalue, options, rowObject) {
@@ -149,21 +104,9 @@
                         }
                     }
                 },
+                { label: '审核日期', name: 'CheckDate', index: 'CheckDate', width: 118, align: 'left', sortable: true },
                 {
                     label: "报价", name: "MoneyMark", index: "MoneyMark", width: 60, align: "center", sortable: false,
-                    formatter: function (cellvalue) {
-                        if (cellvalue == 1) {
-                            return "<i class=\"fa fa-toggle-on\"></i>";
-                        } else if (cellvalue == -1) {
-                            return "<span style='color:red'>驳回</span>";
-                        } else {
-                            return "<i class=\"fa fa-toggle-off\"></i>";
-                        }
-                    }
-                },
-                { label: '报价日期', name: 'MoneyDate', index: 'MoneyDate', width: 118, align: 'left', sortable: true }, 
-                {
-                    label: "报价审核", name: "MoneyOkMark", index: "MoneyOkMark", width: 60, align: "center", sortable: false,
                     formatter: function (cellvalue) {
                         if (cellvalue >= 1) {
                             return "<i class=\"fa fa-toggle-on\"></i>";
@@ -174,69 +117,7 @@
                         }
                     }
                 },
-                { label: '报价审核日期', name: 'MoneyOkDate', index: 'MoneyOkDate', width: 118, align: 'left', sortable: true },
-                {
-                    label: "下单", name: "DownMark", index: "DownMark", width: 60, align: "center", sortable: false,
-                    formatter: function (cellvalue) {
-                        if (cellvalue == 1) {
-                            return "<i class=\"fa fa-toggle-on\"></i>";
-                        } else if (cellvalue == -1) {
-                            return "<span style='color:red'>驳回</span>";
-                        } else {
-                            return "<i class=\"fa fa-toggle-off\"></i>";
-                        }
-                    }
-                },
-                { label: '下单日期', name: 'DownDate', index: 'DownDate', width: 118, align: 'left', sortable: true },
-                {
-                    label: "推单", name: "PushMark", index: "PushMark", width: 60, align: "center", sortable: false,
-                    formatter: function (cellvalue) {
-                        if (cellvalue == 1) {
-                            return "<i class=\"fa fa-toggle-on\"></i>";
-                        } else if (cellvalue == -1) {
-                            return "<span style='color:red'>驳回</span>";
-                        } else {
-                            return "<i class=\"fa fa-toggle-off\"></i>";
-                        }
-                    }
-                },
-                { label: '推单日期', name: 'PushDate', index: 'PushDate', width: 118, align: 'left', sortable: true },
-                {
-                    label: '当前工序', name: 'StepState', index: 'StepState', width: 80, align: 'center', sortable: true,
-                    formatter: function (cellvalue, options, rowObject) {
-                        return top.clientdataItem["Step"][cellvalue] == undefined ? "" : top.clientdataItem["Step"][cellvalue];
-                    }
-                },
-                { label: '工序日期', name: 'StepDate', index: 'StepDate', width: 118, align: 'left', sortable: true },
-                {
-                    label: "入库", name: "EnterMark", index: "EnterMark", width: 60, align: "center", sortable: false,
-                    formatter: function (cellvalue) {
-                        return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
-                    }
-                },
-                { label: '入库日期', name: 'EnterDate', index: 'EnterDate', width: 118, align: 'left', sortable: true },
-                {
-                    label: "发货通知", name: "SendMark", index: "SendMark", width: 60, align: "center", sortable: false,
-                    formatter: function (cellvalue) {
-                        return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
-                    }
-                },
-                { label: '发货通知日期', name: 'SendDate', index: 'SendDate', width: 118, align: 'left', sortable: true },
-                { label: '计划发货日期', name: 'SendPlanDate', index: 'SendPlanDate', width: 90, align: 'center', sortable: true, formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' } },
-                {
-                    label: "发货", name: "SendOutMark", index: "SendOutMark", width: 80, align: "center", sortable: false,
-                    formatter: function (cellvalue) {
-                        return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
-                    }
-                },
-                { label: '发货日期', name: 'SendOutDate', index: 'SendOutDate', width: 118, align: 'left', sortable: true },
-                {
-                    label: "签收", name: "SignedMark", index: "SignedMark", width: 80, align: "center", sortable: false,
-                    formatter: function (cellvalue) {
-                        return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
-                    }
-                },
-                { label: '签收日期', name: 'SignedDate', index: 'SignedDate', width: 118, align: 'left', sortable: true },
+                { label: '报价日期', name: 'MoneyDate', index: 'MoneyDate', width: 118, align: 'left', sortable: true },
             ],
             viewrecords: true,
             rowNum: 30,
@@ -255,7 +136,7 @@
             }
         });
 
-        
+
         //点击时间范围（今天、近7天、近一个月、近三个月）
         $("#time_horizon a.btn-default").click(function () {
             $("#time_horizon a.btn-default").removeClass("active");
@@ -304,31 +185,19 @@
             }
         });
     }
-    //导出
-    function btn_export() {
-        dialogOpen({
-            id: "ExcelIExportDialog",
-            title: '导出销售单',
-            url: '/Utility/ExcelExportForm?gridId=gridTable&filename=销售单',
-            width: "500px",
-            height: "380px",
-            callBack: function (iframeId) {
-                top.frames[iframeId].AcceptClick();
-            }, btn: ['导出Excel', '关闭']
-        });
-    }
-
-    //详细
-    function btn_detail() {
-        var keyValue = $('#gridTable').jqGridRowValue('Id');
+    //编辑
+    function btn_edit() {
+        var keyValue = $('#gridTable').jqGridRowValue( 'Id');
         if (checkedRow(keyValue)) {
             dialogOpen({
-                id: 'Detail',
-                title: '详情',
-                url: '/CustomerManage/DZ_Order/DZ_OrderForm1?keyValue=' + keyValue,
+                id: 'Form',
+                title: '审核',
+                url: '/CustomerManage/DZ_Order/DZ_OrderForm4?keyValue=' + keyValue,
                 width: '750px',
-                height: '550px',
-                btn: null
+                height: '600px',
+                callBack: function (iframeId) {
+                    top.frames[iframeId].AcceptClick();
+                }
             })
         }
     }
@@ -370,13 +239,25 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="formTitle">收款状态：</td>
+                                    <td class="formTitle">拆单：</td>
                                     <td class="formValue">
-                                        <div id="PaymentState" type="select" class="ui-select">
+                                        <div id="ChaiMark" type="select" class="ui-select">
                                             <ul>
-                                                <li data-value="1">未收款</li>
-                                                <li data-value="2">部分收款</li>
-                                                <li data-value="3">全部收款</li>
+                                                <li data-value="">全部</li>
+                                                <li data-value="0">否</li>
+                                                <li data-value="1">是</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">审核：</td>
+                                    <td class="formValue">
+                                        <div id="CheckMark" type="select" class="ui-select">
+                                            <ul>
+                                                <li data-value="">全部</li>
+                                                <li data-value="0">否</li>
+                                                <li data-value="1">是</li>
                                             </ul>
                                         </div>
                                     </td>
@@ -385,54 +266,6 @@
                                     <td class="formTitle">报价：</td>
                                     <td class="formValue">
                                         <div id="MoneyMark" type="select" class="ui-select">
-                                            <ul>
-                                                <li data-value="">全部</li>
-                                                <li data-value="0">否</li>
-                                                <li data-value="1">是</li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="formTitle">下单：</td>
-                                    <td class="formValue">
-                                        <div id="DownMark" type="select" class="ui-select">
-                                            <ul>
-                                                <li data-value="">全部</li>
-                                                <li data-value="0">否</li>
-                                                <li data-value="1">是</li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="formTitle">入库：</td>
-                                    <td class="formValue">
-                                        <div id="EnterMark" type="select" class="ui-select">
-                                            <ul>
-                                                <li data-value="">全部</li>
-                                                <li data-value="0">否</li>
-                                                <li data-value="1">是</li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="formTitle">发货：</td>
-                                    <td class="formValue">
-                                        <div id="SendMark" type="select" class="ui-select">
-                                            <ul>
-                                                <li data-value="">全部</li>
-                                                <li data-value="0">否</li>
-                                                <li data-value="1">是</li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="formTitle">结单：</td>
-                                    <td class="formValue">
-                                        <div id="OverMark" type="select" class="ui-select">
                                             <ul>
                                                 <li data-value="">全部</li>
                                                 <li data-value="0">否</li>
@@ -462,13 +295,7 @@
     <div class="toolbar">
         <div class="btn-group">
             <a id="lr-replace" class="btn btn-default" onclick="reload()"><i class="fa fa-refresh"></i>&nbsp;刷新</a>
-            <a id="lr-detail" class="btn btn-default" onclick="btn_detail()"><i class="fa fa-list-alt"></i>&nbsp;详细</a>
-            @*<a id="lr-add" class="btn btn-default" onclick="btn_add()"><i class="fa fa-plus"></i>&nbsp;接单</a>
-        <a id="lr-edit" class="btn btn-default" onclick="btn_edit()"><i class="fa fa-pencil-square-o"></i>&nbsp;编辑</a>
-        <a id="lr-signed" class="btn btn-default" onclick="btn_signed()"><i class="fa fa-paint-brush"></i>&nbsp;签收确认</a>
-        <a id="lr-over" class="btn btn-default" onclick="btn_over()"><i class="fa fa-over"></i>&nbsp;结单</a>
-        <a id="lr-delete" class="btn btn-default" onclick="btn_delete()"><i class="fa fa-trash-o"></i>&nbsp;删除</a>*@
-            <a id="lr-export" class="btn btn-default" onclick="btn_export()"><i class="fa fa-sign-out"></i>&nbsp;导出</a>
+            <a id="lr-edit" class="btn btn-default" onclick="btn_edit()"><i class="fa fa-pencil-square-o"></i>&nbsp;审核</a>
         </div>
     </div>
     @*<script>$('.toolbar').authorizeButton()</script>*@

@@ -119,48 +119,96 @@ namespace HZSoft.Application.Service.CustomerManage
                 strSql += " and CheckUserName like '%" + CheckUserName + "%'";
             }
 
-            //审核
-            if (!queryParam["CheckMark"].IsEmpty())
-            {
-                int CheckMark = queryParam["CheckMark"].ToInt();
-                strSql += " and CheckMark  = " + CheckMark ;
-            }
             //审图
             if (!queryParam["CheckTuMark"].IsEmpty())
             {
                 int CheckTuMark = queryParam["CheckTuMark"].ToInt();
-                if (CheckTuMark == 1)
+                if (CheckTuMark == 0)
                 {
-                    strSql += " and (CheckTuMark  = 1 or CheckTuMark  = 2) ";
+                    strSql += " and (CheckTuMark = 0 or CheckTuMark = -1 or ChaiMark = -1)";//1.还未处理的，2.驳回前一步的，3.后一步驳回的
                 }
                 else
                 {
-                    strSql += " and CheckTuMark  = " + CheckTuMark;
+                    strSql += " and (CheckTuMark  = 1 or CheckTuMark  = 2) ";//处理完的
                 }
             }
-            //拆图
+            //拆单
             if (!queryParam["ChaiMark"].IsEmpty())
             {
                 int ChaiMark = queryParam["ChaiMark"].ToInt();
-                strSql += " and ChaiMark  = " + ChaiMark;
+                if (ChaiMark == 0)
+                {
+                    strSql += " and (ChaiMark = 0 or ChaiMark = -1 or CheckMark = -1)";//1.还未处理的，2.驳回前一步的，3.后一步驳回的
+                }
+                else
+                {
+                    strSql += " and ChaiMark = 1 ";//处理完的
+                }
+            }
+            //审核
+            if (!queryParam["CheckMark"].IsEmpty())
+            {
+                int CheckMark = queryParam["CheckMark"].ToInt();
+                if (CheckMark == 0)
+                {
+                    strSql += " and (CheckMark = 0 or CheckMark = -1 or MoneyMark = -1)";//1.还未处理的，2.驳回前一步的，3.后一步驳回的
+                }
+                else
+                {
+                    strSql += " and CheckMark = 1 ";//处理完的
+                }
             }
             //报价
             if (!queryParam["MoneyMark"].IsEmpty())
             {
                 int MoneyMark = queryParam["MoneyMark"].ToInt();
-                strSql += " and MoneyMark  = " + MoneyMark;
+                if (MoneyMark == 0)
+                {
+                    strSql += " and (MoneyMark = 0 or MoneyMark = -1 or MoneyOkMark = -1)";//1.还未处理的，2.驳回前一步的，3.后一步驳回的
+                }
+                else
+                {
+                    strSql += " and MoneyMark = 1 ";//处理完的
+                }
             }
             //报价审核
             if (!queryParam["MoneyOkMark"].IsEmpty())
             {
                 int MoneyOkMark = queryParam["MoneyOkMark"].ToInt();
-                strSql += " and MoneyOkMark  = " + MoneyOkMark;
+                if (MoneyOkMark == 0)
+                {
+                    strSql += " and (MoneyOkMark = 0 or MoneyOkMark = -1 or DownMark = -1)";//1.还未处理的，2.驳回前一步的，3.后一步驳回的
+                }
+                else
+                {
+                    strSql += " and MoneyOkMark = 1 ";//处理完的
+                }
             }
             //下单
             if (!queryParam["DownMark"].IsEmpty())
             {
                 int DownMark = queryParam["DownMark"].ToInt();
-                strSql += " and DownMark  = " + DownMark;
+                if (DownMark == 0)
+                {
+                    strSql += " and (DownMark = 0 or DownMark = -1 or PushMark = -1)";//1.还未处理的，2.驳回前一步的，3.后一步驳回的
+                }
+                else
+                {
+                    strSql += " and DownMark = 1 ";//处理完的
+                }
+            }
+            //推单
+            if (!queryParam["PushMark"].IsEmpty())
+            {
+                int PushMark = queryParam["PushMark"].ToInt();
+                if (PushMark == 0)
+                {
+                    strSql += " and (PushMark = 0 or PushMark = -1)";//1.还未处理的，2.驳回前一步的，3.后一步驳回的
+                }
+                else
+                {
+                    strSql += " and PushMark = 1 ";//处理完的
+                }
             }
             //未报价
             if (!queryParam["NoMoneyMark"].IsEmpty())
@@ -216,11 +264,17 @@ namespace HZSoft.Application.Service.CustomerManage
                 int EnterMark = queryParam["EnterMark"].ToInt();
                 strSql += " and EnterMark  = " + EnterMark;
             }
-            //发货
+            //发货通知
             if (!queryParam["SendMark"].IsEmpty())
             {
                 int SendMark = queryParam["SendMark"].ToInt();
                 strSql += " and SendMark  = " + SendMark;
+            }
+            //发货
+            if (!queryParam["SendOutMark"].IsEmpty())
+            {
+                int SendOutMark = queryParam["SendOutMark"].ToInt();
+                strSql += " and SendOutMark  = " + SendOutMark;
             }
             //结束
             if (!queryParam["OverMark"].IsEmpty())
@@ -333,29 +387,97 @@ namespace HZSoft.Application.Service.CustomerManage
                     strSql += " and CheckTuMark  = " + CheckTuMark;
                 }
             }
+
+            //审图
+            if (!queryParam["CheckTuMark"].IsEmpty())
+            {
+                int CheckTuMark = queryParam["CheckTuMark"].ToInt();
+                if (CheckTuMark == 0)
+                {
+                    strSql += " and (CheckTuMark = 0 or CheckTuMark = -1 or ChaiMark = -1)";//1.还未处理的，2.驳回前一步的，3.后一步驳回的
+                }
+                else
+                {
+                    strSql += " and (CheckTuMark  = 1 or CheckTuMark  = 2) ";//处理完的
+                }
+            }
+            //拆单
+            if (!queryParam["ChaiMark"].IsEmpty())
+            {
+                int ChaiMark = queryParam["ChaiMark"].ToInt();
+                if (ChaiMark == 0)
+                {
+                    strSql += " and (ChaiMark = 0 or ChaiMark = -1 or CheckMark = -1)";//1.还未处理的，2.驳回前一步的，3.后一步驳回的
+                }
+                else
+                {
+                    strSql += " and ChaiMark = 1 ";//处理完的
+                }
+            }
             //审核
             if (!queryParam["CheckMark"].IsEmpty())
             {
                 int CheckMark = queryParam["CheckMark"].ToInt();
-                strSql += " and CheckMark  = " + CheckMark;
-            }
-            //拆图
-            if (!queryParam["ChaiMark"].IsEmpty())
-            {
-                int ChaiMark = queryParam["ChaiMark"].ToInt();
-                strSql += " and ChaiMark  = " + ChaiMark;
+                if (CheckMark == 0)
+                {
+                    strSql += " and (CheckMark = 0 or CheckMark = -1 or MoneyMark = -1)";//1.还未处理的，2.驳回前一步的，3.后一步驳回的
+                }
+                else
+                {
+                    strSql += " and CheckMark = 1 ";//处理完的
+                }
             }
             //报价
             if (!queryParam["MoneyMark"].IsEmpty())
             {
                 int MoneyMark = queryParam["MoneyMark"].ToInt();
-                strSql += " and MoneyMark  = " + MoneyMark;
+                if (MoneyMark == 0)
+                {
+                    strSql += " and (MoneyMark = 0 or MoneyMark = -1 or MoneyOkMark = -1)";//1.还未处理的，2.驳回前一步的，3.后一步驳回的
+                }
+                else
+                {
+                    strSql += " and MoneyMark = 1 ";//处理完的
+                }
+            }
+            //报价审核
+            if (!queryParam["MoneyOkMark"].IsEmpty())
+            {
+                int MoneyOkMark = queryParam["MoneyOkMark"].ToInt();
+                if (MoneyOkMark == 0)
+                {
+                    strSql += " and (MoneyOkMark = 0 or MoneyOkMark = -1 or DownMark = -1)";//1.还未处理的，2.驳回前一步的，3.后一步驳回的
+                }
+                else
+                {
+                    strSql += " and MoneyOkMark = 1 ";//处理完的
+                }
             }
             //下单
             if (!queryParam["DownMark"].IsEmpty())
             {
                 int DownMark = queryParam["DownMark"].ToInt();
-                strSql += " and DownMark  = " + DownMark;
+                if (DownMark == 0)
+                {
+                    strSql += " and (DownMark = 0 or DownMark = -1 or PushMark = -1)";//1.还未处理的，2.驳回前一步的，3.后一步驳回的
+                }
+                else
+                {
+                    strSql += " and DownMark = 1 ";//处理完的
+                }
+            }
+            //推单
+            if (!queryParam["PushMark"].IsEmpty())
+            {
+                int PushMark = queryParam["PushMark"].ToInt();
+                if (PushMark == 0)
+                {
+                    strSql += " and (PushMark = 0 or PushMark = -1)";//1.还未处理的，2.驳回前一步的，3.后一步驳回的
+                }
+                else
+                {
+                    strSql += " and PushMark = 1 ";//处理完的
+                }
             }
             //未报价
             if (!queryParam["NoMoneyMark"].IsEmpty())

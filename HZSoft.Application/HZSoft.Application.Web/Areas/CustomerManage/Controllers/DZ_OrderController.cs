@@ -58,15 +58,6 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
             return View();
         }
         /// <summary>
-        /// 列表页面
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        public ActionResult DZ_OrderIndex0()
-        {
-            return View();
-        }
-        /// <summary>
         /// 接单
         /// </summary>
         /// <returns></returns>
@@ -109,6 +100,10 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         {
             return View();
         }
+        public ActionResult DZ_OrderIndex2Tu()
+        {
+            return View();
+        }
         /// <summary>
         /// 审图
         /// </summary>
@@ -125,6 +120,10 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         /// <returns></returns>
         [HttpGet]
         public ActionResult DZ_OrderIndex3()
+        {
+            return View();
+        }
+        public ActionResult DZ_OrderIndex3Chai()
         {
             return View();
         }
@@ -148,6 +147,10 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         {
             return View();
         }
+        public ActionResult DZ_OrderIndex4Check()
+        {
+            return View();
+        }
         /// <summary>
         /// 审核
         /// </summary>
@@ -164,6 +167,15 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         /// <returns></returns>
         [HttpGet]
         public ActionResult DZ_OrderIndex5()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 报价
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult DZ_OrderIndex5Money()
         {
             return View();
         }
