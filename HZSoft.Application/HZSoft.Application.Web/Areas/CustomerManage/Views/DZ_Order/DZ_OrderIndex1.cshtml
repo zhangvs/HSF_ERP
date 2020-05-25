@@ -397,7 +397,7 @@
                 $.ConfirmAjax({
                     msg: "注：您确定销售订单已经【完成】吗？",
                     url: "../../CustomerManage/DZ_Order/UpdateOverState",
-                    param: { keyValue: keyValue },
+                    param: { keyValue: keyValue, state:1 },
                     success: function (data) {
                         $("#gridTable").trigger("reloadGrid");
                     }

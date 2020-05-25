@@ -730,7 +730,7 @@ namespace HZSoft.Application.Service.CustomerManage
                         OverMark = state
                     };
                     entity.Modify(keyValue);
-                    this.BaseRepository().Update(entity);
+                    db.Update<DZ_OrderEntity>(entity);
 
 
                     //生产单完成状态
@@ -739,7 +739,6 @@ namespace HZSoft.Application.Service.CustomerManage
                     {
                         sale_CustomerEntity.OverMark = state;
                         db.Update<Sale_CustomerEntity>(sale_CustomerEntity);
-                        db.Commit();
                     }
 
                     //入库单完成状态
@@ -748,8 +747,8 @@ namespace HZSoft.Application.Service.CustomerManage
                     {
                         buysEntity.OverMark = state;
                         db.Update<Buys_OrderEntity>(buysEntity);
-                        db.Commit();
                     }
+                    db.Commit();
 
                 }
             }
