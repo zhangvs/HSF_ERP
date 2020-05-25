@@ -43,8 +43,6 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         {
             if (Request["keyValue"] == null)
             {
-                //ViewBag.OrderCode = codeRuleBLL.GetBillCode(SystemInfo.CurrentModuleId);
-                //ViewBag.OrderCode = codeRuleBLL.GetBillCode(SystemInfo.CurrentUserId, SystemInfo.CurrentModuleId);
                 ViewBag.OrderCode = codeRuleBLL.GetBillCode(SystemInfo.CurrentUserId, "", ((int)CodeRuleEnum.Buy_Order).ToString());
             }
             return View();
@@ -154,6 +152,73 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         {
             return View();
         }
+
+
+
+
+
+        /// <summary>
+        /// 发货物流
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult SendLogisticsIndex()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 发货物流
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult SendLogisticsOverIndex()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 发货物流
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult SendLogisticsForm()
+        {
+            return View();
+        }
+
+
+
+
+        /// <summary>
+        /// 发货安装
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult SendInstallIndex()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 发货安装
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult SendInstallOverIndex()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 发货安装
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult SendInstallForm()
+        {
+            return View();
+        }
+
+
+
+
         #endregion
 
         #region 获取数据
@@ -295,6 +360,38 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         {
             buys_orderbll.UpdateSendState(keyValue);
             return Success("发货成功。");
+        }
+
+
+
+        /// <summary>
+        /// 物流保存表单（新增、修改）
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <param name="entity">实体对象</param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AjaxOnly]
+        public ActionResult SaveLogisticsForm(string keyValue, Buys_OrderEntity entity)
+        {
+            buys_orderbll.SaveLogisticsForm(keyValue, entity);
+            return Success("操作成功。");
+        }
+
+        /// <summary>
+        /// 安装保存表单（新增、修改）
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <param name="entity">实体对象</param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AjaxOnly]
+        public ActionResult SaveInstallForm(string keyValue, Buys_OrderEntity entity)
+        {
+            buys_orderbll.SaveInstallForm(keyValue, entity);
+            return Success("操作成功。");
         }
         #endregion
     }

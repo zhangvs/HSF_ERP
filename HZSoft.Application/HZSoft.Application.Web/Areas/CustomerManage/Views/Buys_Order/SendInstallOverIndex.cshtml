@@ -10,7 +10,7 @@
     });
     //初始化页面
     function InitialPage() {
-        $("#AllEnterMark").ComboBox({
+        $("#SendInstallMark").ComboBox({
             description: "==请选择==",
         });
         $("#SendMark").ComboBox({
@@ -19,8 +19,8 @@
         $("#SendOutMark").ComboBox({
             description: "==请选择==",
         });
-        $("#AllEnterMark").ComboBoxSetValue(1);
-        $("#SendMark").ComboBoxSetValue(0);
+
+        $("#SendInstallMark").ComboBoxSetValue(1);
         //resize重设布局;
         $(window).resize(function (e) {
             window.setTimeout(function () {
@@ -34,9 +34,7 @@
     function GetGrid() {
         var selectedRowIndex = 0;
         var queryJson = {};
-        //queryJson.PaymentState = 3;//尾款完成的
-        queryJson.AllEnterMark = 1;//完全入库
-        queryJson.SendMark = 0;//还没有发货通知的
+        queryJson.SendInstallMark = 1;//安排安装的
 
         var $gridTable = $('#gridTable');
         $gridTable.jqGrid({
@@ -51,71 +49,8 @@
                 { label: '标题', name: 'OrderTitle', index: 'OrderTitle', width: 180, align: 'left', sortable: true },
                 { label: '经销商', name: 'CompanyName', index: 'CompanyName', width: 130, align: 'center', sortable: true },
                 { label: '客户', name: 'CustomerName', index: 'CustomerName', width: 100, align: 'center', sortable: true },
-                {
-                    label: "是否收取尾款", name: "AfterMark", index: "AfterMark", width: 90, align: "center", sortable: false,
-                    formatter: function (cellvalue) {
-                        return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
-                    }
-                },
-                {
-                    label: "收款状态", name: "PaymentState", width: 80, align: "center",
-                    formatter: function (cellvalue, options, rowObject) {
-                        if (cellvalue == 2) {
-                            return "<span style='color:green'>部分收款</span>";
-                        } else if (cellvalue == 3) {
-                            return "<span style='color:blue'>全部收款</span>";
-                        } else {
-                            return "<span style='color:red'>未收款</span>";
-                        }
-                    }
-                },
-                { label: '付款日期', name: 'PaymentDate', index: 'PaymentDate', width: 118, align: 'left', sortable: true },
                 { label: '销售人', name: 'SalesmanUserName', index: 'SalesmanUserName', width: 80, align: 'center', sortable: true },
-                { label: '创建日期', name: 'CreateDate', index: 'CreateDate', width: 118, align: 'left', sortable: true },
-                {
-                    label: "柜体入库", name: "GuiEnterMark", index: "GuiEnterMark", width: 80, align: "center", sortable: false,
-                    formatter: function (cellvalue) {
-                        if (cellvalue == 0) {
-                            return "包装中";
-                        } else if (cellvalue == 1) {
-                            return "<i class=\"fa fa-toggle-on\"></i>";
-                        } else {
-                            return "";
-                        }
-                    }
-                },
-                {
-                    label: "五金入库", name: "WuEnterMark", index: "WuEnterMark", width: 80, align: "center", sortable: false,
-                    formatter: function (cellvalue) {
-                        if (cellvalue == 0) {
-                            return "<i class=\"fa fa-toggle-off\"></i>";
-                        } else if (cellvalue == 1) {
-                            return "<i class=\"fa fa-toggle-on\"></i>";
-                        } else {
-                            return "";
-                        }
-                    }
-                },
-                {
-                    label: "门板入库", name: "MenEnterMark", index: "MenEnterMark", width: 80, align: "center", sortable: false,
-                    formatter: function (cellvalue) {
-                        if (cellvalue == 0) {
-                            return "<i class=\"fa fa-toggle-off\"></i>";
-                        } else if (cellvalue == 1) {
-                            return "<i class=\"fa fa-toggle-on\"></i>";
-                        } else {
-                            return "";
-                        }
-                    }
-                },
-                {
-                    label: "全部入库", name: "AllEnterMark", index: "AllEnterMark", width: 80, align: "center", sortable: false,
-                    formatter: function (cellvalue) {
-                        return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
-                    }
-                },
                 { label: "总包数", name: "TotalQty", width: 80, align: "center" },
-                { label: '入库完成时间', name: 'AllEnterDate', index: 'AllEnterDate', width: 118, align: 'left', sortable: true },
                 {
                     label: "发货通知", name: "SendMark", index: "SendMark", width: 80, align: "center", sortable: false,
                     formatter: function (cellvalue) {
@@ -124,11 +59,7 @@
                 },
                 { label: '通知日期', name: 'SendDate', index: 'SendDate', width: 118, align: 'left', sortable: true },
                 { label: "计划发货日期", name: "SendPlanDate", width: 120, align: "center", formatter: "date", formatoptions: { newformat: 'Y-m-d' } },
-                { label: '物流名称', name: 'LogisticsName', index: 'LogisticsName', width: 130, align: 'center', sortable: true },
-                { label: '物流单号', name: 'LogisticsNO', index: 'LogisticsNO', width: 130, align: '', sortable: true },
-                { label: '运费', name: 'LogisticsCost', index: 'LogisticsCost', width: 80, align: 'center', sortable: true },
-                { label: '安装工', name: 'InstallUserName', index: 'InstallUserName', width: 130, align: 'center', sortable: true },
-                { label: '安装费', name: 'InstallCost', index: 'InstallCost', width: 80, align: 'center', sortable: true },
+
                 {
                     label: "发货", name: "SendOutMark", index: "SendOutMark", width: 80, align: "center", sortable: false,
                     formatter: function (cellvalue) {
@@ -137,6 +68,17 @@
                 },
                 { label: '发货人', name: 'SendOutUserName', index: 'SendOutUserName', width: 80, align: 'center', sortable: true },
                 { label: '发货日期', name: 'SendOutDate', index: 'SendOutDate', width: 118, align: 'left', sortable: true },
+
+                {
+                    label: "安排安装", name: "SendInstallMark", index: "SendInstallMark", width: 80, align: "center", sortable: false,
+                    formatter: function (cellvalue) {
+                        return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
+                    }
+                },
+                { label: '安装工', name: 'InstallUserName', index: 'InstallUserName', width: 130, align: 'center', sortable: true },
+                { label: '安装费', name: 'InstallCost', index: 'InstallCost', width: 80, align: 'center', sortable: true },
+                { label: '安排人', name: 'SendInstallUserName', index: 'SendInstallUserName', width: 80, align: 'center', sortable: true },
+                { label: '安排日期', name: 'SendInstallDate', index: 'SendInstallDate', width: 118, align: 'left', sortable: true },
             ],
             viewrecords: true,
             rowNum: 30,
@@ -244,8 +186,8 @@
     function btn_export() {
         dialogOpen({
             id: "ExcelIExportDialog",
-            title: '发货通知',
-            url: '/Utility/ExcelExportForm?gridId=gridTable&filename=发货通知',
+            title: '安排安装',
+            url: '/Utility/ExcelExportForm?gridId=gridTable&filename=安排安装',
             width: "500px",
             height: "380px",
             callBack: function (iframeId) {
@@ -253,36 +195,7 @@
             }, btn: ['导出Excel', '关闭']
         });
     }
-
-
-    //发货通知
-    function btn_send() {
-        var AfterMark = $('#gridTable').jqGridRowValue('AfterMark');
-        var PaymentState = $('#gridTable').jqGridRowValue('PaymentState');
-        var AllEnterMark = $('#gridTable').jqGridRowValue('AllEnterMark');
-        //需要收尾款，没有收齐
-        if (AfterMark.indexOf("fa-toggle-on") >= 0 && PaymentState.indexOf("全部收款") <= 0) {
-            dialogMsg('尾款还没有收齐！', 0);
-        }
-        else if (AllEnterMark.indexOf("fa-toggle-off") >= 0 ) {
-            dialogMsg('还没有完全入库！', 0);
-        }
-        else {
-            var keyValue = $('#gridTable').jqGridRowValue('Id');
-            if (checkedRow(keyValue)) {
-                dialogOpen({
-                    id: 'SendForm',
-                    title: '发货通知',
-                    url: '/CustomerManage/Buys_Order/SendForm?keyValue=' + keyValue,
-                    width: '650px',
-                    height: '550px',
-                    callBack: function (iframeId) {
-                        top.frames[iframeId].AcceptClick();
-                    }
-                })
-            }
-        }
-    }
+    
 </script>
 <div class="titlePanel">
     <div class="title-search">
@@ -346,18 +259,6 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="formTitle">入库：</td>
-                                    <td class="formValue">
-                                        <div id="AllEnterMark" type="select" class="ui-select">
-                                            <ul>
-                                                <li data-value="">全部</li>
-                                                <li data-value="0">否</li>
-                                                <li data-value="1">是</li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
                                     <td class="formTitle">发货通知：</td>
                                     <td class="formValue">
                                         <div id="SendMark" type="select" class="ui-select">
@@ -373,6 +274,18 @@
                                     <td class="formTitle">发货：</td>
                                     <td class="formValue">
                                         <div id="SendOutMark" type="select" class="ui-select">
+                                            <ul>
+                                                <li data-value="">全部</li>
+                                                <li data-value="0">否</li>
+                                                <li data-value="1">是</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">安装：</td>
+                                    <td class="formValue">
+                                        <div id="SendInstallMark" type="select" class="ui-select">
                                             <ul>
                                                 <li data-value="">全部</li>
                                                 <li data-value="0">否</li>
@@ -402,7 +315,6 @@
     <div class="toolbar">
         <div class="btn-group">
             <a id="lr-replace" class="btn btn-default" onclick="reload()"><i class="fa fa-refresh"></i>刷新</a>
-            <a id="lr-send" class="btn btn-default" onclick="btn_send()"><i class="fa fa-bullhorn"></i>&nbsp;发货通知</a>
             <a id="lr-detail" class="btn btn-default" onclick="btn_detail()"><i class="fa fa-list-alt"></i>&nbsp;详细</a>
             <a id="lr-export" class="btn btn-default" onclick="btn_export()"><i class="fa fa-sign-out"></i>&nbsp;导出</a>
         </div>

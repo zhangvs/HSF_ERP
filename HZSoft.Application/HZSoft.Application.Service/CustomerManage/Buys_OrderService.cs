@@ -105,6 +105,18 @@ namespace HZSoft.Application.Service.CustomerManage
                 int SendOutMark = queryParam["SendOutMark"].ToInt();
                 strSql += " and SendOutMark  = " + SendOutMark;
             }
+            //物流
+            if (!queryParam["SendLogisticsMark"].IsEmpty())
+            {
+                int SendLogisticsMark = queryParam["SendLogisticsMark"].ToInt();
+                strSql += " and SendLogisticsMark  = " + SendLogisticsMark;
+            }
+            //安装
+            if (!queryParam["SendInstallMark"].IsEmpty())
+            {
+                int SendInstallMark = queryParam["SendInstallMark"].ToInt();
+                strSql += " and SendInstallMark  = " + SendInstallMark;
+            }
             //结束
             if (!queryParam["OverMark"].IsEmpty())
             {
@@ -444,6 +456,22 @@ namespace HZSoft.Application.Service.CustomerManage
             {
                 if (!string.IsNullOrEmpty(keyValue))
                 {
+                    Buys_OrderEntity oldEntity = GetEntity(keyValue);
+                    //发货通知时间不为null，老发货通知时间为null
+                    if (entity.SendPlanDate !=null && entity.SendPlanDate!=oldEntity.SendPlanDate)
+                    {
+                        //发微信模板消息---发货通知之后，给公维才发消息提醒?????
+                        //订单生成通知（10发货通知提醒）
+                        //公维才
+                        TemplateWxApp.SendTemplateSend("oA-EC1Z5tDaD1-ejnQe_l_gJK1Us", "您好，有新的发货通知!", entity.Code, entity.OrderTitle + "，计划发货时间：" + entity.SendPlanDate);
+                        //金志花
+                        TemplateWxApp.SendTemplateSend("oA-EC1UWi8i4sSkHsWV6BK7CuopA", "您好，有新的发货通知!", entity.Code, entity.OrderTitle + "，计划发货时间：" + entity.SendPlanDate);
+                        //牛霞
+                        TemplateWxApp.SendTemplateSend("oA-EC1TDoDKimuejhFlBV1U6M5bI", "您好，有新的发货通知!", entity.Code, entity.OrderTitle + "，计划发货时间：" + entity.SendPlanDate);
+                        //胡鲁鲁
+                        TemplateWxApp.SendTemplateSend("oA-EC1aaKOSNdW2wL8lHSsr3R4Dg", "您好，有新的发货通知!", entity.Code, entity.OrderTitle + "，计划发货时间：" + entity.SendPlanDate);
+                    }
+
                     entity.Modify(keyValue);
                     entity.SendMark = 1;
                     entity.SendDate = DateTime.Now;
@@ -476,18 +504,6 @@ namespace HZSoft.Application.Service.CustomerManage
                     produceEntity.Modify(entity.ProduceId);
                     db.Update<Sale_CustomerEntity>(produceEntity);
                     db.Commit();
-
-                    //发微信模板消息---发货通知之后，给公维才发消息提醒?????
-                    //订单生成通知（10发货通知提醒）
-                    //公维才
-                    TemplateWxApp.SendTemplateSend("oA-EC1Z5tDaD1-ejnQe_l_gJK1Us", "您好，有新的发货通知!", entity.Code, entity.OrderTitle + "，计划发货时间：" + entity.SendPlanDate);
-                    //金志花
-                    TemplateWxApp.SendTemplateSend("oA-EC1UWi8i4sSkHsWV6BK7CuopA","您好，有新的发货通知!", entity.Code, entity.OrderTitle + "，计划发货时间：" + entity.SendPlanDate);
-                    //牛霞
-                    TemplateWxApp.SendTemplateSend("oA-EC1TDoDKimuejhFlBV1U6M5bI","您好，有新的发货通知!", entity.Code, entity.OrderTitle + "，计划发货时间：" + entity.SendPlanDate);
-                    //胡鲁鲁
-                    TemplateWxApp.SendTemplateSend("oA-EC1aaKOSNdW2wL8lHSsr3R4Dg", "您好，有新的发货通知!", entity.Code, entity.OrderTitle + "，计划发货时间：" + entity.SendPlanDate);
-
                 }
             }
             catch (Exception)
@@ -575,7 +591,6 @@ namespace HZSoft.Application.Service.CustomerManage
         /// <returns></returns>
         public void UpdateOverState(string keyValue, int? state)
         {
-            IRepository db = new RepositoryFactory().BaseRepository().BeginTrans();
             try
             {
                 if (!string.IsNullOrEmpty(keyValue))
@@ -590,6 +605,73 @@ namespace HZSoft.Application.Service.CustomerManage
             }
             catch (Exception)
             {
+                throw;
+            }
+        }
+
+
+        /// <summary>
+        /// 发货物流，这个不用同步到销售表
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <param name="entity">实体对象</param>
+        /// <returns></returns>
+        public void SaveLogisticsForm(string keyValue, Buys_OrderEntity entity)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(keyValue))
+                {
+                    entity.Modify(keyValue);
+                    entity.SendLogisticsDate = DateTime.Now;
+                    entity.SendLogisticsUserId = OperatorProvider.Provider.Current().UserId;
+                    entity.SendLogisticsUserName = OperatorProvider.Provider.Current().UserName;
+                    this.BaseRepository().Update(entity);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// 发货安装
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <param name="entity">实体对象</param>
+        /// <returns></returns>
+        public void SaveInstallForm(string keyValue, Buys_OrderEntity entity)
+        {
+            IRepository db = this.BaseRepository().BeginTrans();
+            try
+            {
+                if (!string.IsNullOrEmpty(keyValue))
+                {
+                    entity.Modify(keyValue);
+                    //entity.SendInstallMark = entity.SendInstallMark;
+                    entity.SendInstallDate = DateTime.Now;
+                    entity.SendInstallUserId = OperatorProvider.Provider.Current().UserId;
+                    entity.SendInstallUserName = OperatorProvider.Provider.Current().UserName;
+                    db.Update<Buys_OrderEntity>(entity);
+
+                    //同步到销售单-发货通知状态
+                    DZ_OrderEntity dZ_OrderEntity = new DZ_OrderEntity
+                    {
+                        //SendInstallMark = entity.SendInstallMark,
+                        SendInstallDate = DateTime.Now,
+                        SendInstallUserId = OperatorProvider.Provider.Current().UserId,
+                        SendInstallUserName = OperatorProvider.Provider.Current().UserName
+                    };
+                    dZ_OrderEntity.Modify(entity.OrderId);
+                    db.Update<DZ_OrderEntity>(dZ_OrderEntity);
+                    
+                    db.Commit();
+                }
+            }
+            catch (Exception)
+            {
+                db.Rollback();
                 throw;
             }
         }

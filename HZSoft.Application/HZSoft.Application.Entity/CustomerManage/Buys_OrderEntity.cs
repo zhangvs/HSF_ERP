@@ -197,11 +197,17 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// <returns></returns>
         public DateTime? SendDate { get; set; }
 
+
         /// <summary>
         /// 物流名称
         /// </summary>
         /// <returns></returns>
         public string LogisticsName { get; set; }
+        /// <summary>
+        /// 物流电话
+        /// </summary>
+        /// <returns></returns>
+        public string LogisticsTel { get; set; }
         /// <summary>
         /// 物流单号
         /// </summary>
@@ -213,6 +219,28 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// <returns></returns>
         public decimal? LogisticsCost { get; set; }
         /// <summary>
+        /// 发货物流
+        /// </summary>
+        /// <returns></returns>
+        public int? SendLogisticsMark { get; set; }
+        /// <summary>
+        /// 发货物流
+        /// </summary>
+        /// <returns></returns>
+        public string SendLogisticsUserId { get; set; }
+        /// <summary>
+        /// 发货物流
+        /// </summary>
+        /// <returns></returns>
+        public string SendLogisticsUserName { get; set; }
+        /// <summary>
+        /// 发货物流
+        /// </summary>
+        /// <returns></returns>
+        public DateTime? SendLogisticsDate { get; set; }
+
+
+        /// <summary>
         /// 安装工
         /// </summary>
         /// <returns></returns>
@@ -222,6 +250,28 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// </summary>
         /// <returns></returns>
         public decimal? InstallCost { get; set; }
+        /// <summary>
+        /// 发货安装
+        /// </summary>
+        /// <returns></returns>
+        public int? SendInstallMark { get; set; }
+        /// <summary>
+        /// 发货安装
+        /// </summary>
+        /// <returns></returns>
+        public string SendInstallUserId { get; set; }
+        /// <summary>
+        /// 发货安装
+        /// </summary>
+        /// <returns></returns>
+        public string SendInstallUserName { get; set; }
+        /// <summary>
+        /// 发货安装
+        /// </summary>
+        /// <returns></returns>
+        public DateTime? SendInstallDate { get; set; }
+
+
 
         /// <summary>
         /// 发货

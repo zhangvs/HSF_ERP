@@ -2041,6 +2041,12 @@
     <Content Include="Areas\CustomerManage\Views\DZ_Order\DZ_OrderIndex3Chai.cshtml" />
     <Content Include="Areas\CustomerManage\Views\DZ_Order\DZ_OrderIndex4Check.cshtml" />
     <Content Include="Areas\CustomerManage\Views\DZ_Order\DZ_OrderIndex5Money.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\Buys_Order\SendLogisticsOverIndex.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\Buys_Order\SendLogisticsIndex.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\Buys_Order\SendLogisticsForm.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\Buys_Order\SendInstallOverIndex.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\Buys_Order\SendInstallForm.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\Buys_Order\SendInstallIndex.cshtml" />
     <None Include="Properties\PublishProfiles\6.1.pubxml" />
     <Content Include="Areas\FlowManage\Views\FlowLaunch\Index.cshtml" />
     <Content Include="Areas\FlowManage\Views\FormDesign\FormPreview.cshtml" />

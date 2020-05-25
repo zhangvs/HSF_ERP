@@ -160,6 +160,43 @@ namespace HZSoft.Application.Busines.CustomerManage
                 throw;
             }
         }
+
+
+        /// <summary>
+        /// 保存表单（新增、修改）
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <param name="entity">实体对象</param>
+        /// <returns></returns>
+        public void SaveLogisticsForm(string keyValue, Buys_OrderEntity entity)
+        {
+            try
+            {
+                service.SaveLogisticsForm(keyValue, entity);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        /// <summary>
+        /// 保存表单（新增、修改）
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <param name="entity">实体对象</param>
+        /// <returns></returns>
+        public void SaveInstallForm(string keyValue, Buys_OrderEntity entity)
+        {
+            try
+            {
+                service.SaveInstallForm(keyValue, entity);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        
         #endregion
     }
 }

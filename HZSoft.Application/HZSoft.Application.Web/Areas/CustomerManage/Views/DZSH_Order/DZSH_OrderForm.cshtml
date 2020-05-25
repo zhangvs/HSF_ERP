@@ -12,7 +12,7 @@
     $(function () {
         initControl();
 
-        $("#OrderType").ComboBoxSetValue(3);
+        //$("#OrderType").ComboBoxSetValue(3);
 
         if (!!customerId) {
             $.SetForm({
@@ -32,15 +32,15 @@
 
     //初始化控件
     function initControl() {
-        //订单类型
-        $("#OrderType").ComboBox({
-            url: "../../SystemManage/DataItemDetail/GetDataItemListJson",
-            param: { EnCode: "OrderType" },
-            id: "ItemValue",
-            text: "ItemName",
-            description: "==请选择==",
-            height: "200px"
-        });
+        ////订单类型
+        //$("#OrderType").ComboBox({
+        //    url: "../../SystemManage/DataItemDetail/GetDataItemListJson",
+        //    param: { EnCode: "OrderType" },
+        //    id: "ItemValue",
+        //    text: "ItemName",
+        //    description: "==请选择==",
+        //    height: "200px"
+        //});
 
         //运输方式
         $("#ShippingType").ComboBox({
@@ -186,9 +186,10 @@
             <td class="formTitle">订单标题<font face="宋体">*</font></td>
             <td class="formValue">
                 <input id="OrderTitle" type="text" class="form-control" isvalid="yes" checkexpession="NotNull" />
+                <input id="OrderType" type="hidden" class="form-control" value="3" />
             </td>
         </tr>
-        <tr>
+        @*<tr>
             <td class="formTitle">订单类型<font face="宋体">*</font></td>
             <td class="formValue">
                 <div id="OrderType" type="select" class="ui-select" isvalid="yes" checkexpession="NotNull" disabled></div>
@@ -197,7 +198,7 @@
             <td class="formValue">
                 <input id="Accounts" type="text" class="form-control" isvalid="yes" checkexpession="Double" value="0.00" />
             </td>
-        </tr>
+        </tr>*@
         <tr>
             <td class="formTitle">客户<font face="宋体">*</font></td>
             <td class="formValue">

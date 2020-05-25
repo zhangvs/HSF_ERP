@@ -570,7 +570,7 @@ namespace HZSoft.Application.Service.CustomerManage
                     DZ_OrderEntity oldEntity = GetEntity(keyValue);
 
                     //审图通过之后，给拆单人发消息提醒
-                    if (entity.CheckTuMark >0 && oldEntity.CheckTuMark == 0)
+                    if (entity.CheckTuMark >0 && oldEntity.CheckTuMark != 1)
                     {
                         //发微信模板消息---接单之后，给审图人提醒--刘琛oA-EC1X6RWfW1_DNJ_VNiA3uhOYg
                         //订单生成通知（拆单提醒）
@@ -579,7 +579,7 @@ namespace HZSoft.Application.Service.CustomerManage
 
 
                     //报价之后，给财务发消息提醒
-                    if (entity.MoneyMark == 1 && oldEntity.MoneyMark == 0)
+                    if (entity.MoneyMark == 1 && oldEntity.MoneyMark != 1)
                     {
                         //发微信模板消息---研发报价之后，给财务提醒--刘一珠oA-EC1X0OoVmzyowOqxYHlY5NHX4
                         //订单生成通知（报价提醒）

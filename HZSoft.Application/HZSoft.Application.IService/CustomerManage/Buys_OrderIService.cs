@@ -54,6 +54,8 @@ namespace HZSoft.Application.IService.CustomerManage
         void UpdateSendState(string keyValue);
         void SaveBuyMain(Sale_CustomerEntity entity);
         void SaveInForm(Buys_OrderItemEntity entity);
+        void SaveLogisticsForm(string keyValue, Buys_OrderEntity entity);
+        void SaveInstallForm(string keyValue, Buys_OrderEntity entity);
         #endregion
     }
 }

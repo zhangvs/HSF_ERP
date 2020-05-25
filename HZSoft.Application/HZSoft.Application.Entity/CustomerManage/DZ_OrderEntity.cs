@@ -407,6 +407,28 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// <returns></returns>
         public DateTime? SendOutDate { get; set; }
 
+        
+        /// <summary>
+        /// 发货安装
+        /// </summary>
+        /// <returns></returns>
+        public int? SendInstallMark { get; set; }
+        /// <summary>
+        /// 发货安装
+        /// </summary>
+        /// <returns></returns>
+        public string SendInstallUserId { get; set; }
+        /// <summary>
+        /// 发货安装
+        /// </summary>
+        /// <returns></returns>
+        public string SendInstallUserName { get; set; }
+        /// <summary>
+        /// 发货安装
+        /// </summary>
+        /// <returns></returns>
+        public DateTime? SendInstallDate { get; set; }
+
 
         /// <summary>
         /// 签收确认
