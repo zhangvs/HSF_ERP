@@ -66,6 +66,12 @@ namespace HZSoft.Application.Service.CustomerManage
                 string EnCode = queryParam["EnCode"].ToString();
                 strSql += " and EnCode like '%" + EnCode + "%'";
             }
+            //公司名
+            if (!queryParam["CompanyName"].IsEmpty())
+            {
+                string CompanyName = queryParam["CompanyName"].ToString();
+                strSql += " and CompanyName like '%" + CompanyName + "%'";
+            }
 
             //客户名称
             if (!queryParam["FullName"].IsEmpty())

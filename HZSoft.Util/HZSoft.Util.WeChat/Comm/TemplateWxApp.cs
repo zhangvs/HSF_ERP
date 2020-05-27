@@ -94,6 +94,7 @@ namespace HZSoft.Util.WeChat.Comm
                 if (retryIfFaild)
                 {
                     retryIfFaild = false;//重试一次
+                    MPAccessToken.GetNewToken();//不是最新的token获取新的token
                     string twoResult = SendTemplateNew(openId, first, keyword2, keyword3, remark, false);
                     LogHelper.AddLog("重试结果-" + twoResult);
                     return twoResult;
@@ -139,6 +140,7 @@ namespace HZSoft.Util.WeChat.Comm
                 if (retryIfFaild)
                 {
                     retryIfFaild = false;//重试一次
+                    MPAccessToken.GetNewToken();//不是最新的token获取新的token
                     string twoResult = SendTemplateMoney(openId, first, keyword2, keyword3, keyword4, remark, false);
                     LogHelper.AddLog("重试结果-" + twoResult);
                 }
@@ -183,6 +185,7 @@ namespace HZSoft.Util.WeChat.Comm
                 if (retryIfFaild)
                 {
                     retryIfFaild = false;//重试一次
+                    MPAccessToken.GetNewToken();//不是最新的token获取新的token
                     string twoResult = SendTemplateMoneyOk(openId, first, keyword1, keyword2, keyword3, remark, false);
                     LogHelper.AddLog("重试结果-" + twoResult);
                 }
@@ -226,6 +229,7 @@ namespace HZSoft.Util.WeChat.Comm
                 if (retryIfFaild)
                 {
                     retryIfFaild = false;//重试一次
+                    MPAccessToken.GetNewToken();//不是最新的token获取新的token
                     string twoResult = SendTemplateReceivable(openId, first, keyword1, keyword2, remark, false);
                     LogHelper.AddLog("重试结果-" + twoResult);
                 }
@@ -267,6 +271,7 @@ namespace HZSoft.Util.WeChat.Comm
                 if (retryIfFaild)
                 {
                     retryIfFaild = false;//重试一次
+                    MPAccessToken.GetNewToken();//不是最新的token获取新的token
                     string twoResult = SendTemplateReceivableOk(openId, first, keyword1, remark, false);
                     LogHelper.AddLog("重试结果-" + twoResult);
                 }
@@ -305,6 +310,7 @@ namespace HZSoft.Util.WeChat.Comm
                 if (retryIfFaild)
                 {
                     retryIfFaild = false;//重试一次
+                    MPAccessToken.GetNewToken();//不是最新的token获取新的token
                     string twoResult = SendTemplateAllIn(openId, first, keyword1, remark, false);
                     LogHelper.AddLog("重试结果-" + twoResult);
                 }
@@ -346,6 +352,7 @@ namespace HZSoft.Util.WeChat.Comm
                 if (retryIfFaild)
                 {
                     retryIfFaild = false;//重试一次
+                    MPAccessToken.GetNewToken();//不是最新的token获取新的token
                     string twoResult = SendTemplateSend(openId, first, keyword1, remark, false);
                     LogHelper.AddLog("重试结果-" + twoResult);
                 }
@@ -384,6 +391,7 @@ namespace HZSoft.Util.WeChat.Comm
                 if (retryIfFaild)
                 {
                     retryIfFaild = false;//重试一次
+                    MPAccessToken.GetNewToken();//不是最新的token获取新的token
                     string twoResult = SendTemplateSend(openId, first, keyword1, remark, false);
                     LogHelper.AddLog("重试结果-" + twoResult);
                 }
