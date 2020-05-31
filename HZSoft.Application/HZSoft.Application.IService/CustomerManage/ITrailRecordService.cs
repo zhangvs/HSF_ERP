@@ -41,6 +41,7 @@ namespace HZSoft.Application.IService.CustomerManage
         /// <param name="entity">实体对象</param>
         /// <returns></returns>
         void SaveForm(string keyValue, TrailRecordEntity entity);
+        void SaveH5Form(TrailRecordEntity entity);
         #endregion
     }
 }

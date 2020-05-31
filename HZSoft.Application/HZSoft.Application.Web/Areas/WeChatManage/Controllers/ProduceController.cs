@@ -286,6 +286,7 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
                 }
                 //修改订单状态
                 proEntity.StepState = step;
+                proEntity.StepName = entity.StepName;
                 proEntity.ModifyDate = DateTime.Now;
                 proEntity.ModifyUserName = entity.Name;
                 sale_customerbll.UpdateStepState(proEntity);

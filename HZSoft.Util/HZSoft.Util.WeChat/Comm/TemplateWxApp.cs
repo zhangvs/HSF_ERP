@@ -392,12 +392,57 @@ namespace HZSoft.Util.WeChat.Comm
                 {
                     retryIfFaild = false;//重试一次
                     MPAccessToken.GetNewToken();//不是最新的token获取新的token
-                    string twoResult = SendTemplateSend(openId, first, keyword1, remark, false);
+                    string twoResult = SendTemplateSendOut(openId, first, keyword1, remark, false);
                     LogHelper.AddLog("重试结果-" + twoResult);
                 }
                 return ex.Message;
             }
         }
 
+
+
+
+        /// <summary>
+        /// 订单驳回通知
+        /// 
+        ///{{first.DATA}}
+        ///订单号：{{keyword1.DATA}}
+        ///驳回时间：{{keyword2.DATA}}
+        ///{{remark.DATA}}
+        /// TemplateWxApp.SendTemplateReject(hsf_CardEntity.OpenId, "您好，您的审图被驳回!", oldEntity.Code, oldEntity.OrderTitle);
+        /// </summary>
+        /// <param name="openId"></param>
+        /// <param name="template_id"></param>
+        /// <returns></returns>
+        public static string SendTemplateReject(string openId, string first, string keyword1, string remark, bool retryIfFaild = true)
+        {
+            try
+            {
+                var data = new
+                {
+                    first = new TemplateDataItem(first),
+                    keyword1 = new TemplateDataItem(keyword1),
+                    keyword2 = new TemplateDataItem(DateTime.Now.ToString("yyyy年MM月dd日 HH:mm")),
+                    remark = new TemplateDataItem(remark),
+                };
+                string token = getToken();
+                SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(
+                    token, openId, "NmIr1BdBuhhTkidUNhRe-45Ia8NTOQ4Cw-wwoaSYCAo", null, data, null);
+                LogHelper.AddLog(first + keyword1 + "\r\n" + token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
+                return sendTemplateMessageResult.errmsg;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.AddLog(first + ex.Message);
+                if (retryIfFaild)
+                {
+                    retryIfFaild = false;//重试一次
+                    MPAccessToken.GetNewToken();//不是最新的token获取新的token
+                    string twoResult = SendTemplateReject(openId, first, keyword1, remark, false);
+                    LogHelper.AddLog("重试结果-" + twoResult);
+                }
+                return ex.Message;
+            }
+        }
     }
 }

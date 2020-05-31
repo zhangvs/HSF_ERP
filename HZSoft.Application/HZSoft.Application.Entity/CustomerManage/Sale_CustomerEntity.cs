@@ -314,6 +314,11 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// <returns></returns>
         public int? StepState { get; set; }
         /// <summary>
+        /// 工序名称
+        /// </summary>
+        /// <returns></returns>
+        public string StepName { get; set; }
+        /// <summary>
         /// 工序日期
         /// </summary>
         /// <returns></returns>

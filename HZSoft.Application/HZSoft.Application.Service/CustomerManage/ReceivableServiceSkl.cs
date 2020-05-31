@@ -177,6 +177,7 @@ namespace HZSoft.Application.Service.CustomerManage
 
             //发微信模板消息---营销收款之后，给财务提醒--刘一珠（收款提醒）
             TemplateWxApp.SendTemplateReceivable("oA-EC1X0OoVmzyowOqxYHlY5NHX4","您好，有新的收款需要确认!", entity.Code, entity.PaymentPrice.ToString(), entity.OrderTitle);
+            RecordHelp.AddRecord(4, entity.OrderId, "收款"+ entity.PaymentPrice.ToString());
         }
 
 
@@ -219,8 +220,8 @@ namespace HZSoft.Application.Service.CustomerManage
                                 {
                                     var hsf_CardEntity = hsf_CardList.First();
                                     //发微信模板消息---营销收款之后，给销售员提醒--（收款确认提醒：已全部收款）
-                                    string backMsg = TemplateWxApp.SendTemplateReceivableOk(hsf_CardEntity.OpenId, 
-                                        "您好，有的收款已经确认!", "通过", "已全部收款");
+                                    string backMsg = TemplateWxApp.SendTemplateReceivableOk(hsf_CardEntity.OpenId, "您好，有的收款已经确认!", "通过", "已全部收款");
+                                    RecordHelp.AddRecord(4, entity.OrderId, "收款确认（全部收款）");
                                     if (backMsg != "ok")
                                     {
                                         //业务员没有关注公众号，报错：微信Post请求发生错误！错误代码：43004，说明：require subscribe hint: [ziWtva03011295]
@@ -251,6 +252,7 @@ namespace HZSoft.Application.Service.CustomerManage
                                     var hsf_CardEntity = hsf_CardList.First();
                                     //发微信模板消息---营销收款之后，给销售员提醒--（收款确认提醒：部分收款）
                                     string backMsg = TemplateWxApp.SendTemplateReceivableOk(hsf_CardEntity.OpenId,  "您好，您的收款已经确认!", "通过", oldEntity.Code+"部分收款");
+                                    RecordHelp.AddRecord(4, entity.OrderId, "收款确认（部分收款）");
                                     if (backMsg != "ok")
                                     {
                                         //业务员没有关注公众号，报错：微信Post请求发生错误！错误代码：43004，说明：require subscribe hint: [ziWtva03011295]
@@ -268,6 +270,22 @@ namespace HZSoft.Application.Service.CustomerManage
                             Sale_Customer_Main.SaveSaleMain(db, orderEntity);//如果下单不及时，可能重复创建
                         }
 
+                    }
+                    if (entity.EnabledMark == -1 && oldEntity.EnabledMark != -1)
+                    {
+                        RecordHelp.AddRecord(4, entity.OrderId, "收款确认驳回");
+                        var hsf_CardList = db.IQueryable<Hsf_CardEntity>(t => t.Name.Equals(oldEntity.CreateUserName));//发送给创建订单的人，店长代替店员创建，所以店长能看见拆单报价
+                        if (hsf_CardList.Count() != 0)
+                        {
+                            var hsf_CardEntity = hsf_CardList.First();
+                            //发微信模板消息---营销收款之后，给销售员提醒--（收款确认提醒：部分收款）
+                            string backMsg = TemplateWxApp.SendTemplateReject(hsf_CardEntity.OpenId, "您好，收款确认人驳回订单!", oldEntity.Code, oldEntity.OrderTitle);
+                            if (backMsg != "ok")
+                            {
+                                //业务员没有关注公众号，报错：微信Post请求发生错误！错误代码：43004，说明：require subscribe hint: [ziWtva03011295]
+                                LogHelper.AddLog(entity.SalesmanUserName + "没有关注公众号");//记录日志
+                            }
+                        }
                     }
 
                     entity.Modify(keyValue);

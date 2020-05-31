@@ -181,16 +181,6 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         }
 
         /// <summary>
-        /// 结束
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        public ActionResult OverIndex()
-        {
-            return View();
-        }
-
-        /// <summary>
         /// 报价
         /// </summary>
         /// <returns></returns>
@@ -236,6 +226,27 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         /// <returns></returns>
         [HttpGet]
         public ActionResult SignedForm()
+        {
+            return View();
+        }
+
+
+        /// <summary>
+        /// 结束
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult OverIndex()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// 作废
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult DeleteIndex()
         {
             return View();
         }

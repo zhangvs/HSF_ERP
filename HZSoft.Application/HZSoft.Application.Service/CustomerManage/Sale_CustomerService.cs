@@ -13,6 +13,7 @@ using System.Drawing;
 using System.Text;
 using System;
 using HZSoft.Util.WeChat.Comm;
+using HZSoft.Application.Entity.BaseManage;
 
 namespace HZSoft.Application.Service.CustomerManage
 {
@@ -27,7 +28,8 @@ namespace HZSoft.Application.Service.CustomerManage
     {
         private DZ_OrderIService dz_orderService = new DZ_OrderService();
         private Buys_OrderIService buyService = new Buys_OrderService();
-        
+        private ITrailRecordService recordService = new TrailRecordService();
+
         #region 获取数据
         /// <summary>
         /// 获取列表
@@ -87,19 +89,40 @@ namespace HZSoft.Application.Service.CustomerManage
             if (!queryParam["MoneyOkMark"].IsEmpty())
             {
                 int MoneyOkMark = queryParam["MoneyOkMark"].ToInt();
-                strSql += " and MoneyOkMark  = " + MoneyOkMark;
+                if (MoneyOkMark == 0)
+                {
+                    strSql += " and (MoneyOkMark = 0 or MoneyOkMark = -1 or DownMark = -1)";//1.还未处理的，2.驳回前一步的，3.后一步驳回的
+                }
+                else
+                {
+                    strSql += " and MoneyOkMark = 1 ";//处理完的
+                }
             }
             //下单
             if (!queryParam["DownMark"].IsEmpty())
             {
                 int DownMark = queryParam["DownMark"].ToInt();
-                strSql += " and DownMark  = " + DownMark;
+                if (DownMark == 0)
+                {
+                    strSql += " and (DownMark = 0 or DownMark = -1 or PushMark = -1)";//1.还未处理的，2.驳回前一步的，3.后一步驳回的
+                }
+                else
+                {
+                    strSql += " and DownMark = 1 ";//处理完的
+                }
             }
             //推单
             if (!queryParam["PushMark"].IsEmpty())
             {
                 int PushMark = queryParam["PushMark"].ToInt();
-                strSql += " and PushMark  = " + PushMark;
+                if (PushMark == 0)
+                {
+                    strSql += " and (PushMark = 0 or PushMark = -1)";//1.还未处理的，2.驳回前一步的，3.后一步驳回的
+                }
+                else
+                {
+                    strSql += " and PushMark = 1 ";//处理完的
+                }
             }
             //包装
             if (!queryParam["BaoZhuangMark"].IsEmpty())
@@ -189,13 +212,40 @@ namespace HZSoft.Application.Service.CustomerManage
             if (!queryParam["MoneyOkMark"].IsEmpty())
             {
                 int MoneyOkMark = queryParam["MoneyOkMark"].ToInt();
-                strSql += " and MoneyOkMark  = " + MoneyOkMark;
+                if (MoneyOkMark == 0)
+                {
+                    strSql += " and (MoneyOkMark = 0 or MoneyOkMark = -1 or DownMark = -1)";//1.还未处理的，2.驳回前一步的，3.后一步驳回的
+                }
+                else
+                {
+                    strSql += " and MoneyOkMark = 1 ";//处理完的
+                }
             }
             //下单
             if (!queryParam["DownMark"].IsEmpty())
             {
                 int DownMark = queryParam["DownMark"].ToInt();
-                strSql += " and DownMark  = " + DownMark;
+                if (DownMark == 0)
+                {
+                    strSql += " and (DownMark = 0 or DownMark = -1 or PushMark = -1)";//1.还未处理的，2.驳回前一步的，3.后一步驳回的
+                }
+                else
+                {
+                    strSql += " and DownMark = 1 ";//处理完的
+                }
+            }
+            //推单
+            if (!queryParam["PushMark"].IsEmpty())
+            {
+                int PushMark = queryParam["PushMark"].ToInt();
+                if (PushMark == 0)
+                {
+                    strSql += " and (PushMark = 0 or PushMark = -1)";//1.还未处理的，2.驳回前一步的，3.后一步驳回的
+                }
+                else
+                {
+                    strSql += " and PushMark = 1 ";//处理完的
+                }
             }
             //包装
             if (!queryParam["BaoZhuangMark"].IsEmpty())
@@ -338,6 +388,7 @@ namespace HZSoft.Application.Service.CustomerManage
                 }
 
                 db.Commit();
+                RecordHelp.AddRecord(4, entity.OrderId, "补充生产单");
             }
             catch (Exception)
             {
@@ -360,32 +411,54 @@ namespace HZSoft.Application.Service.CustomerManage
             {
                 if (!string.IsNullOrEmpty(keyValue))
                 {
-                    //Sale_CustomerEntity oldEntity = GetEntity(keyValue);
+                    Sale_CustomerEntity oldEntity = GetEntity(keyValue);
                     //原生产单没有下单文件，第一次上传下单文件，则修改下单状态
-                    if (!string.IsNullOrEmpty(entity.DownPath))// && string.IsNullOrEmpty(oldEntity.DownPath)//不管之前有没有上传都修改下单状态
+                    if (entity.DownMark == 1 && oldEntity.DownMark != 1)// && string.IsNullOrEmpty(oldEntity.DownPath)//不管之前有没有上传都修改下单状态
                     {
-                        //修改生产单下单状态
-                        entity.DownDate = DateTime.Now;
-                        entity.DownUserId = OperatorProvider.Provider.Current().UserId;
-                        entity.DownUserName = OperatorProvider.Provider.Current().UserName;
-
-                        //修改销售单下单状态
-                        DZ_OrderEntity dZ_OrderEntity = new DZ_OrderEntity
-                        {
-                            DownMark = entity.DownMark,
-                            DownDate = DateTime.Now,
-                            DownUserId = OperatorProvider.Provider.Current().UserId,
-                            DownUserName = OperatorProvider.Provider.Current().UserName,
-                            DownPath = entity.DownPath
-                        };
-                        dZ_OrderEntity.Modify(entity.OrderId);//原生产单实体才对
-                        db.Update<DZ_OrderEntity>(dZ_OrderEntity);
-
-
                         //发微信模板消息---下单之后，给程东彩发消息提醒oA-EC1W1BQZ46Wc8HPCZZUUFbE9M
                         //订单生成通知（8下单提醒）
                         TemplateWxApp.SendTemplateNew("oA-EC1W1BQZ46Wc8HPCZZUUFbE9M","您好，有新的订单需要推单!", entity.OrderTitle, entity.OrderCode, "请进行审核推单。");
+                        RecordHelp.AddRecord(4, entity.OrderId, "生产下单");
                     }
+
+                    if (entity.DownMark == -1 && oldEntity.DownMark != -1)// && string.IsNullOrEmpty(oldEntity.DownPath)//不管之前有没有上传都修改下单状态
+                    {
+                        var hsf_CardList = db.IQueryable<Hsf_CardEntity>(t => t.Name.Equals(oldEntity.MoneyOkMark));//发送给创建订单的人，店长代替店员创建，所以店长能看见拆单报价
+                        if (hsf_CardList.Count() != 0)
+                        {
+                            var hsf_CardEntity = hsf_CardList.First();
+                            //发微信模板消息---营销收款之后，给销售员提醒--（收款确认提醒：部分收款）
+                            string backMsg = TemplateWxApp.SendTemplateReject(hsf_CardEntity.OpenId, "您好，下单人驳回订单!", oldEntity.OrderCode, oldEntity.OrderTitle);
+                            if (backMsg != "ok")
+                            {
+                                //业务员没有关注公众号，报错：微信Post请求发生错误！错误代码：43004，说明：require subscribe hint: [ziWtva03011295]
+                                LogHelper.AddLog(entity.SalesmanUserName + "没有关注公众号");//记录日志
+                            }
+                        }
+                        RecordHelp.AddRecord(4, entity.OrderId, "生产下单驳回");
+
+                        entity.DownPath = null;//下单驳回，下单附件路径清空
+                    }
+
+
+                    //修改生产单下单状态
+                    entity.DownDate = DateTime.Now;
+                    entity.DownUserId = OperatorProvider.Provider.Current().UserId;
+                    entity.DownUserName = OperatorProvider.Provider.Current().UserName;
+
+                    //修改销售单下单状态
+                    DZ_OrderEntity dZ_OrderEntity = new DZ_OrderEntity
+                    {
+                        DownMark = entity.DownMark,
+                        DownDate = DateTime.Now,
+                        DownUserId = OperatorProvider.Provider.Current().UserId,
+                        DownUserName = OperatorProvider.Provider.Current().UserName,
+                        DownPath = entity.DownPath
+                    };
+                    dZ_OrderEntity.Modify(entity.OrderId);//原生产单实体才对
+                    db.Update<DZ_OrderEntity>(dZ_OrderEntity);
+
+
                     entity.Modify(keyValue);
                     db.Update<Sale_CustomerEntity>(entity);
                     db.Commit();
@@ -435,6 +508,7 @@ namespace HZSoft.Application.Service.CustomerManage
                     entity.Modify(keyValue);
                     db.Update<Sale_CustomerEntity>(entity);
                     db.Commit();
+                    RecordHelp.AddRecord(4, entity.OrderId, "生产撤单");
                 }
             }
             catch (Exception)
@@ -446,7 +520,7 @@ namespace HZSoft.Application.Service.CustomerManage
 
 
         /// <summary>
-        /// 推单,撤单
+        /// 推单
         /// </summary>
         /// <param name="keyValue">主键值</param>
         /// <param name="state">状态1推单-1撤单</param>
@@ -482,6 +556,7 @@ namespace HZSoft.Application.Service.CustomerManage
                     }
 
                     db.Commit();
+                    RecordHelp.AddRecord(4, entity.OrderId, "生产推单");
                 }
             }
             catch (Exception)
@@ -506,6 +581,7 @@ namespace HZSoft.Application.Service.CustomerManage
                 {
                     entity.Modify(keyValue);
                     this.BaseRepository().Update(entity);
+                    RecordHelp.AddRecord(4, entity.OrderId, "生产排产");
                 }
             }
             catch (Exception)
@@ -534,6 +610,18 @@ namespace HZSoft.Application.Service.CustomerManage
                 };
                 db.Update<DZ_OrderEntity>(dZ_OrderEntity);
                 db.Commit();
+
+                //记录扫码操作记录
+                TrailRecordEntity recordEntity = new TrailRecordEntity()
+                {
+                    TrailId = Guid.NewGuid().ToString(),
+                    ObjectSort = 4,
+                    ObjectId = entity.OrderId,
+                    TrackContent = entity.StepName,
+                    CreateUserName = entity.ModifyUserName,
+                    CreateDate= DateTime.Now
+                };
+                recordService.SaveH5Form(recordEntity);//全是新增
             }
             catch (Exception)
             {

@@ -81,17 +81,32 @@ namespace HZSoft.Application.Service.CustomerManage
                         orderEntity.Modify(entity.ObjectId);
                         db.Update<DZ_OrderEntity>(orderEntity);
                         break;
-                    case 5:         //定制订单
-                        DZ_OrderEntity dzEntity = new DZ_OrderEntity();
-                        dzEntity.Modify(entity.ObjectId);
-                        db.Update<DZ_OrderEntity>(dzEntity);
-                        break;
                     default:
                         break;
                 }
                 entity.Create();
                 db.Insert(entity);
 
+                db.Commit();
+            }
+            catch (Exception)
+            {
+                db.Rollback();
+                throw;
+            }
+        }
+
+
+        /// <summary>
+        /// 手机端创建
+        /// </summary>
+        /// <param name="entity"></param>
+        public void SaveH5Form(TrailRecordEntity entity)
+        {
+            IRepository db = new RepositoryFactory().BaseRepository().BeginTrans();
+            try
+            {
+                db.Insert(entity);
                 db.Commit();
             }
             catch (Exception)
