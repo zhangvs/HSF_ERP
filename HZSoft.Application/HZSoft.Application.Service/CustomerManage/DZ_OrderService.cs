@@ -835,6 +835,7 @@ namespace HZSoft.Application.Service.CustomerManage
                     entity.SignedUserId = OperatorProvider.Provider.Current().UserId;
                     entity.SignedUserName = OperatorProvider.Provider.Current().UserName;
                     this.BaseRepository().Update(entity);
+                    RecordHelp.AddRecord(4, entity.Id, "签收确认");
                 }
             }
             catch (Exception)
@@ -882,6 +883,7 @@ namespace HZSoft.Application.Service.CustomerManage
                         db.Update<Buys_OrderEntity>(buysEntity);
                     }
                     db.Commit();
+                    RecordHelp.AddRecord(4, entity.Id, "结单");
 
                 }
             }

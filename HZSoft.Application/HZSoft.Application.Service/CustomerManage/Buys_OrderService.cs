@@ -431,9 +431,10 @@ namespace HZSoft.Application.Service.CustomerManage
                 //主表
                 buyEntity.Modify(buyEntity.Id);
                 db.Update<Buys_OrderEntity>(buyEntity);
-
-
                 db.Commit();
+
+                RecordHelp.AddRecord(4, buyEntity.Id, itemEntity.ProductName+"入库"+itemEntity.Qty+"包");
+                
             }
             catch (Exception)
             {
@@ -504,6 +505,7 @@ namespace HZSoft.Application.Service.CustomerManage
                     produceEntity.Modify(entity.ProduceId);
                     db.Update<Sale_CustomerEntity>(produceEntity);
                     db.Commit();
+                    RecordHelp.AddRecord(4, entity.Id, "发货通知");
                 }
             }
             catch (Exception)
@@ -574,6 +576,7 @@ namespace HZSoft.Application.Service.CustomerManage
                         }
                     }
                     db.Commit();
+                    RecordHelp.AddRecord(4, entity.Id, "发货");
                 }
             }
             catch (Exception)
