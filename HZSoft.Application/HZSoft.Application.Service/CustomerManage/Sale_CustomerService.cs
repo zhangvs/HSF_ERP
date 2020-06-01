@@ -554,9 +554,9 @@ namespace HZSoft.Application.Service.CustomerManage
                         dZ_OrderEntity.Modify(orderId);//原生产单实体才对
                         db.Update<DZ_OrderEntity>(dZ_OrderEntity);
                     }
-
                     db.Commit();
-                    RecordHelp.AddRecord(4, entity.OrderId, "生产推单");
+
+                    RecordHelp.AddRecord(4, orderId, "生产推单");
                 }
             }
             catch (Exception)

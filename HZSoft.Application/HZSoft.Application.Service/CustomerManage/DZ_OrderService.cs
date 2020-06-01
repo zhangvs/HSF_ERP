@@ -586,7 +586,7 @@ namespace HZSoft.Application.Service.CustomerManage
                         //发微信模板消息---接单之后，给审图人提醒--刘琛oA-EC1X6RWfW1_DNJ_VNiA3uhOYg
                         //订单生成通知（拆单提醒）
                         TemplateWxApp.SendTemplateNew("oA-EC1X6RWfW1_DNJ_VNiA3uhOYg", "您好，有新的订单需要拆单!", entity.OrderTitle, entity.Code, "请进行拆单。");
-                        RecordHelp.AddRecord(4, entity.Id, "审图");
+                        RecordHelp.AddRecord(4, keyValue, "审图");
                     }
                     //审图驳回之后，给销售人发消息提醒
                     if (entity.CheckTuMark == -1 && oldEntity.CheckTuMark != -1)
@@ -603,18 +603,18 @@ namespace HZSoft.Application.Service.CustomerManage
                                 LogHelper.AddLog(entity.SalesmanUserName + "没有关注公众号");//记录日志
                             }
                         }
-                        RecordHelp.AddRecord(4, entity.Id, "审图驳回");
+                        RecordHelp.AddRecord(4, keyValue, "审图驳回");
                     }
                     #endregion
 
                     #region 3拆单
                     if (entity.ChaiMark > 0 && oldEntity.ChaiMark != 1)
                     {
-                        RecordHelp.AddRecord(4, entity.Id, "拆单");
+                        RecordHelp.AddRecord(4, keyValue, "拆单");
                     }
                     if (entity.ChaiMark == -1 && oldEntity.ChaiMark != -1)
                     {
-                        RecordHelp.AddRecord(4, entity.Id, "拆单驳回");
+                        RecordHelp.AddRecord(4, keyValue, "拆单驳回");
                         //发送给审图人驳回通知
                         var hsf_CardList = db.IQueryable<Hsf_CardEntity>(t => t.Name.Equals(oldEntity.CheckTuUserName));
                         if (hsf_CardList.Count() != 0)
@@ -633,11 +633,11 @@ namespace HZSoft.Application.Service.CustomerManage
                     #region 4审核
                     if (entity.CheckMark > 0 && oldEntity.CheckMark != 1)
                     {
-                        RecordHelp.AddRecord(4, entity.Id, "审核");
+                        RecordHelp.AddRecord(4, keyValue, "审核");
                     }
                     if (entity.CheckMark == -1 && oldEntity.CheckMark != -1)
                     {
-                        RecordHelp.AddRecord(4, entity.Id, "审核驳回");
+                        RecordHelp.AddRecord(4, keyValue, "审核驳回");
                         //发送给拆单人驳回通知
                         var hsf_CardList = db.IQueryable<Hsf_CardEntity>(t => t.Name.Equals(oldEntity.ChaiUserName));
                         if (hsf_CardList.Count() != 0)
@@ -659,11 +659,11 @@ namespace HZSoft.Application.Service.CustomerManage
                         //发微信模板消息---研发报价之后，给财务提醒--刘一珠oA-EC1X0OoVmzyowOqxYHlY5NHX4
                         //订单生成通知（报价提醒）
                         TemplateWxApp.SendTemplateMoney("oA-EC1X0OoVmzyowOqxYHlY5NHX4", "您好，有新的报价需要审核!", "研发中心", entity.OrderTitle, entity.Code, "请进行报价审核。");
-                        RecordHelp.AddRecord(4, entity.Id, "报价");
+                        RecordHelp.AddRecord(4, keyValue, "报价");
                     }
                     if (entity.MoneyMark == -1 && oldEntity.MoneyMark != -1)
                     {
-                        RecordHelp.AddRecord(4, entity.Id, "报价驳回");
+                        RecordHelp.AddRecord(4, keyValue, "报价驳回");
                         //发送给审核人驳回通知
                         var hsf_CardList = db.IQueryable<Hsf_CardEntity>(t => t.Name.Equals(oldEntity.CheckUserName));
                         if (hsf_CardList.Count() != 0)
@@ -835,7 +835,7 @@ namespace HZSoft.Application.Service.CustomerManage
                     entity.SignedUserId = OperatorProvider.Provider.Current().UserId;
                     entity.SignedUserName = OperatorProvider.Provider.Current().UserName;
                     this.BaseRepository().Update(entity);
-                    RecordHelp.AddRecord(4, entity.Id, "签收确认");
+                    RecordHelp.AddRecord(4, keyValue, "签收确认");
                 }
             }
             catch (Exception)
@@ -883,7 +883,7 @@ namespace HZSoft.Application.Service.CustomerManage
                         db.Update<Buys_OrderEntity>(buysEntity);
                     }
                     db.Commit();
-                    RecordHelp.AddRecord(4, entity.Id, "结单");
+                    RecordHelp.AddRecord(4, keyValue, "结单");
 
                 }
             }
