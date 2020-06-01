@@ -488,7 +488,7 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
                 int page = Convert.ToInt32(context.Request.Form["page"]);//当前分片在上传分片中的顺序（从0开始）
                 int totalPage = Convert.ToInt32(context.Request.Form["totalPage"]);//总分片数
                 string fileName = context.Request.Form["fileName"].Trim();
-                fileName=fileName.Replace("#", "＃");
+                fileName=fileName.Replace("#", "＃").Replace(" ", "");//去掉文件名里面的空格，替换#号
                 string fileExt = context.Request.Form["fileExt"];
 
                 //根据GUID创建用该GUID命名的临时文件夹

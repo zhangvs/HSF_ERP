@@ -559,6 +559,9 @@ namespace HZSoft.Application.Service.CustomerManage
                     db.Update<Sale_CustomerEntity>(produceEntity);
 
 
+                    db.Commit();
+                    RecordHelp.AddRecord(4, entity.OrderId, "发货");
+
                     //发微信模板消息--给销售人提醒(10实际发货提醒)
                     if (!string.IsNullOrEmpty(entity.SalesmanUserName))
                     {
@@ -567,7 +570,7 @@ namespace HZSoft.Application.Service.CustomerManage
                         {
                             var hsf_CardEntity = hsf_CardList.First();
                             //订单生成通知，只有关注公众号的业务员才能收到消息(11实际发货提醒)
-                            string backMsg = TemplateWxApp.SendTemplateSendOut(hsf_CardEntity.OpenId, "您好，您的订单已经发货!", entity.Code, entity.OrderTitle+"：共" + entity.TotalQty + "包。");
+                            string backMsg = TemplateWxApp.SendTemplateSendOut(hsf_CardEntity.OpenId, "您好，您的订单已经发货!", entity.Code, entity.OrderTitle + "：共" + entity.TotalQty + "包。");
                             if (backMsg != "ok")
                             {
                                 //业务员没有关注公众号，报错：微信Post请求发生错误！错误代码：43004，说明：require subscribe hint: [ziWtva03011295]
@@ -575,8 +578,6 @@ namespace HZSoft.Application.Service.CustomerManage
                             }
                         }
                     }
-                    db.Commit();
-                    RecordHelp.AddRecord(4, entity.Id, "发货");
                 }
             }
             catch (Exception)

@@ -717,97 +717,100 @@ namespace HZSoft.Application.Service.CustomerManage
                 {
                     //获取老的在前
                     DZ_OrderEntity oldEntity = GetEntity(keyValue);
-                    //当前entity
-                    DZ_OrderEntity entity = new DZ_OrderEntity()
+                    if (oldEntity!=null)
                     {
-                        MoneyOkMark = state,
-                        MoneyOkDate = DateTime.Now,
-                        MoneyOkUserId = OperatorProvider.Provider.Current().UserId,
-                        MoneyOkUserName = OperatorProvider.Provider.Current().UserName
-                    };
-                    entity.Modify(keyValue);
-                    db.Update<DZ_OrderEntity>(entity);
-
-                    //第一次报价审核的通知
-                    if (entity.MoneyOkMark == 1 && oldEntity.MoneyOkMark != 1)
-                    {
-                        //发微信模板消息（报价审核提醒）
-                        if (!string.IsNullOrEmpty(oldEntity.CreateUserName))
+                        //第一次报价审核的通知
+                        if (state == 1 && oldEntity.MoneyOkMark != 1)
                         {
-                            //发送给创建订单的人，店长代替店员创建，所以店长能看见拆单报价
-                            var hsf_CardList = db.IQueryable<Hsf_CardEntity>(t => t.Name.Equals(oldEntity.CreateUserName));
+                            //发微信模板消息（报价审核提醒）
+                            if (!string.IsNullOrEmpty(oldEntity.CreateUserName))
+                            {
+                                //发送给创建订单的人，店长代替店员创建，所以店长能看见拆单报价
+                                var hsf_CardList = db.IQueryable<Hsf_CardEntity>(t => t.Name.Equals(oldEntity.CreateUserName));
+                                if (hsf_CardList.Count() != 0)
+                                {
+                                    var hsf_CardEntity = hsf_CardList.First();
+                                    //不直接给销售员报价，只有店长才能知道报价
+                                    string backMsg = TemplateWxApp.SendTemplateMoneyOk(hsf_CardEntity.OpenId, "您好，您的订单报价已审核完成!", oldEntity.Code, oldEntity.OrderTitle, oldEntity.MoneyAccounts.ToString(), "");
+                                    if (backMsg != "ok")
+                                    {
+                                        //业务员没有关注公众号，报错：微信Post请求发生错误！错误代码：43004，说明：require subscribe hint: [ziWtva03011295]
+                                        LogHelper.AddLog(oldEntity.SalesmanUserName + "没有关注公众号");//记录日志
+                                    }
+                                }
+                            }
+
+
+                            //报价审核改变生产单报价审核状态
+                            Sale_CustomerEntity sale_CustomerEntity = db.FindEntity<Sale_CustomerEntity>(t => t.ProduceId == oldEntity.Code);//老销售单code会生成生产单id
+                            if (sale_CustomerEntity != null)
+                            {
+                                //生产单存在的话，说明已经收款过
+                                sale_CustomerEntity.MoneyOkMark = state;
+                                sale_CustomerEntity.MoneyOkDate = DateTime.Now;
+                                db.Update<Sale_CustomerEntity>(sale_CustomerEntity);
+
+                                //收款+报价审核=提醒下单
+
+                                //发微信模板消息---财务已经报价审核并收款确认之后，给张宝莲发消息提醒oA-EC1bJnd0KFBuOy0joJvUOGwwk
+                                //订单生成通知（7下单提醒）
+                                TemplateWxApp.SendTemplateNew("oA-EC1bJnd0KFBuOy0joJvUOGwwk", "您好，有新的订单需要下单!", oldEntity.OrderTitle, oldEntity.Code, "请进行生产下单。");
+                            }
+                            else
+                            {
+                                //如果不收预付款，并且还没下单的，报价审核完毕之后可以直接创建生产单，开始提醒下单
+                                if (oldEntity.FrontMark == 0 && oldEntity.DownMark != 1)
+                                {
+                                    //自动创建【生产单】主单部分*****************，重点：同步更新报价审核状态和报价审核时间
+                                    oldEntity.MoneyOkMark = state;
+                                    oldEntity.MoneyOkDate = DateTime.Now;
+                                    Sale_Customer_Main.SaveSaleMain(db, oldEntity);//如果下单不及时，可能重复创建
+                                }
+                            }
+                            RecordHelp.AddRecord(4, keyValue, "报价审核");
+                        }
+
+                        //第一次报价驳回的通知
+                        if (state == -1 && oldEntity.MoneyOkMark != -1)
+                        {
+                            //发微信模板消息（报价审核驳回提醒）-给报价人提醒
+                            var hsf_CardList = db.IQueryable<Hsf_CardEntity>(t => t.Name.Equals(oldEntity.MoneyUserName));
                             if (hsf_CardList.Count() != 0)
                             {
                                 var hsf_CardEntity = hsf_CardList.First();
-                                //不直接给销售员报价，只有店长才能知道报价
-                                string backMsg = TemplateWxApp.SendTemplateMoneyOk(hsf_CardEntity.OpenId, "您好，您的订单报价已审核完成!", oldEntity.Code, oldEntity.OrderTitle, entity.MoneyAccounts.ToString(), "");
+                                string backMsg = TemplateWxApp.SendTemplateReject(hsf_CardEntity.OpenId, "您好，报价审核人驳回订单!", oldEntity.Code, oldEntity.OrderTitle);
                                 if (backMsg != "ok")
                                 {
-                                    //业务员没有关注公众号，报错：微信Post请求发生错误！错误代码：43004，说明：require subscribe hint: [ziWtva03011295]
-                                    LogHelper.AddLog(entity.SalesmanUserName + "没有关注公众号");//记录日志
+                                    LogHelper.AddLog(oldEntity.SalesmanUserName + "没有关注公众号");//记录日志
                                 }
                             }
-                        }
 
-
-                        //报价审核改变生产单报价审核状态
-                        Sale_CustomerEntity sale_CustomerEntity = db.FindEntity<Sale_CustomerEntity>(t => t.ProduceId == oldEntity.Code);//老销售单code会生成生产单id
-                        if (sale_CustomerEntity != null)
-                        {
-                            //生产单存在的话，说明已经收款过
-                            sale_CustomerEntity.MoneyOkMark = state;
-                            sale_CustomerEntity.MoneyOkDate = DateTime.Now;
-                            db.Update<Sale_CustomerEntity>(sale_CustomerEntity);
-
-                            //收款+报价审核=提醒下单
-
-                            //发微信模板消息---财务已经报价审核并收款确认之后，给张宝莲发消息提醒oA-EC1bJnd0KFBuOy0joJvUOGwwk
-                            //订单生成通知（7下单提醒）
-                            TemplateWxApp.SendTemplateNew("oA-EC1bJnd0KFBuOy0joJvUOGwwk", "您好，有新的订单需要下单!", oldEntity.OrderTitle, oldEntity.Code, "请进行生产下单。");
-                        }
-                        else
-                        {
-                            //如果不收预付款，并且还没下单的，报价审核完毕之后可以直接创建生产单，开始提醒下单
-                            if (oldEntity.FrontMark == 0 && oldEntity.DownMark != 1)
+                            //修改生产单里面的报价审核驳回
+                            Sale_CustomerEntity sale_CustomerEntity = db.FindEntity<Sale_CustomerEntity>(t => t.ProduceId == oldEntity.Code);//老销售单code会生成生产单id
+                            if (sale_CustomerEntity != null)
                             {
-                                //自动创建【生产单】主单部分*****************
-                                Sale_Customer_Main.SaveSaleMain(db, oldEntity);//如果下单不及时，可能重复创建
+                                sale_CustomerEntity.MoneyOkMark = state;
+                                sale_CustomerEntity.MoneyOkDate = DateTime.Now;
+                                db.Update<Sale_CustomerEntity>(sale_CustomerEntity);
                             }
-                        }
-                        RecordHelp.AddRecord(4, entity.Id, "报价审核");
-                    }
 
-                    //第一次报价驳回的通知
-                    if (entity.MoneyOkMark == -1 && oldEntity.MoneyOkMark != -1)
-                    {
-                        //发微信模板消息（报价审核驳回提醒）-给报价人提醒
-                        var hsf_CardList = db.IQueryable<Hsf_CardEntity>(t => t.Name.Equals(oldEntity.MoneyUserName));
-                        if (hsf_CardList.Count() != 0)
+                            RecordHelp.AddRecord(4, keyValue, "报价审核驳回");
+                        }
+
+
+                        //销售单里面的报价审核状态都是要修改的
+                        DZ_OrderEntity entity = new DZ_OrderEntity()
                         {
-                            var hsf_CardEntity = hsf_CardList.First();
-                            string backMsg = TemplateWxApp.SendTemplateReject(hsf_CardEntity.OpenId, "您好，报价审核人驳回订单!", oldEntity.Code, oldEntity.OrderTitle);
-                            if (backMsg != "ok")
-                            {
-                                LogHelper.AddLog(entity.SalesmanUserName + "没有关注公众号");//记录日志
-                            }
-                        }
+                            MoneyOkMark = state,
+                            MoneyOkDate = DateTime.Now,
+                            MoneyOkUserId = OperatorProvider.Provider.Current().UserId,
+                            MoneyOkUserName = OperatorProvider.Provider.Current().UserName
+                        };
+                        entity.Modify(keyValue);
+                        db.Update<DZ_OrderEntity>(entity);
 
-
-                        //报价审核改变生产单报价审核状态
-                        Sale_CustomerEntity sale_CustomerEntity = db.FindEntity<Sale_CustomerEntity>(t => t.ProduceId == oldEntity.Code);//老销售单code会生成生产单id
-                        if (sale_CustomerEntity != null)
-                        {
-                            //生产单存在的话，说明已经收款过
-                            sale_CustomerEntity.MoneyOkMark = state;
-                            sale_CustomerEntity.MoneyOkDate = DateTime.Now;
-                            db.Update<Sale_CustomerEntity>(sale_CustomerEntity);
-                        }
-
-                        RecordHelp.AddRecord(4, entity.Id, "报价审核驳回");
+                        db.Commit();//放在最后
                     }
-
-
-                    db.Commit();//放在最后
                 }
             }
             catch (Exception)
