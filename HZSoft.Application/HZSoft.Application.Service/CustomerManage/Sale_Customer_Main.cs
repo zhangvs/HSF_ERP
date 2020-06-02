@@ -69,6 +69,7 @@ namespace HZSoft.Application.Service.CustomerManage
                         TemplateWxApp.SendTemplateNew("oA-EC1bJnd0KFBuOy0joJvUOGwwk",
                             "您好，有新的订单需要下单!", sale_CustomerEntity.OrderTitle, sale_CustomerEntity.OrderCode, "请进行生产下单。");
                     }
+                    RecordHelp.AddRecord(4, orderEntity.Id, "初始化生产单");
                 }
             }
             catch (Exception)
