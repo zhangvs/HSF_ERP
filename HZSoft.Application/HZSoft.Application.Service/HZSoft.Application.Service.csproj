@@ -78,6 +78,7 @@
     <Compile Include="CustomerManage\DZSH_OrderService.cs" />
     <Compile Include="CustomerManage\DZ_DayWorkService.cs" />
     <Compile Include="CustomerManage\DZ_OrderService.cs" />
+    <Compile Include="CustomerManage\DZ_ProductService.cs" />
     <Compile Include="CustomerManage\ExpensesService.cs" />
     <Compile Include="CustomerManage\Hsf_GuideService.cs" />
     <Compile Include="CustomerManage\InvoiceService.cs" />

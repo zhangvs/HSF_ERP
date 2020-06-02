@@ -70,6 +70,7 @@
     <Compile Include="CustomerManage\DZSH_OrderEntity.cs" />
     <Compile Include="CustomerManage\DZ_DayWorkEntity.cs" />
     <Compile Include="CustomerManage\DZ_OrderEntity.cs" />
+    <Compile Include="CustomerManage\DZ_ProductEntity.cs" />
     <Compile Include="CustomerManage\ExpensesEntity.cs" />
     <Compile Include="CustomerManage\Hsf_GuideEntity.cs" />
     <Compile Include="CustomerManage\InvoiceEntity.cs" />

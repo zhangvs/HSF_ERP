@@ -67,6 +67,7 @@
     <Compile Include="CustomerManage\DZSH_OrderBLL.cs" />
     <Compile Include="CustomerManage\DZ_DayWorkBLL.cs" />
     <Compile Include="CustomerManage\DZ_OrderBLL.cs" />
+    <Compile Include="CustomerManage\DZ_ProductBLL.cs" />
     <Compile Include="CustomerManage\ExpensesBLL.cs" />
     <Compile Include="CustomerManage\Hsf_GuideBLL.cs" />
     <Compile Include="CustomerManage\InvoiceBLL.cs" />

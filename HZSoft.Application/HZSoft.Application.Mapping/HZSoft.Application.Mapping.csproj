@@ -77,6 +77,7 @@
     <Compile Include="CustomerManage\DZSH_OrderMap.cs" />
     <Compile Include="CustomerManage\DZ_DayWorkMap.cs" />
     <Compile Include="CustomerManage\DZ_OrderMap.cs" />
+    <Compile Include="CustomerManage\DZ_ProductMap.cs" />
     <Compile Include="CustomerManage\ExpensesMap.cs" />
     <Compile Include="CustomerManage\Hsf_GuideMap.cs" />
     <Compile Include="CustomerManage\InvoiceMap.cs" />

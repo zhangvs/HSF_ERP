@@ -620,7 +620,7 @@ namespace HZSoft.Application.Service.CustomerManage
                         if (hsf_CardList.Count() != 0)
                         {
                             var hsf_CardEntity = hsf_CardList.First();
-                            string backMsg = TemplateWxApp.SendTemplateReject(hsf_CardEntity.OpenId, "您好，拆单人人驳回订单!", oldEntity.Code, oldEntity.OrderTitle);
+                            string backMsg = TemplateWxApp.SendTemplateReject(hsf_CardEntity.OpenId, "您好，拆单人驳回订单!", oldEntity.Code, oldEntity.OrderTitle);
                             if (backMsg != "ok")
                             {
                                 LogHelper.AddLog(entity.SalesmanUserName + "没有关注公众号");
@@ -643,7 +643,7 @@ namespace HZSoft.Application.Service.CustomerManage
                         if (hsf_CardList.Count() != 0)
                         {
                             var hsf_CardEntity = hsf_CardList.First();
-                            string backMsg = TemplateWxApp.SendTemplateReject(hsf_CardEntity.OpenId, "您好，审核人人驳回订单!", oldEntity.Code, oldEntity.OrderTitle);
+                            string backMsg = TemplateWxApp.SendTemplateReject(hsf_CardEntity.OpenId, "您好，审核人驳回订单!", oldEntity.Code, oldEntity.OrderTitle);
                             if (backMsg != "ok")
                             {
                                 LogHelper.AddLog(entity.SalesmanUserName + "没有关注公众号");//记录日志

@@ -191,6 +191,7 @@
     <Compile Include="Areas\CustomerManage\Controllers\DZSH_OrderController.cs" />
     <Compile Include="Areas\CustomerManage\Controllers\DZ_DayWorkController.cs" />
     <Compile Include="Areas\CustomerManage\Controllers\DZ_OrderController.cs" />
+    <Compile Include="Areas\CustomerManage\Controllers\DZ_ProductController.cs" />
     <Compile Include="Areas\CustomerManage\Controllers\ExpensesController.cs" />
     <Compile Include="Areas\CustomerManage\Controllers\Hsf_GuideController.cs" />
     <Compile Include="Areas\CustomerManage\Controllers\InvoiceController.cs" />
@@ -2048,6 +2049,8 @@
     <Content Include="Areas\CustomerManage\Views\Buys_Order\SendInstallForm.cshtml" />
     <Content Include="Areas\CustomerManage\Views\Buys_Order\SendInstallIndex.cshtml" />
     <Content Include="Areas\CustomerManage\Views\DZ_Order\DeleteIndex.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\DZ_Product\DZ_ProductForm.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\DZ_Product\DZ_ProductIndex.cshtml" />
     <None Include="Properties\PublishProfiles\6.1.pubxml" />
     <Content Include="Areas\FlowManage\Views\FlowLaunch\Index.cshtml" />
     <Content Include="Areas\FlowManage\Views\FormDesign\FormPreview.cshtml" />
