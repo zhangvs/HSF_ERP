@@ -600,8 +600,12 @@ namespace HZSoft.Application.Service.CustomerManage
                             if (backMsg != "ok")
                             {
                                 //业务员没有关注公众号，报错：微信Post请求发生错误！错误代码：43004，说明：require subscribe hint: [ziWtva03011295]
-                                LogHelper.AddLog(entity.SalesmanUserName + "没有关注公众号");//记录日志
+                                LogHelper.AddLog(entity.CreateUserName + "没有关注公众号");//记录日志
                             }
+                        }
+                        else
+                        {
+                            LogHelper.AddLog(entity.CreateUserName + "没有关注公众号");//记录日志
                         }
                         RecordHelp.AddRecord(4, keyValue, "审图驳回");
                     }
@@ -623,8 +627,12 @@ namespace HZSoft.Application.Service.CustomerManage
                             string backMsg = TemplateWxApp.SendTemplateReject(hsf_CardEntity.OpenId, "您好，拆单人驳回订单!", oldEntity.Code, oldEntity.OrderTitle);
                             if (backMsg != "ok")
                             {
-                                LogHelper.AddLog(entity.SalesmanUserName + "没有关注公众号");
+                                LogHelper.AddLog(entity.CheckTuUserName + "没有关注公众号");
                             }
+                        }
+                        else
+                        {
+                            LogHelper.AddLog(entity.CheckTuUserName + "没有关注公众号");//记录日志
                         }
                     }
                     #endregion
@@ -646,8 +654,12 @@ namespace HZSoft.Application.Service.CustomerManage
                             string backMsg = TemplateWxApp.SendTemplateReject(hsf_CardEntity.OpenId, "您好，审核人驳回订单!", oldEntity.Code, oldEntity.OrderTitle);
                             if (backMsg != "ok")
                             {
-                                LogHelper.AddLog(entity.SalesmanUserName + "没有关注公众号");//记录日志
+                                LogHelper.AddLog(entity.ChaiUserName + "没有关注公众号");//记录日志
                             }
+                        }
+                        else
+                        {
+                            LogHelper.AddLog(entity.ChaiUserName + "没有关注公众号");//记录日志
                         }
                     }
                     #endregion
@@ -672,8 +684,12 @@ namespace HZSoft.Application.Service.CustomerManage
                             string backMsg = TemplateWxApp.SendTemplateReject(hsf_CardEntity.OpenId, "您好，报价人驳回订单!", oldEntity.Code, oldEntity.OrderTitle);
                             if (backMsg != "ok")
                             {
-                                LogHelper.AddLog(entity.SalesmanUserName + "没有关注公众号");//记录日志
+                                LogHelper.AddLog(entity.CheckUserName + "没有关注公众号");//记录日志
                             }
+                        }
+                        else
+                        {
+                            LogHelper.AddLog(entity.CheckUserName + "没有关注公众号");//记录日志
                         }
                     }
                     #endregion
