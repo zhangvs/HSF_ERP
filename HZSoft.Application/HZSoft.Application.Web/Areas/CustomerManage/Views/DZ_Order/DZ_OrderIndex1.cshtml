@@ -405,17 +405,17 @@
             }
         }
     }
-    //跟进记录
+    //操作记录
     function btn_chancetrail() {
         var keyValue = $("#gridTable").jqGridRowValue('Id');
         var OrderTitle = $("#gridTable").jqGridRowValue('OrderTitle');
         if (keyValue) {
             dialogOpen({
                 id: 'ChanceTrailIndex',
-                title: OrderTitle + ' - 跟进记录',
-                url: '/CustomerManage/TrailRecord/Index?objectId=' + keyValue + '&objectSort=4',
+                title: OrderTitle + ' - 操作记录',
+                url: '/CustomerManage/TrailRecord/ReadIndex?objectId=' + keyValue + '&objectSort=4',
                 width: '750px',
-                height: '550px',
+                height: '750px',
                 btn: null
             });
         } else {

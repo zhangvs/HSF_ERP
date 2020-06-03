@@ -33,6 +33,10 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         {
             return View();
         }
+        public ActionResult ReadIndex()
+        {
+            return View();
+        }
         #endregion
 
         #region 获取数据
