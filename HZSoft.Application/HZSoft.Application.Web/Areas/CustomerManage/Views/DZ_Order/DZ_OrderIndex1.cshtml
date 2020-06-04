@@ -161,7 +161,7 @@
                         }
                     }
                 },
-                { label: '报价日期', name: 'MoneyDate', index: 'MoneyDate', width: 118, align: 'left', sortable: true }, 
+                //{ label: '报价日期', name: 'MoneyDate', index: 'MoneyDate', width: 118, align: 'left', sortable: true }, 
                 {
                     label: "报价审核", name: "MoneyOkMark", index: "MoneyOkMark", width: 60, align: "center", sortable: false,
                     formatter: function (cellvalue) {
@@ -174,7 +174,7 @@
                         }
                     }
                 },
-                { label: '报价审核日期', name: 'MoneyOkDate', index: 'MoneyOkDate', width: 118, align: 'left', sortable: true },
+                //{ label: '报价审核日期', name: 'MoneyOkDate', index: 'MoneyOkDate', width: 118, align: 'left', sortable: true },
                 {
                     label: "下单", name: "DownMark", index: "DownMark", width: 60, align: "center", sortable: false,
                     formatter: function (cellvalue) {
@@ -187,7 +187,7 @@
                         }
                     }
                 },
-                { label: '下单日期', name: 'DownDate', index: 'DownDate', width: 118, align: 'left', sortable: true },
+                //{ label: '下单日期', name: 'DownDate', index: 'DownDate', width: 118, align: 'left', sortable: true },
                 {
                     label: "推单", name: "PushMark", index: "PushMark", width: 60, align: "center", sortable: false,
                     formatter: function (cellvalue) {
@@ -200,43 +200,43 @@
                         }
                     }
                 },
-                { label: '推单日期', name: 'PushDate', index: 'PushDate', width: 118, align: 'left', sortable: true },
+                //{ label: '推单日期', name: 'PushDate', index: 'PushDate', width: 118, align: 'left', sortable: true },
                 {
                     label: '当前工序', name: 'StepState', index: 'StepState', width: 80, align: 'center', sortable: true,
                     formatter: function (cellvalue, options, rowObject) {
                         return top.clientdataItem["Step"][cellvalue] == undefined ? "" : top.clientdataItem["Step"][cellvalue];
                     }
                 },
-                { label: '工序日期', name: 'StepDate', index: 'StepDate', width: 118, align: 'left', sortable: true },
+                //{ label: '工序日期', name: 'StepDate', index: 'StepDate', width: 118, align: 'left', sortable: true },
                 {
                     label: "入库", name: "EnterMark", index: "EnterMark", width: 60, align: "center", sortable: false,
                     formatter: function (cellvalue) {
                         return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
                     }
                 },
-                { label: '入库日期', name: 'EnterDate', index: 'EnterDate', width: 118, align: 'left', sortable: true },
+                //{ label: '入库日期', name: 'EnterDate', index: 'EnterDate', width: 118, align: 'left', sortable: true },
                 {
                     label: "发货通知", name: "SendMark", index: "SendMark", width: 60, align: "center", sortable: false,
                     formatter: function (cellvalue) {
                         return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
                     }
                 },
-                { label: '发货通知日期', name: 'SendDate', index: 'SendDate', width: 118, align: 'left', sortable: true },
-                { label: '计划发货日期', name: 'SendPlanDate', index: 'SendPlanDate', width: 90, align: 'center', sortable: true, formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' } },
+                //{ label: '发货通知日期', name: 'SendDate', index: 'SendDate', width: 118, align: 'left', sortable: true },
+                //{ label: '计划发货日期', name: 'SendPlanDate', index: 'SendPlanDate', width: 90, align: 'center', sortable: true, formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' } },
                 {
                     label: "发货", name: "SendOutMark", index: "SendOutMark", width: 80, align: "center", sortable: false,
                     formatter: function (cellvalue) {
                         return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
                     }
                 },
-                { label: '发货日期', name: 'SendOutDate', index: 'SendOutDate', width: 118, align: 'left', sortable: true },
+                //{ label: '发货日期', name: 'SendOutDate', index: 'SendOutDate', width: 118, align: 'left', sortable: true },
                 {
                     label: "签收", name: "SignedMark", index: "SignedMark", width: 80, align: "center", sortable: false,
                     formatter: function (cellvalue) {
                         return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
                     }
                 },
-                { label: '签收日期', name: 'SignedDate', index: 'SignedDate', width: 118, align: 'left', sortable: true },
+                //{ label: '签收日期', name: 'SignedDate', index: 'SignedDate', width: 118, align: 'left', sortable: true },
             ],
             viewrecords: true,
             rowNum: 30,

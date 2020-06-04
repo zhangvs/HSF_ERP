@@ -581,7 +581,7 @@ namespace HZSoft.Application.Service.CustomerManage
                 {
                     entity.Modify(keyValue);
                     this.BaseRepository().Update(entity);
-                    RecordHelp.AddRecord(4, entity.OrderId, "生产排产");
+                    RecordHelp.AddRecord(4, entity.OrderId, "生产排产："+ entity.StatePlanDate.ToString().Replace(" 0:00:00", "") + "至"+entity.EndPlanDate.ToString().Replace(" 0:00:00", ""));
                 }
             }
             catch (Exception)

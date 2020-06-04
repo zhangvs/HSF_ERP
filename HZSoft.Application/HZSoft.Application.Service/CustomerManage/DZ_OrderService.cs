@@ -29,6 +29,7 @@ namespace HZSoft.Application.Service.CustomerManage
     {
         private ICodeRuleService coderuleService = new CodeRuleService();
         private Hsf_CardIService cardService = new Hsf_CardService();
+        //private Sale_CustomerIService saleService = new Sale_CustomerService();这个造成重复调用死循环w3wp.exe 145000
 
         #region 获取数据
         /// <summary>
@@ -585,32 +586,68 @@ namespace HZSoft.Application.Service.CustomerManage
         /// <param name="entity">撤销原因页面</param>
         public void BackForm(string keyValue, DZ_OrderEntity entity)
         {
+            IRepository db = new RepositoryFactory().BaseRepository().BeginTrans();
+
             DZ_OrderEntity oldEntity = GetEntity(keyValue);
-            if (oldEntity.MoneyOkMark==1)
+            if (oldEntity.PushMark > 0)
+            {
+                entity.PushMark = -1;//推单过了
+                Sale_CustomerEntity sale_CustomerEntity = db.FindEntity<Sale_CustomerEntity>(t => t.ProduceId == oldEntity.Code);//老销售单code会生成生产单id
+                if (sale_CustomerEntity != null)
+                {
+                    //生产单存在的话，修改推单状态
+                    sale_CustomerEntity.PushMark = -1;
+                    db.Update<Sale_CustomerEntity>(sale_CustomerEntity);
+                }
+                TemplateWxApp.SendTemplateBack("oA-EC1W1BQZ46Wc8HPCZZUUFbE9M", "您好，订单撤销通知!", entity.Code, entity.OrderTitle, entity.PushBackReason, entity.PushBackDesc + "，请知晓。");
+
+                RecordHelp.AddRecord(4, keyValue, "推单撤销");
+            }
+            if (oldEntity.DownMark > 0)
+            {
+                entity.DownMark = -1;//下单过了
+                Sale_CustomerEntity sale_CustomerEntity = db.FindEntity<Sale_CustomerEntity>(t => t.ProduceId == oldEntity.Code);//老销售单code会生成生产单id
+                if (sale_CustomerEntity != null)
+                {
+                    //生产单存在的话，修改下单状态
+                    sale_CustomerEntity.DownMark = -1;
+                    db.Update<Sale_CustomerEntity>(sale_CustomerEntity);
+                }
+                CardTempBack(oldEntity.DownUserName, entity.Code, entity.OrderTitle, entity.PushBackReason, entity.PushBackDesc);
+                RecordHelp.AddRecord(4, keyValue, "下单撤销");
+            }
+            if (oldEntity.MoneyOkMark > 0)
             {
                 entity.MoneyOkMark = -1;//报价审核过了
-                CardTempBack(oldEntity.MoneyOkUserName,  entity.Code, entity.OrderTitle, entity.PushBackReason, entity.PushBackDesc);
+                Sale_CustomerEntity sale_CustomerEntity = db.FindEntity<Sale_CustomerEntity>(t => t.ProduceId == oldEntity.Code);//老销售单code会生成生产单id
+                if (sale_CustomerEntity != null)
+                {
+                    //生产单存在的话，修改报价审核状态
+                    sale_CustomerEntity.MoneyOkMark = -1;
+                    db.Update<Sale_CustomerEntity>(sale_CustomerEntity);
+                }
+                CardTempBack(oldEntity.MoneyOkUserName, entity.Code, entity.OrderTitle, entity.PushBackReason, entity.PushBackDesc);
                 RecordHelp.AddRecord(4, keyValue, "报价审核撤销");
             }
-            if (oldEntity.MoneyMark == 1)
+            if (oldEntity.MoneyMark > 0)
             {
                 entity.MoneyMark = -1;//报价过了
                 CardTempBack(oldEntity.MoneyUserName, entity.Code, entity.OrderTitle, entity.PushBackReason, entity.PushBackDesc);
                 RecordHelp.AddRecord(4, keyValue, "报价撤销");
             }
-            if (oldEntity.CheckMark == 1)
+            if (oldEntity.CheckMark > 0)
             {
                 entity.CheckMark = -1;//审核过了
                 CardTempBack(oldEntity.CheckUserName, entity.Code, entity.OrderTitle, entity.PushBackReason, entity.PushBackDesc);
                 RecordHelp.AddRecord(4, keyValue, "审核撤销");
             }
-            if (oldEntity.ChaiMark == 1)
+            if (oldEntity.ChaiMark > 0)
             {
                 entity.ChaiMark = -1;//拆单过了
                 CardTempBack(oldEntity.ChaiUserName, entity.Code, entity.OrderTitle, entity.PushBackReason, entity.PushBackDesc);
                 RecordHelp.AddRecord(4, keyValue, "拆单撤销");
             }
-            if (oldEntity.CheckTuMark == 1)
+            if (oldEntity.CheckTuMark > 0)
             {
                 entity.CheckTuMark = -1;//审图过了
                 CardTempBack(oldEntity.CheckTuUserName, entity.Code, entity.OrderTitle, entity.PushBackReason, entity.PushBackDesc);
@@ -618,7 +655,8 @@ namespace HZSoft.Application.Service.CustomerManage
             }
 
             entity.Modify(keyValue);
-            this.BaseRepository().Update(entity);
+            db.Update<DZ_OrderEntity>(entity);
+            db.Commit();
         }
         /// <summary>
         /// 删除数据

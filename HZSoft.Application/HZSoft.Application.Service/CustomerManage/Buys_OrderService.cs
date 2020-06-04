@@ -505,7 +505,7 @@ namespace HZSoft.Application.Service.CustomerManage
                     produceEntity.Modify(entity.ProduceId);
                     db.Update<Sale_CustomerEntity>(produceEntity);
                     db.Commit();
-                    RecordHelp.AddRecord(4, entity.OrderId, "发货通知");
+                    RecordHelp.AddRecord(4, entity.OrderId, "发货通知："+ entity.SendPlanDate.ToString().Replace(" 0:00:00", ""));
                 }
             }
             catch (Exception)
