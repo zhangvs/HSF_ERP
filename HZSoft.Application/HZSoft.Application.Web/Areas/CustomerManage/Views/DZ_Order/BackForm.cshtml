@@ -1,0 +1,125 @@
+@{;
+    ViewBag.Title = "表单页面";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<link href="~/Content/layui/css/layui.css" rel="stylesheet" />
+
+<style>
+    img {
+        max-width: 500px;
+        max-height: 450px;
+        height: auto;
+        zoom: expression( function(e) {
+    if(e.width>e.height) {if (e.width>500) { e.height = e.height*(450 /e.width); e.width=500; }}
+    else {if (e.height>450) { e.width = e.width*(500 /e.height); e.height=450; }}
+    e.style.zoom = '1';     }(this));
+        overflow: hidden;
+    }
+</style>
+<script src="~/Content/layui/layui.js"></script>
+<script>
+    var keyValue = request('keyValue');
+    $(function () {
+        initControl();
+        layui.use('upload', function () {
+            var $ = layui.jquery
+                , upload = layui.upload;
+            //拖拽上传
+            upload.render({
+                elem: ".upload"
+                , url: '/CustomerManage/DZ_Order/UploadPicture'
+                , done: function (data) {
+                    console.log(data);
+                    if (data.Success) {
+                        this.item
+                        $("#" + this.item.context.id).attr("imgsrc", data.Message).html("<img src='" + data.Message + "' style='height:430px;' />");
+                    } else {
+                        layer.alert('上传失败:' + data.Message, {
+                            skin: 'layui-layer-molv', closeBtn: 0
+                        });
+                    }
+                }
+                , error: function () {
+                    layer.alert('上传异常', {
+                        skin: 'layui-layer-molv', closeBtn: 0
+                    });
+                }
+            });
+        });
+    });
+    //初始化控件
+    function initControl() {
+        //获取表单
+        if (!!keyValue) {
+            $.SetForm({
+                url: "../../CustomerManage/DZ_Order/GetFormJson",
+                param: { keyValue: keyValue },
+                success: function (data) {
+                    $("#form1").SetWebControls(data);
+                    if (data.PushBackImg != undefined) {
+                        $("#UploadPushBackImg").attr("imgsrc", data.PushBackImg).html("<img src='" + data.PushBackImg + "' style='height:430px;' />");
+                    }
+                }
+            })
+        }
+    }
+    //保存表单;
+    function AcceptClick() {
+        if (!$('#form1').Validform()) {
+            return false;
+        }
+        var postData = $("#form1").GetWebControls(keyValue);
+        //图片为空并且上传图不为空
+        if (!!$("#UploadPushBackImg").attr("imgsrc")) {
+            postData.PushBackImg = $("#UploadPushBackImg").attr("imgsrc");
+        }
+        $.SaveForm({
+            url: "../../CustomerManage/DZ_Order/SaveBackForm?keyValue=" + keyValue,
+            param: postData,
+            loading: "正在保存数据...",
+            success: function () {
+                $.currentIframe().$("#gridTable").trigger("reloadGrid");
+            }
+        })
+    }
+</script>
+<div style="margin-top: 20px; margin-right: 30px;">
+    <table class="form">
+        <tr>
+            <td class="formTitle">单号</td>
+            <td class="formValue">
+                <input id="Id" type="hidden" class="form-control" disabled />
+                <input id="Code" type="text" class="form-control" disabled />
+            </td>
+            <td class="formTitle">标题</td>
+            <td class="formValue">
+                <input id="OrderTitle" type="text" class="form-control" disabled />
+            </td>
+        </tr>
+        <tr>
+            <th class="formTitle" valign="top" style="padding-top: 4px;">
+                撤单原因<font face="宋体">*</font>
+            </th>
+            <td class="formValue" colspan="3">
+                <input id="PushBackReason" type="text" class="form-control" isvalid="yes" checkexpession="NotNull"/>
+            </td>
+        </tr>
+        <tr>
+            <th class="formTitle" valign="top" style="padding-top: 4px;">
+                备注
+            </th>
+            <td class="formValue" colspan="3">
+                <textarea id="PushBackDesc" class="form-control" style="height: 50px;"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td class="formValue" colspan="2" style="text-align:center">
+                <input id="PushBackImg" type="hidden" class="form-control" />
+                <div class="layui-upload-drag upload" id="UploadPushBackImg" style="width:500px;height:450px">
+                    <i class="layui-icon"></i>
+                    <p>点击上传撤单对接表</p>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>

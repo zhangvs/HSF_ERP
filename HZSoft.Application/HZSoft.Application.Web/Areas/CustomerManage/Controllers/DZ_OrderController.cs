@@ -230,6 +230,16 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
             return View();
         }
 
+        /// <summary>
+        /// 撤单页面
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult BackForm()
+        {
+            return View();
+        }
+
 
         /// <summary>
         /// 结束
@@ -299,6 +309,20 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         #endregion
 
         #region 提交数据
+        /// <summary>
+        /// 一键撤销
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <param name="entity">实体对象</param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AjaxOnly]
+        public ActionResult SaveBackForm(string keyValue, DZ_OrderEntity entity)
+        {
+            dz_orderbll.BackForm(keyValue, entity);
+            return Success("撤销成功。");
+        }
         /// <summary>
         /// 删除数据
         /// </summary>

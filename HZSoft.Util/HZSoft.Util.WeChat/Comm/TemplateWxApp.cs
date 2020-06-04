@@ -444,5 +444,53 @@ namespace HZSoft.Util.WeChat.Comm
                 return ex.Message;
             }
         }
+
+
+
+        /// <summary>
+        /// 订单撤销通知
+        /// 您好，您的订单已撤销
+        /// 订单号：123456
+        /// 订单内容：管道疏通
+        /// 撤销原因：呼叫错误
+        /// 撤销时间：2019年6月14日16:02
+        /// 感谢您的使用
+        /// TemplateWxApp.SendTemplateBack(hsf_CardEntity.OpenId, "您好，您的审图被驳回!", oldEntity.Code, oldEntity.OrderTitle);
+        /// </summary>
+        /// <param name="openId"></param>
+        /// <param name="template_id"></param>
+        /// <returns></returns>
+        public static string SendTemplateBack(string openId, string first, string keyword1, string keyword2, string keyword3, string remark, bool retryIfFaild = true)
+        {
+            try
+            {
+                var data = new
+                {
+                    first = new TemplateDataItem(first),
+                    keyword1 = new TemplateDataItem(keyword1),//订单号
+                    keyword2 = new TemplateDataItem(keyword2),//订单内容
+                    keyword3 = new TemplateDataItem(keyword3),//撤销原因
+                    keyword4 = new TemplateDataItem(DateTime.Now.ToString("yyyy年MM月dd日 HH:mm")),
+                    remark = new TemplateDataItem(remark),
+                };
+                string token = getToken();
+                SendTemplateMessageResult sendTemplateMessageResult = Senparc.Weixin.MP.AdvancedAPIs.TemplateApi.SendTemplateMessage(
+                    token, openId, "KJPBCKatXnIVLWoBsT4PKd31jPzb3rVy3c4EQ1EG3_w", null, data, null);
+                LogHelper.AddLog(first + keyword1 + "\r\n" + token + "\r\n" + openId + "\r\n" + sendTemplateMessageResult.errmsg);
+                return sendTemplateMessageResult.errmsg;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.AddLog(first + ex.Message);
+                if (retryIfFaild)
+                {
+                    retryIfFaild = false;//重试一次
+                    MPAccessToken.GetNewToken();//不是最新的token获取新的token
+                    string twoResult = SendTemplateReject(openId, first, keyword1, remark, false);
+                    LogHelper.AddLog("重试结果-" + twoResult);
+                }
+                return ex.Message;
+            }
+        }
     }
 }

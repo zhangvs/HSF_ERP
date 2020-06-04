@@ -1,8 +1,10 @@
 using HZSoft.Application.Code;
 using HZSoft.Application.Entity.BaseManage;
 using HZSoft.Application.Entity.CustomerManage;
+using HZSoft.Application.IService.BaseManage;
 using HZSoft.Application.IService.CustomerManage;
 using HZSoft.Application.IService.SystemManage;
+using HZSoft.Application.Service.BaseManage;
 using HZSoft.Application.Service.SystemManage;
 using HZSoft.Data.Repository;
 using HZSoft.Util;
@@ -26,6 +28,7 @@ namespace HZSoft.Application.Service.CustomerManage
     public class DZ_OrderService : RepositoryFactory<DZ_OrderEntity>, DZ_OrderIService
     {
         private ICodeRuleService coderuleService = new CodeRuleService();
+        private Hsf_CardIService cardService = new Hsf_CardService();
 
         #region 获取数据
         /// <summary>
@@ -550,6 +553,73 @@ namespace HZSoft.Application.Service.CustomerManage
         #endregion
 
         #region 提交数据
+        public void CardTempBack(string name,string code ,string title,string reason,string desc)
+        {
+            var hsf_Card = cardService.GetEntityByName(name);//发送给创建订单的人，店长代替店员创建，所以店长能看见拆单报价
+            if (hsf_Card!=null)
+            {
+                //不直接给销售员报价，只有店长才能知道报价
+                string backMsg = TemplateWxApp.SendTemplateBack(hsf_Card.OpenId, "您好，订单撤销通知!", code, title, reason, desc+"，请知晓。");//撤单人"+ OperatorProvider.Provider.Current().UserName
+                if (backMsg != "ok")
+                {
+                    //业务员没有关注公众号，报错：微信Post请求发生错误！错误代码：43004，说明：require subscribe hint: [ziWtva03011295]
+                    LogHelper.AddLog(name + "没有关注公众号");//记录日志
+                }
+            }
+            else
+            {
+                LogHelper.AddLog(name + "没有关注公众号");//记录日志
+            }
+        }
+
+        /// <summary>
+        /// 一键撤单
+        /// 您好，您的订单已撤销
+        /// 订单号：123456
+        /// 订单内容：管道疏通
+        /// 撤销原因：呼叫错误
+        /// 撤销时间：2019年6月14日16:02
+        /// 感谢您的使用
+        /// </summary>
+        /// <param name="keyValue">主键</param>
+        /// <param name="entity">撤销原因页面</param>
+        public void BackForm(string keyValue, DZ_OrderEntity entity)
+        {
+            DZ_OrderEntity oldEntity = GetEntity(keyValue);
+            if (oldEntity.MoneyOkMark==1)
+            {
+                entity.MoneyOkMark = -1;//报价审核过了
+                CardTempBack(oldEntity.MoneyOkUserName,  entity.Code, entity.OrderTitle, entity.PushBackReason, entity.PushBackDesc);
+                RecordHelp.AddRecord(4, keyValue, "报价审核撤销");
+            }
+            if (oldEntity.MoneyMark == 1)
+            {
+                entity.MoneyMark = -1;//报价过了
+                CardTempBack(oldEntity.MoneyUserName, entity.Code, entity.OrderTitle, entity.PushBackReason, entity.PushBackDesc);
+                RecordHelp.AddRecord(4, keyValue, "报价撤销");
+            }
+            if (oldEntity.CheckMark == 1)
+            {
+                entity.CheckMark = -1;//审核过了
+                CardTempBack(oldEntity.CheckUserName, entity.Code, entity.OrderTitle, entity.PushBackReason, entity.PushBackDesc);
+                RecordHelp.AddRecord(4, keyValue, "审核撤销");
+            }
+            if (oldEntity.ChaiMark == 1)
+            {
+                entity.ChaiMark = -1;//拆单过了
+                CardTempBack(oldEntity.ChaiUserName, entity.Code, entity.OrderTitle, entity.PushBackReason, entity.PushBackDesc);
+                RecordHelp.AddRecord(4, keyValue, "拆单撤销");
+            }
+            if (oldEntity.CheckTuMark == 1)
+            {
+                entity.CheckTuMark = -1;//审图过了
+                CardTempBack(oldEntity.CheckTuUserName, entity.Code, entity.OrderTitle, entity.PushBackReason, entity.PushBackDesc);
+                RecordHelp.AddRecord(4, keyValue, "审图撤销");
+            }
+
+            entity.Modify(keyValue);
+            this.BaseRepository().Update(entity);
+        }
         /// <summary>
         /// 删除数据
         /// </summary>

@@ -34,6 +34,7 @@ namespace HZSoft.Application.IService.BaseManage
         /// <returns></returns>
         Hsf_CardEntity GetEntity(string keyValue);
         Hsf_CardEntity GetEntityByOpenId(string OpenId);
+        Hsf_CardEntity GetEntityByName(string Name);
         #endregion
 
         #region 提交数据

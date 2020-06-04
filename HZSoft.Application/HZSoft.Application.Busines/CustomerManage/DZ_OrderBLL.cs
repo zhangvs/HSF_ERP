@@ -51,6 +51,21 @@ namespace HZSoft.Application.Busines.CustomerManage
 
         #region 提交数据
         /// <summary>
+        /// 一键驳回
+        /// </summary>
+        /// <param name="keyValue">主键</param>
+        public void BackForm(string keyValue, DZ_OrderEntity entity)
+        {
+            try
+            {
+                service.BackForm(keyValue, entity);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        /// <summary>
         /// 删除数据
         /// </summary>
         /// <param name="keyValue">主键</param>

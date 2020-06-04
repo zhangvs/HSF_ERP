@@ -129,7 +129,7 @@ namespace HZSoft.Application.Web
             ////只有关注公众号的业务员才能收到消息(12实际发货提醒)
             //TemplateWxApp.SendTemplateSend("oA-EC1Ucth5a3bkvcJSdiTCizz_g",
             //    "您好，您的订单已经发货!", "SKL-20200506003", "联动柜，共3包。");
-            
+
 
             //发微信模板消息---发货通知之后，给公维才发消息提醒?????
             //订单生成通知（10发货通知提醒）
@@ -139,6 +139,7 @@ namespace HZSoft.Application.Web
 
             //TemplateWxApp.SendTemplateReject("oA-EC1Ucth5a3bkvcJSdiTCizz_g", "您好，报价审核人驳回订单!", "SKL-20200506003", "联动柜");
 
+            //TemplateWxApp.SendTemplateBack("oA-EC1Ucth5a3bkvcJSdiTCizz_g", "您好，订单撤销通知!", "SKL-20200526005", "LS东望府17-2-1001孙传娜", "木工现场吊顶尺寸错误", "入户鞋柜最上面的格子由350改成290");
         }
 
         /// <summary>

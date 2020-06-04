@@ -79,6 +79,17 @@ namespace HZSoft.Application.Service.BaseManage
             expression = expression.And(t => t.OpenId == OpenId);
             return this.BaseRepository().FindEntity(expression);
         }
+        /// <summary>
+        /// 获取实体
+        /// </summary>
+        /// <param name="Name">主键值</param>
+        /// <returns></returns>
+        public Hsf_CardEntity GetEntityByName(string Name)
+        {
+            var expression = LinqExtensions.True<Hsf_CardEntity>();
+            expression = expression.And(t => t.Name == Name);
+            return this.BaseRepository().FindEntity(expression);
+        }
         #endregion
 
         #region 提交数据

@@ -2052,6 +2052,7 @@
     <Content Include="Areas\CustomerManage\Views\DZ_Product\DZ_ProductForm.cshtml" />
     <Content Include="Areas\CustomerManage\Views\DZ_Product\DZ_ProductIndex.cshtml" />
     <Content Include="Areas\CustomerManage\Views\TrailRecord\ReadIndex.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\DZ_Order\BackForm.cshtml" />
     <None Include="Properties\PublishProfiles\6.1.pubxml" />
     <Content Include="Areas\FlowManage\Views\FlowLaunch\Index.cshtml" />
     <Content Include="Areas\FlowManage\Views\FormDesign\FormPreview.cshtml" />

@@ -312,6 +312,16 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// </summary>
         /// <returns></returns>
         public string PushBackPath { get; set; }
+        /// <summary>
+        /// 撤单原因图片
+        /// </summary>
+        /// <returns></returns>
+        public string PushBackImg { get; set; }
+        /// <summary>
+        /// 撤单原因备注
+        /// </summary>
+        /// <returns></returns>
+        public string PushBackDesc { get; set; }
 
 
         /// <summary>
