@@ -32,6 +32,7 @@ namespace HZSoft.Application.Service.CustomerManage
         /// <returns>返回分页列表</returns>
         public IEnumerable<Client_CompanyEntity> GetPageList(Pagination pagination, string queryJson)
         {
+
             var queryParam = queryJson.ToJObject();
             string strSql = $"select * from Client_Company where (DeleteMark<>1 or DeleteMark IS NULL) ";
             //成立日期
@@ -41,29 +42,39 @@ namespace HZSoft.Application.Service.CustomerManage
                 DateTime endTime = queryParam["EndTime"].ToDate().AddDays(1);
                 strSql += " and CreateDate >= '" + startTime + "' and CreateDate < '" + endTime + "'";
             }
-            //公司名
-            if (!queryParam["condition"].IsEmpty() && !queryParam["keyword"].IsEmpty())
+            //客户编号
+            if (!queryParam["EnCode"].IsEmpty())
             {
-                string condition = queryParam["condition"].ToString();
-                string keyword = queryParam["keyword"].ToString();
-                switch (condition)
-                {
-                    case "EnCode":              //客户编号
-                        strSql += " and EnCode  like '%" + keyword + "%' ";
-                        break;
-                    case "FullName":            //客户名称
-                        strSql += " and FullName  like '%" + keyword + "%' ";
-                        break;
-                    case "Contact":             //联系人
-                        strSql += " and Contact  like '%" + keyword + "%' ";
-                        break;
-                    case "TraceUserName":       //跟进人员
-                        strSql += " and TraceUserName  like '%" + keyword + "%' ";
-                        break;
-                    default:
-                        break;
-                }
+                string EnCode = queryParam["EnCode"].ToString();
+                strSql += " and EnCode like '%" + EnCode + "%'";
             }
+
+            //客户名称
+            if (!queryParam["FullName"].IsEmpty())
+            {
+                string FullName = queryParam["FullName"].ToString();
+                strSql += " and FullName like '%" + FullName + "%'";
+            }
+            //设计师
+            if (!queryParam["Contact"].IsEmpty())
+            {
+                string Contact = queryParam["Contact"].ToString();
+                strSql += " and Contact like '%" + Contact + "%'";
+            }
+
+            //客户级别
+            if (!queryParam["CustLevelId"].IsEmpty())
+            {
+                int CustLevelId = queryParam["CustLevelId"].ToInt();
+                strSql += " and CustLevelId  = " + CustLevelId;
+            }
+            //客户程度
+            if (!queryParam["CustDegreeId"].IsEmpty())
+            {
+                int CustDegreeId = queryParam["CustDegreeId"].ToInt();
+                strSql += " and CustDegreeId  = " + CustDegreeId;
+            }
+
             //销售人
             if (!queryParam["CreateUserId"].IsEmpty())
             {

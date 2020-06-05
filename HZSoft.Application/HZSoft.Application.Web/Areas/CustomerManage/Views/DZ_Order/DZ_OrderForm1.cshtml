@@ -26,6 +26,8 @@
                 }
             });
         }
+
+
     });
 
     //初始化控件
@@ -159,6 +161,18 @@
             }
         })
     }
+
+    //选择月结，自动去掉收款项的勾选状态，互斥事件
+    function checkboxOnclick(checkbox) {
+        if (checkbox.checked == true) {
+            $("#FrontMark").prop("checked", false)
+            $("#AfterMark").prop("checked", false)
+        } else {
+            $("#FrontMark").prop("checked", true)
+            $("#AfterMark").prop("checked", true)
+        }
+    }
+
 </script>
 
 <style type="text/css">
@@ -287,7 +301,7 @@
             <td class="formValue">
                 <div class="checkbox">
                     <label>
-                        <input id="MonthMark" type="checkbox" />
+                        <input id="MonthMark" type="checkbox"  onclick="checkboxOnclick(this)"/>
                         月结
                     </label>
                 </div>
