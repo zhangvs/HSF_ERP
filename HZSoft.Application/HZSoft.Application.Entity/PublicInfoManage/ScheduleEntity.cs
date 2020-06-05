@@ -6,7 +6,7 @@ namespace HZSoft.Application.Entity.PublicInfoManage
     /// <summary>
     /// 版 本
     /// 
-    /// 创 建：佘赐雄
+    /// 创 建：张彦山
     /// 日 期：2016-04-25 10:45
     /// 描 述：日程管理
     /// </summary>

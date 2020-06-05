@@ -12,7 +12,7 @@ namespace HZSoft.Application.Web.Areas.GeneratorManage.Controllers
     /// <summary>
     /// 版 本 6.3.1
     /// 
-    /// 创建人：佘赐雄
+    /// 创建人：张彦山
     /// 日 期：2016.2.13 14:29
     /// 描 述：生成器多表
     /// </summary>

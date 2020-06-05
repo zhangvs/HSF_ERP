@@ -61,21 +61,28 @@
             autowidth: true,
             colModel: [
                 { label: '分类主键', name: 'Id', hidden: true },
-                { label: '父级主键', name: 'PId', hidden: true },
-                { label: '&nbsp;&nbsp;&nbsp;&nbsp;名称', name: 'Name', index: 'Name', width: 100, align: 'left', sortable: true },
+                { label: '父级主键', name: 'ParentId', hidden: true },
+                {
+                    label: "产品图片", name: "Picture", index: "Picture", width: 100, align: "center", sortable: false,
+                    formatter: function (cellvalue) {
+                        if (typeof (cellvalue) != "undefined" && cellvalue != "" && cellvalue != null) {
+                            return "<img src='" + cellvalue + "' height='80px' width='80px'/>";
+                        } else {
+                            return '';
+                        }
+                    }
+                },
+                { label: '&nbsp;&nbsp;&nbsp;&nbsp;名称', name: 'Name', index: 'Name', width: 200, align: 'left', sortable: true },
                 { label: '编码', name: 'Code', index: 'Code', width: 100, align: 'left', sortable: true },
-                { label: '图片', name: 'Picture', index: 'Picture', width: 100, align: 'left', sortable: true },
                 { label: '规格', name: 'Guige', index: 'Guige', width: 100, align: 'left', sortable: true },
                 { label: '单位', name: 'Unit', index: 'Unit', width: 100, align: 'left', sortable: true },
                 { label: '报价方案1', name: 'Plan1', index: 'Plan1', width: 100, align: 'left', sortable: true },
                 { label: '报价方案2', name: 'Plan2', index: 'Plan2', width: 100, align: 'left', sortable: true },
                 { label: '报价方案3', name: 'Plan3', index: 'Plan3', width: 100, align: 'left', sortable: true },
                 { label: '报价方案4', name: 'Plan4', index: 'Plan4', width: 100, align: 'left', sortable: true },
-                { label: '备注', name: 'Description', index: 'Description', width: 100, align: 'left', sortable: true },
-                { label: '创建日期', name: 'CreateDate', index: 'CreateDate', width: 100, align: 'left', sortable: true },
+                { label: '创建日期', name: 'CreateDate', index: 'CreateDate', width: 118, align: 'left', sortable: true },
                 { label: '创建用户', name: 'CreateUserName', index: 'CreateUserName', width: 100, align: 'left', sortable: true },
-                { label: '修改日期', name: 'ModifyDate', index: 'ModifyDate', width: 100, align: 'left', sortable: true },
-                { label: '修改用户', name: 'ModifyUserName', index: 'ModifyUserName', width: 100, align: 'left', sortable: true },
+                { label: '备注', name: 'Description', index: 'Description', width: 100, align: 'left', sortable: true },
             ],
             //treeGrid: true,
             //treeGridModel: "nested",
@@ -138,8 +145,8 @@
             id: "Form",
             title: '添加物料',
             url: '/CustomerManage/DZ_Product/DZ_ProductForm?parentId=' + _parentId,
-            width: "500px",
-            height: "400px",
+            width: "650px",
+            height: "550px",
             callBack: function (iframeId) {
                 top.frames[iframeId].AcceptClick();
             }
@@ -153,8 +160,8 @@
                 id: "Form",
                 title: '编辑物料',
                 url: '/CustomerManage/DZ_Product/DZ_ProductForm?keyValue=' + keyValue,
-                width: "500px",
-                height: "400px",
+                width: "650px",
+                height: "550px",
                 callBack: function (iframeId) {
                     top.frames[iframeId].AcceptClick();
                 }
@@ -185,7 +192,7 @@
                 id: "Detail",
                 title: '物料信息',
                 url: '/CustomerManage/DZ_Product/DZ_ProductDetail?keyValue=' + keyValue,
-                width: "500px",
+                width: "650px",
                 height: "480px",
                 btn: null
             });
@@ -196,7 +203,7 @@
         dialogOpen({
             id: "DataItemSort",
             title: '物料分类',
-            url: '/CustomerManage/DZ_Product/DZ_ProductIndex',
+            url: '/CustomerManage/DZ_Product/DZ_ProductTypeIndex',
             width: "800px",
             height: "500px",
             btn: null

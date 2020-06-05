@@ -10,7 +10,7 @@ namespace HZSoft.Application.Busines.CustomerManage
     /// <summary>
     /// 版 本 6.1
     /// 
-    /// 创 建：佘赐雄
+    /// 创 建：张彦山
     /// 日 期：2016-03-12 10:50
     /// 描 述：商机信息
     /// </summary>

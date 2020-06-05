@@ -10,7 +10,7 @@ namespace HZSoft.Application.Service.SystemManage
     /// <summary>
     /// 版 本 6.1
     /// 
-    /// 创建人：佘赐雄
+    /// 创建人：张彦山
     /// 日 期：2015.11.17 9:56
     /// 描 述：数据字典分类
     /// </summary>

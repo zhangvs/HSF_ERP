@@ -12,7 +12,7 @@ namespace HZSoft.Application.Cache
     /// <summary>
     /// 版 本 6.1
     /// 
-    /// 创建人：佘赐雄
+    /// 创建人：张彦山
     /// 日 期：2015.12.29 9:56
     /// 描 述：数据字典缓存
     /// </summary>

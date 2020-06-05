@@ -15,7 +15,7 @@ namespace HZSoft.Application.Web
     /// <summary>
     /// 版 本 6.1
     /// 
-    /// 创建人：佘赐雄
+    /// 创建人：张彦山
     /// 日 期：2015.11.9 10:45
     /// 描 述：错误日志（Controller发生异常时会执行这里） 
     /// </summary>

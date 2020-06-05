@@ -4,7 +4,7 @@ namespace HZSoft.Application.Code
     /// <summary>
     /// 版 本 6.1
     /// 
-    /// 创建人：佘赐雄
+    /// 创建人：张彦山
     /// 日 期：2015.10.10
     /// 描 述：权限认证模式
     /// </summary>

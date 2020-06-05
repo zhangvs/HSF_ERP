@@ -18,7 +18,7 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
     /// <summary>
     /// 版 本 6.1
     /// 
-    /// 创建人：佘赐雄
+    /// 创建人：张彦山
     /// 日 期：2016.3.11 14:22
     /// 描 述：客户订单
     /// </summary>

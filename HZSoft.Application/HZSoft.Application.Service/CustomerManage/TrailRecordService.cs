@@ -12,7 +12,7 @@ namespace HZSoft.Application.Service.CustomerManage
     /// <summary>
     /// 版 本 6.1
     /// 
-    /// 创 建：佘赐雄
+    /// 创 建：张彦山
     /// 日 期：2016-03-21 16:10
     /// 描 述：跟进记录
     /// </summary>

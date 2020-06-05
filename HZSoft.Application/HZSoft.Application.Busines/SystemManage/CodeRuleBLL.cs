@@ -11,7 +11,7 @@ namespace HZSoft.Application.Busines.SystemManage
     /// <summary>
     /// 版 本 6.1
     /// 
-    /// 创建人：佘赐雄
+    /// 创建人：张彦山
     /// 日 期：2015.12.21 16:19
     /// 描 述：编号规则
     /// </summary>

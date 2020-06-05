@@ -7,7 +7,7 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
     /// <summary>
     /// 版 本 6.1
     /// 
-    /// 创建人：佘赐雄
+    /// 创建人：张彦山
     /// 日 期：2015.12.23 11:31
     /// 描 述：企业号设置
     /// </summary>

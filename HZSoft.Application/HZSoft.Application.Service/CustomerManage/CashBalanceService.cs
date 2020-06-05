@@ -13,7 +13,7 @@ namespace HZSoft.Application.Service.CustomerManage
     /// <summary>
     /// 版 本 6.1
     /// 
-    /// 创 建：佘赐雄
+    /// 创 建：张彦山
     /// 日 期：2016-04-28 16:48
     /// 描 述：现金余额
     /// </summary>

@@ -6,7 +6,7 @@ namespace HZSoft.Application.Mapping.CustomerManage
     /// <summary>
     /// 版 本
     /// 
-    /// 创 建：佘赐雄
+    /// 创 建：张彦山
     /// 日 期：2016-04-20 11:23
     /// 描 述：费用支出
     /// </summary>

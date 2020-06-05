@@ -10,7 +10,7 @@ namespace HZSoft.Application.Web.Areas.GeneratorManage.Controllers
     /// <summary>
     /// 版 本 6.1
     /// 
-    /// 创建人：佘赐雄
+    /// 创建人：张彦山
     /// 日 期：2016.1.11 14:29
     /// 描 述：模板管理
     /// </summary>

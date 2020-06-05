@@ -17,7 +17,7 @@ namespace HZSoft.Application.Web.Areas.AuthorizeManage.Controllers
     /// <summary>
     /// 版 本
     /// 
-    /// 创建人：佘赐雄
+    /// 创建人：张彦山
     /// 日 期：2015.11.2 2:35
     /// 描 述：用户权限
     /// </summary>

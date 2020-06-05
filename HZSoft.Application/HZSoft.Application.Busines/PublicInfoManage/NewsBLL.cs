@@ -11,7 +11,7 @@ namespace HZSoft.Application.Busines.PublicInfoManage
     /// <summary>
     /// 版 本 6.1
     /// 
-    /// 创建人：佘赐雄
+    /// 创建人：张彦山
     /// 日 期：2015.12.7 16:40
     /// 描 述：新闻中心
     /// </summary>

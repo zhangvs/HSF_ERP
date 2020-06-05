@@ -12,7 +12,7 @@ namespace HZSoft.Application.Busines.BaseManage
     /// <summary>
     /// 版 本
     /// 
-    /// 创建人：佘赐雄
+    /// 创建人：张彦山
     /// 日 期：2015.11.4 14:31
     /// 描 述：角色管理
     /// </summary>

@@ -14,7 +14,7 @@ namespace HZSoft.Application.Web.Areas.PublicInfoManage.Controllers
     /// <summary>
     /// 版 本 6.1
     /// 
-    /// 创建人：佘赐雄
+    /// 创建人：张彦山
     /// 日 期：2016.4.21 16:01
     /// 描 述：日程管理
     /// </summary>

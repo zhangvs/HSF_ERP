@@ -6,7 +6,7 @@ namespace HZSoft.Application.Mapping
     /// <summary>
     /// 版 本
     /// 
-    /// 创建人：佘赐雄
+    /// 创建人：张彦山
     /// 日 期：2016.05.11 16:23
     /// 描 述：注册账户
     /// </summary>

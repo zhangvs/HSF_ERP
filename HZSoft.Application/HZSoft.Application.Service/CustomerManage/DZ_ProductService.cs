@@ -40,14 +40,14 @@ namespace HZSoft.Application.Service.CustomerManage
                 strSql += " and Id = '" + Id + "'";
             }
             //父分类id
-            if (!queryParam["PId"].IsEmpty())
+            if (!queryParam["ParentId"].IsEmpty())
             {
-                string PId = queryParam["PId"].ToString();
-                strSql += " and PId = '" + PId + "'";
+                string ParentId = queryParam["ParentId"].ToString();
+                strSql += " and ParentId = '" + ParentId + "'";
             }
             else
             {
-                strSql += " and PId <> '0'";
+                strSql += " and ParentId <> '0'";
             }
 
             if (!queryParam["keyword"].IsEmpty())
@@ -76,14 +76,14 @@ namespace HZSoft.Application.Service.CustomerManage
                 strSql += " and Id = '" + Id + "'";
             }
             //父分类id
-            if (!queryParam["PId"].IsEmpty())
+            if (!queryParam["ParentId"].IsEmpty())
             {
-                string PId = queryParam["PId"].ToString();
-                strSql += " and PId = '" + PId + "'";
+                string ParentId = queryParam["ParentId"].ToString();
+                strSql += " and ParentId = '" + ParentId + "'";
             }
             else
             {
-                strSql += " and PId <> '0'";
+                strSql += " and ParentId <> '0'";
             }
 
             if (!queryParam["keyword"].IsEmpty())
@@ -154,7 +154,7 @@ namespace HZSoft.Application.Service.CustomerManage
         public bool ExistValue(string Value, string keyValue, string Id)
         {
             var expression = LinqExtensions.True<DZ_ProductEntity>();
-            expression = expression.And(t => t.Code == Value).And(t => t.PId == Id);
+            expression = expression.And(t => t.Code == Value).And(t => t.Id == Id);
             if (!string.IsNullOrEmpty(keyValue))
             {
                 expression = expression.And(t => t.Id != keyValue);
@@ -171,7 +171,7 @@ namespace HZSoft.Application.Service.CustomerManage
         public bool ExistName(string Name, string keyValue, string Id)
         {
             var expression = LinqExtensions.True<DZ_ProductEntity>();
-            expression = expression.And(t => t.Name == Name).And(t => t.PId == Id);
+            expression = expression.And(t => t.Name == Name).And(t => t.Id == Id);
             if (!string.IsNullOrEmpty(keyValue))
             {
                 expression = expression.And(t => t.Id != keyValue);

@@ -5,6 +5,10 @@ using System.Linq;
 using System.Collections.Generic;
 using HZSoft.Application.Busines.CustomerManage;
 using HZSoft.Application.Entity.CustomerManage;
+using System.Web;
+using HZSoft.Application.Code;
+using System.IO;
+using System;
 
 namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
 {
@@ -21,7 +25,7 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
 
         #region 视图功能
         /// <summary>
-        /// 列表页面
+        /// 分类+详情
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -30,10 +34,19 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
             return View();
         }
         /// <summary>
-        /// 分类+详情
+        /// 分类
         /// </summary>
         /// <returns></returns>
-        public ActionResult DZ_ProductIndex2()
+        public ActionResult DZ_ProductTypeIndex()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 表单页面
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult DZ_ProductTypeForm()
         {
             return View();
         }
@@ -59,7 +72,7 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
 
         #region 获取数据
         /// <summary>
-        /// 分类列表 "{\"PId\":\"0\"}"
+        /// 分类列表 "{\"ParentId\":\"0\"}"
         /// </summary>
         /// <param name="keyword">关键字查询</param>
         /// <returns>返回树形Json</returns>
@@ -73,17 +86,17 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
             }
             if (!string.IsNullOrEmpty(_parentId))
             {
-                data = data.TreeWhere(t => t.PId == _parentId, "Id");//主键Id
+                data = data.TreeWhere(t => t.ParentId == _parentId, "Id");//主键Id
             }
             var treeList = new List<TreeEntity>();
             foreach (DZ_ProductEntity item in data)
             {
                 TreeEntity tree = new TreeEntity();
-                bool hasChildren = data.Count(t => t.PId == item.Id) == 0 ? false : true;
+                bool hasChildren = data.Count(t => t.ParentId == item.Id) == 0 ? false : true;
                 tree.id = item.Id;
                 tree.text = item.Name;
                 tree.value = item.Code;
-                tree.parentId = item.PId;
+                tree.parentId = item.ParentId;
                 tree.isexpand = true;
                 tree.complete = true;
                 tree.Attribute = "isTree";
@@ -102,7 +115,7 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         [HttpGet]
         public ActionResult GetTreeListJson(string typeId, string condition, string keyword)
         {
-            var data = productbll.GetList("{\"PId\":\"" + typeId + "\"}").OrderBy(t => t.SortCode).ToList();
+            var data = productbll.GetList("{\"ParentId\":\"" + typeId + "\"}").OrderBy(t => t.SortCode).ToList();
             if (!string.IsNullOrEmpty(keyword))
             {
                 #region 多条件查询
@@ -123,9 +136,9 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
             foreach (DZ_ProductEntity item in data)
             {
                 TreeGridEntity tree = new TreeGridEntity();
-                bool hasChildren = data.Count(t => t.PId == item.PId) == 0 ? false : true;
+                bool hasChildren = data.Count(t => t.ParentId == item.ParentId) == 0 ? false : true;
                 tree.id = item.Id;
-                tree.parentId = item.PId;
+                tree.parentId = item.ParentId;
                 tree.expanded = true;
                 tree.hasChildren = hasChildren;
                 tree.entityJson = item.ToJson();
@@ -238,5 +251,53 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         }
         #endregion
 
+
+
+
+
+        /// <summary>
+        /// 上传产品
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult UploadProductPicture()
+        {
+            string Message = "";
+            if (Request.Files.Count > 0)
+            {
+                HttpPostedFile file = System.Web.HttpContext.Current.Request.Files[0];
+                if (file.ContentLength > 0)
+                {
+                    string fileExt = file.FileName.Substring(file.FileName.LastIndexOf('.'));//后缀
+                    try
+                    {
+                        string uploadDate = OperatorProvider.Provider.Current().Account;
+                        string dir = string.Format("/Resource/Product/{0}/", uploadDate);
+                        if (Directory.Exists(Server.MapPath(dir)) == false)//如果不存在就创建file文件夹
+                        {
+                            Directory.CreateDirectory(Server.MapPath(dir));
+                        }
+                        //string newfileName = DateTime.Now.ToString("yyyyMMddHHmmss");
+                        //原图
+                        //string fullDir1 = dir + newfileName + fileExt;
+                        string fullDir1 = dir + file.FileName;
+                        string imgFilePath = Request.MapPath(fullDir1);
+                        file.SaveAs(imgFilePath);
+
+                        return Content(new JsonMessage { Success = true, Code = "0", Message = fullDir1 }.ToString());
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Message = HttpUtility.HtmlEncode(ex.Message);
+                        return Content(new JsonMessage { Success = false, Code = "-1", Message = Message }.ToString());
+                    }
+                }
+                Message = "请选择要上传的文件！";
+                return Content(new JsonMessage { Success = false, Code = "-1", Message = Message }.ToString());
+            }
+            Message = "请选择要上传的文件！";
+            return Content(new JsonMessage { Success = false, Code = "-1", Message = Message }.ToString());
+        }
     }
 }

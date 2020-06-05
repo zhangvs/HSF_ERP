@@ -11,7 +11,7 @@ namespace HZSoft.CodeGenerator
     /// <summary>
     /// 版 本 6.3.1
     /// 
-    /// 创建人：佘赐雄
+    /// 创建人：张彦山
     /// 日 期：2016.3.1 9:54
     /// 描 述：自动创建代码
     /// </summary>

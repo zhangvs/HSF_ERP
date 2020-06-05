@@ -4,7 +4,7 @@ namespace HZSoft.Application.Entity.SystemManage
     /// <summary>
     /// 版 本 6.1
     /// 
-    /// 创建人：佘赐雄
+    /// 创建人：张彦山
     /// 日 期：2015.11.24 13:32
     /// 描 述：数据库表字段
     /// </summary>

@@ -6,7 +6,7 @@ namespace HZSoft.Application.Entity.AuthorizeManage
     /// <summary>
     /// 版 本 6.1
     /// 
-    /// 创建人：佘赐雄
+    /// 创建人：张彦山
     /// 日 期：2015.11.27
     /// 描 述：授权功能
     /// </summary

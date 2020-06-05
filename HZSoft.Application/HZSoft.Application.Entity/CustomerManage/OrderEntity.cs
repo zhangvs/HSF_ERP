@@ -6,7 +6,7 @@ namespace HZSoft.Application.Entity.CustomerManage
     /// <summary>
     /// 版 本
     /// 
-    /// 创 建：佘赐雄
+    /// 创 建：张彦山
     /// 日 期：2016-03-16 13:54
     /// 描 述：订单管理
     /// </summary>

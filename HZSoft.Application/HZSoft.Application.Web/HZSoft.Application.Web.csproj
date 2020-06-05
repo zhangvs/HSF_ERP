@@ -2053,6 +2053,8 @@
     <Content Include="Areas\CustomerManage\Views\DZ_Product\DZ_ProductIndex.cshtml" />
     <Content Include="Areas\CustomerManage\Views\TrailRecord\ReadIndex.cshtml" />
     <Content Include="Areas\CustomerManage\Views\DZ_Order\BackForm.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\DZ_Product\DZ_ProductTypeIndex.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\DZ_Product\DZ_ProductTypeForm.cshtml" />
     <None Include="Properties\PublishProfiles\6.1.pubxml" />
     <Content Include="Areas\FlowManage\Views\FlowLaunch\Index.cshtml" />
     <Content Include="Areas\FlowManage\Views\FormDesign\FormPreview.cshtml" />

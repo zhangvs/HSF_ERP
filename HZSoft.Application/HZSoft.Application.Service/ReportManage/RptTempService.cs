@@ -17,7 +17,7 @@ namespace HZSoft.Application.Service.ReportManage
     /// <summary>
     /// 版 本 6.1
     /// 
-    /// 创建人：佘赐雄
+    /// 创建人：张彦山
     /// 日 期：2016.1.14 14:27
     /// 描 述：报表模板管理
     /// </summary>

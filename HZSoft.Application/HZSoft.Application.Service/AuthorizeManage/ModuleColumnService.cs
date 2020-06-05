@@ -10,7 +10,7 @@ namespace HZSoft.Application.Service.BaseManage
     /// <summary>
     /// 版 本 6.1
     /// 
-    /// 创建人：佘赐雄
+    /// 创建人：张彦山
     /// 日 期：2015.10.29 15:13
     /// 描 述：系统视图
     /// </summary>

@@ -22,7 +22,7 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// ¸¸¼¶Ö÷¼ü
         /// </summary>
         /// <returns></returns>
-        public string PId { get; set; }
+        public string ParentId { get; set; }
         /// <summary>
         /// ±àÂë
         /// </summary>

@@ -9,7 +9,7 @@ namespace HZSoft.Application.Entity.CustomerManage.ViewModel
     /// <summary>
     /// 版 本
     /// 
-    /// 创 建：佘赐雄
+    /// 创 建：张彦山
     /// 日 期：2016-04-19 17:40
     /// 描 述：应收账款报表
     /// </summary>

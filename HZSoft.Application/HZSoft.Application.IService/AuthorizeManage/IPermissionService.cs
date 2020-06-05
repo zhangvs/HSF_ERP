@@ -8,7 +8,7 @@ namespace HZSoft.Application.IService.AuthorizeManage
     /// <summary>
     /// 版 本
     /// 
-    /// 创建人：佘赐雄
+    /// 创建人：张彦山
     /// 日 期：2015.11.5 22:35
     /// 描 述：权限配置管理（角色、岗位、职位、用户组、用户）
     /// </summary>

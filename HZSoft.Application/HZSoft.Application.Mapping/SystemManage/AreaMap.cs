@@ -6,7 +6,7 @@ namespace HZSoft.Application.Mapping.SystemManage
     /// <summary>
     /// 版 本 6.1
     /// 
-    /// 创建人：佘赐雄
+    /// 创建人：张彦山
     /// 日 期：2015.11.12 16:40
     /// 描 述：区域管理
     /// </summary>

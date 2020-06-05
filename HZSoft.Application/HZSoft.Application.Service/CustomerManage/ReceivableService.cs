@@ -13,7 +13,7 @@ namespace HZSoft.Application.Service.CustomerManage
     /// <summary>
     /// 版 本 6.1
     /// 
-    /// 创 建：佘赐雄
+    /// 创 建：张彦山
     /// 日 期：2016-04-06 17:24
     /// 描 述：应收账款
     /// </summary>

@@ -8,7 +8,7 @@ namespace HZSoft.Application.IService.SystemManage
     /// <summary>
     /// 版 本 6.1
     /// 
-    /// 创建人：佘赐雄
+    /// 创建人：张彦山
     /// 日 期：2015.11.18 11:02
     /// 描 述：数据库管理
     /// </summary>

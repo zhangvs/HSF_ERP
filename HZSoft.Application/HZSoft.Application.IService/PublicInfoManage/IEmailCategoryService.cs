@@ -6,7 +6,7 @@ namespace HZSoft.Application.IService.PublicInfoManage
     /// <summary>
     /// 版 本 6.1
     /// 
-    /// 创建人：佘赐雄
+    /// 创建人：张彦山
     /// 日 期：2015.12.8 11:31
     /// 描 述：邮件分类
     /// </summary>
