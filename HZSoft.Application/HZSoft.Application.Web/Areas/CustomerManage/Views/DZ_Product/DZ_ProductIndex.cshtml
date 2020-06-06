@@ -139,7 +139,9 @@
     //新增
     function btn_add() {
         if (_parentId == "") {
-            _parentId = 0;
+            //_parentId = 0;
+            dialogMsg('请选择左侧的物料分类！', 0);
+            return;
         }
         dialogOpen({
             id: "Form",

@@ -109,13 +109,27 @@ namespace HZSoft.Application.Service.CustomerManage
             if (!queryParam["SendLogisticsMark"].IsEmpty())
             {
                 int SendLogisticsMark = queryParam["SendLogisticsMark"].ToInt();
-                strSql += " and SendLogisticsMark  = " + SendLogisticsMark;
+                if (SendLogisticsMark!=0)
+                {
+                    strSql += " and SendLogisticsMark  <> 0 ";
+                }
+                else
+                {
+                    strSql += " and SendLogisticsMark  = 0";
+                }
             }
             //安装
             if (!queryParam["SendInstallMark"].IsEmpty())
             {
                 int SendInstallMark = queryParam["SendInstallMark"].ToInt();
-                strSql += " and SendInstallMark  = " + SendInstallMark;
+                if (SendInstallMark != 0)
+                {
+                    strSql += " and SendInstallMark  <> 0 ";
+                }
+                else
+                {
+                    strSql += " and SendInstallMark  = 0";
+                }
             }
             //结束
             if (!queryParam["OverMark"].IsEmpty())
@@ -631,6 +645,7 @@ namespace HZSoft.Application.Service.CustomerManage
                     entity.SendLogisticsUserId = OperatorProvider.Provider.Current().UserId;
                     entity.SendLogisticsUserName = OperatorProvider.Provider.Current().UserName;
                     this.BaseRepository().Update(entity);
+                    RecordHelp.AddRecord(4, entity.OrderId, "补充物流信息");
                 }
             }
             catch (Exception)
@@ -640,7 +655,7 @@ namespace HZSoft.Application.Service.CustomerManage
         }
 
         /// <summary>
-        /// 发货安装
+        /// 安装
         /// </summary>
         /// <param name="keyValue">主键值</param>
         /// <param name="entity">实体对象</param>
@@ -671,6 +686,7 @@ namespace HZSoft.Application.Service.CustomerManage
                     db.Update<DZ_OrderEntity>(dZ_OrderEntity);
                     
                     db.Commit();
+                    RecordHelp.AddRecord(4, entity.OrderId, "补充安装信息");
                 }
             }
             catch (Exception)

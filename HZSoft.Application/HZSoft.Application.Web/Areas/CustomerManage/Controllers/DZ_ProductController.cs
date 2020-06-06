@@ -251,10 +251,6 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         }
         #endregion
 
-
-
-
-
         /// <summary>
         /// 上传产品
         /// </summary>

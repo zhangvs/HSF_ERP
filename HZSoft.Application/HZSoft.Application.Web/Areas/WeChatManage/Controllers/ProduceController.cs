@@ -95,7 +95,7 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
                             entity.StepName = "包装";
                             break;
                         case 6:
-                            entity.StepName = "吸塑";
+                            entity.StepName = "仓库";
                             break;
                         default:
                             break;
