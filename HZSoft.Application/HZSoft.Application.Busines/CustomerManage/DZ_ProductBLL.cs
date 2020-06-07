@@ -7,6 +7,7 @@ using System;
 using HZSoft.Application.Entity.CustomerManage;
 using HZSoft.Application.IService.CustomerManage;
 using HZSoft.Application.Service.CustomerManage;
+using System.Data;
 
 namespace HZSoft.Application.Busines.CustomerManage
 {
@@ -119,5 +120,23 @@ namespace HZSoft.Application.Busines.CustomerManage
             return service.ExistName(Name, keyValue, Id);
         }
         #endregion
+
+
+        /// <summary>
+        /// 保存表单（新增、修改）
+        /// </summary>
+        /// <returns></returns>
+        public string BatchAddEntity(DataTable dtSource)
+        {
+            try
+            {
+                string returnMsg = service.BatchAddEntity(dtSource);
+                return returnMsg;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
     }
 }

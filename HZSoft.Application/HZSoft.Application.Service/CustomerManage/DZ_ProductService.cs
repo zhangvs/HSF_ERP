@@ -6,7 +6,9 @@ using HZSoft.Data.Repository;
 using HZSoft.Util;
 using HZSoft.Util.Extension;
 using HZSoft.Util.WebControl;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 
 namespace HZSoft.Application.Service.CustomerManage
@@ -179,5 +181,91 @@ namespace HZSoft.Application.Service.CustomerManage
             return this.BaseRepository().IQueryable(expression).Count() == 0 ? true : false;
         }
         #endregion
+
+        /// <summary>
+        /// 批量（新增）
+        /// </summary>
+        /// <param name="dtSource">实体对象</param>
+        /// <returns></returns>
+        public string BatchAddEntity(DataTable dtSource)
+        {
+            int rowsCount = dtSource.Rows.Count;
+            IRepository db = new RepositoryFactory().BaseRepository().BeginTrans();
+
+            int columns = dtSource.Columns.Count;
+            string cf = "";
+            for (int i = 0; i < rowsCount; i++)
+            {
+                try
+                {
+                    string Code = dtSource.Rows[i][0].ToString();
+                    if (Code.Length == 11)
+                    {
+                        var liang_Data = db.FindEntity<DZ_ProductEntity>(t => t.Code == Code && t.DeleteMark != 1);//删除过的可以再次导入
+                        if (liang_Data != null)
+                        {
+                            cf += Code + ",";
+                        }
+                        //名称
+                        string Name = dtSource.Rows[i][1].ToString();
+                        if (string.IsNullOrEmpty(Name))
+                        {
+                            return Code + "名称为空";
+                        }
+
+                        //类别
+                        string Kind = dtSource.Rows[i][2].ToString();
+                        //规格
+                        string Guige = dtSource.Rows[i][3].ToString();
+                        //类别
+                        string itemName = dtSource.Rows[i][4].ToString();
+                        //单位
+                        string Unit = dtSource.Rows[i][5].ToString();
+                        //报价1
+                        string Plan1 = dtSource.Rows[i][6].ToString();
+                        //报价2
+                        string Plan2 = dtSource.Rows[i][6].ToString();
+                        //报价3
+                        string Plan3 = dtSource.Rows[i][6].ToString();
+                        //报价4
+                        string Plan4 = dtSource.Rows[i][6].ToString();
+
+                        //添加靓号
+                        DZ_ProductEntity entity = new DZ_ProductEntity()
+                        {
+                            Name = Name,
+                            Code = Code,
+                            Kind = Kind,
+                            Guige = Guige,
+                            Unit = Unit,
+                            Plan1 = Convert.ToDecimal(Plan1),
+                            Plan2 = Convert.ToDecimal(Plan2),
+                            Plan3 = Convert.ToDecimal(Plan3),
+                            Plan4 = Convert.ToDecimal(Plan4),
+                        };
+                        entity.Create();
+                        db.Insert(entity);
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.AddLog(ex.Message);
+                    return ex.Message;
+                }
+
+            }
+            db.Commit();
+            if (cf != "")
+            {
+                LogHelper.AddLog("跳过重复导入：" + cf);
+                return "跳过重复导入：" + cf;
+            }
+            else
+            {
+                return "导入成功";
+            }
+
+        }
     }
 }

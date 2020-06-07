@@ -39,6 +39,11 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// <returns></returns>
         public string Picture { get; set; }
         /// <summary>
+        /// 类型
+        /// </summary>
+        /// <returns></returns>
+        public string Kind { get; set; }
+        /// <summary>
         /// 规格
         /// </summary>
         /// <returns></returns>
@@ -140,6 +145,8 @@ namespace HZSoft.Application.Entity.CustomerManage
             this.CreateDate = DateTime.Now;
             this.CreateUserId = OperatorProvider.Provider.Current().UserId;
             this.CreateUserName = OperatorProvider.Provider.Current().UserName;
+            this.DeleteMark = 0;
+            this.EnabledMark = 1;
         }
         /// <summary>
         /// 编辑调用

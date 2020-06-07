@@ -2,6 +2,7 @@ using HZSoft.Application.Entity.BaseManage;
 using HZSoft.Application.Entity.CustomerManage;
 using HZSoft.Util.WebControl;
 using System.Collections.Generic;
+using System.Data;
 
 namespace HZSoft.Application.IService.CustomerManage
 {
@@ -50,6 +51,12 @@ namespace HZSoft.Application.IService.CustomerManage
         /// <param name="entity">实体对象</param>
         /// <returns></returns>
         void SaveForm(string keyValue, DZ_ProductEntity entity);
+        /// <summary>
+        /// 批量（新增）
+        /// </summary>
+        /// <param name="dtSource">实体对象</param>
+        /// <returns></returns>
+        string BatchAddEntity(DataTable dtSource);
         #endregion
 
         #region 验证数据

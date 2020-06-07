@@ -2055,6 +2055,7 @@
     <Content Include="Areas\CustomerManage\Views\DZ_Order\BackForm.cshtml" />
     <Content Include="Areas\CustomerManage\Views\DZ_Product\DZ_ProductTypeIndex.cshtml" />
     <Content Include="Areas\CustomerManage\Views\DZ_Product\DZ_ProductTypeForm.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\DZ_Product\DZ_ProductImport.cshtml" />
     <None Include="Properties\PublishProfiles\6.1.pubxml" />
     <Content Include="Areas\FlowManage\Views\FlowLaunch\Index.cshtml" />
     <Content Include="Areas\FlowManage\Views\FormDesign\FormPreview.cshtml" />
@@ -2095,6 +2096,7 @@
     <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
     <None Include="Properties\PublishProfiles\HZSoft.pubxml" />
     <None Include="Properties\PublishProfiles\Poll.pubxml" />
+    <Content Include="Resource\ExcelTemplate\物料导入模板.xls" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
