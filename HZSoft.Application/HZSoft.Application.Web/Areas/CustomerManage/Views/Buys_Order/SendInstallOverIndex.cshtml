@@ -72,16 +72,10 @@
                 {
                     label: "安排安装", name: "SendInstallMark", index: "SendInstallMark", width: 80, align: "center", sortable: false,
                     formatter: function (cellvalue) {
-                        if (cellvalue == 1) {
-                            return "<i class=\"fa fa-toggle-on\"></i>";
-                        } else if (cellvalue == -1) {
-                            return "<span style='color:red'>无需安排</span>";
-                        } else {
-                            return "<i class=\"fa fa-toggle-off\"></i>";
-                        }
+                        return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
                     }
                 },
-                { label: '安装工', name: 'InstallUserName', index: 'InstallUserName', width: 130, align: 'center', sortable: true },
+                { label: '安装人', name: 'InstallUserName', index: 'InstallUserName', width: 130, align: 'center', sortable: true },
                 { label: '安装费', name: 'InstallCost', index: 'InstallCost', width: 80, align: 'center', sortable: true },
                 { label: '安排人', name: 'SendInstallUserName', index: 'SendInstallUserName', width: 80, align: 'center', sortable: true },
                 { label: '安排日期', name: 'SendInstallDate', index: 'SendInstallDate', width: 118, align: 'left', sortable: true },
@@ -90,7 +84,7 @@
             rowNum: 30,
             rowList: [30, 50, 100],
             pager: "#gridPager",
-            sortname: 'SendInstallDate',
+            sortname: 'SendDate',
             sortorder: 'desc',
             rownumbers: true,
             shrinkToFit: false,

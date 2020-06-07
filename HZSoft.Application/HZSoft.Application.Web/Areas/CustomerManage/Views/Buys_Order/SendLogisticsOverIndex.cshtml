@@ -69,18 +69,12 @@
                 { label: '发货日期', name: 'SendOutDate', index: 'SendOutDate', width: 118, align: 'left', sortable: true },
 
                 {
-                    label: "安排物流", name: "SendLogisticsMark", index: "SendLogisticsMark", width: 80, align: "center", sortable: false,
+                    label: "安排运输", name: "SendLogisticsMark", index: "SendLogisticsMark", width: 80, align: "center", sortable: false,
                     formatter: function (cellvalue) {
-                        if (cellvalue == 1) {
-                            return "<i class=\"fa fa-toggle-on\"></i>";
-                        } else if (cellvalue == -1) {
-                            return "<span style='color:red'>无需安排</span>";
-                        } else {
-                            return "<i class=\"fa fa-toggle-off\"></i>";
-                        }
+                        return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
                     }
                 },
-                { label: '物流名称', name: 'LogisticsName', index: 'LogisticsName', width: 130, align: 'center', sortable: true },
+                { label: '运输方式', name: 'LogisticsName', index: 'LogisticsName', width: 130, align: 'center', sortable: true },
                 { label: '物流单号', name: 'LogisticsNO', index: 'LogisticsNO', width: 130, align: '', sortable: true },
                 { label: '运费', name: 'LogisticsCost', index: 'LogisticsCost', width: 80, align: 'center', sortable: true },
                 { label: '安排人', name: 'SendLogisticsUserName', index: 'SendLogisticsUserName', width: 80, align: 'center', sortable: true },
@@ -91,7 +85,7 @@
             rowNum: 30,
             rowList: [30, 50, 100],
             pager: "#gridPager",
-            sortname: 'SendOutDate',
+            sortname: 'SendDate',
             sortorder: 'desc',
             rownumbers: true,
             shrinkToFit: false,
@@ -193,8 +187,8 @@
     function btn_export() {
         dialogOpen({
             id: "ExcelIExportDialog",
-            title: '安排物流',
-            url: '/Utility/ExcelExportForm?gridId=gridTable&filename=安排物流',
+            title: '安排运输',
+            url: '/Utility/ExcelExportForm?gridId=gridTable&filename=安排运输',
             width: "500px",
             height: "380px",
             callBack: function (iframeId) {
@@ -290,7 +284,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="formTitle">安排物流：</td>
+                                    <td class="formTitle">安排运输：</td>
                                     <td class="formValue">
                                         <div id="SendLogisticsMark" type="select" class="ui-select">
                                             <ul>

@@ -35,7 +35,7 @@
         var selectedRowIndex = 0;
         var queryJson = {};
         queryJson.SendMark = 1;//发货通知的
-        queryJson.SendLogisticsMark = 0;//还没有安排物流的
+        queryJson.SendLogisticsMark = 0;//还没有安排运输的
 
         var $gridTable = $('#gridTable');
         $gridTable.jqGrid({
@@ -72,12 +72,13 @@
                 { label: '发货日期', name: 'SendOutDate', index: 'SendOutDate', width: 118, align: 'left', sortable: true },
 
                 {
-                    label: "安排物流", name: "SendLogisticsMark", index: "SendLogisticsMark", width: 80, align: "center", sortable: false,
+                    label: "安排运输", name: "SendLogisticsMark", index: "SendLogisticsMark", width: 80, align: "center", sortable: false,
                     formatter: function (cellvalue) {
                         return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
                     }
                 },
-                { label: '物流名称', name: 'LogisticsName', index: 'LogisticsName', width: 130, align: 'center', sortable: true },
+                { label: '运输方式', name: 'LogisticsName', index: 'LogisticsName', width: 130, align: 'center', sortable: true },
+                { label: '联系电话', name: 'LogisticsTel', index: 'LogisticsTel', width: 130, align: 'center', sortable: true },
                 { label: '物流单号', name: 'LogisticsNO', index: 'LogisticsNO', width: 130, align: '', sortable: true },
                 { label: '运费', name: 'LogisticsCost', index: 'LogisticsCost', width: 80, align: 'center', sortable: true },
                 { label: '安排人', name: 'SendLogisticsUserName', index: 'SendLogisticsUserName', width: 80, align: 'center', sortable: true },
@@ -190,8 +191,8 @@
     function btn_export() {
         dialogOpen({
             id: "ExcelIExportDialog",
-            title: '安排物流',
-            url: '/Utility/ExcelExportForm?gridId=gridTable&filename=安排物流',
+            title: '安排运输',
+            url: '/Utility/ExcelExportForm?gridId=gridTable&filename=安排运输',
             width: "500px",
             height: "380px",
             callBack: function (iframeId) {
@@ -201,13 +202,13 @@
     }
 
 
-    //发货物流
+    //发货运输
     function btn_wuliu() {
         var keyValue = $('#gridTable').jqGridRowValue('Id');
         if (checkedRow(keyValue)) {
             dialogOpen({
                 id: 'SendLogisticsForm',
-                title: '发货物流',
+                title: '发货运输',
                 url: '/CustomerManage/Buys_Order/SendLogisticsForm?keyValue=' + keyValue,
                 width: '650px',
                 height: '550px',
@@ -304,7 +305,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="formTitle">安排物流：</td>
+                                    <td class="formTitle">安排运输：</td>
                                     <td class="formValue">
                                         <div id="SendLogisticsMark" type="select" class="ui-select">
                                             <ul>
@@ -336,7 +337,7 @@
     <div class="toolbar">
         <div class="btn-group">
             <a id="lr-replace" class="btn btn-default" onclick="reload()"><i class="fa fa-refresh"></i>刷新</a>
-            <a id="lr-wuliu" class="btn btn-default" onclick="btn_wuliu()"><i class="fa fa-truck"></i>&nbsp;物流信息</a>
+            <a id="lr-wuliu" class="btn btn-default" onclick="btn_wuliu()"><i class="fa fa-truck"></i>&nbsp;运输信息</a>
             <a id="lr-detail" class="btn btn-default" onclick="btn_detail()"><i class="fa fa-list-alt"></i>&nbsp;详细</a>
             <a id="lr-export" class="btn btn-default" onclick="btn_export()"><i class="fa fa-sign-out"></i>&nbsp;导出</a>
         </div>

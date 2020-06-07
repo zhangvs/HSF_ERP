@@ -629,23 +629,40 @@ namespace HZSoft.Application.Service.CustomerManage
 
 
         /// <summary>
-        /// 发货物流，这个不用同步到销售表
+        /// 发货物流，同步到销售表
         /// </summary>
         /// <param name="keyValue">主键值</param>
         /// <param name="entity">实体对象</param>
         /// <returns></returns>
         public void SaveLogisticsForm(string keyValue, Buys_OrderEntity entity)
         {
+            IRepository db = this.BaseRepository().BeginTrans();
             try
             {
                 if (!string.IsNullOrEmpty(keyValue))
                 {
                     entity.Modify(keyValue);
+                    entity.SendLogisticsMark = 1;
                     entity.SendLogisticsDate = DateTime.Now;
                     entity.SendLogisticsUserId = OperatorProvider.Provider.Current().UserId;
                     entity.SendLogisticsUserName = OperatorProvider.Provider.Current().UserName;
-                    this.BaseRepository().Update(entity);
-                    RecordHelp.AddRecord(4, entity.OrderId, "补充物流信息");
+                    db.Update<Buys_OrderEntity>(entity);
+
+
+                    //同步到销售单-发货通知状态
+                    DZ_OrderEntity dZ_OrderEntity = new DZ_OrderEntity
+                    {
+                        SendLogisticsMark = 1,
+                        SendLogisticsDate = DateTime.Now,
+                        SendLogisticsUserId = OperatorProvider.Provider.Current().UserId,
+                        SendLogisticsUserName = OperatorProvider.Provider.Current().UserName
+                    };
+                    dZ_OrderEntity.Modify(entity.OrderId);
+                    db.Update<DZ_OrderEntity>(dZ_OrderEntity);
+
+                    db.Commit();
+
+                    RecordHelp.AddRecord(4, entity.OrderId, "运输信息："+ entity.LogisticsName+" "+entity.LogisticsNO+" "+entity.LogisticsTel + " " + entity.LogisticsCost);
                 }
             }
             catch (Exception)
@@ -668,7 +685,7 @@ namespace HZSoft.Application.Service.CustomerManage
                 if (!string.IsNullOrEmpty(keyValue))
                 {
                     entity.Modify(keyValue);
-                    //entity.SendInstallMark = entity.SendInstallMark;
+                    entity.SendInstallMark = 1;
                     entity.SendInstallDate = DateTime.Now;
                     entity.SendInstallUserId = OperatorProvider.Provider.Current().UserId;
                     entity.SendInstallUserName = OperatorProvider.Provider.Current().UserName;
@@ -677,7 +694,7 @@ namespace HZSoft.Application.Service.CustomerManage
                     //同步到销售单-发货通知状态
                     DZ_OrderEntity dZ_OrderEntity = new DZ_OrderEntity
                     {
-                        //SendInstallMark = entity.SendInstallMark,
+                        SendInstallMark = 1,
                         SendInstallDate = DateTime.Now,
                         SendInstallUserId = OperatorProvider.Provider.Current().UserId,
                         SendInstallUserName = OperatorProvider.Provider.Current().UserName
@@ -686,7 +703,7 @@ namespace HZSoft.Application.Service.CustomerManage
                     db.Update<DZ_OrderEntity>(dZ_OrderEntity);
                     
                     db.Commit();
-                    RecordHelp.AddRecord(4, entity.OrderId, "补充安装信息");
+                    RecordHelp.AddRecord(4, entity.OrderId, "安装信息：" + entity.InstallUserName);
                 }
             }
             catch (Exception)

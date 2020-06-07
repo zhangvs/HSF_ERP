@@ -38,7 +38,7 @@
             return false;
         }
         var postData = $("#form1").GetWebControls(keyValue);
-        postData["SendInstallMark"] = $("input[name='SendInstallMark']:checked").val();
+        //postData["SendInstallMark"] = $("input[name='SendInstallMark']:checked").val();
         $.SaveForm({
             url: "../../CustomerManage/Buys_Order/SaveInstallForm?keyValue=" + keyValue,
             param: postData,
@@ -113,9 +113,9 @@
             </td>
         </tr>
         <tr>
-            <th class="formTitle">安装工</th>
+            <th class="formTitle">安装人<font face="宋体">*</font></th>
             <td class="formValue">
-                <input id="InstallUserName" type="text" class="form-control" />
+                <input id="InstallUserName" type="text" class="form-control"  isvalid="yes" checkexpession="NotNull"/>
             </td>
             <th class="formTitle" style="width: 60px;">安装费</th>
             <td class="formValue">
@@ -123,8 +123,8 @@
             </td>
         </tr>
     </table>
-    <div class="radio" style="position:absolute;bottom:30px;right:150px">
+    @*<div class="radio" style="position:absolute;bottom:30px;right:150px">
         <label><input name="SendInstallMark" type="radio" value="-1" />&nbsp;<span style='color:red'>无需安排</span> </label>
         <label><input name="SendInstallMark" type="radio" value="1" />&nbsp;<span style='color:green'>安排</span> </label>
-    </div>
+    </div>*@
 </div>

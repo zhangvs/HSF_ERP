@@ -69,15 +69,13 @@
                 },
                 { label: '发货人', name: 'SendOutUserName', index: 'SendOutUserName', width: 80, align: 'center', sortable: true },
                 { label: '发货日期', name: 'SendOutDate', index: 'SendOutDate', width: 118, align: 'left', sortable: true },
-
-
                 {
                     label: "安排安装", name: "SendInstallMark", index: "SendInstallMark", width: 80, align: "center", sortable: false,
                     formatter: function (cellvalue) {
                         return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
                     }
                 },
-                { label: '安装工', name: 'InstallUserName', index: 'InstallUserName', width: 130, align: 'center', sortable: true },
+                { label: '安装人', name: 'InstallUserName', index: 'InstallUserName', width: 130, align: 'center', sortable: true },
                 { label: '安装费', name: 'InstallCost', index: 'InstallCost', width: 80, align: 'center', sortable: true },
                 { label: '安排人', name: 'SendInstallUserName', index: 'SendInstallUserName', width: 80, align: 'center', sortable: true },
                 { label: '安排日期', name: 'SendInstallDate', index: 'SendInstallDate', width: 118, align: 'left', sortable: true },

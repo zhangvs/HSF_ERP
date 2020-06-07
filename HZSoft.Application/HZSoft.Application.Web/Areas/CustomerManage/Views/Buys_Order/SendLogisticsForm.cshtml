@@ -38,7 +38,7 @@
             return false;
         }
         var postData = $("#form1").GetWebControls(keyValue);
-        postData["SendLogisticsMark"] = $("input[name='SendLogisticsMark']:checked").val();
+        //postData["SendLogisticsMark"] = $("input[name='SendLogisticsMark']:checked").val();
         $.SaveForm({
             url: "../../CustomerManage/Buys_Order/SaveLogisticsForm?keyValue=" + keyValue,
             param: postData,
@@ -113,11 +113,11 @@
             </td>
         </tr>
         <tr>
-            <th class="formTitle">物流名称</th>
+            <th class="formTitle">运输方式<font face="宋体">*</font></th>
             <td class="formValue">
-                <input id="LogisticsName" type="text" class="form-control" />
+                <input id="LogisticsName" type="text" class="form-control" isvalid="yes" checkexpession="NotNull"/>
             </td>
-            <th class="formTitle" style="width: 60px;">物流电话</th>
+            <th class="formTitle" style="width: 60px;">联系电话</th>
             <td class="formValue">
                 <input id="LogisticsTel" type="text" class="form-control" />
             </td>
@@ -133,8 +133,8 @@
             </td>
         </tr>
     </table>
-    <div class="radio" style="position:absolute;bottom:30px;right:150px">
+    @*<div class="radio" style="position:absolute;bottom:30px;right:150px">
         <label><input name="SendLogisticsMark" type="radio" value="-1" />&nbsp;<span style='color:red'>无需安排</span> </label>
         <label><input name="SendLogisticsMark" type="radio" value="1" />&nbsp;<span style='color:green'>安排</span> </label>
-    </div>
+    </div>*@
 </div>
