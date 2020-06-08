@@ -67,7 +67,7 @@ namespace HZSoft.Application.IService.CustomerManage
         /// <param name="keyValue">主键</param>
         /// <param name="Id">分类Id</param>
         /// <returns></returns>
-        bool ExistValue(string Value, string keyValue, string Id);
+        bool ExistCode(string Code, string keyValue, string Id);
         /// <summary>
         /// 项目名不能重复
         /// </summary>

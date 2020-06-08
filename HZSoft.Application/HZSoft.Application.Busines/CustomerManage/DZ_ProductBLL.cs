@@ -104,9 +104,9 @@ namespace HZSoft.Application.Busines.CustomerManage
         /// <param name="keyValue">主键</param>
         /// <param name="Id">分类Id</param>
         /// <returns></returns>
-        public bool ExistValue(string Value, string keyValue, string Id)
+        public bool ExistCode(string Code, string keyValue, string Id)
         {
-            return service.ExistValue(Value, keyValue, Id);
+            return service.ExistCode(Code, keyValue, Id);
         }
         /// <summary>
         /// 项目名不能重复

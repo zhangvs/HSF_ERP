@@ -20,6 +20,7 @@
 <script>
     var keyValue = request('keyValue');
     var parentId = request('parentId');
+    var parentName = unescape(request('parentName'));//中文解码
     $(function () {
         initControl();
         layui.use('upload', function () {
@@ -50,6 +51,16 @@
     });
     //初始化控件
     function initControl() {
+        $("#ParentName").val(parentName)
+        //上级
+        $("#ParentId").ComboBoxTree({
+            url: "../../CustomerManage/DZ_Product/GetTreeJson",
+            description: "==请选择==",
+            height: "230px"
+        }).bind("change", function () {
+            var text = $(this).attr('data-text');
+            $("#ParentName").val(text)
+        });;
         //获取表单
         if (!!keyValue) {
             $.SetForm({
@@ -63,7 +74,7 @@
                 }
             })
         } else {
-            $("#ParentId").val(parentId);
+            $("#ParentId").ComboBoxTreeSetValue(parentId);
         }
     }
     //保存表单;
@@ -73,8 +84,9 @@
         }
         var postData = $("#form1").GetWebControls(keyValue);
         if (postData["ParentId"] == "") {
-            postData["ParentId"] = 0;
+            dialogMsg('请选择分类信息！', 0);
         }
+        postData["IsTree"] = 0;
         //图片为空并且上传图不为空
         if (!!$("#UploadPicture").attr("imgsrc")) {
             postData.Picture = $("#UploadPicture").attr("imgsrc");
@@ -98,7 +110,6 @@
             </td>
             <td class="formTitle">编码<font face="宋体">*</font></td>
             <td class="formValue">
-                <input id="ParentId" type="hidden" class="form-control" />
                 <input id="Code" type="text" class="form-control"  isvalid="yes" checkexpession="NotNull" />
             </td>
         </tr>
@@ -136,6 +147,11 @@
             <th class="formTitle">排序<font face="宋体">*</font></th>
             <td class="formValue">
                 <input id="SortCode" type="text" class="form-control" isvalid="yes" checkexpession="Num" />
+            </td>
+            <th class="formTitle">分类<font face="宋体">*</font></th>
+            <td class="formValue">
+                <div id="ParentId" type="selectTree" class="ui-select" isvalid="yes" checkexpession="NotNull"></div>
+                <input id="ParentName" type="text" class="form-control" />
             </td>
         </tr>
         <tr>

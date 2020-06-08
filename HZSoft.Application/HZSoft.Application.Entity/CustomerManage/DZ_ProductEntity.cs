@@ -24,6 +24,11 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// <returns></returns>
         public string ParentId { get; set; }
         /// <summary>
+        /// 父类名称
+        /// </summary>
+        /// <returns></returns>
+        public string ParentName { get; set; }
+        /// <summary>
         /// 编码
         /// </summary>
         /// <returns></returns>
@@ -38,11 +43,6 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// </summary>
         /// <returns></returns>
         public string Picture { get; set; }
-        /// <summary>
-        /// 类型
-        /// </summary>
-        /// <returns></returns>
-        public string Kind { get; set; }
         /// <summary>
         /// 规格
         /// </summary>

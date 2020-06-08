@@ -47,9 +47,11 @@ namespace HZSoft.Application.Service.CustomerManage
                 string ParentId = queryParam["ParentId"].ToString();
                 strSql += " and ParentId = '" + ParentId + "'";
             }
-            else
+            //是否是分类
+            if (!queryParam["IsTree"].IsEmpty())
             {
-                strSql += " and ParentId <> '0'";
+                string IsTree = queryParam["IsTree"].ToString();
+                strSql += " and IsTree = " + IsTree;
             }
 
             if (!queryParam["keyword"].IsEmpty())
@@ -83,9 +85,11 @@ namespace HZSoft.Application.Service.CustomerManage
                 string ParentId = queryParam["ParentId"].ToString();
                 strSql += " and ParentId = '" + ParentId + "'";
             }
-            else
+            //是否是分类
+            if (!queryParam["IsTree"].IsEmpty())
             {
-                strSql += " and ParentId <> '0'";
+                string IsTree = queryParam["IsTree"].ToString();
+                strSql += " and IsTree = " + IsTree;
             }
 
             if (!queryParam["keyword"].IsEmpty())
@@ -93,7 +97,6 @@ namespace HZSoft.Application.Service.CustomerManage
                 string keyword = queryParam["keyword"].ToString();
                 strSql += " and (Name like '%" + keyword + "%' or Code like '%" + keyword + "%')";
             }
-
             return this.BaseRepository().FindList(strSql.ToString());
         }
         /// <summary>
@@ -149,14 +152,14 @@ namespace HZSoft.Application.Service.CustomerManage
         /// <summary>
         /// 项目值不能重复
         /// </summary>
-        /// <param name="Value">项目值</param>
+        /// <param name="Code">项目值</param>
         /// <param name="keyValue">主键</param>
         /// <param name="Id">分类Id</param>
         /// <returns></returns>
-        public bool ExistValue(string Value, string keyValue, string Id)
+        public bool ExistCode(string Code, string keyValue, string Id)
         {
             var expression = LinqExtensions.True<DZ_ProductEntity>();
-            expression = expression.And(t => t.Code == Value).And(t => t.Id == Id);
+            expression = expression.And(t => t.Code == Code);
             if (!string.IsNullOrEmpty(keyValue))
             {
                 expression = expression.And(t => t.Id != keyValue);
@@ -173,7 +176,7 @@ namespace HZSoft.Application.Service.CustomerManage
         public bool ExistName(string Name, string keyValue, string Id)
         {
             var expression = LinqExtensions.True<DZ_ProductEntity>();
-            expression = expression.And(t => t.Name == Name).And(t => t.Id == Id);
+            expression = expression.And(t => t.Name == Name);
             if (!string.IsNullOrEmpty(keyValue))
             {
                 expression = expression.And(t => t.Id != keyValue);
@@ -198,55 +201,70 @@ namespace HZSoft.Application.Service.CustomerManage
             {
                 try
                 {
-                    string Code = dtSource.Rows[i][0].ToString();
-                    if (Code.Length == 11)
+                    //类别
+                    string ParentName = dtSource.Rows[i][0].ToString();
+                    string ParentId = "";
+                    if (string.IsNullOrEmpty(ParentName))
                     {
-                        var liang_Data = db.FindEntity<DZ_ProductEntity>(t => t.Code == Code && t.DeleteMark != 1);//删除过的可以再次导入
-                        if (liang_Data != null)
-                        {
-                            cf += Code + ",";
-                        }
-                        //名称
-                        string Name = dtSource.Rows[i][1].ToString();
-                        if (string.IsNullOrEmpty(Name))
-                        {
-                            return Code + "名称为空";
-                        }
-
-                        //类别
-                        string Kind = dtSource.Rows[i][2].ToString();
-                        //规格
-                        string Guige = dtSource.Rows[i][3].ToString();
-                        //类别
-                        string itemName = dtSource.Rows[i][4].ToString();
-                        //单位
-                        string Unit = dtSource.Rows[i][5].ToString();
-                        //报价1
-                        string Plan1 = dtSource.Rows[i][6].ToString();
-                        //报价2
-                        string Plan2 = dtSource.Rows[i][6].ToString();
-                        //报价3
-                        string Plan3 = dtSource.Rows[i][6].ToString();
-                        //报价4
-                        string Plan4 = dtSource.Rows[i][6].ToString();
-
-                        //添加靓号
-                        DZ_ProductEntity entity = new DZ_ProductEntity()
-                        {
-                            Name = Name,
-                            Code = Code,
-                            Kind = Kind,
-                            Guige = Guige,
-                            Unit = Unit,
-                            Plan1 = Convert.ToDecimal(Plan1),
-                            Plan2 = Convert.ToDecimal(Plan2),
-                            Plan3 = Convert.ToDecimal(Plan3),
-                            Plan4 = Convert.ToDecimal(Plan4),
-                        };
-                        entity.Create();
-                        db.Insert(entity);
+                        return ParentName + "类型为空";
+                    }
+                    var productData = db.FindEntity<DZ_ProductEntity>(t => t.Name == ParentName && t.DeleteMark != 1);
+                    if (productData == null)
+                    {
+                        return ParentName + "：类型不存在，请先添加分类";
+                    }
+                    else
+                    {
+                        ParentId = productData.Id;
+                    }
+                    //名称
+                    string Name = dtSource.Rows[i][1].ToString();
+                    if (string.IsNullOrEmpty(Name))
+                    {
+                        return "名称为空：" + i;
+                    }
+                    //编号
+                    string Code = dtSource.Rows[i][2].ToString();
+                    var liang_Data = db.FindEntity<DZ_ProductEntity>(t => t.Code == Code && t.DeleteMark != 1);
+                    if (liang_Data != null)
+                    {
+                        return "编号重复：" + Code;
                     }
 
+                    //规格
+                    string Guige = dtSource.Rows[i][3].ToString();
+                    //单位
+                    string Unit = dtSource.Rows[i][4].ToString();
+                    //报价1
+                    string Plan1 = dtSource.Rows[i][5].ToString();
+                    //报价2
+                    string Plan2 = dtSource.Rows[i][6].ToString();
+                    //报价3
+                    string Plan3 = dtSource.Rows[i][7].ToString();
+                    //报价4
+                    string Plan4 = dtSource.Rows[i][8].ToString();
+                    //备注
+                    string desc = dtSource.Rows[i][9].ToString();
+
+                    //添加靓号
+                    DZ_ProductEntity entity = new DZ_ProductEntity()
+                    {
+                        ParentId = ParentId,
+                        ParentName = ParentName,
+                        Name = Name,
+                        Code = Code,
+                        Guige = Guige,
+                        Unit = Unit,
+                        Plan1 = Plan1 == "" ? 0 : Convert.ToDecimal(Plan1),
+                        Plan2 = Plan2 == "" ? 0 : Convert.ToDecimal(Plan2),
+                        Plan3 = Plan3 == "" ? 0 : Convert.ToDecimal(Plan3),
+                        Plan4 = Plan4 == "" ? 0 : Convert.ToDecimal(Plan4),
+                        IsTree = 0,
+                        SortCode = Convert.ToInt32(Code),//Covert.ToInt32()在null时不抛异常而是返回0,而num=int.Parse(str);是要抛出异常的。
+                        Description = desc
+                    };
+                    entity.Create();
+                    db.Insert(entity);
                 }
                 catch (Exception ex)
                 {

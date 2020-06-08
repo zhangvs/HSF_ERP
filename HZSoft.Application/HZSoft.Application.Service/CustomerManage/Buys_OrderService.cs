@@ -555,8 +555,8 @@ namespace HZSoft.Application.Service.CustomerManage
                     {
                         SendOutMark = 1,
                         SendOutDate = DateTime.Now,
-                        SendUserId = entity.SendUserId,
-                        SendUserName = entity.SendUserName
+                        SendOutUserId = entity.SendOutUserId,
+                        SendOutUserName = entity.SendOutUserName
                     };
                     dZ_OrderEntity.Modify(entity.OrderId);
                     db.Update<DZ_OrderEntity>(dZ_OrderEntity);
@@ -566,12 +566,11 @@ namespace HZSoft.Application.Service.CustomerManage
                     {
                         SendOutMark = 1,
                         SendOutDate = DateTime.Now,
-                        SendUserId = entity.SendUserId,
-                        SendUserName = entity.SendUserName
+                        SendOutUserId = entity.SendOutUserId,
+                        SendOutUserName = entity.SendOutUserName
                     };
                     produceEntity.Modify(entity.ProduceId);
                     db.Update<Sale_CustomerEntity>(produceEntity);
-
 
                     db.Commit();
                     RecordHelp.AddRecord(4, entity.OrderId, "·¢»õ");

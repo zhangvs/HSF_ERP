@@ -83,21 +83,17 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
 
         #region 获取数据
         /// <summary>
-        /// 分类列表 "{\"ParentId\":\"0\"}"
+        /// 分类列表 
         /// </summary>
         /// <param name="keyword">关键字查询</param>
         /// <returns>返回树形Json</returns>
         [HttpGet]
-        public ActionResult GetTreeJson(string keyword, string _parentId)
+        public ActionResult GetTreeJson(string keyword)
         {
-            var data = productbll.GetList().OrderBy(t => t.SortCode).ToList();
+            var data = productbll.GetList("{\"IsTree\":\"1\"}").OrderBy(t => t.SortCode).ToList();
             if (!string.IsNullOrEmpty(keyword))
             {
                 data = data.TreeWhere(t => t.Name.Contains(keyword), "");
-            }
-            if (!string.IsNullOrEmpty(_parentId))
-            {
-                data = data.TreeWhere(t => t.ParentId == _parentId, "Id");//主键Id
             }
             var treeList = new List<TreeEntity>();
             foreach (DZ_ProductEntity item in data)
@@ -120,34 +116,21 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         /// <summary>
         /// 明细列表
         /// </summary>
-        /// <param name="typeId">分类Id</param>
         /// <param name="keyword">关键字查询</param>
         /// <returns>返回树形列表Json</returns>
         [HttpGet]
-        public ActionResult GetTreeListJson(string typeId, string condition, string keyword)
+        public ActionResult GetTreeListJson(string keyword)
         {
-            var data = productbll.GetList("{\"ParentId\":\"" + typeId + "\"}").OrderBy(t => t.SortCode).ToList();
+            var data = productbll.GetList("{\"IsTree\":\"1\"}").OrderBy(t => t.SortCode).ToList();
             if (!string.IsNullOrEmpty(keyword))
             {
-                #region 多条件查询
-                switch (condition)
-                {
-                    case "Name":        //产品名
-                        data = data.TreeWhere(t => t.Name.Contains(keyword), "Id");
-                        break;
-                    case "Code":      //产品编号
-                        data = data.TreeWhere(t => t.Code.Contains(keyword), "Id");
-                        break;
-                    default:
-                        break;
-                }
-                #endregion
+                data = data.TreeWhere(t => t.Name.Contains(keyword), "Id");
             }
             var TreeList = new List<TreeGridEntity>();
             foreach (DZ_ProductEntity item in data)
             {
                 TreeGridEntity tree = new TreeGridEntity();
-                bool hasChildren = data.Count(t => t.ParentId == item.ParentId) == 0 ? false : true;
+                bool hasChildren = data.Count(t => t.ParentId == item.Id) == 0 ? false : true;
                 tree.id = item.Id;
                 tree.parentId = item.ParentId;
                 tree.expanded = true;
@@ -237,14 +220,14 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         /// <summary>
         /// 项目值不能重复
         /// </summary>
-        /// <param name="Value">项目值</param>
+        /// <param name="Code">项目值</param>
         /// <param name="keyValue">主键</param>
-        /// <param name="itemId">分类Id</param>
+        /// <param name="Id">分类Id</param>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult ExistValue(string Value, string keyValue, string itemId)
+        public ActionResult ExistCode(string Code, string keyValue, string Id)
         {
-            bool IsOk = productbll.ExistValue(Value, keyValue, itemId);
+            bool IsOk = productbll.ExistCode(Code, keyValue, Id);
             return Content(IsOk.ToString());
         }
         /// <summary>
@@ -252,12 +235,12 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         /// </summary>
         /// <param name="Name">项目名</param>
         /// <param name="keyValue">主键</param>
-        /// <param name="itemId">分类Id</param>
+        /// <param name="Id">分类Id</param>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult ExistName(string Name, string keyValue, string itemId)
+        public ActionResult ExistName(string Name, string keyValue, string Id)
         {
-            bool IsOk = productbll.ExistName(Name, keyValue, itemId);
+            bool IsOk = productbll.ExistName(Name, keyValue, Id);
             return Content(IsOk.ToString());
         }
         #endregion
@@ -312,7 +295,7 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         public FileResult GetFile()
         {
             string path = AppDomain.CurrentDomain.BaseDirectory + "Resource/ExcelTemplate/";
-            string fileName = "物料导入模板.xlsx";
+            string fileName = "物料导入模板.xls";
             return File(path + fileName, "application/ms-excel", fileName);
         }
 
