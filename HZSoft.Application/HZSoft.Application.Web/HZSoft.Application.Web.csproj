@@ -2056,6 +2056,7 @@
     <Content Include="Areas\CustomerManage\Views\DZ_Product\DZ_ProductTypeIndex.cshtml" />
     <Content Include="Areas\CustomerManage\Views\DZ_Product\DZ_ProductTypeForm.cshtml" />
     <Content Include="Areas\CustomerManage\Views\DZ_Product\DZ_ProductImport.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\DZ_Product\DZ_ProductDetail.cshtml" />
     <None Include="Properties\PublishProfiles\6.1.pubxml" />
     <Content Include="Areas\FlowManage\Views\FlowLaunch\Index.cshtml" />
     <Content Include="Areas\FlowManage\Views\FormDesign\FormPreview.cshtml" />
