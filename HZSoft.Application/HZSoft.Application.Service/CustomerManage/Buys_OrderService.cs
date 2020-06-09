@@ -56,6 +56,12 @@ namespace HZSoft.Application.Service.CustomerManage
                 string ProduceCode = queryParam["ProduceCode"].ToString();
                 strSql += " and ProduceCode like '%" + ProduceCode + "%'";
             }
+            //标题模糊搜索
+            if (!queryParam["OrderTitle"].IsEmpty())
+            {
+                string OrderTitle = queryParam["OrderTitle"].ToString();
+                strSql += " and OrderTitle like '%" + OrderTitle + "%'";
+            }
             //销售编号
             if (!queryParam["OrderCode"].IsEmpty())
             {
