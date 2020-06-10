@@ -12,6 +12,8 @@ using HZSoft.Application.Busines.PublicInfoManage;
 using System.Collections.Generic;
 using System.Linq;
 using HZSoft.Application.Busines.SystemManage;
+using System.Data;
+using HZSoft.Util.Offices;
 
 namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
 {
@@ -693,5 +695,67 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
             Message = "请选择要上传的文件！";
             return Content(new JsonMessage { Success = false, Code = "-1", Message = Message }.ToString());
         }
+
+
+        /// <summary>
+        /// 报价
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult KuJiaLeImport()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult KuJiaLeImport(HttpPostedFileBase filebase)
+        {
+            HttpPostedFileBase file = Request.Files["files"];
+            string FileName;
+            string savePath;
+            if (file == null || file.ContentLength <= 0)
+            {
+                ViewBag.error = "文件不能为空";
+                return View();
+            }
+            else
+            {
+                string filename = Path.GetFileName(file.FileName);
+                int filesize = file.ContentLength;//获取上传文件的大小单位为字节byte
+                string fileEx = System.IO.Path.GetExtension(filename);//获取上传文件的扩展名
+                string NoFileName = System.IO.Path.GetFileNameWithoutExtension(filename);//获取无扩展名的文件名
+                int Maxsize = 4000 * 1024;//定义上传文件的最大空间大小为4M
+                string FileType = ".xls,.xlsx";//定义上传文件的类型字符串
+
+                FileName = NoFileName + DateTime.Now.ToString("yyyyMMddhhmmss") + fileEx;
+                if (!FileType.Contains(fileEx))
+                {
+                    ViewBag.error = "文件类型不对，只能导入xls和xlsx格式的文件";
+                    return View();
+                }
+                if (filesize >= Maxsize)
+                {
+                    ViewBag.error = "上传文件超过4M，不能上传";
+                    return View();
+                }
+                string path = AppDomain.CurrentDomain.BaseDirectory + "Resource/KuJiaLe/";
+                savePath = Path.Combine(path, FileName);
+                file.SaveAs(savePath);
+            }
+
+            //excel转DataTable
+            DataTable dtSource = ExcelHelper.ExcelImport(savePath);
+
+            //批量插入TelphoneWash表
+            //SqlBulkCopyByDatatable("TelphoneWash", dtSource);
+
+            //一行行插入
+            //引用事务机制，出错时，事物回滚
+            ViewBag.error = dz_orderbll.BatchAddEntity(dtSource);
+
+            System.Threading.Thread.Sleep(2000);
+            return View();
+        }
+
     }
 }

@@ -1,6 +1,7 @@
 using HZSoft.Application.Entity.CustomerManage;
 using HZSoft.Util.WebControl;
 using System.Collections.Generic;
+using System.Data;
 
 namespace HZSoft.Application.IService.CustomerManage
 {
@@ -57,5 +58,11 @@ namespace HZSoft.Application.IService.CustomerManage
         void UpdateMoneyOkState(string keyValue,int? state);
         void UpdateOverState(string keyValue, int? state);
         #endregion
+        /// <summary>
+        /// 批量（新增）
+        /// </summary>
+        /// <param name="dtSource">实体对象</param>
+        /// <returns></returns>
+        string BatchAddEntity(DataTable dtSource);
     }
 }

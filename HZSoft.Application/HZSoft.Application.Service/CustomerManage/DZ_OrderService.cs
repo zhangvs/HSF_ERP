@@ -13,6 +13,7 @@ using HZSoft.Util.WebControl;
 using HZSoft.Util.WeChat.Comm;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -1033,5 +1034,58 @@ namespace HZSoft.Application.Service.CustomerManage
         }
 
         #endregion
+
+
+        /// <summary>
+        /// 批量（新增）
+        /// </summary>
+        /// <param name="dtSource">实体对象</param>
+        /// <returns></returns>
+        public string BatchAddEntity(DataTable dtSource)
+        {
+            int rowsCount = dtSource.Rows.Count;
+            IRepository db = new RepositoryFactory().BaseRepository().BeginTrans();
+
+            int columns = dtSource.Columns.Count;
+            for (int r = 4; r < rowsCount; r++)
+            {
+                string firstName = dtSource.Rows[r][0].ToString();
+                if (firstName.Contains("房间名称："))
+                {
+                    string room = firstName.Replace("房间名称：", "");
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                //for (int c = 0; c < columns; c++)
+                //{
+                //    try
+                //    {
+
+                //    }
+                //    catch (Exception ex)
+                //    {
+                //        LogHelper.AddLog(ex.Message);
+                //        return ex.Message;
+                //    }
+
+                //}
+            }
+            return null;
+
+        }
     }
 }

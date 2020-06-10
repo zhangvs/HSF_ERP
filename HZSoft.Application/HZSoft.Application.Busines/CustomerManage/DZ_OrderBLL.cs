@@ -4,6 +4,7 @@ using HZSoft.Application.Service.CustomerManage;
 using HZSoft.Util.WebControl;
 using System.Collections.Generic;
 using System;
+using System.Data;
 
 namespace HZSoft.Application.Busines.CustomerManage
 {
@@ -149,5 +150,23 @@ namespace HZSoft.Application.Busines.CustomerManage
             }
         }
         #endregion
+
+
+        /// <summary>
+        /// 保存表单（新增、修改）
+        /// </summary>
+        /// <returns></returns>
+        public string BatchAddEntity(DataTable dtSource)
+        {
+            try
+            {
+                string returnMsg = service.BatchAddEntity(dtSource);
+                return returnMsg;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
     }
 }

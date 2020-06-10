@@ -2057,6 +2057,7 @@
     <Content Include="Areas\CustomerManage\Views\DZ_Product\DZ_ProductTypeForm.cshtml" />
     <Content Include="Areas\CustomerManage\Views\DZ_Product\DZ_ProductImport.cshtml" />
     <Content Include="Areas\CustomerManage\Views\DZ_Product\DZ_ProductDetail.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\DZ_Order\KuJiaLeImport.cshtml" />
     <None Include="Properties\PublishProfiles\6.1.pubxml" />
     <Content Include="Areas\FlowManage\Views\FlowLaunch\Index.cshtml" />
     <Content Include="Areas\FlowManage\Views\FormDesign\FormPreview.cshtml" />
@@ -2124,6 +2125,7 @@
   <ItemGroup>
     <Folder Include="Resource\DocumentFile\System\" />
     <Folder Include="Resource\ExcelData\" />
+    <Folder Include="Resource\KuJiaLe\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\HZSoft.Cache\HZSoft.Cache.Factory\HZSoft.Cache.Factory.csproj">

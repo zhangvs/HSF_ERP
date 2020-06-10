@@ -2,7 +2,8 @@
     ViewBag.Title = "报价";
     Layout = "~/Views/Shared/_Index.cshtml";
 }
-<script>;
+<script>
+;
     $(function () {
         InitialPage();
         GetGrid();
@@ -168,7 +169,7 @@
                 $('#' + this.id).setSelection(selectedRowIndex, false);
             }
         });
-        
+
         //点击时间范围（今天、近7天、近一个月、近三个月）
         $("#time_horizon a.btn-default").click(function () {
             $("#time_horizon a.btn-default").removeClass("active");
@@ -233,7 +234,22 @@
             })
         }
     }
+
+    //批量导入
+    function btn_import() {
+        layer.open({
+            type: 2,
+            title: '导入',
+            shadeClose: true,
+            shade: false,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['650px', '450px'],
+            content: '/CustomerManage/DZ_Order/KuJiaLeImport'
+        });
+    }
 </script>
+<link href="~/Content/layer2/mobile/need/layer.css" rel="stylesheet" />
+<script src="~/Content/layer2/layer.js" type="text/javascript"></script>
 <div class="titlePanel">
     <div class="title-search">
         <table>
@@ -346,6 +362,7 @@
         <div class="btn-group">
             <a id="lr-replace" class="btn btn-default" onclick="reload()"><i class="fa fa-refresh"></i>&nbsp;刷新</a>
             <a id="lr-edit" class="btn btn-default" onclick="btn_edit()"><i class="fa fa-pencil-square-o"></i>&nbsp;报价</a>
+            <a id="lr-import" class="btn btn-default" onclick="btn_import()"><i class="fa fa-level-down"></i>&nbsp;导入</a>
         </div>
     </div>
     @*<script>$('.toolbar').authorizeButton()</script>*@
