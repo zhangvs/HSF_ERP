@@ -435,18 +435,8 @@ namespace HZSoft.Application.Service.CustomerManage
 
                     if (entity.DownMark == -1 && oldEntity.DownMark != -1)// && string.IsNullOrEmpty(oldEntity.DownPath)//不管之前有没有上传都修改下单状态
                     {
-                        var hsf_CardList = db.IQueryable<Hsf_CardEntity>(t => t.Name.Equals(oldEntity.MoneyOkMark));//发送给创建订单的人，店长代替店员创建，所以店长能看见拆单报价
-                        if (hsf_CardList.Count() != 0)
-                        {
-                            var hsf_CardEntity = hsf_CardList.First();
-                            //发微信模板消息---营销收款之后，给销售员提醒--（收款确认提醒：部分收款）
-                            string backMsg = TemplateWxApp.SendTemplateReject(hsf_CardEntity.OpenId, "您好，下单人驳回订单!", oldEntity.OrderCode, oldEntity.OrderTitle);
-                            if (backMsg != "ok")
-                            {
-                                //业务员没有关注公众号，报错：微信Post请求发生错误！错误代码：43004，说明：require subscribe hint: [ziWtva03011295]
-                                LogHelper.AddLog(entity.SalesmanUserName + "没有关注公众号");//记录日志
-                            }
-                        }
+                        //给刘一珠发驳回提醒
+                        string backMsg = TemplateWxApp.SendTemplateReject("oA-EC1X0OoVmzyowOqxYHlY5NHX4", "您好，下单人驳回订单!", oldEntity.OrderCode, oldEntity.OrderTitle);
                         RecordHelp.AddRecord(4, entity.OrderId, "生产下单驳回");
 
                         entity.DownPath = null;//下单驳回，下单附件路径清空

@@ -190,6 +190,7 @@
     <Compile Include="Areas\CustomerManage\Controllers\CustomerController.cs" />
     <Compile Include="Areas\CustomerManage\Controllers\DZSH_OrderController.cs" />
     <Compile Include="Areas\CustomerManage\Controllers\DZ_DayWorkController.cs" />
+    <Compile Include="Areas\CustomerManage\Controllers\DZ_Money_RoomController.cs" />
     <Compile Include="Areas\CustomerManage\Controllers\DZ_OrderController.cs" />
     <Compile Include="Areas\CustomerManage\Controllers\DZ_ProductController.cs" />
     <Compile Include="Areas\CustomerManage\Controllers\ExpensesController.cs" />
@@ -2058,6 +2059,8 @@
     <Content Include="Areas\CustomerManage\Views\DZ_Product\DZ_ProductImport.cshtml" />
     <Content Include="Areas\CustomerManage\Views\DZ_Product\DZ_ProductDetail.cshtml" />
     <Content Include="Areas\CustomerManage\Views\DZ_Order\KuJiaLeImport.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\DZ_Money_Room\DZ_Money_RoomForm.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\DZ_Money_Room\DZ_Money_RoomIndex.cshtml" />
     <None Include="Properties\PublishProfiles\6.1.pubxml" />
     <Content Include="Areas\FlowManage\Views\FlowLaunch\Index.cshtml" />
     <Content Include="Areas\FlowManage\Views\FormDesign\FormPreview.cshtml" />

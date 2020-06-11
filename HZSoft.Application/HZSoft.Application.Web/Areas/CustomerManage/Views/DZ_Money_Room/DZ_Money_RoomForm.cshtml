@@ -1,0 +1,206 @@
+@{;
+    ViewBag.Title = "表单页面";
+    Layout = "~/Views/Shared/_OrderForm.cshtml";
+}
+<script>
+    var keyValue = request('keyValue');
+    $(function () {
+        InitialPage();
+        GetOrderEntryGrid();
+        initControl();
+    });
+    //初始化页面
+    function InitialPage() {;
+        //resize重设(表格、树形)宽高
+        $(window).resize(function (e) {
+            window.setTimeout(function () {
+                $('#gridTable').setGridWidth(($('.gridPanel').width()));
+                $('#gridTable').setGridHeight($(window).height() - 240.5);
+            }, 200);
+            e.stopPropagation();
+        });
+    }
+    //加载明细表
+    function GetOrderEntryGrid() {
+        var $grid = $('#gridTable');
+        $grid.jqGrid({
+            unwritten: false,
+            datatype: 'local',
+            height: $(window).height() - 240.5,
+            autowidth: true,
+            colModel: [
+{ label: '主键', name: 'ItemId', width: 80, align: '', sortable: false, resizable: false ,hidden: true },
+{ label: '订单Id', name: 'OrderId', width: 80, align: '', sortable: false, resizable: false ,hidden: true },
+{ label: '订单编号', name: 'OrderCode', width: 80, align: '', sortable: false, resizable: false  },
+{ label: '房间Id', name: 'RoomId', width: 80, align: '', sortable: false, resizable: false ,hidden: true },
+{ label: '房间名称', name: 'RoomName', width: 80, align: '', sortable: false, resizable: false  },
+{ label: '产品Id', name: 'ProductId', width: 80, align: '', sortable: false, resizable: false ,hidden: true },
+{ label: '产品编号', name: 'ProductCode', width: 80, align: '', sortable: false, resizable: false  },
+{ label: '产品名称', name: 'ProductName', width: 80, align: '', sortable: false, resizable: false  },
+{ label: '数量', name: 'Count', width: 80, align: '', sortable: false, resizable: false  },
+{ label: '单位', name: 'Unit', width: 80, align: '', sortable: false, resizable: false  },
+{ label: '单价', name: 'Price', width: 80, align: '', sortable: false, resizable: false  },
+{ label: '金额', name: 'Amount', width: 80, align: '', sortable: false, resizable: false  },
+{ label: '排序', name: 'Sort', width: 80, align: '', sortable: false, resizable: false  },
+{ label: '描述', name: 'Description', width: 80, align: '', sortable: false, resizable: false  },
+{ label: '添加时间', name: 'CreateDate', width: 80, align: '', sortable: false, resizable: false  },
+{ label: '修改日期', name: 'ModifyDate', width: 80, align: '', sortable: false, resizable: false  },
+            ],
+            pager: false,
+            rownumbers: true,
+            shrinkToFit: false,
+            gridview: true,
+            footerrow: false,
+            gridComplete: function () {
+            }
+        });
+        //默认添加13行 空行
+        for (var i = 1; i < 13; i++) {
+            var rowdata = {
+ItemId: '<input name="ItemId" type="text" class="editable center" />',
+OrderId: '<input name="OrderId" type="text" class="editable center" />',
+OrderCode: '<input name="OrderCode" type="text" class="editable center" />',
+RoomId: '<input name="RoomId" type="text" class="editable center" />',
+RoomName: '<input name="RoomName" type="text" class="editable center" />',
+ProductId: '<input name="ProductId" type="text" class="editable center" />',
+ProductCode: '<input name="ProductCode" type="text" class="editable center" />',
+ProductName: '<input name="ProductName" type="text" class="editable center" />',
+Count: '<input name="Count" type="text" class="editable center" />',
+Unit: '<input name="Unit" type="text" class="editable center" />',
+Price: '<input name="Price" type="text" class="editable center" />',
+Amount: '<input name="Amount" type="text" class="editable center" />',
+Sort: '<input name="Sort" type="text" class="editable center" />',
+Description: '<input name="Description" type="text" class="editable center" />',
+CreateDate: '<input name="CreateDate" type="text" class="editable center" />',
+ModifyDate: '<input name="ModifyDate" type="text" class="editable center" />',
+            }
+            $grid.jqGrid('addRowData', i, rowdata);
+        };
+    }
+    //初始化控件
+    function initControl() {
+        //获取表单
+        if (!!keyValue) {
+            $.SetForm({
+                url: "../../CustomerManage/DZ_Money_Room/GetFormJson",
+                param: { keyValue: keyValue },
+                success: function (data) {
+                    $("#form1").SetWebControls(data.entity);
+                    //明细
+                    var childEntity = data.childEntity;
+                    $('#gridTable').find('[role=row]').each(function (i) {
+                        var row = childEntity[i - 1];
+                        if (row != undefined) {
+$(this).find('input[name="ItemId"]').val(row.ItemId);
+$(this).find('input[name="OrderId"]').val(row.OrderId);
+$(this).find('input[name="OrderCode"]').val(row.OrderCode);
+$(this).find('input[name="RoomId"]').val(row.RoomId);
+$(this).find('input[name="RoomName"]').val(row.RoomName);
+$(this).find('input[name="ProductId"]').val(row.ProductId);
+$(this).find('input[name="ProductCode"]').val(row.ProductCode);
+$(this).find('input[name="ProductName"]').val(row.ProductName);
+$(this).find('input[name="Count"]').val(row.Count);
+$(this).find('input[name="Unit"]').val(row.Unit);
+$(this).find('input[name="Price"]').val(row.Price);
+$(this).find('input[name="Amount"]').val(row.Amount);
+$(this).find('input[name="Sort"]').val(row.Sort);
+$(this).find('input[name="Description"]').val(row.Description);
+$(this).find('input[name="CreateDate"]').val(row.CreateDate);
+$(this).find('input[name="ModifyDate"]').val(row.ModifyDate);
+                        }
+                    });
+                }
+            })
+        }
+    }
+    //保存表单;
+    function AcceptClick() {
+        if (!$('#form1').Validform()) {
+            return false;
+        }
+        var postData = $("#form1").GetWebControls(keyValue);
+        var childEntryJson = [];
+        $('#gridTable').find('[role=row]').each(function (i) {
+        if (!!$(this).find('input[name="OrderCode"]').val()) {
+            childEntryJson.push({
+ItemId: $(this).find('input[name="ItemId"]').val(),
+OrderId: $(this).find('input[name="OrderId"]').val(),
+OrderCode: $(this).find('input[name="OrderCode"]').val(),
+RoomId: $(this).find('input[name="RoomId"]').val(),
+RoomName: $(this).find('input[name="RoomName"]').val(),
+ProductId: $(this).find('input[name="ProductId"]').val(),
+ProductCode: $(this).find('input[name="ProductCode"]').val(),
+ProductName: $(this).find('input[name="ProductName"]').val(),
+Count: $(this).find('input[name="Count"]').val(),
+Unit: $(this).find('input[name="Unit"]').val(),
+Price: $(this).find('input[name="Price"]').val(),
+Amount: $(this).find('input[name="Amount"]').val(),
+Sort: $(this).find('input[name="Sort"]').val(),
+Description: $(this).find('input[name="Description"]').val(),
+CreateDate: $(this).find('input[name="CreateDate"]').val(),
+ModifyDate: $(this).find('input[name="ModifyDate"]').val(),
+                 });
+            }
+        });
+        $.SaveForm({
+            url: "../../CustomerManage/DZ_Money_Room/SaveForm?keyValue=" + keyValue,
+            param: { "strEntity": JSON.stringify(postData), "strChildEntitys": JSON.stringify(childEntryJson) },
+            loading: "正在保存数据...",
+            success: function () {
+                $.currentIframe().$("#gridTable").trigger("reloadGrid");
+            }
+        })
+    }
+</script>
+<div class="bills" >
+ <div style="height:190px;overflow-y:auto;margin:10px 10px;">
+    <table class="form" style="width: 100%;">
+        <tr>
+<th class="formTitle" style="width: 60px;">房间主键<font face="宋体">*</font></th>
+<td class="formValue"><input id="RoomId" type="text"  class="form-control" isvalid="yes" checkexpession="NotNull"></td>
+<th class="formTitle" style="width: 60px;">房间名称</th>
+<td class="formValue"><input id="RoomName" type="text"  class="form-control" ></td>
+<th class="formTitle" style="width: 60px;">订单Id</th>
+<td class="formValue"><input id="OrderId" type="text"  class="form-control" ></td>
+<th class="formTitle" style="width: 60px;">订单编号</th>
+<td class="formValue"><input id="OrderCode" type="text"  class="form-control" ></td>
+</tr>
+<tr>
+<th class="formTitle" style="width: 60px;">金额</th>
+<td class="formValue"><input id="RoomAmount" type="text"  class="form-control" ></td>
+<th class="formTitle" style="width: 60px;">排序</th>
+<td class="formValue"><input id="Sort" type="text"  class="form-control" ></td>
+<th class="formTitle" style="width: 60px;">描述</th>
+<td class="formValue"><input id="Description" type="text"  class="form-control" ></td>
+<th class="formTitle" style="width: 60px;">添加时间</th>
+<td class="formValue"><input id="CreateDate" type="text"  class="form-control" ></td>
+</tr>
+<tr>
+<th class="formTitle" style="width: 60px;">修改日期</th>
+<td class="formValue"><input id="ModifyDate" type="text"  class="form-control" ></td>
+     </tr>
+    </table>
+ </div>
+ <div class="gridPanel" >
+     <table id="gridTable" ></table>
+ </div>
+</div>
+<style>
+    body {
+        margin:0px;
+    }
+    .bills {
+        overflow: hidden;
+        border-radius: 0px;
+        position: relative;
+        background: #FFFFFF;
+        border: 0px solid rgb(204, 204, 204);
+        box-shadow:none;
+        padding: 0px;
+    }
+    .ui-widget-content {
+        border-left: 0px;
+        border-right: 0px;
+        border-bottom: 0px;
+    }
+</style>

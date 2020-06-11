@@ -814,6 +814,22 @@ namespace HZSoft.Application.Service.CustomerManage
                         }
                     }
                     #endregion
+
+                    #region 修改付款方式，不需要收取预付款
+                    //如果修改为不需要收取预付款，并且报价审核完成
+                    if (entity.FrontMark == 0 && oldEntity.FrontMark == 1 && oldEntity.MoneyOkMark == 1)
+                    {
+                        //初始化生产单
+                        Sale_CustomerEntity sale_CustomerEntity = db.FindEntity<Sale_CustomerEntity>(t => t.ProduceId == oldEntity.Code);//老销售单code会生成生产单id
+                        if (sale_CustomerEntity == null)
+                        {
+                            //自动创建【生产单】主单部分*****************，重点：同步更新报价审核状态和报价审核时间
+                            Sale_Customer_Main.SaveSaleMain(db, oldEntity);//如果下单不及时，可能重复创建
+                        }
+                        RecordHelp.AddRecord(4, keyValue, "修改为不需要下单前付款");
+                    } 
+                    #endregion
+
                     entity.Modify(keyValue);
                     this.BaseRepository().Update(entity);//要放在oldEntity后面修改才可以，否则oldEntity和entity都是一样的了
                 }
@@ -1047,12 +1063,68 @@ namespace HZSoft.Application.Service.CustomerManage
             IRepository db = new RepositoryFactory().BaseRepository().BeginTrans();
 
             int columns = dtSource.Columns.Count;
+            DZ_Money_RoomEntity dZ_Money_RoomEntity = null;
+            DZ_Money_ItemEntity dZ_Money_ItemEntity = null;
+
             for (int r = 4; r < rowsCount; r++)
             {
                 string firstName = dtSource.Rows[r][0].ToString();
                 if (firstName.Contains("房间名称："))
                 {
                     string room = firstName.Replace("房间名称：", "");
+                    dZ_Money_RoomEntity = new DZ_Money_RoomEntity()
+                    {
+                        RoomName = room
+                    };
+                    dZ_Money_RoomEntity.Create();
+
+                    //从当前房间开始遍历，获取当前房间的详情
+                    for (r = r+1; r < rowsCount; r++)
+                    {
+                        firstName= dtSource.Rows[r][0].ToString();
+                        if (firstName.Contains("板件汇总"))
+                        {
+                            for (r = r+1; r < rowsCount; r++)
+                            {
+                                firstName = dtSource.Rows[r][0].ToString();
+                                if (firstName.Contains("厚度"))
+                                {
+                                    string houdu= dtSource.Rows[r][1].ToString();//18
+                                    string caizhi = dtSource.Rows[r][3].ToString();//横纹暖白浮雕颗粒板		
+                                    string count = dtSource.Rows[r][5].ToString();//横纹暖白浮雕颗粒板	
+                                    //判断物料表名称	获取单价	
+
+                                    dZ_Money_ItemEntity = new DZ_Money_ItemEntity()
+                                    {
+                                        RoomId= dZ_Money_RoomEntity.RoomId,
+                                        RoomName=room,
+                                        ProductName = caizhi,
+                                        GuiGe=houdu,
+                                        Count=Convert.ToDecimal(count)
+                                    };
+                                    dZ_Money_ItemEntity.Create();
+                                    db.Insert<DZ_Money_ItemEntity>(dZ_Money_ItemEntity);//插入柜体部分item
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+
+                            break;
+                        }
+
+                        if (firstName.Contains("门板清单"))
+                        {
+
+                        }
+
+
+                        if (firstName.Contains("五金"))
+                        {
+
+                        }
+                    }
                 }
 
 
