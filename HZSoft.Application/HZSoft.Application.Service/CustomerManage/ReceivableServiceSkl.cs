@@ -187,8 +187,8 @@ namespace HZSoft.Application.Service.CustomerManage
             entity.Create();
             this.BaseRepository().Insert(entity);
 
-            //发微信模板消息---营销收款之后，给财务提醒--刘一珠（收款提醒）
-            TemplateWxApp.SendTemplateReceivable("oA-EC1X0OoVmzyowOqxYHlY5NHX4","您好，有新的收款需要确认!", entity.Code, entity.PaymentPrice.ToString(), entity.OrderTitle);
+            //发微信模板消息---营销收款之后，给财务提醒--刘一珠改刘庆莉（收款提醒）
+            TemplateWxApp.SendTemplateReceivable("oA-EC1bg4U16c63kR6yj51lA5AiM","您好，有新的收款需要确认!", entity.Code, entity.PaymentPrice.ToString(), entity.OrderTitle);
             RecordHelp.AddRecord(4, entity.OrderId, "收款"+ entity.PaymentPrice.ToString());
         }
 

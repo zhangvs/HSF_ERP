@@ -108,7 +108,7 @@ namespace HZSoft.Util.WeChat.Comm
 
         /// <summary>
         /// 给财务报价审核提醒
-        /// TemplateWxApp.SendTemplateMoney("oA-EC1X0OoVmzyowOqxYHlY5NHX4", "您好，有新的报价需要审核!", "研发中心", entity.OrderTitle, entity.Code, "请进行报价审核。");
+        /// TemplateWxApp.SendTemplateMoney("oA-EC1bg4U16c63kR6yj51lA5AiM", "您好，有新的报价需要审核!", "研发中心", entity.OrderTitle, entity.Code, "请进行报价审核。");
         /// </summary>
         /// <param name="openId"></param>
         /// <param name="template_id"></param>
@@ -197,7 +197,7 @@ namespace HZSoft.Util.WeChat.Comm
 
         /// <summary>
         /// 收款提醒
-        /// TemplateWxApp.SendTemplateReceivable("oA-EC1X0OoVmzyowOqxYHlY5NHX4","您好，有新的收款需要确认!", entity.Code, entity.PaymentPrice.ToString(), entity.OrderTitle);
+        /// TemplateWxApp.SendTemplateReceivable("oA-EC1bg4U16c63kR6yj51lA5AiM","您好，有新的收款需要确认!", entity.Code, entity.PaymentPrice.ToString(), entity.OrderTitle);
         /// </summary>
         /// <param name="openId"></param>
         /// <param name="template_id"></param>

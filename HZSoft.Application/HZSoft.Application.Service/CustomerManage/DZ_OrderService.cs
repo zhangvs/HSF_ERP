@@ -789,9 +789,9 @@ namespace HZSoft.Application.Service.CustomerManage
                     //报价之后，给财务发消息提醒
                     if (entity.MoneyMark == 1 && oldEntity.MoneyMark != 1)
                     {
-                        //发微信模板消息---研发报价之后，给财务提醒--刘一珠oA-EC1X0OoVmzyowOqxYHlY5NHX4
+                        //发微信模板消息---研发报价之后，给财务提醒--刘一珠改刘庆莉oA-EC1bg4U16c63kR6yj51lA5AiM
                         //订单生成通知（报价提醒）
-                        TemplateWxApp.SendTemplateMoney("oA-EC1X0OoVmzyowOqxYHlY5NHX4", "您好，有新的报价需要审核!", "研发中心", entity.OrderTitle, entity.Code, "请进行报价审核。");
+                        TemplateWxApp.SendTemplateMoney("oA-EC1bg4U16c63kR6yj51lA5AiM", "您好，有新的报价需要审核!", "研发中心", entity.OrderTitle, entity.Code, "请进行报价审核。");
                         RecordHelp.AddRecord(4, keyValue, "报价");
                     }
                     if (entity.MoneyMark == -1 && oldEntity.MoneyMark != -1)

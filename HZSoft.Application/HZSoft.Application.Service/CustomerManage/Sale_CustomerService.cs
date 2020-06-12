@@ -435,8 +435,8 @@ namespace HZSoft.Application.Service.CustomerManage
 
                     if (entity.DownMark == -1 && oldEntity.DownMark != -1)// && string.IsNullOrEmpty(oldEntity.DownPath)//不管之前有没有上传都修改下单状态
                     {
-                        //给刘一珠发驳回提醒
-                        string backMsg = TemplateWxApp.SendTemplateReject("oA-EC1X0OoVmzyowOqxYHlY5NHX4", "您好，下单人驳回订单!", oldEntity.OrderCode, oldEntity.OrderTitle);
+                        //给刘一珠改刘庆莉发驳回提醒
+                        string backMsg = TemplateWxApp.SendTemplateReject("oA-EC1bg4U16c63kR6yj51lA5AiM", "您好，下单人驳回订单!", oldEntity.OrderCode, oldEntity.OrderTitle);
                         RecordHelp.AddRecord(4, entity.OrderId, "生产下单驳回");
 
                         entity.DownPath = null;//下单驳回，下单附件路径清空

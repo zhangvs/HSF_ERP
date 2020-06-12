@@ -76,7 +76,7 @@ namespace HZSoft.Application.Web
 
 
 
-            ////发微信模板消息---研发报价之后，给财务提醒--刘一珠oA-EC1X0OoVmzyowOqxYHlY5NHX4
+            ////发微信模板消息---研发报价之后，给财务提醒--刘一珠改刘庆莉oA-EC1bg4U16c63kR6yj51lA5AiM
             ////订单生成通知（3报价提醒）
             //TemplateWxApp.SendTemplateMoney("oA-EC1Ucth5a3bkvcJSdiTCizz_g",
             //    "您好，有新的报价需要审核!", "研发中心", "联动柜", "SKL-20200506003", "请进行报价审核。");
@@ -88,7 +88,7 @@ namespace HZSoft.Application.Web
 
 
 
-            ////发微信模板消息---营销收款之后，给财务提醒--刘一珠（5收款提醒）
+            ////发微信模板消息---营销收款之后，给财务提醒--刘一珠改刘庆莉（5收款提醒）
             //TemplateWxApp.SendTemplateReceivable("oA-EC1Ucth5a3bkvcJSdiTCizz_g",
             //    "您好，有新的收款需要确认!", "联动柜", "281", "此客户为九折供货，客户打款按全款打的款，多出的28元，下次抵货款。");
 
