@@ -237,15 +237,18 @@
 
     //批量导入
     function btn_import() {
-        layer.open({
-            type: 2,
-            title: '导入',
-            shadeClose: true,
-            shade: false,
-            maxmin: true, //开启最大化最小化按钮
-            area: ['650px', '450px'],
-            content: '/CustomerManage/DZ_Order/KuJiaLeImport'
-        });
+        var keyValue = $('#gridTable').jqGridRowValue('Id');
+        if (checkedRow(keyValue)) {
+            layer.open({
+                type: 2,
+                title: '导入',
+                shadeClose: true,
+                shade: false,
+                maxmin: true, //开启最大化最小化按钮
+                area: ['650px', '450px'],
+                content: '/CustomerManage/DZ_Order/KuJiaLeImport?keyValue=' + keyValue
+             });
+        }
     }
 </script>
 <link href="~/Content/layer2/mobile/need/layer.css" rel="stylesheet" />

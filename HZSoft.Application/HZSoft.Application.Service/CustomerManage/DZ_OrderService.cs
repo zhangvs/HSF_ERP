@@ -826,12 +826,28 @@ namespace HZSoft.Application.Service.CustomerManage
                             //自动创建【生产单】主单部分*****************，重点：同步更新报价审核状态和报价审核时间
                             Sale_Customer_Main.SaveSaleMain(db, oldEntity);//如果下单不及时，可能重复创建
                         }
-                        RecordHelp.AddRecord(4, keyValue, "修改为不需要下单前付款");
-                    } 
+                        RecordHelp.AddRecord(4, keyValue, "修改为不需要收预付款");
+                    }
+                    #endregion
+
+                    #region 修改付款方式，不需要收取尾款，同步到入库单AfterMark尾款状态
+                    if (entity.AfterMark !=oldEntity.AfterMark)
+                    {
+                        Buys_OrderEntity buys_CustomerEntity = db.FindEntity<Buys_OrderEntity>(t => t.Id == oldEntity.Code);//老销售单code会生成生产单id
+                        if (buys_CustomerEntity!=null)
+                        {
+                            Buys_OrderEntity buys_OrderEntity = new Buys_OrderEntity();
+                            buys_OrderEntity.AfterMark = entity.AfterMark;
+                            buys_OrderEntity.Id = oldEntity.Code;
+                            db.Update<Buys_OrderEntity>(buys_OrderEntity);
+                            RecordHelp.AddRecord(4, keyValue, "修改为不需要收尾款");
+                        }
+                    }
                     #endregion
 
                     entity.Modify(keyValue);
-                    this.BaseRepository().Update(entity);//要放在oldEntity后面修改才可以，否则oldEntity和entity都是一样的了
+                    db.Update<DZ_OrderEntity>(entity);//要放在oldEntity后面修改才可以，否则oldEntity和entity都是一样的了
+                    db.Commit();
                 }
                 else
                 {
@@ -1091,8 +1107,10 @@ namespace HZSoft.Application.Service.CustomerManage
                                 {
                                     string houdu= dtSource.Rows[r][1].ToString();//18
                                     string caizhi = dtSource.Rows[r][3].ToString();//横纹暖白浮雕颗粒板		
-                                    string count = dtSource.Rows[r][5].ToString();//横纹暖白浮雕颗粒板	
+                                    string count = dtSource.Rows[r][5].ToString();//
                                     //判断物料表名称	获取单价	
+                                    var product = db.FindEntity<DZ_ProductEntity>(t => t.Guige.Contains(houdu) && t.Name.Contains(caizhi.Substring(caizhi.Length - 3)));//颗粒板+厚度18
+
 
                                     dZ_Money_ItemEntity = new DZ_Money_ItemEntity()
                                     {

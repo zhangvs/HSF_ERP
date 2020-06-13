@@ -14,10 +14,9 @@ using System.Web.Mvc;
 
 namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
 {
-    [HandlerWXAuthorizeAttribute(LoginMode.Enforce)]
+    //[HandlerWXAuthorizeAttribute(LoginMode.Enforce)]
     public class ProduceController : BaseWxUserController
     {
-        private Sale_CustomerBLL yuBLL = new Sale_CustomerBLL();
         private DZ_OrderBLL dz_orderbll = new DZ_OrderBLL();
         private Hsf_CardBLL hsf_cardbll = new Hsf_CardBLL();
         private Sale_CustomerBLL sale_customerbll = new Sale_CustomerBLL();
@@ -123,7 +122,7 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
         public ActionResult StepSweepcode(string id)
         {
             //string OpenId = "oA-EC1VOfXpxFIa3K9rvSPBwvgrQ";
-            string OpenId = CurrentWxUser.OpenId;
+            string OpenId = "oA-EC1UWi8i4sSkHsWV6BK7CuopA";
             //JObject queryJson = new JObject {
             //            { "OpenId", CurrentWxUser.OpenId }
             //        };
@@ -272,15 +271,9 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
                             buy_orderbll.SaveBuyMain(proEntity);
                         }
                         break;
-                    case 6:
-                        if (proEntity.XiSuMark == 2)
-                        {
-                            return RedirectToAction("Error", new { msg = "已经扫码成功，无需再次扫码！" });
-                        }
-                        proEntity.XiSuDate = DateTime.Now;
-                        proEntity.XiSuUserName = entity.Name;
-                        proEntity.XiSuMark = 2;
-                        break;
+                    case 6://仓库,扫码生成一个入库单
+                        buy_orderbll.SaveBuyMain(proEntity);
+                        return RedirectToAction("EnterForm", new { keyValue = proEntity.ProduceId });
                     default:
                         break;
                 }
@@ -298,6 +291,8 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
                 return RedirectToAction("MakeCard");
             }
         }
+
+
         /// <summary>
         /// 提交个人资料
         /// </summary>
@@ -350,12 +345,11 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
         /// <returns>返回对象Json</returns>
         public ActionResult GetFormJson(string keyValue)
         {
-            var data = yuBLL.GetEntity(keyValue);
-            var childData = yuBLL.GetDetails(keyValue);
+            var data = sale_customerbll.GetEntity(keyValue);
+            var childData = sale_customerbll.GetDetails(keyValue);
             var jsonData = new { entity = data, childEntity = childData };
             return Content(jsonData.ToJson());
         }
-
 
         /// <summary>
         /// 提交剩余库存单信息
@@ -370,10 +364,50 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
             var entity = strEntity.ToObject<Sale_CustomerEntity>();
             var childEntitys = strChildEntitys.ToList<Sale_Customer_ItemEntity>();
 
-            yuBLL.SaveForm(keyValue, entity, childEntitys);
+            sale_customerbll.SaveForm(keyValue, entity, childEntitys);
             return Content("true");
         }
 
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult EnterForm()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// 获取实体 
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <returns>返回对象Json</returns>
+        public ActionResult GetBuysFormJson(string keyValue)
+        {
+            var data = buy_orderbll.GetEntity(keyValue);
+            var childData = buy_orderbll.GetDetails(keyValue);
+            var jsonData = new { entity = data, childEntity = childData };
+            return Content(jsonData.ToJson());
+        }
+
+        /// <summary>
+        /// 提交入库数量
+        /// </summary>
+        /// <param name="keyValue"></param>
+        /// <param name="strEntity"></param>
+        /// <param name="strChildEntitys"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult SaveBuysForm(string keyValue, string strEntity, string strChildEntitys)
+        {
+            var entity = strEntity.ToObject<Buys_OrderEntity>();
+            var childEntitys = strChildEntitys.ToList<Buys_OrderItemEntity>();
+
+            buy_orderbll.SaveForm(keyValue, entity, childEntitys);
+            return Content("true");
+        }
 
     }
 }

@@ -332,6 +332,39 @@
             })
         }
     }
+    //撤单
+    function btn_back() {
+        var keyValue = $('#gridTable').jqGridRowValue('Id');
+        if (checkedRow(keyValue)) {
+            dialogOpen({
+                id: 'BackForm',
+                title: '撤单',
+                url: '/CustomerManage/DZ_Order/BackForm?keyValue=' + keyValue,
+                width: '550px',
+                height: '750px',
+                callBack: function (iframeId) {
+                    top.frames[iframeId].AcceptClick();
+                }
+            })
+        }
+    }
+    //操作记录
+    function btn_chancetrail() {
+        var keyValue = $("#gridTable").jqGridRowValue('Id');
+        var OrderTitle = $("#gridTable").jqGridRowValue('OrderTitle');
+        if (keyValue) {
+            dialogOpen({
+                id: 'ChanceTrailIndex',
+                title: OrderTitle + ' - 操作记录',
+                url: '/CustomerManage/TrailRecord/ReadIndex?objectId=' + keyValue + '&objectSort=4',
+                width: '550px',
+                height: '750px',
+                btn: null
+            });
+        } else {
+            dialogMsg('请选择订单信息！', 0);
+        }
+    }
 </script>
 <div class="titlePanel">
     <div class="title-search">
@@ -469,12 +502,11 @@
         <div class="btn-group">
             <a id="lr-replace" class="btn btn-default" onclick="reload()"><i class="fa fa-refresh"></i>&nbsp;刷新</a>
             <a id="lr-detail" class="btn btn-default" onclick="btn_detail()"><i class="fa fa-list-alt"></i>&nbsp;详细</a>
-            @*<a id="lr-add" class="btn btn-default" onclick="btn_add()"><i class="fa fa-plus"></i>&nbsp;接单</a>
-        <a id="lr-edit" class="btn btn-default" onclick="btn_edit()"><i class="fa fa-pencil-square-o"></i>&nbsp;编辑</a>
-        <a id="lr-signed" class="btn btn-default" onclick="btn_signed()"><i class="fa fa-paint-brush"></i>&nbsp;签收确认</a>
-        <a id="lr-over" class="btn btn-default" onclick="btn_over()"><i class="fa fa-over"></i>&nbsp;结单</a>
-        <a id="lr-delete" class="btn btn-default" onclick="btn_delete()"><i class="fa fa-trash-o"></i>&nbsp;删除</a>*@
+            <a id="lr-signed" class="btn btn-default" onclick="btn_back()"><i class="fa fa-mail-reply-all"></i>&nbsp;一键撤单</a>
             <a id="lr-export" class="btn btn-default" onclick="btn_export()"><i class="fa fa-sign-out"></i>&nbsp;导出</a>
+        </div>
+        <div class="btn-group">
+            <a id="lr-chancetrail" class="btn btn-default" onclick="btn_chancetrail()"><i class="fa fa-clock-o"></i>&nbsp;操作记录</a>
         </div>
     </div>
     @*<script>$('.toolbar').authorizeButton()</script>*@

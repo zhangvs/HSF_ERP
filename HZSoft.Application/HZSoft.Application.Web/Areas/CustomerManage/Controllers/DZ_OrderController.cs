@@ -702,8 +702,9 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult KuJiaLeImport()
+        public ActionResult KuJiaLeImport(string keyValue)
         {
+            ViewBag.OrderId = keyValue;
             return View();
         }
 
@@ -711,6 +712,7 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         public ActionResult KuJiaLeImport(HttpPostedFileBase filebase)
         {
             HttpPostedFileBase file = Request.Files["files"];
+            string keyValue = Request.Form["OrderId"];
             string FileName;
             string savePath;
             if (file == null || file.ContentLength <= 0)
