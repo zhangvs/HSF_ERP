@@ -165,7 +165,7 @@
                 { label: '计划开始', name: 'StatePlanDate', index: 'StatePlanDate', width: 80, align: '', sortable: true, formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' },
                     formatter: function (cellvalue, options, rowObject) {
                         if (cellvalue!=null) {//后面任何一道工序均未扫码的，视为未开始
-                            if (getDate(cellvalue, 1) < "@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")" && (rowObject.KaiLiaoMark != 2 && rowObject.FengBianMark != 2 && rowObject.PaiZuanMark != 2 && rowObject.ShiZhuangMark != 2 && rowObject.BaoZhuangMark != 2)) {
+                            if (getDate(cellvalue, 1) < "@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")" && (rowObject.BeiLiaoMark != 2 && rowObject.KaiLiaoMark != 2 && rowObject.FengBianMark != 2 && rowObject.PaiZuanMark != 2 && rowObject.ShiZhuangMark != 2 && rowObject.BaoZhuangMark != 2)) {
                                 return "<span style='color:red'>" + cellvalue + "</span>";
                             } else {
                                 return cellvalue;
@@ -188,7 +188,34 @@
                         }
                     }
                 },
-
+                
+                {
+                    label: "备料", name: "BeiLiaoMark", index: "BeiLiaoMark", width: 50, align: "center",
+                    formatter: function (cellvalue, options, rowObject) {
+                        if (cellvalue == 2) {
+                            return "<i class=\"fa fa-toggle-on\"></i>";
+                        } else if (cellvalue == 1) {
+                            return "<i class=\"fa fa-toggle-off\"></i>";
+                        } else {
+                            return "";
+                        }
+                    }
+                },
+                { label: '备料人', name: 'BeiLiaoUserName', index: 'BeiLiaoUserName', width: 80, align: 'center', sortable: true },
+                {
+                    label: '备料日期', name: 'BeiLiaoDate', index: 'BeiLiaoDate', width: 118, align: 'left', sortable: true,
+                    formatter: function (cellvalue, options, rowObject) {
+                        if (cellvalue!=null) {
+                            if (getDate(cellvalue, 2) < "@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")" && rowObject.KaiLiaoMark != 2 && rowObject.FengBianMark != 2 && rowObject.PaiZuanMark != 2 && rowObject.ShiZhuangMark != 2 && rowObject.BaoZhuangMark != 2) {
+                                return "<span style='color:red'>" + cellvalue + "</span>";
+                            } else {
+                                return cellvalue;
+                            }
+                        } else {
+                            return "";
+                        }
+                    }
+                },
                 {
                     label: "开料", name: "KaiLiaoMark", index: "KaiLiaoMark", width: 50, align: "center",
                     formatter: function (cellvalue, options, rowObject) {

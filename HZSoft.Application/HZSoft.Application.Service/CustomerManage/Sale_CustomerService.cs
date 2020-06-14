@@ -349,9 +349,10 @@ namespace HZSoft.Application.Service.CustomerManage
                 Sale_CustomerEntity oldEntity = GetEntity(keyValue);
                 if (oldEntity!=null)
                 {
-                    if (oldEntity.KaiLiaoMark == 2 || oldEntity.FengBianMark == 2|| oldEntity.PaiZuanMark == 2|| oldEntity.ShiZhuangMark == 2|| oldEntity.BaoZhuangMark == 2)
+                    if (oldEntity.BeiLiaoMark == 2||oldEntity.KaiLiaoMark == 2 || oldEntity.FengBianMark == 2|| oldEntity.PaiZuanMark == 2|| oldEntity.ShiZhuangMark == 2|| oldEntity.BaoZhuangMark == 2)
                     {
                         //如果生产扫码之后又修改编辑，工序的勾选状态默认==1，但是扫码之后的状态为2，不能因为编辑修改为2
+                        entity.BeiLiaoMark = oldEntity.BeiLiaoMark == 2 ? 2 : entity.BeiLiaoMark;
                         entity.KaiLiaoMark = oldEntity.KaiLiaoMark == 2 ? 2 : entity.KaiLiaoMark;
                         entity.FengBianMark = oldEntity.FengBianMark == 2 ? 2 : entity.FengBianMark;
                         entity.PaiZuanMark = oldEntity.PaiZuanMark == 2 ? 2 : entity.PaiZuanMark;

@@ -169,6 +169,12 @@ namespace HZSoft.Application.Service.BaseManage
         {
             return this.BaseRepository().FindEntity(keyValue);
         }
+        public UserEntity GetEntityByName(string name)
+        {
+            var expression = LinqExtensions.True<UserEntity>();
+            expression = expression.And(t => t.RealName == name);
+            return this.BaseRepository().FindEntity(expression);
+        }
         /// <summary>
         /// 登录验证
         /// </summary>

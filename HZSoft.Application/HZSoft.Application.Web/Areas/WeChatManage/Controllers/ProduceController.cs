@@ -78,6 +78,9 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
                 {
                     switch (id)
                     {
+                        case 0:
+                            entity.StepName = "备料";
+                            break;
                         case 1:
                             entity.StepName = "开料";
                             break;
@@ -146,7 +149,32 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
                 }
                 switch (stepId)
                 {
+                    case 0:
+                        if (proEntity.BeiLiaoMark == 2)
+                        {
+                            //判断之前扫码的人是否包含
+                            if (!proEntity.BeiLiaoUserName.Contains(name))
+                            {
+                                //不包含，添加当前扫码人到操作人，
+                                proEntity.BeiLiaoUserName += "," + name;
+                            }
+                            else
+                            {
+                                return RedirectToAction("Error", new { msg = "已经扫码成功，无需再次扫码！" });
+                            }
+                        }
+                        else
+                        {
+                            proEntity.BeiLiaoDate = DateTime.Now;
+                            proEntity.BeiLiaoUserName = name;
+                            proEntity.BeiLiaoMark = 2;
+                        }
+                        break;
                     case 1:
+                        if (proEntity.BeiLiaoMark == 1)
+                        {
+                            return RedirectToAction("Error", new { msg = "前一道工序还未扫码！" });
+                        }
                         if (proEntity.KaiLiaoMark == 2)
                         {
                             //判断之前扫码的人是否包含
@@ -168,7 +196,7 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
                         }
                         break;
                     case 2:
-                        if (proEntity.KaiLiaoMark == 1)
+                        if (proEntity.BeiLiaoMark == 1 || proEntity.KaiLiaoMark == 1)
                         {
                             return RedirectToAction("Error", new { msg = "前一道工序还未扫码！" });
                         }
@@ -193,7 +221,7 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
                         }
                         break;
                     case 3:
-                        if (proEntity.KaiLiaoMark == 1 || proEntity.FengBianMark == 1)
+                        if (proEntity.BeiLiaoMark == 1 || proEntity.KaiLiaoMark == 1 || proEntity.FengBianMark == 1)
                         {
                             return RedirectToAction("Error", new { msg = "前一道工序还未扫码！" });
                         }
@@ -218,7 +246,7 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
                         }
                         break;
                     case 4:
-                        if (proEntity.KaiLiaoMark == 1 || proEntity.FengBianMark == 1 || proEntity.PaiZuanMark == 1)
+                        if (proEntity.BeiLiaoMark == 1 || proEntity.KaiLiaoMark == 1 || proEntity.FengBianMark == 1 || proEntity.PaiZuanMark == 1)
                         {
                             return RedirectToAction("Error", new { msg = "前一道工序还未扫码！" });
                         }
@@ -243,7 +271,7 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
                         }
                         break;
                     case 5:
-                        if (proEntity.KaiLiaoMark == 1 || proEntity.FengBianMark == 1 || proEntity.PaiZuanMark == 1 || proEntity.ShiZhuangMark == 1)
+                        if (proEntity.BeiLiaoMark == 1 || proEntity.KaiLiaoMark == 1 || proEntity.FengBianMark == 1 || proEntity.PaiZuanMark == 1 || proEntity.ShiZhuangMark == 1)
                         {
                             return RedirectToAction("Error", new { msg = "前一道工序还未扫码！" });
                         }
@@ -268,7 +296,7 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
                             proEntity.BaoZhuangMark = 2;
 
                             //扫码初次包装之后，自动生成一个入库单主单，正在包装***************
-                            buy_orderbll.SaveBuyMain(proEntity);
+                            //buy_orderbll.SaveBuyMain(proEntity);//统一改成仓管扫码入库
                         }
                         break;
                     case 6://仓库,初始化一个入库单
@@ -424,8 +452,9 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
             ViewBag.CreateItemUserName = _name;
             return View();
         }
+
         /// <summary>
-        /// 提交入库数量
+        /// 提交入库数量(加入创建当前用户，同后台账户，)
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
@@ -433,8 +462,22 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
         public ActionResult SaveBuysItemForm(Buys_OrderItemEntity entity)
         {
             entity.CreateItemDate = DateTime.Now;
-            buy_orderbll.SaveInForm(entity);
-            return Content("true");
+            Operator operators = new Operator();
+            //g根据工序名称判断，添加当前操作用户
+            UserEntity userEntity = new UserBLL().GetEntityByName(entity.CreateItemUserName);
+            if (userEntity != null)
+            {
+                operators.UserId = userEntity.UserId;
+                operators.UserName = userEntity.RealName;
+                operators.Token = DESEncrypt.Encrypt(Guid.NewGuid().ToString());
+                OperatorProvider.Provider.AddCurrent(operators);
+                buy_orderbll.SaveInForm(entity);
+                return Content("true");
+            }
+            else
+            {
+                return Content("false");
+            }
         }
     }
 }

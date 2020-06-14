@@ -366,7 +366,6 @@ namespace HZSoft.Application.Service.CustomerManage
             IRepository db = new RepositoryFactory().BaseRepository().BeginTrans();
             try
             {
-                string UserName = itemEntity.CreateItemUserName;//手机端操作，先拿到微信操作人
                 Buys_OrderItemEntity oldItemEntity = GetDetail(itemEntity.OrderId, itemEntity.SortCode);
                 Buys_OrderEntity buyEntity = GetEntity(itemEntity.OrderId);
                 //先删除再创建
@@ -410,10 +409,6 @@ namespace HZSoft.Application.Service.CustomerManage
                         EnterMark = 1,
                         EnterDate = DateTime.Now
                     };
-                    if (!string.IsNullOrEmpty(UserName))
-                    {
-                        dZ_OrderEntity.ModifyUserName= UserName;//修改人为当前操作人
-                    }
                     dZ_OrderEntity.Modify(buyEntity.OrderId);
                     db.Update<DZ_OrderEntity>(dZ_OrderEntity);
 
@@ -423,10 +418,6 @@ namespace HZSoft.Application.Service.CustomerManage
                         EnterMark = 1,
                         EnterDate = DateTime.Now
                     };
-                    if (!string.IsNullOrEmpty(UserName))
-                    {
-                        produceEntity.ModifyUserName = UserName;//修改人为当前操作人
-                    }
                     produceEntity.Modify(buyEntity.ProduceId);
                     db.Update<Sale_CustomerEntity>(produceEntity);
 
@@ -463,7 +454,6 @@ namespace HZSoft.Application.Service.CustomerManage
                     }
                 }
                 
-                //主表
                 buyEntity.Modify(buyEntity.Id);
                 db.Update<Buys_OrderEntity>(buyEntity);
                 db.Commit();

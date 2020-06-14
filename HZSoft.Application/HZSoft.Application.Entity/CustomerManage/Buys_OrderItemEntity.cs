@@ -121,11 +121,8 @@ namespace HZSoft.Application.Entity.CustomerManage
         {
             this.OrderEntryId = Guid.NewGuid().ToString();
             this.CreateItemDate = DateTime.Now;
-            if (string.IsNullOrEmpty(this.CreateItemUserName))
-            {
-                this.CreateItemUserId = OperatorProvider.Provider.Current().UserId;
-                this.CreateItemUserName = OperatorProvider.Provider.Current().UserName;
-            }
+            this.CreateItemUserId = OperatorProvider.Provider.Current().UserId;
+            this.CreateItemUserName = OperatorProvider.Provider.Current().UserName;
         }
         /// <summary>
         /// ±à¼­µ÷ÓÃ

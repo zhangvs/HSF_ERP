@@ -87,7 +87,7 @@
                 param: { keyValue: keyValue },
                 success: function (data) {
                     var order = data.entity;
-
+                    order.BeiLiaoMark = order.BeiLiaoMark == 2 ? 1 : order.BeiLiaoMark;
                     order.KaiLiaoMark = order.KaiLiaoMark == 2 ? 1 : order.KaiLiaoMark;
                     order.FengBianMark = order.FengBianMark == 2 ? 1 : order.FengBianMark;
                     order.PaiZuanMark = order.PaiZuanMark == 2 ? 1 : order.PaiZuanMark;
@@ -362,11 +362,12 @@
             <td class="formTitle">工序<font face="宋体">*</font></td>
             <td class="formValue">
                 <div class="checkbox">
+                    <label><input id="BeiLiaoMark" type="checkbox" checked />&nbsp;备料 </label>
                     <label><input id="KaiLiaoMark" type="checkbox" checked />&nbsp;开料 </label>
                     <label><input id="FengBianMark" type="checkbox" checked />&nbsp;封边 </label>
                     <label><input id="PaiZuanMark" type="checkbox" checked />&nbsp;排钻 </label>
                     <label><input id="ShiZhuangMark" type="checkbox" checked />&nbsp;试装 </label>
-                    <label><input id="BaoZhuangMark" type="checkbox" checked onclick="return false;"/>&nbsp;包装 </label>
+                    <label><input id="BaoZhuangMark" type="checkbox" checked onclick="return false;" />&nbsp;包装 </label>
                     @*<label><input id="XiSuMark" type="checkbox" />&nbsp;吸塑 </label>*@
                 </div>
             </td>

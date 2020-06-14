@@ -43,6 +43,7 @@ namespace HZSoft.Application.IService.BaseManage
         /// <param name="keyValue">主键值</param>
         /// <returns></returns>
         UserEntity GetEntity(string keyValue);
+        UserEntity GetEntityByName(string name);
         /// <summary>
         /// 登录验证
         /// </summary>

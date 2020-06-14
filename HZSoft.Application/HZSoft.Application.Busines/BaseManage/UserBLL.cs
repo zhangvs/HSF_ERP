@@ -74,6 +74,10 @@ namespace HZSoft.Application.Busines.BaseManage
         {
             return service.GetEntity(keyValue);
         }
+        public UserEntity GetEntityByName(string name)
+        {
+            return service.GetEntityByName(name);
+        }
         #endregion
 
         #region 验证数据

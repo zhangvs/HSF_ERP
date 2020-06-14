@@ -561,11 +561,8 @@ namespace HZSoft.Application.Entity.CustomerManage
         {
             this.Id = keyValue;
             this.ModifyDate = DateTime.Now;
-            if (string.IsNullOrEmpty(this.ModifyUserName))
-            {
-                this.ModifyUserId = OperatorProvider.Provider.Current().UserId;
-                this.ModifyUserName = OperatorProvider.Provider.Current().UserName;
-            }
+            this.ModifyUserId = OperatorProvider.Provider.Current().UserId;
+            this.ModifyUserName = OperatorProvider.Provider.Current().UserName;
         }
         #endregion
     }

@@ -127,6 +127,31 @@ namespace HZSoft.Application.Entity.CustomerManage
         public string CustomerTelphone { get; set; }
 
         /// <summary>
+        /// 备料
+        /// </summary>
+        /// <returns></returns>
+        [Column("BeiLiaoMark")]
+        public int? BeiLiaoMark { get; set; }
+        /// <summary>
+        /// 备料用户
+        /// </summary>
+        /// <returns></returns>
+        [Column("BeiLiaoUserId")]
+        public string BeiLiaoUserId { get; set; }
+        /// <summary>
+        /// 备料用户
+        /// </summary>
+        /// <returns></returns>
+        [Column("BeiLiaoUserName")]
+        public string BeiLiaoUserName { get; set; }
+        /// <summary>
+        /// 备料日期
+        /// </summary>
+        /// <returns></returns>
+        [Column("BeiLiaoDate")]
+        public DateTime? BeiLiaoDate { get; set; }
+
+        /// <summary>
         /// 开料
         /// </summary>
         /// <returns></returns>
@@ -593,7 +618,8 @@ namespace HZSoft.Application.Entity.CustomerManage
             this.DownMark = 0;//下单
             this.PushMark = 0;//推单
 
-            this.KaiLiaoMark = 1;//默认选择5工序
+            this.BeiLiaoMark = 1;//默认选择5工序
+            this.KaiLiaoMark = 1;
             this.FengBianMark = 1;
             this.PaiZuanMark = 1;
             this.ShiZhuangMark = 1;
@@ -623,11 +649,8 @@ namespace HZSoft.Application.Entity.CustomerManage
         {
             this.ProduceId = keyValue;
             this.ModifyDate = DateTime.Now;
-            if (string.IsNullOrEmpty(this.ModifyUserName))
-            {
-                this.ModifyUserId = OperatorProvider.Provider.Current().UserId;
-                this.ModifyUserName = OperatorProvider.Provider.Current().UserName;
-            }
+            this.ModifyUserId = OperatorProvider.Provider.Current().UserId;
+            this.ModifyUserName = OperatorProvider.Provider.Current().UserName;
         }
         #endregion
     }

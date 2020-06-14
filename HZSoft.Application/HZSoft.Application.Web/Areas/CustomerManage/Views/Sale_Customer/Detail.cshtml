@@ -40,6 +40,7 @@
                 param: { keyValue: keyValue },
                 success: function (data) {
                     var order = data.entity;
+                    order.BeiLiaoMark = order.BeiLiaoMark == 2 ? 1 : order.BeiLiaoMark;
                     order.KaiLiaoMark = order.KaiLiaoMark == 2 ? 1 : order.KaiLiaoMark;
                     order.FengBianMark = order.FengBianMark == 2 ? 1 : order.FengBianMark;
                     order.PaiZuanMark = order.PaiZuanMark == 2 ? 1 : order.PaiZuanMark;
@@ -206,6 +207,7 @@
                 </td>
                 <td class="formTitle">工序</td>
                 <td class="formValue">
+                    <label><input id="BeiLiaoMark" type="checkbox" checked />&nbsp;备料 </label>
                     <label><input id="KaiLiaoMark" type="checkbox" checked />&nbsp;开料 </label>&nbsp;&nbsp;
                     <label><input id="FengBianMark" type="checkbox" checked />&nbsp;封边 </label>&nbsp;&nbsp;
                     <label><input id="PaiZuanMark" type="checkbox" checked />&nbsp;排钻 </label>&nbsp;&nbsp;
