@@ -2063,6 +2063,7 @@
     <Content Include="Areas\CustomerManage\Views\DZ_Money_Room\DZ_Money_RoomIndex.cshtml" />
     <Content Include="Areas\WeChatManage\Views\Produce\EnterForm.cshtml" />
     <Content Include="Areas\WeChatManage\Views\Produce\EnterItemForm.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\Buys_Order\KeFuAllIndex.cshtml" />
     <None Include="Properties\PublishProfiles\6.1.pubxml" />
     <Content Include="Areas\FlowManage\Views\FlowLaunch\Index.cshtml" />
     <Content Include="Areas\FlowManage\Views\FormDesign\FormPreview.cshtml" />

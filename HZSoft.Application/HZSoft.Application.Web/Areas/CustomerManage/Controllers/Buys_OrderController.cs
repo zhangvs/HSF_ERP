@@ -144,6 +144,14 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
             return View();
         }
         /// <summary>
+        /// 客服汇总表
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult KeFuAllIndex()
+        {
+            return View();
+        }
+        /// <summary>
         /// 发货完成
         /// </summary>
         /// <returns></returns>
