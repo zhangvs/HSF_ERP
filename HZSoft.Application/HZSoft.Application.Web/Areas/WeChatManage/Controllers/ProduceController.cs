@@ -14,7 +14,7 @@ using System.Web.Mvc;
 
 namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
 {
-    //[HandlerWXAuthorizeAttribute(LoginMode.Enforce)]
+    [HandlerWXAuthorizeAttribute(LoginMode.Enforce)]
     public class ProduceController : BaseWxUserController
     {
         private DZ_OrderBLL dz_orderbll = new DZ_OrderBLL();
@@ -122,7 +122,7 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
         public ActionResult StepSweepcode(string id)
         {
             //string OpenId = "oA-EC1VOfXpxFIa3K9rvSPBwvgrQ";
-            string OpenId = "oA-EC1UWi8i4sSkHsWV6BK7CuopA";
+            string OpenId = CurrentWxUser.OpenId;//"oA-EC1UWi8i4sSkHsWV6BK7CuopA";//金志花
             //JObject queryJson = new JObject {
             //            { "OpenId", CurrentWxUser.OpenId }
             //        };
@@ -138,22 +138,22 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
                 }
                 //根据当前工人的工序，执行不同的操作
                 int? stepId = entity.Step;
+                string name = entity.Name;
                 string stepName = entity.StepName;
                 if (stepId == 0 || string.IsNullOrEmpty(stepName))
                 {
                     return RedirectToAction("Error", new { msg = "请补充你的工序信息！" + id });
                 }
-                int? step = entity.Step;
-                switch (step)
+                switch (stepId)
                 {
                     case 1:
                         if (proEntity.KaiLiaoMark == 2)
                         {
                             //判断之前扫码的人是否包含
-                            if (!proEntity.KaiLiaoUserName.Contains(entity.Name))
+                            if (!proEntity.KaiLiaoUserName.Contains(name))
                             {
                                 //不包含，添加当前扫码人到操作人，
-                                proEntity.KaiLiaoUserName += "," + entity.Name;
+                                proEntity.KaiLiaoUserName += "," + name;
                             }
                             else
                             {
@@ -163,7 +163,7 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
                         else
                         {
                             proEntity.KaiLiaoDate = DateTime.Now;
-                            proEntity.KaiLiaoUserName = entity.Name;
+                            proEntity.KaiLiaoUserName = name;
                             proEntity.KaiLiaoMark = 2;
                         }
                         break;
@@ -175,10 +175,10 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
                         if (proEntity.FengBianMark == 2)
                         {
                             //判断之前扫码的人是否包含
-                            if (!proEntity.FengBianUserName.Contains(entity.Name))
+                            if (!proEntity.FengBianUserName.Contains(name))
                             {
                                 //不包含，添加当前扫码人到操作人，
-                                proEntity.FengBianUserName += "," + entity.Name;
+                                proEntity.FengBianUserName += "," + name;
                             }
                             else
                             {
@@ -188,7 +188,7 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
                         else
                         {
                             proEntity.FengBianDate = DateTime.Now;
-                            proEntity.FengBianUserName = entity.Name;
+                            proEntity.FengBianUserName = name;
                             proEntity.FengBianMark = 2;
                         }
                         break;
@@ -200,10 +200,10 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
                         if (proEntity.PaiZuanMark == 2)
                         {
                             //判断之前扫码的人是否包含
-                            if (!proEntity.PaiZuanUserName.Contains(entity.Name))
+                            if (!proEntity.PaiZuanUserName.Contains(name))
                             {
                                 //不包含，添加当前扫码人到操作人，
-                                proEntity.PaiZuanUserName += "," + entity.Name;
+                                proEntity.PaiZuanUserName += "," + name;
                             }
                             else
                             {
@@ -213,7 +213,7 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
                         else
                         {
                             proEntity.PaiZuanDate = DateTime.Now;
-                            proEntity.PaiZuanUserName = entity.Name;
+                            proEntity.PaiZuanUserName = name;
                             proEntity.PaiZuanMark = 2;
                         }
                         break;
@@ -225,10 +225,10 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
                         if (proEntity.ShiZhuangMark == 2)
                         {
                             //判断之前扫码的人是否包含
-                            if (!proEntity.ShiZhuangUserName.Contains(entity.Name))
+                            if (!proEntity.ShiZhuangUserName.Contains(name))
                             {
                                 //不包含，添加当前扫码人到操作人，
-                                proEntity.ShiZhuangUserName += "," + entity.Name;
+                                proEntity.ShiZhuangUserName += "," + name;
                             }
                             else
                             {
@@ -238,7 +238,7 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
                         else
                         {
                             proEntity.ShiZhuangDate = DateTime.Now;
-                            proEntity.ShiZhuangUserName = entity.Name;
+                            proEntity.ShiZhuangUserName = name;
                             proEntity.ShiZhuangMark = 2;
                         }
                         break;
@@ -250,10 +250,10 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
                         if (proEntity.BaoZhuangMark == 2)
                         {
                             //判断之前扫码的人是否包含
-                            if (!proEntity.BaoZhuangUserName.Contains(entity.Name))
+                            if (!proEntity.BaoZhuangUserName.Contains(name))
                             {
                                 //不包含，添加当前扫码人到操作人，
-                                proEntity.BaoZhuangUserName += "," + entity.Name;
+                                proEntity.BaoZhuangUserName += "," + name;
                             }
                             else
                             {
@@ -264,26 +264,26 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
                         {
                             //包装初次扫码，修改状态
                             proEntity.BaoZhuangDate = DateTime.Now;
-                            proEntity.BaoZhuangUserName = entity.Name;
+                            proEntity.BaoZhuangUserName = name;
                             proEntity.BaoZhuangMark = 2;
 
                             //扫码初次包装之后，自动生成一个入库单主单，正在包装***************
                             buy_orderbll.SaveBuyMain(proEntity);
                         }
                         break;
-                    case 6://仓库,扫码生成一个入库单
+                    case 6://仓库,初始化一个入库单
                         buy_orderbll.SaveBuyMain(proEntity);
-                        return RedirectToAction("EnterForm", new { keyValue = proEntity.ProduceId });
+                        return RedirectToAction("EnterItemForm", new { _keyValue = proEntity.ProduceId, _title = proEntity.OrderTitle, _name= name });
                     default:
                         break;
                 }
                 //修改订单状态
-                proEntity.StepState = step;
-                proEntity.StepName = entity.StepName;
+                proEntity.StepState = stepId;
+                proEntity.StepName = stepName;
                 proEntity.ModifyDate = DateTime.Now;
-                proEntity.ModifyUserName = entity.Name;
+                proEntity.ModifyUserName = name;
                 sale_customerbll.UpdateStepState(proEntity);
-                ViewBag.Msg = "扫码成功!开始" + entity.StepName + "……";
+                ViewBag.Msg = "扫码成功!开始" + stepName + "……";
                 return View();
             }
             else
@@ -404,10 +404,37 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
         {
             var entity = strEntity.ToObject<Buys_OrderEntity>();
             var childEntitys = strChildEntitys.ToList<Buys_OrderItemEntity>();
-
+            entity.ModifyUserName = "金枝槐";
+            entity.ModifyDate = DateTime.Now;
             buy_orderbll.SaveForm(keyValue, entity, childEntitys);
             return Content("true");
         }
 
+
+
+
+        /// <summary>
+        /// 入库单填写
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult EnterItemForm(string _keyValue ,string _title ,string _name)
+        {
+            ViewBag.OrderId = _keyValue;
+            ViewBag.OrderTitle = _title;
+            ViewBag.CreateItemUserName = _name;
+            return View();
+        }
+        /// <summary>
+        /// 提交入库数量
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult SaveBuysItemForm(Buys_OrderItemEntity entity)
+        {
+            entity.CreateItemDate = DateTime.Now;
+            buy_orderbll.SaveInForm(entity);
+            return Content("true");
+        }
     }
 }

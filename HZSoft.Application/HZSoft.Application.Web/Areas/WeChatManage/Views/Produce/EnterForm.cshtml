@@ -22,6 +22,7 @@
 
     <script>
         var keyValue = request('keyValue');
+        var stepName = request('stepName');
         $(function () {
             $("#iHouse").click(function () {
                 $("#jundiv").show();
@@ -98,7 +99,7 @@
                     Description: $(this).children().eq(2).find("input").val(),
                 });
             });
-            //postData["SpareField"] = itemList;
+            postData["ModifyUserName"] = stepName;
             $.ajax({
                 url: "/WeChatManage/Produce/SaveBuysForm",
                 type: "POST",
@@ -180,7 +181,6 @@
                         <input class="txt" id="OrderTitle" type="text" readonly isvalid="yes" checkexpession="NotNull" />
                     </td>
                 </tr>
-
             </table>
         </div>
         <div class="xzkh_yxcs">

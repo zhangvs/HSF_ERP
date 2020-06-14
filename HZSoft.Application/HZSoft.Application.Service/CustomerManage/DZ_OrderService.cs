@@ -836,10 +836,8 @@ namespace HZSoft.Application.Service.CustomerManage
                         Buys_OrderEntity buys_CustomerEntity = db.FindEntity<Buys_OrderEntity>(t => t.Id == oldEntity.Code);//老销售单code会生成生产单id
                         if (buys_CustomerEntity!=null)
                         {
-                            Buys_OrderEntity buys_OrderEntity = new Buys_OrderEntity();
-                            buys_OrderEntity.AfterMark = entity.AfterMark;
-                            buys_OrderEntity.Id = oldEntity.Code;
-                            db.Update<Buys_OrderEntity>(buys_OrderEntity);
+                            buys_CustomerEntity.AfterMark = entity.AfterMark;
+                            db.Update<Buys_OrderEntity>(buys_CustomerEntity);
                             RecordHelp.AddRecord(4, keyValue, "修改为不需要收尾款");
                         }
                     }

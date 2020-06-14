@@ -292,56 +292,62 @@ namespace HZSoft.Application.Service.CustomerManage
             try
             {
                 IRepository db = new RepositoryFactory().BaseRepository().BeginTrans();
-                //获取销售单收款状态
-                DZ_OrderEntity orderEntity = db.FindEntity<DZ_OrderEntity>(t => t.Id == entity.OrderId);
-                if (orderEntity != null)
+                Buys_OrderEntity buysEntity = db.FindEntity<Buys_OrderEntity>(t => t.Id == entity.OrderCode);//入库单号同销售订单编号
+                //没初始化生产单不存在，才初始化
+                if (buysEntity==null)
                 {
-                    Buys_OrderEntity buys_OrderEntity = new Buys_OrderEntity()
+                    //获取销售单收款状态
+                    DZ_OrderEntity orderEntity = db.FindEntity<DZ_OrderEntity>(t => t.Id == entity.OrderId);
+                    if (orderEntity != null)
                     {
-                        Code = entity.OrderCode,
-                        OrderId = entity.OrderId,
-                        OrderCode = entity.OrderCode,
-                        OrderTitle = entity.OrderTitle,
-                        ProduceId = entity.ProduceId,
-                        ProduceCode = entity.ProduceCode,
-                        CompanyId = entity.CompanyId,
-                        CompanyName = entity.CompanyName,
-                        CustomerId = entity.CustomerId,
-                        CustomerName = entity.CustomerName,
-                        SalesmanUserId = entity.SalesmanUserId,
-                        SalesmanUserName = entity.SalesmanUserName,
-                        CustomerTelphone = entity.CustomerTelphone,
-                        Address = entity.Address,
-                        ShippingType = entity.ShippingType,
-                        Carrier = entity.Carrier,
-                        SendPlanDate = entity.SendPlanDate,
-                        
-                        PaymentState = orderEntity.PaymentState,//确认是否全部收款
-                        PaymentDate=orderEntity.PaymentDate,
-                        AfterMark = orderEntity.AfterMark,//确认是否收取尾款
-                    };
+                        Buys_OrderEntity buys_OrderEntity = new Buys_OrderEntity()
+                        {
+                            Code = entity.OrderCode,
+                            OrderId = entity.OrderId,
+                            OrderCode = entity.OrderCode,
+                            OrderTitle = entity.OrderTitle,
+                            ProduceId = entity.ProduceId,
+                            ProduceCode = entity.ProduceCode,
+                            CompanyId = entity.CompanyId,
+                            CompanyName = entity.CompanyName,
+                            CustomerId = entity.CustomerId,
+                            CustomerName = entity.CustomerName,
+                            SalesmanUserId = entity.SalesmanUserId,
+                            SalesmanUserName = entity.SalesmanUserName,
+                            CustomerTelphone = entity.CustomerTelphone,
+                            Address = entity.Address,
+                            ShippingType = entity.ShippingType,
+                            Carrier = entity.Carrier,
+                            SendPlanDate = entity.SendPlanDate,
 
-                    //材料是否选择，判断需要入库
-                    if (entity.GuiTiMark == 1)
-                    {
-                        buys_OrderEntity.GuiEnterMark = 0;//柜体包装进行中
+                            PaymentState = orderEntity.PaymentState,//确认是否全部收款
+                            PaymentDate = orderEntity.PaymentDate,
+                            AfterMark = orderEntity.AfterMark,//确认是否收取尾款
+                        };
+
+                        //材料是否选择，判断需要入库
+                        if (entity.GuiTiMark == 1)
+                        {
+                            buys_OrderEntity.GuiEnterMark = 0;//柜体包装进行中
+                        }
+                        if (entity.MenBanMark == 1)
+                        {
+                            buys_OrderEntity.MenEnterMark = 0;//门板
+                        }
+                        if (entity.WuJinMark == 1)
+                        {
+                            buys_OrderEntity.WuEnterMark = 0;//五金
+                        }
+                        if (entity.WaiXieMark == 1)
+                        {
+                            buys_OrderEntity.WaiEnterMark = 0;//外协
+                        }
+                        buys_OrderEntity.Create();
+                        //新增入库单主表
+                        this.BaseRepository().Insert(buys_OrderEntity);
                     }
-                    if (entity.MenBanMark == 1)
-                    {
-                        buys_OrderEntity.MenEnterMark = 0;//门板
-                    }
-                    if (entity.WuJinMark == 1)
-                    {
-                        buys_OrderEntity.WuEnterMark = 0;//五金
-                    }
-                    if (entity.WaiXieMark == 1)
-                    {
-                        buys_OrderEntity.WaiEnterMark = 0;//外协
-                    }
-                    buys_OrderEntity.Create();
-                    //新增入库单主表
-                    this.BaseRepository().Insert(buys_OrderEntity);
                 }
+                
             }
             catch (Exception)
             {
@@ -360,6 +366,7 @@ namespace HZSoft.Application.Service.CustomerManage
             IRepository db = new RepositoryFactory().BaseRepository().BeginTrans();
             try
             {
+                string UserName = itemEntity.CreateItemUserName;//手机端操作，先拿到微信操作人
                 Buys_OrderItemEntity oldItemEntity = GetDetail(itemEntity.OrderId, itemEntity.SortCode);
                 Buys_OrderEntity buyEntity = GetEntity(itemEntity.OrderId);
                 //先删除再创建
@@ -369,7 +376,7 @@ namespace HZSoft.Application.Service.CustomerManage
                     buyEntity.TotalQty -= oldItemEntity.Qty;//减去老库存
                 }
 
-                //新增入库单从表
+                //新增入库单从表，新增要新增，初始化id，用户跳过
                 itemEntity.Create();
                 db.Insert<Buys_OrderItemEntity>(itemEntity);
 
@@ -403,6 +410,10 @@ namespace HZSoft.Application.Service.CustomerManage
                         EnterMark = 1,
                         EnterDate = DateTime.Now
                     };
+                    if (!string.IsNullOrEmpty(UserName))
+                    {
+                        dZ_OrderEntity.ModifyUserName= UserName;//修改人为当前操作人
+                    }
                     dZ_OrderEntity.Modify(buyEntity.OrderId);
                     db.Update<DZ_OrderEntity>(dZ_OrderEntity);
 
@@ -412,6 +423,10 @@ namespace HZSoft.Application.Service.CustomerManage
                         EnterMark = 1,
                         EnterDate = DateTime.Now
                     };
+                    if (!string.IsNullOrEmpty(UserName))
+                    {
+                        produceEntity.ModifyUserName = UserName;//修改人为当前操作人
+                    }
                     produceEntity.Modify(buyEntity.ProduceId);
                     db.Update<Sale_CustomerEntity>(produceEntity);
 

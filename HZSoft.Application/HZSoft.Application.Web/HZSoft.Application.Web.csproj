@@ -8,7 +8,7 @@
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{1D8FC20B-427E-4D5F-813B-D3FF2D89A96C}</ProjectGuid>
-    <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HZSoft.Application.Web</RootNamespace>
@@ -2062,6 +2062,7 @@
     <Content Include="Areas\CustomerManage\Views\DZ_Money_Room\DZ_Money_RoomForm.cshtml" />
     <Content Include="Areas\CustomerManage\Views\DZ_Money_Room\DZ_Money_RoomIndex.cshtml" />
     <Content Include="Areas\WeChatManage\Views\Produce\EnterForm.cshtml" />
+    <Content Include="Areas\WeChatManage\Views\Produce\EnterItemForm.cshtml" />
     <None Include="Properties\PublishProfiles\6.1.pubxml" />
     <Content Include="Areas\FlowManage\Views\FlowLaunch\Index.cshtml" />
     <Content Include="Areas\FlowManage\Views\FormDesign\FormPreview.cshtml" />
