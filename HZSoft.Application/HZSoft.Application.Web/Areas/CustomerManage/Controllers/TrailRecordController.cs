@@ -38,7 +38,11 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         {
             return View();
         }
-        public ActionResult PageIndex()
+        public ActionResult TrailRecordIndex()
+        {
+            return View();
+        }
+        public ActionResult TrailRecordForm()
         {
             return View();
         }

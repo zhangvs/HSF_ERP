@@ -789,10 +789,26 @@ namespace HZSoft.Application.Service.CustomerManage
                     //报价之后，给财务发消息提醒
                     if (entity.MoneyMark == 1 && oldEntity.MoneyMark != 1)
                     {
-                        //发微信模板消息---研发报价之后，给财务提醒--刘一珠改刘庆莉oA-EC1bg4U16c63kR6yj51lA5AiM
-                        //订单生成通知（报价提醒）
-                        TemplateWxApp.SendTemplateMoney("oA-EC1bg4U16c63kR6yj51lA5AiM", "您好，有新的报价需要审核!", "研发中心", entity.OrderTitle, entity.Code, "请进行报价审核。");
-                        RecordHelp.AddRecord(4, keyValue, "报价");
+                        if (entity.OrderType!=3)//不是客诉单
+                        {
+                            //发微信模板消息---研发报价之后，给财务提醒--刘一珠改刘庆莉oA-EC1bg4U16c63kR6yj51lA5AiM
+                            //订单生成通知（报价提醒）
+                            TemplateWxApp.SendTemplateMoney("oA-EC1bg4U16c63kR6yj51lA5AiM", "您好，有新的报价需要审核!", "研发中心", entity.OrderTitle, entity.Code, "请进行报价审核。");
+                            RecordHelp.AddRecord(4, keyValue, "报价");
+                        }
+                        else
+                        {
+                            //客诉单，不走财务
+                            //如果不收预付款，并且还没下单的，报价审核完毕之后可以直接创建生产单，开始提醒下单
+                            if (oldEntity.DownMark != 1)
+                            {
+                                Sale_Customer_Main.SaveSaleMain(db, oldEntity);//如果下单不及时，可能重复创建
+
+                                //发微信模板消息---财务已经报价审核并收款确认之后，给张宝莲发消息提醒oA-EC1bJnd0KFBuOy0joJvUOGwwk
+                                //订单生成通知（7下单提醒）
+                                TemplateWxApp.SendTemplateNew("oA-EC1bJnd0KFBuOy0joJvUOGwwk", "您好，有新的订单需要下单!", oldEntity.OrderTitle, oldEntity.Code, "请进行生产下单。");
+                            }
+                        }
                     }
                     if (entity.MoneyMark == -1 && oldEntity.MoneyMark != -1)
                     {
@@ -831,12 +847,12 @@ namespace HZSoft.Application.Service.CustomerManage
                     #endregion
 
                     #region 修改付款方式，不需要收取尾款，同步到入库单AfterMark尾款状态
-                    if (entity.AfterMark !=oldEntity.AfterMark)
+                    if (entity.AfterMark==0 && oldEntity.AfterMark== 1 && oldEntity.PushMark == 1)//之前需要收尾款，现在不需要尾款,推单之后才有可能生成入库单
                     {
                         Buys_OrderEntity buys_CustomerEntity = db.FindEntity<Buys_OrderEntity>(t => t.Id == oldEntity.Code);//老销售单code会生成生产单id
                         if (buys_CustomerEntity!=null)
                         {
-                            buys_CustomerEntity.AfterMark = entity.AfterMark;
+                            buys_CustomerEntity.AfterMark = 0;
                             db.Update<Buys_OrderEntity>(buys_CustomerEntity);
                             RecordHelp.AddRecord(4, keyValue, "修改为不需要收尾款");
                         }
@@ -855,7 +871,7 @@ namespace HZSoft.Application.Service.CustomerManage
                     coderuleService.UseRuleSeed(entity.CreateUserId, "", ((int)CodeRuleEnum.DZ_Order).ToString(), db);//占用单据号
                     db.Commit();
 
-                    if (entity.OrderType!=3)
+                    if (entity.OrderType!=3)//不是客诉单
                     {
                         //发微信模板消息---接单之后，给审图人提醒--刘明存oA-EC1WVqHl_gsBM3We2rgOHIMEQ
                         //订单生成通知（审图提醒）
@@ -895,8 +911,8 @@ namespace HZSoft.Application.Service.CustomerManage
                     DZ_OrderEntity oldEntity = GetEntity(keyValue);
                     if (oldEntity!=null)
                     {
-                        //第一次报价审核的通知
-                        if (state == 1 && oldEntity.MoneyOkMark != 1)
+                        //第一次报价审核的通知，可重复操作 && oldEntity.MoneyOkMark != 1
+                        if (state == 1)
                         {
                             //发微信模板消息（报价审核提醒）
                             if (!string.IsNullOrEmpty(oldEntity.CreateUserName))

@@ -2065,6 +2065,8 @@
     <Content Include="Areas\WeChatManage\Views\Produce\EnterItemForm.cshtml" />
     <Content Include="Areas\CustomerManage\Views\Buys_Order\KeFuAllIndex.cshtml" />
     <Content Include="Areas\CustomerManage\Views\Sale_Customer\StepBackForm.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\TrailRecord\TrailRecordIndex.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\TrailRecord\TrailRecordForm.cshtml" />
     <None Include="Properties\PublishProfiles\6.1.pubxml" />
     <Content Include="Areas\FlowManage\Views\FlowLaunch\Index.cshtml" />
     <Content Include="Areas\FlowManage\Views\FormDesign\FormPreview.cshtml" />

@@ -1,6 +1,7 @@
 ﻿using HZSoft.Application.Entity.CustomerManage;
 using HZSoft.Application.IService.CustomerManage;
 using HZSoft.Data.Repository;
+using HZSoft.Util;
 using HZSoft.Util.Extension;
 using HZSoft.Util.WebControl;
 using System;
@@ -27,7 +28,43 @@ namespace HZSoft.Application.Service.CustomerManage
         /// <returns>返回分页列表</returns>
         public IEnumerable<TrailRecordEntity> GetPageList(Pagination pagination, string queryJson)
         {
-            return this.BaseRepository().IQueryable().OrderByDescending(t => t.CreateDate).ToList();
+            string strSql = "select r.TrailId,r.TrackContent,r.CreateDate,r.CreateUserName," +
+                "o.Code,o.OrderTitle from Client_TrailRecord r " +
+                "LEFT JOIN DZ_Order o ON r.ObjectId=o.Id ";
+            var queryParam = queryJson.ToJObject();
+            //成立日期
+            if (!queryParam["StartTime"].IsEmpty() && !queryParam["EndTime"].IsEmpty())
+            {
+                DateTime startTime = queryParam["StartTime"].ToDate();
+                DateTime endTime = queryParam["EndTime"].ToDate().AddDays(1);
+                strSql += " and r.CreateDate >= '" + startTime + "' and r.CreateDate < '" + endTime + "'";
+            }
+            //销售编号
+            if (!queryParam["Code"].IsEmpty())
+            {
+                string Code = queryParam["Code"].ToString();
+                strSql += " and o.Code like '%" + Code + "%'";
+            }
+            //订单标题
+            if (!queryParam["OrderTitle"].IsEmpty())
+            {
+                string OrderTitle = queryParam["OrderTitle"].ToString();
+                strSql += " and OrderTitle like '%" + OrderTitle + "%'";
+            }
+            //内容
+            if (!queryParam["TrackContent"].IsEmpty())
+            {
+                string TrackContent = queryParam["TrackContent"].ToString();
+                strSql += " and TrackContent like '%" + TrackContent + "%'";
+            }
+            //姓名
+            if (!queryParam["CreateUserName"].IsEmpty())
+            {
+                string CreateUserName = queryParam["CreateUserName"].ToString();
+                strSql += " and CreateUserName like '%" + CreateUserName + "%'";
+            }
+
+            return new RepositoryFactory().BaseRepository().FindList<TrailRecordEntity>(strSql.ToString(), pagination);
         }
         /// <summary>
         /// 获取列表
