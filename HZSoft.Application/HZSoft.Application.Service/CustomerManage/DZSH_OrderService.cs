@@ -7,6 +7,7 @@ using HZSoft.Data.Repository;
 using HZSoft.Util;
 using HZSoft.Util.Extension;
 using HZSoft.Util.WebControl;
+using HZSoft.Util.WeChat.Comm;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -216,7 +217,7 @@ namespace HZSoft.Application.Service.CustomerManage
                         CreateDZOrder.SaveDZOrder(db, entity);
                     }
                     entity.Modify(keyValue);
-                    //创建新的销售单
+                    //更新
                     db.Update<DZSH_OrderEntity>(entity);
                 }
                 else
@@ -229,6 +230,9 @@ namespace HZSoft.Application.Service.CustomerManage
                         //创建新的销售单
                         CreateDZOrder.SaveDZOrder(db, entity);
                     }
+
+                    //胡鲁鲁
+                    TemplateWxApp.SendTemplateNew("oA-EC1aaKOSNdW2wL8lHSsr3R4Dg", "您好，有新的客诉单!", entity.OrderTitle, entity.Code, "请进行处理。");
                 }
                 db.Commit();
             }

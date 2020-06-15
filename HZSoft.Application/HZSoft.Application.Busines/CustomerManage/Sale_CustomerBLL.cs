@@ -124,6 +124,17 @@ namespace HZSoft.Application.Busines.CustomerManage
                 throw;
             }
         }
+        public void SaveStepBackForm(string keyValue, int? step, string name)
+        {
+            try
+            {
+                service.SaveStepBackForm(keyValue, step, name);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
         /// <summary>
         /// ÍÆµ¥,³·µ¥
         /// </summary>

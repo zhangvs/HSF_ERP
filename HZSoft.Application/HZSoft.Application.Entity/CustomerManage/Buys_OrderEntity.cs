@@ -373,7 +373,8 @@ namespace HZSoft.Application.Entity.CustomerManage
             this.OverMark = 0;//结束
             this.DeleteMark = 0;
             this.EnabledMark = 1;
-                        
+            this.SendLogisticsMark = 0;//运输默认0，显示到运输
+            this.SendInstallMark = 0;//安装默认0，显示到安装
         }
         /// <summary>
         /// 编辑调用

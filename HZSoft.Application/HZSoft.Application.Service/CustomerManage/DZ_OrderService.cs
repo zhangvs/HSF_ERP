@@ -855,9 +855,18 @@ namespace HZSoft.Application.Service.CustomerManage
                     coderuleService.UseRuleSeed(entity.CreateUserId, "", ((int)CodeRuleEnum.DZ_Order).ToString(), db);//占用单据号
                     db.Commit();
 
-                    //发微信模板消息---接单之后，给审图人提醒--刘明存oA-EC1WVqHl_gsBM3We2rgOHIMEQ
-                    //订单生成通知（审图提醒）
-                    TemplateWxApp.SendTemplateNew("oA-EC1WVqHl_gsBM3We2rgOHIMEQ", "您好，有新的订单需要审图!", entity.OrderTitle, entity.Code, "请进行审图。");
+                    if (entity.OrderType!=3)
+                    {
+                        //发微信模板消息---接单之后，给审图人提醒--刘明存oA-EC1WVqHl_gsBM3We2rgOHIMEQ
+                        //订单生成通知（审图提醒）
+                        TemplateWxApp.SendTemplateNew("oA-EC1WVqHl_gsBM3We2rgOHIMEQ", "您好，有新的订单需要审图!", entity.OrderTitle, entity.Code, "请进行审图。");
+                    }
+                    else
+                    {
+                        //发微信模板消息---客诉单接单之后，给审图人提醒--刘琛oA-EC1X6RWfW1_DNJ_VNiA3uhOYg
+                        //订单生成通知（审图提醒）
+                        TemplateWxApp.SendTemplateNew("oA-EC1X6RWfW1_DNJ_VNiA3uhOYg", "您好，有新的订单需要审图!", entity.OrderTitle, entity.Code, "请进行审图。");
+                    }
 
                     RecordHelp.AddRecord(4, entity.Id, "接单");
                 }

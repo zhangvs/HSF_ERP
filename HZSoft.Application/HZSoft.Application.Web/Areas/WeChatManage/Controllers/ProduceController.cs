@@ -143,7 +143,7 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
                 int? stepId = entity.Step;
                 string name = entity.Name;
                 string stepName = entity.StepName;
-                if (stepId == 0 || string.IsNullOrEmpty(stepName))
+                if (string.IsNullOrEmpty(stepName))
                 {
                     return RedirectToAction("Error", new { msg = "请补充你的工序信息！" + id });
                 }
@@ -296,7 +296,7 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
                             proEntity.BaoZhuangMark = 2;
 
                             //扫码初次包装之后，自动生成一个入库单主单，正在包装***************
-                            //buy_orderbll.SaveBuyMain(proEntity);//统一改成仓管扫码入库
+                            buy_orderbll.SaveBuyMain(proEntity);//统一改成仓管扫码入库
                         }
                         break;
                     case 6://仓库,初始化一个入库单

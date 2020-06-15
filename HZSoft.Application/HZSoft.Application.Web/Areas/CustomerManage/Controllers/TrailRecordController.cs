@@ -3,6 +3,7 @@ using HZSoft.Application.Code;
 using HZSoft.Application.Entity.CustomerManage;
 using HZSoft.Util;
 using HZSoft.Util.Extension;
+using HZSoft.Util.WebControl;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,9 +38,34 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         {
             return View();
         }
+        public ActionResult PageIndex()
+        {
+            return View();
+        }
         #endregion
 
         #region 获取数据
+        /// <summary>
+        /// 获取列表
+        /// </summary>
+        /// <param name="pagination">分页参数</param>
+        /// <param name="queryJson">查询参数</param>
+        /// <returns>返回分页列表Json</returns>
+        [HttpGet]
+        public ActionResult GetPageListJson(Pagination pagination, string queryJson)
+        {
+            var watch = CommonHelper.TimerStart();
+            var data = chancetrailbll.GetPageList(pagination, queryJson);
+            var jsonData = new
+            {
+                rows = data,
+                total = pagination.total,
+                page = pagination.page,
+                records = pagination.records,
+                costtime = CommonHelper.TimerEnd(watch)
+            };
+            return ToJsonResult(jsonData);
+        }
         /// <summary>
         /// 获取列表
         /// </summary>

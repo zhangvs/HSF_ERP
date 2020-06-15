@@ -594,6 +594,84 @@ namespace HZSoft.Application.Service.CustomerManage
         }
 
         /// <summary>
+        /// 工序撤销
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <param name="step">工序</param>
+        /// <param name="name">姓名</param>
+        /// <returns></returns>
+        public void SaveStepBackForm(string keyValue, int? step, string name)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(keyValue))
+                {
+                    Sale_CustomerEntity oldEntity = GetEntity(keyValue);
+                    if (oldEntity != null)
+                    {
+                        if (step!=null)
+                        {
+                            switch (step)
+                            {
+                                case 0:
+                                    oldEntity.BeiLiaoUserName = oldEntity.BeiLiaoUserName.Replace(name, "");
+                                    if (string.IsNullOrEmpty(oldEntity.BeiLiaoUserName))
+                                    {
+                                        oldEntity.BeiLiaoMark = 1;
+                                    }
+                                    break;
+                                case 1:
+                                    oldEntity.KaiLiaoUserName = oldEntity.KaiLiaoUserName.Replace(name, "");
+                                    if (string.IsNullOrEmpty(oldEntity.KaiLiaoUserName))
+                                    {
+                                        oldEntity.KaiLiaoMark = 1;
+                                    }
+                                    break;
+                                case 2:
+                                    oldEntity.FengBianUserName = oldEntity.FengBianUserName.Replace(name, "");
+                                    if (string.IsNullOrEmpty(oldEntity.FengBianUserName))
+                                    {
+                                        oldEntity.FengBianMark = 1;
+                                    }
+                                    break;
+                                case 3:
+                                    oldEntity.PaiZuanUserName = oldEntity.PaiZuanUserName.Replace(name, "");
+                                    if (string.IsNullOrEmpty(oldEntity.PaiZuanUserName))
+                                    {
+                                        oldEntity.PaiZuanMark = 1;
+                                    }
+                                    break;
+                                case 4:
+                                    oldEntity.ShiZhuangUserName = oldEntity.ShiZhuangUserName.Replace(name, "");
+                                    if (string.IsNullOrEmpty(oldEntity.ShiZhuangUserName))
+                                    {
+                                        oldEntity.ShiZhuangMark = 1;
+                                    }
+                                    break;
+                                case 5:
+                                    oldEntity.BaoZhuangUserName = oldEntity.BaoZhuangUserName.Replace(name, "");
+                                    if (string.IsNullOrEmpty(oldEntity.BaoZhuangUserName))
+                                    {
+                                        oldEntity.BaoZhuangMark = 1;
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            }
+                            oldEntity.Modify(keyValue);
+                            this.BaseRepository().Update(oldEntity);
+                            RecordHelp.AddRecord(4, oldEntity.OrderId, "工序撤销：" + name);
+                        }                        
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
         /// 修改工序状态
         /// </summary>
         /// <param name="entity">实体对象</param>

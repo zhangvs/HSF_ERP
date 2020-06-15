@@ -77,6 +77,12 @@ namespace HZSoft.Application.IService.CustomerManage
         /// <param name="entity"></param>
         void SavePlanForm(string keyValue, Sale_CustomerEntity entity);
         /// <summary>
+        /// 工序撤销
+        /// </summary>
+        /// <param name="keyValue"></param>
+        /// <param name="entity"></param>
+        void SaveStepBackForm(string keyValue, int? step, string name);
+        /// <summary>
         /// 工序状态修改
         /// </summary>
         /// <param name="entity"></param>

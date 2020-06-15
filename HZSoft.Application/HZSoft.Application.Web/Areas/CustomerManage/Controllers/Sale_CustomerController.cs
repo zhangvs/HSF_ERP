@@ -85,6 +85,15 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
             return View();
         }
         /// <summary>
+        /// 工序撤销
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult StepBackForm()
+        {
+            return View();
+        }
+        /// <summary>
         /// 表单页面
         /// </summary>
         /// <returns></returns>
@@ -279,6 +288,18 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
             return Success("操作成功。");
         }
 
+        /// <summary>
+        /// 工序撤销
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <param name="step">工序</param>
+        /// <param name="name">姓名</param>
+        /// <returns></returns>
+        public ActionResult SaveStepBackForm(string keyValue, int? step, string name)
+        {
+            sale_customerbll.SaveStepBackForm(keyValue, step, name);
+            return Success("操作成功。");
+        }
 
         /// <summary>
         /// 撤单

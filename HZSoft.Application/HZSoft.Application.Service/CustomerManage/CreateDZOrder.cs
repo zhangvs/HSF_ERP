@@ -1,4 +1,5 @@
-﻿using HZSoft.Application.Entity.CustomerManage;
+﻿using HZSoft.Application.Code;
+using HZSoft.Application.Entity.CustomerManage;
 using HZSoft.Data.Repository;
 using HZSoft.Util;
 using HZSoft.Util.WeChat.Comm;
@@ -44,16 +45,34 @@ namespace HZSoft.Application.Service.CustomerManage
                     FrontMark = orderEntity.FrontMark,
                     AfterMark = orderEntity.AfterMark,
                     MonthMark = orderEntity.MonthMark,
-                    ReceivedAmount = orderEntity.ReceivedAmount,
                     PaymentDate = orderEntity.PaymentDate,
-                    PaymentState = orderEntity.PaymentState,
                     ShippingType = orderEntity.ShippingType,
                     Carrier = orderEntity.Carrier,
                     CreatePath = orderEntity.CreatePath,
-                    Description = orderEntity.Description
-                };
-                dzEntity.Create();//付款时间
+                    Description = orderEntity.Description,
 
+                    Id= orderEntity.Id,
+                    CreateDate = DateTime.Now,
+                    CreateUserId = OperatorProvider.Provider.Current().UserId,
+                    CreateUserName = OperatorProvider.Provider.Current().UserName,
+                    CheckTuMark = 0,//审图
+                    ChaiMark = 0,//拆单
+                    CheckMark = 0,//审核
+                    MoneyMark = 0,//报价
+                    MoneyOkMark = 0,//报价审核
+                    PaymentState = 1,//未收款
+                    MoneyAccounts = 0,//报价金额
+                    ReceivedAmount = 0,//收款金额
+                    DownMark = 0,//下单
+                    PushMark = 0,//推单
+                    EnterMark = 0,//入库
+                    SendMark = 0,//发货通知
+                    SendOutMark = 0,//实际发货
+                    SignedMark = 0,//签收
+                    OverMark = 0,//结束完成
+                    DeleteMark = 0,
+                    EnabledMark = 1
+            };
                 //主表
                 db.Insert(dzEntity);
 
