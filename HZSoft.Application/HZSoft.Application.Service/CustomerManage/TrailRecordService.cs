@@ -49,7 +49,7 @@ namespace HZSoft.Application.Service.CustomerManage
             if (!queryParam["OrderTitle"].IsEmpty())
             {
                 string OrderTitle = queryParam["OrderTitle"].ToString();
-                strSql += " and OrderTitle like '%" + OrderTitle + "%'";
+                strSql += " and o.OrderTitle like '%" + OrderTitle + "%'";
             }
             //内容
             if (!queryParam["TrackContent"].IsEmpty())
@@ -61,7 +61,7 @@ namespace HZSoft.Application.Service.CustomerManage
             if (!queryParam["CreateUserName"].IsEmpty())
             {
                 string CreateUserName = queryParam["CreateUserName"].ToString();
-                strSql += " and CreateUserName like '%" + CreateUserName + "%'";
+                strSql += " and r.CreateUserName like '%" + CreateUserName + "%'";
             }
 
             return new RepositoryFactory().BaseRepository().FindList<TrailRecordEntity>(strSql.ToString(), pagination);
