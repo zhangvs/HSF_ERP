@@ -56,8 +56,8 @@
                 param: { keyValue: keyValue },
                 success: function (data) {
                     $("#form1").SetWebControls(data.entity);
-                    if (data.SendOutImg != undefined) {
-                        $("#UploadSendOutImg").attr("imgsrc", data.SendOutImg).html("<img src='" + data.SendOutImg + "' style='height:430px;' />");
+                    if (data.entity.SendOutImg != undefined) {
+                        $("#UploadSendOutImg").attr("imgsrc", data.entity.SendOutImg).html("<img src='" + data.entity.SendOutImg + "' style='height:430px;' />");
                     }
                 }
             })

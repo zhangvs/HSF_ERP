@@ -5,11 +5,14 @@ using HZSoft.Application.Entity.BaseManage;
 using HZSoft.Application.Entity.CustomerManage;
 using HZSoft.Application.Web.Utility;
 using HZSoft.Util;
+using HZSoft.Util.WeChat.Comm;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -501,52 +504,7 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
             return View();
         }
         
-
-
-
-        /// <summary>
-        /// 上传发货现场图片
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost]
-        public ActionResult UploadPicture()
-        {
-            string Message = "";
-            if (Request.Files.Count > 0)
-            {
-                HttpPostedFile file = System.Web.HttpContext.Current.Request.Files[0];
-                if (file.ContentLength > 0)
-                {
-                    string fileExt = file.FileName.Substring(file.FileName.LastIndexOf('.'));//后缀
-                    try
-                    {
-                        string dir = "/Resource/DocumentFile/SendOut/";
-                        if (Directory.Exists(Server.MapPath(dir)) == false)//如果不存在就创建file文件夹
-                        {
-                            Directory.CreateDirectory(Server.MapPath(dir));
-                        }
-                        string newfileName = DateTime.Now.ToString("yyyyMMddHHmmss");
-                        //原图
-                        string fullDir1 = dir + newfileName + fileExt;
-                        string imgFilePath = Request.MapPath(fullDir1);
-                        file.SaveAs(imgFilePath);
-
-                        return Content(new JsonMessage { Success = true, Code = "0", Message = fullDir1 }.ToString());
-
-                    }
-                    catch (Exception ex)
-                    {
-                        Message = HttpUtility.HtmlEncode(ex.Message);
-                        return Content(new JsonMessage { Success = false, Code = "-1", Message = Message }.ToString());
-                    }
-                }
-                Message = "请选择要上传的文件！";
-                return Content(new JsonMessage { Success = false, Code = "-1", Message = Message }.ToString());
-            }
-            Message = "请选择要上传的文件！";
-            return Content(new JsonMessage { Success = false, Code = "-1", Message = Message }.ToString());
-        }
-
+        
 
         /// <summary>
         /// 发货图片上传，发货时间
@@ -574,6 +532,69 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
             {
                 return Content("false");
             }
+        }
+
+
+
+
+        /// <summary>
+        /// 上传发货现场图片
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult GetWxPic(string media_id, string callback)
+        {
+            string base_token = TemplateWxApp.getToken(); //获取AccessToken结果,基础代码，盛派容器统一获取
+            
+            string dir = String.Format("/Resource/DocumentFile/SendOut/");
+            if (Directory.Exists(Server.MapPath(dir)) == false)//如果不存在就创建file文件夹
+            {
+                Directory.CreateDirectory(Server.MapPath(dir));
+            }
+
+            string newfileName = DateTime.Now.ToString("yyyyMMddHHmmss");
+            //原图
+            string fullDir1 = dir + newfileName + ".jpg";
+            string imgFilePath = Request.MapPath(fullDir1);
+
+
+            HttpWebResponse myResponse = null;
+            try
+            {
+                var url = string.Format("https://api.weixin.qq.com/cgi-bin/media/get?access_token={0}&media_id={1}", base_token, media_id);
+                HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+
+                req.Method = "GET";
+
+                myResponse = (HttpWebResponse)req.GetResponse();
+                StreamReader reader = new StreamReader(myResponse.GetResponseStream(), Encoding.UTF8);
+                Stream stream = myResponse.GetResponseStream();
+
+                #region 保存下载图片  
+                FileStream fileStream = new FileStream(imgFilePath, FileMode.Create, FileAccess.Write);
+                byte[] bytes = new byte[4096];
+                int readSize = 0;
+                while ((readSize = stream.Read(bytes, 0, 4096)) > 0)
+                {
+                    fileStream.Write(bytes, 0, readSize);
+                    fileStream.Flush();
+                }
+                #endregion
+
+                myResponse.Close();
+                stream.Close();
+                fileStream.Close();
+            }
+            //异常请求  
+            catch (WebException ex)
+            {
+                fullDir1 = "";
+            }
+            finally
+            {
+
+            }
+            return Content(fullDir1);
+
         }
     }
 }

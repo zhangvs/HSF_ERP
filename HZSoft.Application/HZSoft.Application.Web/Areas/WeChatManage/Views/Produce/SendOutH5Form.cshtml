@@ -22,10 +22,10 @@
             单号：<input class="txt" id="OrderId" type="text" value="@ViewBag.OrderId" readonly />
             标题：<input class="txt" id="OrderTitle" type="text" value="@ViewBag.OrderTitle" readonly />
             操作人：<input class="txt" id="SendOutUserName" type="text" value="@ViewBag.SendOutUserName" readonly />
-            <div class="uploadPic" style="padding-bottom: 100%;">
+            <div class="uploadPic" style="height: 30em;">
                 <p>上传发货现场</p>
                 <ul>
-                    <li class="upload" id="SendOutImg" style="width: 95%;padding-bottom: 90%;"></li>
+                    <li class="upload" id="SendOutImg" style="width: 95%;height: 25em;"></li>
                 </ul>
             </div>
             <p style="color:red" id="ErrorMessage"></p>
@@ -90,15 +90,16 @@
 
                                     //备注：上传图片有效期3天，可用微信多媒体接口下载图片到自己的服务器，此处获得的 serverId 即 media_id。根据它去微信服务器读取图片数据：
 
-                                    var indata = { "media_id": res.serverId, "callback": "AddLocation", "folder": "Picture" };
-                                    $.post("/WeChatManage/Produce/UploadPicture", indata, function (data) {
+                                    var indata = { "media_id": res.serverId, "callback": "SaveSendOutH5Form" };
+                                    $.post("/WeChatManage/Produce/GetWxPic", indata, function (data) {
                                         console.log(data);
                                         if (data == '') {
-                                            layer.alert('上传失败:' + data.Message, {
+                                            layer.alert('上传失败', {
                                                 skin: 'layui-layer-molv', closeBtn: 0
                                             });
                                         } else {
-                                            $("#SendOutImg").attr("imgsrc", data).html("<img src='" + path + "' style='max-height:" + maxheight + "px' /> <i class='iconfont icon-icon-test' onclick='delUpload(this)'></i>").attr("datasrc", path).removeClass("upload");
+                                            var maxheight = this.innerHeight;
+                                            $("#SendOutImg").attr("imgsrc", data).html("<img src='" + data + "' style='max-height:25em' /> <i class='iconfont icon-icon-test' onclick='delUpload(this)'></i>").attr("datasrc", data).removeClass("upload");
                                         }
                                     });
 
