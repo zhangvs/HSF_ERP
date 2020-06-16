@@ -416,6 +416,11 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// </summary>
         /// <returns></returns>
         public DateTime? SendOutDate { get; set; }
+        /// <summary>
+        /// ·¢»õÍ¼Æ¬
+        /// </summary>
+        /// <returns></returns>
+        public string SendOutImg { get; set; }
 
 
         /// <summary>

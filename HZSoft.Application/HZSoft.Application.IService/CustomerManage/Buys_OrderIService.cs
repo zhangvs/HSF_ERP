@@ -1,5 +1,6 @@
 using HZSoft.Application.Entity.CustomerManage;
 using HZSoft.Util.WebControl;
+using System;
 using System.Collections.Generic;
 
 namespace HZSoft.Application.IService.CustomerManage
@@ -51,7 +52,7 @@ namespace HZSoft.Application.IService.CustomerManage
         /// <returns></returns>
         void SaveForm(string keyValue, Buys_OrderEntity entity,List<Buys_OrderItemEntity> entryList);
         void SaveSend(string keyValue, Buys_OrderEntity entity);
-        void UpdateSendState(string keyValue);
+        void UpdateSendState(string keyValue, string SendOutImg);
         void SaveBuyMain(Sale_CustomerEntity entity);
         void SaveInForm(Buys_OrderItemEntity entity);
         void SaveLogisticsForm(string keyValue, Buys_OrderEntity entity);

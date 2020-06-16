@@ -66,6 +66,15 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
             return View();
         }
         /// <summary>
+        /// 发货单
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult SendOutForm()
+        {
+            return View();
+        }
+        /// <summary>
         /// 表单页面
         /// </summary>
         /// <returns></returns>
@@ -360,13 +369,14 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         /// 实际发货
         /// </summary>
         /// <param name="keyValue">主键值</param>
+        /// <param name="SendOutImg">主键值</param>
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AjaxOnly]
-        public ActionResult UpdateSendState(string keyValue)
+        public ActionResult UpdateSendState(string keyValue, string SendOutImg)
         {
-            buys_orderbll.UpdateSendState(keyValue);
+            buys_orderbll.UpdateSendState(keyValue, SendOutImg);
             return Success("发货成功。");
         }
 
@@ -402,5 +412,50 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
             return Success("操作成功。");
         }
         #endregion
+
+
+        /// <summary>
+        /// 上传发货现场图片
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult UploadPicture()
+        {
+            string Message = "";
+            if (Request.Files.Count > 0)
+            {
+                HttpPostedFile file = System.Web.HttpContext.Current.Request.Files[0];
+                if (file.ContentLength > 0)
+                {
+                    string fileExt = file.FileName.Substring(file.FileName.LastIndexOf('.'));//后缀
+                    try
+                    {
+                        string dir = "/Resource/DocumentFile/SendOut/";
+                        if (Directory.Exists(Server.MapPath(dir)) == false)//如果不存在就创建file文件夹
+                        {
+                            Directory.CreateDirectory(Server.MapPath(dir));
+                        }
+                        string newfileName = DateTime.Now.ToString("yyyyMMddHHmmss");
+                        //原图
+                        string fullDir1 = dir + newfileName + fileExt;
+                        string imgFilePath = Request.MapPath(fullDir1);
+                        file.SaveAs(imgFilePath);
+
+                        return Content(new JsonMessage { Success = true, Code = "0", Message = fullDir1 }.ToString());
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Message = HttpUtility.HtmlEncode(ex.Message);
+                        return Content(new JsonMessage { Success = false, Code = "-1", Message = Message }.ToString());
+                    }
+                }
+                Message = "请选择要上传的文件！";
+                return Content(new JsonMessage { Success = false, Code = "-1", Message = Message }.ToString());
+            }
+            Message = "请选择要上传的文件！";
+            return Content(new JsonMessage { Success = false, Code = "-1", Message = Message }.ToString());
+        }
+        
     }
 }

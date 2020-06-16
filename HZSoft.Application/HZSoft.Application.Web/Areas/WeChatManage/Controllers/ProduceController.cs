@@ -8,6 +8,7 @@ using HZSoft.Util;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -97,7 +98,10 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
                             entity.StepName = "包装";
                             break;
                         case 6:
-                            entity.StepName = "仓库";
+                            entity.StepName = "入库";
+                            break;
+                        case 7:
+                            entity.StepName = "发货";
                             break;
                         default:
                             break;
@@ -299,9 +303,11 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
                             buy_orderbll.SaveBuyMain(proEntity);//统一改成仓管扫码入库
                         }
                         break;
-                    case 6://仓库,初始化一个入库单
+                    case 6://入库,初始化一个入库单
                         buy_orderbll.SaveBuyMain(proEntity);
                         return RedirectToAction("EnterItemForm", new { _keyValue = proEntity.ProduceId, _title = proEntity.OrderTitle, _name= name });
+                    case 7://发货
+                        return RedirectToAction("SendOutH5Form", new { _keyValue = proEntity.ProduceId, _title = proEntity.OrderTitle, _name = name });
                     default:
                         break;
                 }
@@ -461,7 +467,6 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
         [HttpPost]
         public ActionResult SaveBuysItemForm(Buys_OrderItemEntity entity)
         {
-            entity.CreateItemDate = DateTime.Now;
             Operator operators = new Operator();
             //g根据工序名称判断，添加当前操作用户
             UserEntity userEntity = new UserBLL().GetEntityByName(entity.CreateItemUserName);
@@ -472,6 +477,97 @@ namespace HZSoft.Application.Web.Areas.WeChatManage.Controllers
                 operators.Token = DESEncrypt.Encrypt(Guid.NewGuid().ToString());
                 OperatorProvider.Provider.AddCurrent(operators);
                 buy_orderbll.SaveInForm(entity);
+                return Content("true");
+            }
+            else
+            {
+                return Content("false");
+            }
+        }
+
+
+
+        /// <summary>
+        /// 发货填写
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult SendOutH5Form(string _keyValue, string _title, string _name)
+        {
+            ViewBag.OrderId = _keyValue;
+            ViewBag.OrderTitle = _title;
+            ViewBag.SendOutUserName = _name;
+            var jssdkUiPackage = Senparc.Weixin.MP.Helpers.JSSDKHelper.GetJsSdkUiPackage(WeixinConfig.AppID, WeixinConfig.AppSecret, Request.Url.AbsoluteUri.Split('#')[0]);
+            ViewBag.JSSDKUiPackage = jssdkUiPackage;
+            return View();
+        }
+        
+
+
+
+        /// <summary>
+        /// 上传发货现场图片
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult UploadPicture()
+        {
+            string Message = "";
+            if (Request.Files.Count > 0)
+            {
+                HttpPostedFile file = System.Web.HttpContext.Current.Request.Files[0];
+                if (file.ContentLength > 0)
+                {
+                    string fileExt = file.FileName.Substring(file.FileName.LastIndexOf('.'));//后缀
+                    try
+                    {
+                        string dir = "/Resource/DocumentFile/SendOut/";
+                        if (Directory.Exists(Server.MapPath(dir)) == false)//如果不存在就创建file文件夹
+                        {
+                            Directory.CreateDirectory(Server.MapPath(dir));
+                        }
+                        string newfileName = DateTime.Now.ToString("yyyyMMddHHmmss");
+                        //原图
+                        string fullDir1 = dir + newfileName + fileExt;
+                        string imgFilePath = Request.MapPath(fullDir1);
+                        file.SaveAs(imgFilePath);
+
+                        return Content(new JsonMessage { Success = true, Code = "0", Message = fullDir1 }.ToString());
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Message = HttpUtility.HtmlEncode(ex.Message);
+                        return Content(new JsonMessage { Success = false, Code = "-1", Message = Message }.ToString());
+                    }
+                }
+                Message = "请选择要上传的文件！";
+                return Content(new JsonMessage { Success = false, Code = "-1", Message = Message }.ToString());
+            }
+            Message = "请选择要上传的文件！";
+            return Content(new JsonMessage { Success = false, Code = "-1", Message = Message }.ToString());
+        }
+
+
+        /// <summary>
+        /// 发货图片上传，发货时间
+        /// </summary>
+        /// <param name="keyValue"></param>
+        /// <param name="sendOutImg"></param>
+        /// <param name="sendOutUserName"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult SaveSendOutH5Form(string keyValue, string sendOutImg, string sendOutUserName)
+        {
+            Operator operators = new Operator();
+            //根据工序名称判断，添加当前操作用户
+            UserEntity userEntity = new UserBLL().GetEntityByName(sendOutUserName);
+            if (userEntity != null)
+            {
+                operators.UserId = userEntity.UserId;
+                operators.UserName = userEntity.RealName;
+                operators.Token = DESEncrypt.Encrypt(Guid.NewGuid().ToString());
+                OperatorProvider.Provider.AddCurrent(operators);
+                buy_orderbll.UpdateSendState(keyValue, sendOutImg);
                 return Content("true");
             }
             else

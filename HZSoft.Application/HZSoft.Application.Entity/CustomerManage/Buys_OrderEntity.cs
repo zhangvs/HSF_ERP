@@ -289,6 +289,11 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// <returns></returns>
         public string SendOutUserName { get; set; }
         /// <summary>
+        /// 发货图片
+        /// </summary>
+        /// <returns></returns>
+        public string SendOutImg { get; set; }
+        /// <summary>
         /// 发货日期
         /// </summary>
         /// <returns></returns>

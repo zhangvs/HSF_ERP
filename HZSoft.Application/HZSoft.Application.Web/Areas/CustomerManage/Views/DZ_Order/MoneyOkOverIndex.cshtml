@@ -30,6 +30,7 @@
         var selectedRowIndex = 0;
         var queryJson = {};
         queryJson.MoneyOkMark = 1;//已经报价审核的
+        queryJson.OrderType = -3;//(只显示非客诉单)
 
         var $gridTable = $('#gridTable');
         $gridTable.jqGrid({

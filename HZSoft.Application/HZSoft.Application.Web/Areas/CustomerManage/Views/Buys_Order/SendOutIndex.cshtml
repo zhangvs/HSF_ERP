@@ -231,15 +231,30 @@
 
 
     //发货
+    //function btn_sendout() {
+    //    var keyValue = $("#gridTable").jqGridRowValue('Id');
+    //    if (checkedRow(keyValue)) {
+    //        $.ConfirmAjax({
+    //            msg: "注：您确定【发货】吗？",
+    //            url: "../../CustomerManage/Buys_Order/UpdateSendState",
+    //            param: { keyValue: keyValue },
+    //            success: function (data) {
+    //                $("#gridTable").trigger("reloadGrid");
+    //            }
+    //        })
+    //    }
+    //}
     function btn_sendout() {
-        var keyValue = $("#gridTable").jqGridRowValue('Id');
+        var keyValue = $('#gridTable').jqGridRowValue('Id');
         if (checkedRow(keyValue)) {
-            $.ConfirmAjax({
-                msg: "注：您确定【发货】吗？",
-                url: "../../CustomerManage/Buys_Order/UpdateSendState",
-                param: { keyValue: keyValue },
-                success: function (data) {
-                    $("#gridTable").trigger("reloadGrid");
+            dialogOpen({
+                id: 'SendOutForm',
+                title: '发货',
+                url: '/CustomerManage/Buys_Order/SendOutForm?keyValue=' + keyValue,
+                width: '450px',
+                height: '600px',
+                callBack: function (iframeId) {
+                    top.frames[iframeId].AcceptClick();
                 }
             })
         }

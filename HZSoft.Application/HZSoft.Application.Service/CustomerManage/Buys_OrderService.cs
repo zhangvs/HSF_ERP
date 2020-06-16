@@ -544,8 +544,9 @@ namespace HZSoft.Application.Service.CustomerManage
         /// 实际发货
         /// </summary>
         /// <param name="keyValue">主键值</param>
+        /// <param name="SendOutImg">主键值</param>
         /// <returns></returns>
-        public void UpdateSendState(string keyValue)
+        public void UpdateSendState(string keyValue, string SendOutImg)
         {
             IRepository db = this.BaseRepository().BeginTrans();
             try
@@ -555,6 +556,7 @@ namespace HZSoft.Application.Service.CustomerManage
                     Buys_OrderEntity entity = GetEntity(keyValue);
                     entity.Modify(keyValue);
                     entity.SendOutMark = 1;
+                    entity.SendOutImg = SendOutImg;
                     entity.SendOutDate = DateTime.Now;
                     entity.SendOutUserId = OperatorProvider.Provider.Current().UserId;
                     entity.SendOutUserName = OperatorProvider.Provider.Current().UserName;
@@ -565,6 +567,7 @@ namespace HZSoft.Application.Service.CustomerManage
                     DZ_OrderEntity dZ_OrderEntity = new DZ_OrderEntity
                     {
                         SendOutMark = 1,
+                        SendOutImg = SendOutImg,
                         SendOutDate = DateTime.Now,
                         SendOutUserId = entity.SendOutUserId,
                         SendOutUserName = entity.SendOutUserName

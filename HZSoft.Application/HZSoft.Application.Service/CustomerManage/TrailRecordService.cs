@@ -30,7 +30,7 @@ namespace HZSoft.Application.Service.CustomerManage
         {
             string strSql = "select r.TrailId,r.TrackContent,r.CreateDate,r.CreateUserName," +
                 "o.Code,o.OrderTitle from Client_TrailRecord r " +
-                "LEFT JOIN DZ_Order o ON r.ObjectId=o.Id ";
+                "LEFT JOIN DZ_Order o ON r.ObjectId=o.Id where 1=1 ";
             var queryParam = queryJson.ToJObject();
             //成立日期
             if (!queryParam["StartTime"].IsEmpty() && !queryParam["EndTime"].IsEmpty())

@@ -104,6 +104,19 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
 
         #region 提交数据
         /// <summary>
+        /// 删除数据
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AjaxOnly]
+        public ActionResult RemoveForm(string keyValue)
+        {
+            chancetrailbll.RemoveForm(keyValue);
+            return Success("删除成功。");
+        }
+        /// <summary>
         /// 保存表单（新增、修改）
         /// </summary>
         /// <param name="keyValue">主键值</param>
