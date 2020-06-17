@@ -24,6 +24,7 @@ namespace HZSoft.Application.Service.CustomerManage
     public class DZSH_OrderService : RepositoryFactory<DZSH_OrderEntity>, DZSH_OrderIService
     {
         private ICodeRuleService coderuleService = new CodeRuleService();
+        private DZ_OrderIService dzService = new DZ_OrderService();
         #region 获取数据
         /// <summary>
         /// 获取列表
@@ -209,13 +210,50 @@ namespace HZSoft.Application.Service.CustomerManage
             {
                 if (!string.IsNullOrEmpty(keyValue))
                 {
-                    //先拿到老的销售单状态
+                    //先拿到老的客诉单
                     DZSH_OrderEntity oldEntity = GetEntity(keyValue);
 
-                    if (entity.NeedSale > 0 && oldEntity.NeedSale == 0)
+                    if (entity.NeedSale == 1 && oldEntity.NeedSale == 0)
                     {
+                        //改为生产之后，创建销售单
                         CreateDZOrder.SaveDZOrder(db, entity);
                     }
+                    else
+                    {
+                        //先拿到老的销售单
+                        DZ_OrderEntity oldDZEntity = dzService.GetEntity(keyValue);
+                        if (oldDZEntity!=null)
+                        {
+                            //如果上传的文件路径变化，判断销售单中的审图状态是否已经审图，已经审图，不能修改文件，需要研发驳回！
+                            if (entity.CreatePath!=oldEntity.CreatePath && oldDZEntity.CheckTuMark == 1)
+                            {
+                                throw new Exception("请联系研发审图驳回，再重新上传文件！");
+                            }
+                            DZ_OrderEntity dzEntity = new DZ_OrderEntity
+                            {
+                                OrderTitle = entity.OrderTitle,
+                                OrderType = entity.OrderType,
+                                CompanyId = entity.CompanyId,
+                                CompanyName = entity.CompanyName,
+                                CustomerId = entity.CustomerId,
+                                CustomerName = entity.CustomerName,
+                                CustomerTelphone = entity.CustomerTelphone,
+                                DesignerUserName = entity.DesignerUserName,
+                                DesignerTelphone = entity.DesignerTelphone,
+                                Address = entity.Address,
+                                SalesmanUserId = entity.SalesmanUserId,
+                                SalesmanUserName = entity.SalesmanUserName,
+                                ShippingType = entity.ShippingType,
+                                Carrier = entity.Carrier,
+                                CreatePath = entity.CreatePath,
+                                Description = entity.Description,
+                            };
+                            oldDZEntity.Modify(keyValue);
+                            //同步销售单
+                            db.Update<DZ_OrderEntity>(dzEntity);//重点关注的是路径是否同步
+                        }
+                    }
+
                     entity.Modify(keyValue);
                     //更新
                     db.Update<DZSH_OrderEntity>(entity);
@@ -233,6 +271,10 @@ namespace HZSoft.Application.Service.CustomerManage
 
                     //胡鲁鲁
                     TemplateWxApp.SendTemplateNew("oA-EC1aaKOSNdW2wL8lHSsr3R4Dg", "您好，有新的客诉单!", entity.OrderTitle, entity.Code, "请进行处理。");
+
+                    //发微信模板消息---客诉单接单之后，给审图人提醒--刘琛oA-EC1X6RWfW1_DNJ_VNiA3uhOYg
+                    //订单生成通知（审图提醒）
+                    TemplateWxApp.SendTemplateNew("oA-EC1X6RWfW1_DNJ_VNiA3uhOYg", "您好，有新的订单需要审图!", entity.OrderTitle, entity.Code, "请进行审图。");
                 }
                 db.Commit();
             }

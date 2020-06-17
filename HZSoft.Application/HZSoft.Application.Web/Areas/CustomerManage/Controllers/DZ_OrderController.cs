@@ -753,7 +753,7 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
 
             //一行行插入
             //引用事务机制，出错时，事物回滚
-            ViewBag.error = dz_orderbll.BatchAddEntity(dtSource);
+            ViewBag.error = dz_orderbll.BatchAddEntity(keyValue, dtSource);
 
             System.Threading.Thread.Sleep(2000);
             return View();

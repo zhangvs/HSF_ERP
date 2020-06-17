@@ -11,6 +11,7 @@
     });
     //初始化页面
     function InitialPage() {
+        $("#ifmSignIn").attr("src", "/Resource/QRcode/" + keyValue + ".jpg");
         //运输方式
         $("#ShippingType").ComboBox({
             description: "==请选择==",
@@ -44,6 +45,10 @@
                     //主表
                     var order = data.entity;
                     $("#form1").SetWebControls(order);
+
+                    if (data.entity.SendOutImg != undefined) {
+                        $("#SendOutImg").attr("src", data.entity.SendOutImg);
+                    }
                     //明细
                     var childEntity = data.childEntity;
                     $("#gridTable").find('[role=row]').each(function (i) {
@@ -139,6 +144,9 @@
                 <td class="formValue">
                     <input id="OrderTitle" type="text" class="form-control" readonly />
                 </td>
+                <td class="formValue" rowspan="4">
+                    <img id="ifmSignIn" />
+                </td>
             </tr>
             <tr>
                 <td class="formTitle">经销商</td>
@@ -151,19 +159,17 @@
                     <input id="CustomerName" type="text" class="form-control" readonly />
                     <input id="CustomerId" type="hidden" class="form-control" />
                 </td>
+            </tr>
+            <tr>
                 <td class="formTitle">客户电话</td>
                 <td class="formValue">
                     <input id="CustomerTelphone" type="text" class="form-control" readonly />
                 </td>
+                <td class="formTitle">收货地址</td>
+                <td class="formValue">
+                    <input id="Address" type="text" class="form-control" readonly />
+                </td>
             </tr>
-        </table>
-    </div>
-    <div class="gridPanel printArea">
-        <table id="gridTable"></table>
-    </div>
-    <div class="printArea">
-        <textarea id="Description" placeholder="暂无备注信息" class="form-control" style="width: 100%; height: 50px; margin-top: 10px;"></textarea>
-        <table class="form" style="width: 100%; margin-top: 5px;">
             <tr>
                 <td class="formTitle">运输方式</td>
                 <td class="formValue">
@@ -183,23 +189,27 @@
                         </ul>
                     </div>
                 </td>
-                <td class="formTitle">收货地址</td>
-                <td class="formValue">
-                    <input id="Address" type="text" class="form-control" readonly />
-                </td>
             </tr>
+        </table>
+    </div>
+    <div class="gridPanel printArea">
+        <table id="gridTable"></table>
+    </div>
+    <div class="printArea">
+        <textarea id="Description" placeholder="暂无备注信息" class="form-control" style="width: 100%; height: 50px; margin-top: 10px;"></textarea>
+        <table class="form" style="width: 100%; margin-top: 5px;">
             <tr>
                 <th class="formTitle">物流名称</th>
                 <td class="formValue">
-                    <input id="LogisticsName" type="text" class="form-control" readonly/>
+                    <input id="LogisticsName" type="text" class="form-control" readonly />
                 </td>
                 <th class="formTitle">物流单号</th>
                 <td class="formValue">
-                    <input id="LogisticsNO" type="text" class="form-control" readonly/>
+                    <input id="LogisticsNO" type="text" class="form-control" readonly />
                 </td>
                 <th class="formTitle">运费</th>
                 <td class="formValue">
-                    <input id="LogisticsCost" type="text" class="form-control" readonly/>
+                    <input id="LogisticsCost" type="text" class="form-control" readonly />
                 </td>
             </tr>
             <tr>
@@ -213,6 +223,7 @@
                 </td>
             </tr>
         </table>
+        <img id="SendOutImg" />
     </div>
 </div>
 <div id="bottomField">

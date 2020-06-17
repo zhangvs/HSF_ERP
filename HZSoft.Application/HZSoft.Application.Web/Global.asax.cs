@@ -5,6 +5,7 @@ using HZSoft.Util.WeChat.Comm;
 using Senparc.Weixin.MP.CommonAPIs;
 using Senparc.Weixin.MP.Containers;
 using System;
+using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -28,6 +29,32 @@ namespace HZSoft.Application.Web
             BundleTable.EnableOptimizations = true;
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             WeixinConfig.Register();
+
+            ////发件人地址
+            //MailAddress from = new MailAddress("824478152@qq.com");
+            //MailMessage message = new MailMessage();
+            //message.Body = "this is a test";
+            //message.IsBodyHtml = true;
+            //message.BodyEncoding = System.Text.Encoding.UTF8;
+            ////收件人地址
+            //message.To.Add("824478152@qq.com");
+            //message.Subject = "hello !";
+            //message.SubjectEncoding = System.Text.Encoding.UTF8;
+            //message.From = from;
+            //SmtpClient client = new SmtpClient();
+            //client.EnableSsl = true;
+            //client.Host = "smtp.qq.com";
+            //client.Port = 587;
+            ////邮箱账户和密码
+            //client.Credentials = new System.Net.NetworkCredential("824478152@qq.com", "rapradbugreebdji");
+            //try
+            //{
+            //    client.Send(message);
+            //}
+            //catch (Exception ex)
+            //{
+            //    string mssage = ex.ToString();
+            //}
 
             //AccessTokenContainer.Register(WeixinConfig.AppID, WeixinConfig.AppSecret);//如果没有注册则进行注册，微信基础
             //var result = AccessTokenContainer.GetAccessTokenResult(WeixinConfig.AppID); //获取AccessToken结果

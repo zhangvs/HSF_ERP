@@ -86,6 +86,18 @@
                     }
                 },
                 {
+                    label: "外协入库", name: "WaiEnterMark", index: "WaiEnterMark", width: 80, align: "center", sortable: false,
+                    formatter: function (cellvalue) {
+                        if (cellvalue == 0) {
+                            return "<i class=\"fa fa-toggle-off\"></i>";
+                        } else if (cellvalue == 1) {
+                            return "<i class=\"fa fa-toggle-on\"></i>";
+                        } else {
+                            return "";
+                        }
+                    }
+                },
+                {
                     label: "全部入库", name: "AllEnterMark", index: "AllEnterMark", width: 80, align: "center", sortable: false,
                     formatter: function (cellvalue) {
                         return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";

@@ -1109,14 +1109,32 @@ namespace HZSoft.Application.Service.CustomerManage
         /// </summary>
         /// <param name="dtSource">实体对象</param>
         /// <returns></returns>
-        public string BatchAddEntity(DataTable dtSource)
+        public string BatchAddEntity(string keyValue, DataTable dtSource)
         {
+
+            //获取销售订单表
+            DZ_OrderEntity oldEntity = GetEntity(keyValue);
+            int p = 0; 
+            if (oldEntity.CompanyName == "临沂乐豪斯")
+            {
+                p = 2;
+            }
+            else if(oldEntity.CompanyName == "青岛乐豪斯")
+            {
+                p = 3;
+            }
+            else
+            {
+                p = 1;
+            }
+
             int rowsCount = dtSource.Rows.Count;
             IRepository db = new RepositoryFactory().BaseRepository().BeginTrans();
 
+
             int columns = dtSource.Columns.Count;
-            DZ_Money_RoomEntity dZ_Money_RoomEntity = null;
-            DZ_Money_ItemEntity dZ_Money_ItemEntity = null;
+            DZ_Money_RoomEntity roomEntity = null;//房间汇总
+            DZ_Money_ItemEntity itemEntity = null;//房间明细
 
             for (int r = 4; r < rowsCount; r++)
             {
@@ -1124,11 +1142,13 @@ namespace HZSoft.Application.Service.CustomerManage
                 if (firstName.Contains("房间名称："))
                 {
                     string room = firstName.Replace("房间名称：", "");
-                    dZ_Money_RoomEntity = new DZ_Money_RoomEntity()
+                    roomEntity = new DZ_Money_RoomEntity()
                     {
-                        RoomName = room
+                        RoomName = room,
+                        OrderId=keyValue
+                        
                     };
-                    dZ_Money_RoomEntity.Create();
+                    roomEntity.Create();
 
                     //从当前房间开始遍历，获取当前房间的详情
                     for (r = r+1; r < rowsCount; r++)
@@ -1143,37 +1163,94 @@ namespace HZSoft.Application.Service.CustomerManage
                                 {
                                     string houdu= dtSource.Rows[r][1].ToString();//18
                                     string caizhi = dtSource.Rows[r][3].ToString();//横纹暖白浮雕颗粒板		
-                                    string count = dtSource.Rows[r][5].ToString();//
+                                    string count = dtSource.Rows[r][5].ToString();//平方数
                                     //判断物料表名称	获取单价	
                                     var product = db.FindEntity<DZ_ProductEntity>(t => t.Guige.Contains(houdu) && t.Name.Contains(caizhi.Substring(caizhi.Length - 3)));//颗粒板+厚度18
-
-
-                                    dZ_Money_ItemEntity = new DZ_Money_ItemEntity()
+                                    if (product!=null)
                                     {
-                                        RoomId= dZ_Money_RoomEntity.RoomId,
-                                        RoomName=room,
-                                        ProductName = caizhi,
-                                        GuiGe=houdu,
-                                        Count=Convert.ToDecimal(count)
-                                    };
-                                    dZ_Money_ItemEntity.Create();
-                                    db.Insert<DZ_Money_ItemEntity>(dZ_Money_ItemEntity);//插入柜体部分item
+                                        decimal? _place = GetPlanPrice(p, product);
+                                        if (_place == 0 || _place==null)
+                                        {
+                                            return "产品报价不存在：" + caizhi + houdu;
+                                        }
+                                        decimal? _count = Convert.ToDecimal(count);
+                                        decimal? _amount = _place * _count;
+                                        AddDbItem(roomEntity.RoomId, room, caizhi, houdu, _count, "平米", _place, _amount, keyValue, db);
+                                    }
+                                    else
+                                    {
+                                        return "产品不存在：" + caizhi + houdu;
+                                    }
                                 }
                                 else
                                 {
                                     break;
                                 }
                             }
-
                             break;
                         }
 
                         if (firstName.Contains("门板清单"))
                         {
+                            for (r = r + 2; r < rowsCount; r++)
+                            {
+                                string secondName = dtSource.Rows[r][1].ToString();
+                                string houdu = dtSource.Rows[r][6].ToString();//18
+                                string caizhi = dtSource.Rows[r][4].ToString();//横纹沙丘樟木颗粒板
+                                string count = dtSource.Rows[r][9].ToString();//0.344179	
+                                //if材质：横纹沙丘樟木颗粒板&&名称：pb-101
+                                if (secondName.Contains("pb-101"))
+                                {
+                                    var product = db.FindEntity<DZ_ProductEntity>(t => t.Guige.Contains(houdu) && t.Name.Contains(caizhi.Substring(caizhi.Length - 3)));//颗粒板+厚度18
+                                    if (product!=null)
+                                    {
+                                        decimal? _place = GetPlanPrice(p, product);
+                                        if (_place == 0 || _place == null)
+                                        {
+                                            return "产品报价不存在：" + caizhi + houdu;
+                                        }
+                                        decimal? _count = Convert.ToDecimal(count);
+                                        decimal? _amount = _place * _count;
+                                        AddDbItem(roomEntity.RoomId, room, caizhi, houdu, _count, "平米", _place, _amount, keyValue, db);
+                                    }
+                                    else
+                                    {
+                                        return "产品不存在：" + caizhi + houdu;
+                                    }
+                                }
+                                else
+                                {
+                                    //根据门板价格算
+                                    //（2）KM-PB-201拼框平板门
+                                    if (secondName.Contains("拼框") || secondName.Contains("嵌金属线条"))
+                                    {
+                                        secondName = secondName.Substring(2);//去掉前两位T:
+                                        bool isDcb = false;//默认不是多层板，默认颗粒板
+                                        if (secondName.Contains("多层板"))//单价+30
+                                        {
+                                            secondName = secondName.Replace("多层板", "");
+                                            isDcb = true;
+                                        }
+                                        var product = db.FindEntity<DZ_ProductEntity>(t =>t.Name.Contains(secondName));//名称相同的
+                                        if (product!=null)
+                                        {
+                                            decimal? _place = GetPlanPrice(p, product);
+                                            if (_place == 0 || _place == null)
+                                            {
+                                                return "产品报价不存在：" + caizhi + houdu;
+                                            }
+                                            decimal? _count = Convert.ToDecimal(count);
+                                            decimal? _amount = _place * _count;
+                                            AddDbItem(roomEntity.RoomId, room, caizhi, houdu, _count, "平米", _place, _amount, keyValue, db);
+                                        }
+                                    }
+                                    else if(secondName.Contains("km-xs"))//（3吸塑）
+                                    {
 
+                                    }
+                                }
+                            }
                         }
-
-
                         if (firstName.Contains("五金"))
                         {
 
@@ -1212,6 +1289,44 @@ namespace HZSoft.Application.Service.CustomerManage
             }
             return null;
 
+        }
+
+        public decimal? GetPlanPrice(int p, DZ_ProductEntity entity)
+        {
+            decimal? price = null;
+            switch (p)
+            {
+                case 1:
+                    price = entity.Plan1;
+                    break;
+                case 2:
+                    price = entity.Plan2;
+                    break;
+                case 3:
+                    price = entity.Plan3;
+                    break;
+                default:
+                    break;
+            }
+            return price;
+        }
+
+        public void AddDbItem(string roomId,string roomName,string productName, string guige,decimal? count,string unit,decimal? price, decimal? amount, string orderId, IRepository db)
+        {
+            DZ_Money_ItemEntity itemEntity = new DZ_Money_ItemEntity()
+            {
+                RoomId = roomId,
+                RoomName = roomName,
+                ProductName = productName,
+                GuiGe = guige,
+                Count = count,
+                Unit =unit,
+                Price = price,
+                Amount= amount,
+                OrderId = orderId
+            };
+            itemEntity.Create();
+            db.Insert<DZ_Money_ItemEntity>(itemEntity);//插入柜体部分item
         }
     }
 }

@@ -156,11 +156,11 @@ namespace HZSoft.Application.Busines.CustomerManage
         /// 保存表单（新增、修改）
         /// </summary>
         /// <returns></returns>
-        public string BatchAddEntity(DataTable dtSource)
+        public string BatchAddEntity(string keyValue, DataTable dtSource)
         {
             try
             {
-                string returnMsg = service.BatchAddEntity(dtSource);
+                string returnMsg = service.BatchAddEntity(keyValue, dtSource);
                 return returnMsg;
             }
             catch (Exception ex)
