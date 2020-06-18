@@ -133,8 +133,8 @@
             autowidth: true,
             colModel: [
                 { label: '统计子表Id', name: 'Id', width: 80, align: '', sortable: false, resizable: false, hidden: true },
-                { label: '产品名称', name: 'ProductName', width: 180, align: '', sortable: false, resizable: false },
-                { label: '产品单号', name: 'ProductCode', width: 100, align: '', sortable: false, resizable: false },
+                { label: '物料名称', name: 'ProductName', width: 180, align: '', sortable: false, resizable: false },
+                { label: '物料编号', name: 'ProductCode', width: 100, align: '', sortable: false, resizable: false },
                 { label: '总面积', name: 'SumArea', width: 120, align: '', sortable: false, resizable: false },
                 { label: '总数量', name: 'SumCount', width: 120, align: '', sortable: false, resizable: false },
                 { label: '描述', name: 'Description', width: 380, align: '', sortable: false, resizable: false },
@@ -158,7 +158,7 @@
         $grid.jqGrid('setGroupHeaders', {
             useColSpanStyle: true,
             groupHeaders: [
-                { startColumnName: 'ProductName', numberOfColumns: 2, titleText: '商品信息' },
+                { startColumnName: 'ProductName', numberOfColumns: 2, titleText: '物料信息' },
                 { startColumnName: 'SumArea', numberOfColumns: 4, titleText: '数据信息' },
             ]
         });
@@ -270,6 +270,11 @@
             return false;
         }
 
+        if (!$("#GuiTiMark").is(':checked') && !$("#WuJinMark").is(':checked') && !$("#MenBanMark").is(':checked') && !$("#WaiXieMark").is(':checked')) {
+            dialogMsg('没有选择任何材料！', 0);
+            return false;
+        }
+
         var strChildEntitys = [];
         $('#gridTable').find('[role=row]').each(function (i) {
             if (!!$(this).find('input[name="ProductCode"]').val()) {
@@ -285,6 +290,13 @@
                 });
             }
         });
+
+        if ($("#GuiTiMark").is(':checked') || $("#MenBanMark").is(':checked')) {
+            if (strChildEntitys.length==0) {
+                dialogMsg('物料信息表内容为空！', 0);
+                return false;
+            }
+        }
 
         var postData = $("#form1").GetWebControls(keyValue);
         postData["SumTotalArea"] = $("#SumTotalArea").text();
@@ -312,15 +324,15 @@
         <tr>
             <th class="formTitle" style="width: 60px;">生产单<font face="宋体">*</font></th>
             <td class="formValue">
-                <input id="ProduceCode" type="text" class="form-control" isvalid="yes" checkexpession="NotNull" />
+                <input id="ProduceCode" type="text" class="form-control" isvalid="yes" checkexpession="NotNull" disabled />
+                <input id="OrderCode" type="hidden" class="form-control" disabled />
+                <input id="OrderId" type="hidden" class="form-control" />
+                <input id="ProduceId" type="hidden" class="form-control" />
             </td>
 
-            <th class="formTitle" style="width: 60px;">销售单<font face="宋体">*</font></th>
+            <th class="formTitle" style="width: 60px;">标题<font face="宋体">*</font></th>
             <td class="formValue">
-                @*<div id="OrderId" type="select" class="ui-select" isvalid="yes" checkexpession="NotNull"></div>
-        <input id="OrderCode" type="hidden" class="form-control" />*@
-                <input id="OrderCode" type="text" class="form-control" disabled />
-                <input id="OrderId" type="hidden" class="form-control" />
+                <input id="OrderTitle" type="text" class="form-control" disabled />
             </td>
             <th class="formTitle" style="width: 60px;">订单状态<font face="宋体">*</font></th>
             <td class="formValue">
@@ -359,7 +371,7 @@
                     <label><input id="WaiXieMark" type="checkbox" />&nbsp;外协 </label>
                 </div>
             </td>
-            <td class="formTitle">工序<font face="宋体">*</font></td>
+            <td class="formTitle">柜体工序<font face="宋体">*</font></td>
             <td class="formValue">
                 <div class="checkbox">
                     <label><input id="BeiLiaoMark" type="checkbox" checked />&nbsp;备料 </label>
@@ -368,7 +380,6 @@
                     <label><input id="PaiZuanMark" type="checkbox" checked />&nbsp;排钻 </label>
                     <label><input id="ShiZhuangMark" type="checkbox" checked />&nbsp;试装 </label>
                     <label><input id="BaoZhuangMark" type="checkbox" checked />&nbsp;包装 </label> @*onclick="return false;"*@
-                    @*<label><input id="XiSuMark" type="checkbox" />&nbsp;吸塑 </label>*@
                 </div>
             </td>
         </tr>

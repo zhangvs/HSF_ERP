@@ -338,6 +338,11 @@ namespace HZSoft.Application.Entity.CustomerManage
 
 
         /// <summary>
+        /// 排产标识
+        /// </summary>
+        /// <returns></returns>
+        public int? PlanMark { get; set; }
+        /// <summary>
         /// 工序状态
         /// </summary>
         /// <returns></returns>
@@ -550,6 +555,7 @@ namespace HZSoft.Application.Entity.CustomerManage
             this.ReceivedAmount = 0;//收款金额
             this.DownMark = 0;//下单
             this.PushMark = 0;//推单
+            this.PlanMark = 0;//排产
             this.EnterMark = 0;//入库
             this.SendMark = 0;//发货通知
             this.SendOutMark = 0;//实际发货

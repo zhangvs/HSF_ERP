@@ -293,7 +293,7 @@ namespace HZSoft.Application.Service.CustomerManage
             {
                 IRepository db = new RepositoryFactory().BaseRepository().BeginTrans();
                 Buys_OrderEntity buysEntity = db.FindEntity<Buys_OrderEntity>(t => t.Id == entity.OrderCode);//入库单号同销售订单编号
-                //没初始化生产单不存在，才初始化
+                //入库单不存在，才初始化
                 if (buysEntity==null)
                 {
                     //获取销售单收款状态
@@ -368,90 +368,107 @@ namespace HZSoft.Application.Service.CustomerManage
             {
                 Buys_OrderItemEntity oldItemEntity = GetDetail(itemEntity.OrderId, itemEntity.SortCode);
                 Buys_OrderEntity buyEntity = GetEntity(itemEntity.OrderId);
+
                 //先删除再创建
                 if (oldItemEntity != null)
                 {
-                    db.Delete<Buys_OrderItemEntity>(t => t.OrderId.Equals(itemEntity.OrderId) && t.SortCode == itemEntity.SortCode);
+                    db.Delete<Buys_OrderItemEntity>(oldItemEntity.OrderEntryId);
+
                     buyEntity.TotalQty -= oldItemEntity.Qty;//减去老库存
+                    if (itemEntity.Qty == 0)
+                    {
+                        //等于0的情况，直接删掉当前入库记录,当前材料的，入库状态改成null
+                        switch (itemEntity.SortCode)
+                        {
+                            case 1: buyEntity.GuiEnterMark = -1; break;
+                            case 2: buyEntity.MenEnterMark = -1; break;
+                            case 3: buyEntity.WuEnterMark = -1; break;
+                            case 4: buyEntity.WaiEnterMark = -1; break;
+                            default:
+                                break;
+                        }
+                    }
                 }
 
-                //新增入库单从表，新增要新增，初始化id，用户跳过
-                itemEntity.Create();
-                db.Insert<Buys_OrderItemEntity>(itemEntity);
-
-                buyEntity.TotalQty += itemEntity.Qty;//加上新库存
-                //修改入库状态，分柜体，门板，五金，外协
-                switch (itemEntity.SortCode)
+                if (itemEntity.Qty > 0)
                 {
-                    case 1: buyEntity.GuiEnterMark = 1;break;
-                    case 2: buyEntity.MenEnterMark = 1; break;
-                    case 3: buyEntity.WuEnterMark = 1; break;
-                    case 4: buyEntity.WaiEnterMark = 1; break;
-                    default:
-                        break;
-                }
+                    //新增入库单从表，新增要新增，初始化id，用户跳过
+                    itemEntity.Create();
+                    db.Insert<Buys_OrderItemEntity>(itemEntity);
 
-                //判断是否完全入库
-                if (buyEntity.GuiEnterMark == 0 || buyEntity.MenEnterMark == 0 || buyEntity.WuEnterMark == 0 || buyEntity.WaiEnterMark == 0)
-                {
-                    //还没有完全入库
-                    buyEntity.AllEnterMark = 0;
-                }
-                else
-                {
-                    //完全入库修改状态
-                    buyEntity.AllEnterMark = 1;
-                    buyEntity.AllEnterDate = DateTime.Now;
-
-                    //同步到接单表-入库状态
-                    DZ_OrderEntity dZ_OrderEntity = new DZ_OrderEntity
+                    buyEntity.TotalQty += itemEntity.Qty;//加上新库存
+                                                         //修改入库状态，分柜体，门板，五金，外协
+                    switch (itemEntity.SortCode)
                     {
-                        EnterMark = 1,
-                        EnterDate = DateTime.Now
-                    };
-                    dZ_OrderEntity.Modify(buyEntity.OrderId);
-                    db.Update<DZ_OrderEntity>(dZ_OrderEntity);
+                        case 1: buyEntity.GuiEnterMark = 1; break;
+                        case 2: buyEntity.MenEnterMark = 1; break;
+                        case 3: buyEntity.WuEnterMark = 1; break;
+                        case 4: buyEntity.WaiEnterMark = 1; break;
+                        default:
+                            break;
+                    }
 
-                    //同步到生产表-入库状态
-                    Sale_CustomerEntity produceEntity = new Sale_CustomerEntity
+                    //判断是否完全入库
+                    if (buyEntity.GuiEnterMark == 0 || buyEntity.MenEnterMark == 0 || buyEntity.WuEnterMark == 0 || buyEntity.WaiEnterMark == 0)
                     {
-                        EnterMark = 1,
-                        EnterDate = DateTime.Now
-                    };
-                    produceEntity.Modify(buyEntity.ProduceId);
-                    db.Update<Sale_CustomerEntity>(produceEntity);
-
-
-
-                    string wk = "";
-                    //发微信模板消息--给销售人提醒(完全入库提醒)
-                    if (buyEntity.PaymentState==3 || buyEntity.AfterMark==0)
-                    {
-                        //发微信模板消息---完全入库+（收齐尾款或者不需要收取尾款）之后，给胡鲁鲁发消息提醒????给程东彩发全部入库提醒
-                        //订单生成通知（9完全入库提醒）
-                        TemplateWxApp.SendTemplateAllIn("oA-EC1W1BQZ46Wc8HPCZZUUFbE9M", "您好，有新的订单已经入库!", buyEntity.OrderTitle, "共" + buyEntity.TotalQty + "包，请进行发货通知");
+                        //还没有完全入库
+                        buyEntity.AllEnterMark = 0;
                     }
                     else
                     {
-                        wk = "请确认尾款。";
-                    }
+                        //完全入库修改状态
+                        buyEntity.AllEnterMark = 1;
+                        buyEntity.AllEnterDate = DateTime.Now;
 
-                    //发微信模板消息--给销售人提醒(完全入库提醒)
-                    if (!string.IsNullOrEmpty(buyEntity.SalesmanUserName))
-                    {
-                        var hsf_CardList = db.IQueryable<Hsf_CardEntity>(t => t.Name.Equals(buyEntity.SalesmanUserName));
-                        if (hsf_CardList.Count() != 0)
+                        //同步到接单表-入库状态
+                        DZ_OrderEntity dZ_OrderEntity = new DZ_OrderEntity
                         {
-                            var hsf_CardEntity = hsf_CardList.First();
-                            //订单生成通知，只有关注公众号的业务员才能收到消息(8完全入库提醒)
-                            string backMsg = TemplateWxApp.SendTemplateAllIn(hsf_CardEntity.OpenId,"您好，您的订单已经全部入库!", buyEntity.Code, buyEntity.OrderTitle+"：共" + buyEntity.TotalQty + "包。"+ wk);
-                            if (backMsg != "ok")
+                            EnterMark = 1,
+                            EnterDate = DateTime.Now
+                        };
+                        dZ_OrderEntity.Modify(buyEntity.OrderId);
+                        db.Update<DZ_OrderEntity>(dZ_OrderEntity);
+
+                        //同步到生产表-入库状态
+                        Sale_CustomerEntity produceEntity = new Sale_CustomerEntity
+                        {
+                            EnterMark = 1,
+                            EnterDate = DateTime.Now
+                        };
+                        produceEntity.Modify(buyEntity.ProduceId);
+                        db.Update<Sale_CustomerEntity>(produceEntity);
+
+                        string wk = "";
+                        //发微信模板消息--给销售人提醒(完全入库提醒)
+                        if (buyEntity.PaymentState == 3 || buyEntity.AfterMark == 0)
+                        {
+                            //发微信模板消息---完全入库+（收齐尾款或者不需要收取尾款）之后，给胡鲁鲁发消息提醒????给程东彩发全部入库提醒
+                            //订单生成通知（9完全入库提醒）
+                            TemplateWxApp.SendTemplateAllIn("oA-EC1W1BQZ46Wc8HPCZZUUFbE9M", "您好，有新的订单已经入库!", buyEntity.OrderTitle, "共" + buyEntity.TotalQty + "包，请进行发货通知");
+                        }
+                        else
+                        {
+                            wk = "请确认尾款。";
+                        }
+
+                        //发微信模板消息--给销售人提醒(完全入库提醒)
+                        if (!string.IsNullOrEmpty(buyEntity.SalesmanUserName))
+                        {
+                            var hsf_CardList = db.IQueryable<Hsf_CardEntity>(t => t.Name.Equals(buyEntity.SalesmanUserName));
+                            if (hsf_CardList.Count() != 0)
                             {
-                                //业务员没有关注公众号，报错：微信Post请求发生错误！错误代码：43004，说明：require subscribe hint: [ziWtva03011295]
-                                LogHelper.AddLog(buyEntity.SalesmanUserName + "没有关注公众号");//记录日志
+                                var hsf_CardEntity = hsf_CardList.First();
+                                //订单生成通知，只有关注公众号的业务员才能收到消息(8完全入库提醒)
+                                string backMsg = TemplateWxApp.SendTemplateAllIn(hsf_CardEntity.OpenId, "您好，您的订单已经全部入库!", buyEntity.Code, buyEntity.OrderTitle + "：共" + buyEntity.TotalQty + "包。" + wk);
+                                if (backMsg != "ok")
+                                {
+                                    //业务员没有关注公众号，报错：微信Post请求发生错误！错误代码：43004，说明：require subscribe hint: [ziWtva03011295]
+                                    LogHelper.AddLog(buyEntity.SalesmanUserName + "没有关注公众号");//记录日志
+                                }
                             }
                         }
                     }
+                
                 }
                 
                 buyEntity.Modify(buyEntity.Id);

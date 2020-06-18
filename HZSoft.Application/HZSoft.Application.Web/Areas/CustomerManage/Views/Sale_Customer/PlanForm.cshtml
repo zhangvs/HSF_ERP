@@ -16,6 +16,12 @@
                 param: { keyValue: keyValue },
                 success: function (data) {
                     $("#form1").SetWebControls(data.entity);
+                    if (!!data.entity.StatePlanDate) {
+                        $("#StatePlanDate").val(data.entity.StatePlanDate.replace(" 00:00:00", ""));
+                    }
+                    if (!!data.entity.EndPlanDate) {
+                        $("#EndPlanDate").val(data.entity.EndPlanDate.replace(" 00:00:00", ""));
+                    }
                 }
             })
         }

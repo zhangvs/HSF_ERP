@@ -165,6 +165,16 @@
                 },
                 { label: '推单日期', name: 'PushDate', index: 'PushDate', width: 118, align: 'left', sortable: true },
                 {
+                    label: "排产", name: "PlanMark", index: "PlanMark", width: 60, align: "center", sortable: false,
+                    formatter: function (cellvalue) {
+                        if (cellvalue == 1) {
+                            return "<i class=\"fa fa-toggle-on\"></i>";
+                        } else {
+                            return "<i class=\"fa fa-toggle-off\"></i>";
+                        }
+                    }
+                },
+                {
                     label: '当前工序', name: 'StepState', index: 'StepState', width: 80, align: 'center', sortable: true,
                     formatter: function (cellvalue, options, rowObject) {
                         return top.clientdataItem["Step"][cellvalue] == undefined ? "" : top.clientdataItem["Step"][cellvalue];

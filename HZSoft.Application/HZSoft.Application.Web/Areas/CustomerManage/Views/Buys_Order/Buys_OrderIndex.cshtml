@@ -73,7 +73,7 @@
                     label: "柜体入库", name: "GuiEnterMark", index: "GuiEnterMark", width: 80, align: "center", sortable: false,
                     formatter: function (cellvalue) {
                         if (cellvalue == 0) {
-                            return "包装中";
+                            return "<i class=\"fa fa-toggle-off\"></i>";
                         } else if (cellvalue == 1) {
                             return "<i class=\"fa fa-toggle-on\"></i>";
                         } else {
@@ -295,66 +295,103 @@
 
     //柜体入库
     function btn_Gui() {
-        var keyValue = $('#gridTable').jqGridRowValue('Id');
-        if (checkedRow(keyValue)) {
-            dialogOpen({
-                id: 'InGuiForm',
-                title: '柜体入库',
-                url: '/CustomerManage/Buys_Order/InGuiForm?keyValue=' + keyValue,
-                width: '250px',
-                height: '250px',
-                callBack: function (iframeId) {
-                    top.frames[iframeId].AcceptClick();
-                }
-            })
+        var GuiEnterMark = $('#gridTable').jqGridRowValue('GuiEnterMark');
+        if (GuiEnterMark == "") {
+            dialogMsg('该订单没有该材料，无法入库！', 0);
         }
+        else {
+            var keyValue = $('#gridTable').jqGridRowValue('Id');
+            if (checkedRow(keyValue)) {
+                dialogOpen({
+                    id: 'InGuiForm',
+                    title: '柜体入库',
+                    url: '/CustomerManage/Buys_Order/InGuiForm?keyValue=' + keyValue,
+                    width: '250px',
+                    height: '250px',
+                    callBack: function (iframeId) {
+                        top.frames[iframeId].AcceptClick();
+                    }
+                })
+            }
+            else {
+                dialogMsg('请选择需要入库的入库单！', 0);
+            }
+        }
+
     }
     //门板入库
     function btn_Men() {
-        var keyValue = $('#gridTable').jqGridRowValue('Id');
-        if (checkedRow(keyValue)) {
-            dialogOpen({
-                id: 'InMenForm',
-                title: '门板入库',
-                url: '/CustomerManage/Buys_Order/InMenForm?keyValue=' + keyValue,
-                width: '250px',
-                height: '250px',
-                callBack: function (iframeId) {
-                    top.frames[iframeId].AcceptClick();
-                }
-            })
+        var MenEnterMark = $('#gridTable').jqGridRowValue('MenEnterMark');
+        if (MenEnterMark == "") {
+            dialogMsg('该订单没有该材料，无法入库！', 0);
+        }
+        else {
+            var keyValue = $('#gridTable').jqGridRowValue('Id');
+            if (checkedRow(keyValue)) {
+                dialogOpen({
+                    id: 'InMenForm',
+                    title: '门板入库',
+                    url: '/CustomerManage/Buys_Order/InMenForm?keyValue=' + keyValue,
+                    width: '250px',
+                    height: '250px',
+                    callBack: function (iframeId) {
+                        top.frames[iframeId].AcceptClick();
+                    }
+                })
+            }
+            else {
+                dialogMsg('请选择需要入库的入库单！', 0);
+            }
         }
     }
     //五金入库
     function btn_Wu() {
-        var keyValue = $('#gridTable').jqGridRowValue('Id');
-        if (checkedRow(keyValue)) {
-            dialogOpen({
-                id: 'InWuForm',
-                title: '五金入库',
-                url: '/CustomerManage/Buys_Order/InWuForm?keyValue=' + keyValue,
-                width: '250px',
-                height: '250px',
-                callBack: function (iframeId) {
-                    top.frames[iframeId].AcceptClick();
-                }
-            })
+        var WuEnterMark = $('#gridTable').jqGridRowValue('WuEnterMark');
+        if (WuEnterMark == "") {
+            dialogMsg('该订单没有该材料，无法入库！', 0);
+        }
+        else {
+            var keyValue = $('#gridTable').jqGridRowValue('Id');
+            if (checkedRow(keyValue)) {
+                dialogOpen({
+                    id: 'InWuForm',
+                    title: '五金入库',
+                    url: '/CustomerManage/Buys_Order/InWuForm?keyValue=' + keyValue,
+                    width: '250px',
+                    height: '250px',
+                    callBack: function (iframeId) {
+                        top.frames[iframeId].AcceptClick();
+                    }
+                })
+            }
+            else {
+                dialogMsg('请选择需要入库的入库单！', 0);
+            }
         }
     }
     //外协入库
     function btn_Wai() {
-        var keyValue = $('#gridTable').jqGridRowValue('Id');
-        if (checkedRow(keyValue)) {
-            dialogOpen({
-                id: 'InWaiForm',
-                title: '外协入库',
-                url: '/CustomerManage/Buys_Order/InWaiForm?keyValue=' + keyValue,
-                width: '250px',
-                height: '250px',
-                callBack: function (iframeId) {
-                    top.frames[iframeId].AcceptClick();
-                }
-            })
+        var WaiEnterMark = $('#gridTable').jqGridRowValue('WaiEnterMark');
+        if (WaiEnterMark == "") {
+            dialogMsg('该订单没有该材料，无法入库！', 0);
+        }
+        else {
+            var keyValue = $('#gridTable').jqGridRowValue('Id');
+            if (checkedRow(keyValue)) {
+                dialogOpen({
+                    id: 'InWaiForm',
+                    title: '外协入库',
+                    url: '/CustomerManage/Buys_Order/InWaiForm?keyValue=' + keyValue,
+                    width: '250px',
+                    height: '250px',
+                    callBack: function (iframeId) {
+                        top.frames[iframeId].AcceptClick();
+                    }
+                })
+            }
+            else {
+                dialogMsg('请选择需要入库的入库单！', 0);
+            }
         }
     }
 </script>

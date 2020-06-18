@@ -87,6 +87,11 @@ namespace HZSoft.Application.Entity.CustomerManage
         [Column("SalesmanUserName")]
         public string SalesmanUserName { get; set; }
         /// <summary>
+        /// 排产标识
+        /// </summary>
+        /// <returns></returns>
+        public int? PlanMark { get; set; }
+        /// <summary>
         /// 计划开始日期
         /// </summary>
         /// <returns></returns>
@@ -617,7 +622,7 @@ namespace HZSoft.Application.Entity.CustomerManage
 
             this.DownMark = 0;//下单
             this.PushMark = 0;//推单
-
+            this.PlanMark = 0;//排产
             this.BeiLiaoMark = 1;//默认选择5工序
             this.KaiLiaoMark = 1;
             this.FengBianMark = 1;

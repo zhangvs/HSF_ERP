@@ -349,6 +349,12 @@ namespace HZSoft.Application.Service.CustomerManage
                 Sale_CustomerEntity oldEntity = GetEntity(keyValue);
                 if (oldEntity!=null)
                 {
+                    if (entity.BeiLiaoMark == 0 || entity.KaiLiaoMark == 0 || entity.FengBianMark == 0 || entity.PaiZuanMark == 0 || entity.ShiZhuangMark == 0 || entity.BaoZhuangMark == 0)
+                    {
+                        //都没有选中工序，则不需要柜体入库，自动创建一条入库单，仓库进行门板入库或五金外协入库，自db
+                        buyService.SaveBuyMain(entity);
+                    }
+
                     if (oldEntity.BeiLiaoMark == 2||oldEntity.KaiLiaoMark == 2 || oldEntity.FengBianMark == 2|| oldEntity.PaiZuanMark == 2|| oldEntity.ShiZhuangMark == 2|| oldEntity.BaoZhuangMark == 2)
                     {
                         //如果生产扫码之后又修改编辑，工序的勾选状态默认==1，但是扫码之后的状态为2，不能因为编辑修改为2
@@ -360,48 +366,47 @@ namespace HZSoft.Application.Service.CustomerManage
                         entity.BaoZhuangMark = oldEntity.BaoZhuangMark == 2 ? 2 : entity.BaoZhuangMark;
                         LogHelper.AddLog("生产扫码之后-又编辑，" + oldEntity.ProduceCode);
                     }
+                    //包装扫码生成入库单之后-发现勾选材料错误--又编辑
+                    Buys_OrderEntity oldBuysEntity = buyService.GetEntity(keyValue);
+                    if (oldBuysEntity != null)
+                    {
+                        //如果已经入库了，勾选材料错误，发现少勾选了，需要修改，要同步到入库单
+                        if (entity.GuiTiMark == 1 && oldBuysEntity.GuiEnterMark == null)
+                        {
+                            oldBuysEntity.GuiEnterMark = 0;//修改柜体状态为需要入库
+                        }
+                        if (entity.WuJinMark == 1 && oldBuysEntity.WuEnterMark == null)
+                        {
+                            oldBuysEntity.WuEnterMark = 0;//修改五金状态为需要入库
+                        }
+                        if (entity.MenBanMark == 1 && oldBuysEntity.MenEnterMark == null)
+                        {
+                            oldBuysEntity.MenEnterMark = 0;//修改门板状态为需要入库
+                        }
+                        if (entity.WaiXieMark == 1 && oldBuysEntity.WaiEnterMark == null)
+                        {
+                            oldBuysEntity.WaiEnterMark = 0;//修改外协状态为需要入库
+                        }
+                        LogHelper.AddLog("包装扫码之后-又编辑，" + oldEntity.ProduceCode);
+                        db.Update<Buys_OrderEntity>(oldBuysEntity);
+                    }
+
+                    //主表
+                    entity.Modify(keyValue);
+                    db.Update(entity);
+                    //明细
+                    db.Delete<Sale_Customer_ItemEntity>(t => t.MainId.Equals(keyValue));
+
+                    foreach (Sale_Customer_ItemEntity item in entryList)
+                    {
+                        item.Create();
+                        item.MainId = entity.ProduceId;
+                        db.Insert(entryList);
+                    }
+
+                    db.Commit();
+                    RecordHelp.AddRecord(4, entity.OrderId, "补充生产单");
                 }
-
-                //包装扫码生成入库单之后-发现勾选材料错误--又编辑
-                Buys_OrderEntity oldBuysEntity = buyService.GetEntity(keyValue);
-                if (oldBuysEntity!=null)
-                {
-                    //如果已经入库了，勾选材料错误，发现少勾选了，需要修改，要同步到入库单
-                    if (entity.GuiTiMark==1 && oldBuysEntity.GuiEnterMark==null)
-                    {
-                        oldBuysEntity.GuiEnterMark = 0;//修改柜体状态为需要入库
-                    }
-                    if (entity.WuJinMark == 1 && oldBuysEntity.WuEnterMark == null)
-                    {
-                        oldBuysEntity.WuEnterMark = 0;//修改五金状态为需要入库
-                    }
-                    if (entity.MenBanMark == 1 && oldBuysEntity.MenEnterMark == null)
-                    {
-                        oldBuysEntity.MenEnterMark = 0;//修改门板状态为需要入库
-                    }
-                    if (entity.WaiXieMark == 1 && oldBuysEntity.WaiEnterMark == null)
-                    {
-                        oldBuysEntity.WaiEnterMark = 0;//修改外协状态为需要入库
-                    }
-                    LogHelper.AddLog("包装扫码之后-又编辑，" + oldEntity.ProduceCode);
-                    db.Update<Buys_OrderEntity>(oldBuysEntity);
-                }
-
-                //主表
-                entity.Modify(keyValue);
-                db.Update(entity);
-                //明细
-                db.Delete<Sale_Customer_ItemEntity>(t => t.MainId.Equals(keyValue));
-
-                foreach (Sale_Customer_ItemEntity item in entryList)
-                {
-                    item.Create();
-                    item.MainId = entity.ProduceId;
-                    db.Insert(entryList);
-                }
-
-                db.Commit();
-                RecordHelp.AddRecord(4, entity.OrderId, "补充生产单");
             }
             catch (Exception)
             {
@@ -582,9 +587,25 @@ namespace HZSoft.Application.Service.CustomerManage
             {
                 if (!string.IsNullOrEmpty(keyValue))
                 {
-                    entity.Modify(keyValue);
-                    this.BaseRepository().Update(entity);
-                    RecordHelp.AddRecord(4, entity.OrderId, "生产排产："+ entity.StatePlanDate.ToString().Replace(" 0:00:00", "") + "至"+entity.EndPlanDate.ToString().Replace(" 0:00:00", ""));
+                    if (entity.StatePlanDate!=null ||entity.EndPlanDate!=null)
+                    {
+                        IRepository db = this.BaseRepository().BeginTrans();
+                        entity.PlanMark = 1;
+                        entity.Modify(keyValue);
+                        db.Update<Sale_CustomerEntity>(entity);
+
+
+                        //修改销售单排产状态
+                        DZ_OrderEntity dZ_OrderEntity = new DZ_OrderEntity
+                        {
+                            PlanMark = 1,
+                        };
+                        dZ_OrderEntity.Modify(entity.OrderId);//原生产单实体才对
+                        db.Update<DZ_OrderEntity>(dZ_OrderEntity);
+                        db.Commit();
+
+                        RecordHelp.AddRecord(4, entity.OrderId, "生产排产：" + entity.StatePlanDate.ToString().Replace(" 0:00:00", "") + "至" + entity.EndPlanDate.ToString().Replace(" 0:00:00", ""));
+                    }
                 }
             }
             catch (Exception)
