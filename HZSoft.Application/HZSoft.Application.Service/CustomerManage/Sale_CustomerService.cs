@@ -349,7 +349,7 @@ namespace HZSoft.Application.Service.CustomerManage
                 Sale_CustomerEntity oldEntity = GetEntity(keyValue);
                 if (oldEntity!=null)
                 {
-                    if (entity.BeiLiaoMark == 0 || entity.KaiLiaoMark == 0 || entity.FengBianMark == 0 || entity.PaiZuanMark == 0 || entity.ShiZhuangMark == 0 || entity.BaoZhuangMark == 0)
+                    if (entity.BeiLiaoMark == 0 && entity.KaiLiaoMark == 0 && entity.FengBianMark == 0 && entity.PaiZuanMark == 0 && entity.ShiZhuangMark == 0 && entity.BaoZhuangMark == 0)
                     {
                         //都没有选中工序，则不需要柜体入库，自动创建一条入库单，仓库进行门板入库或五金外协入库，自db
                         buyService.SaveBuyMain(entity);

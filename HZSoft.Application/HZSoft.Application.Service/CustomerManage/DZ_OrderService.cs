@@ -815,6 +815,8 @@ namespace HZSoft.Application.Service.CustomerManage
                             //如果不收预付款，并且还没下单的，报价审核完毕之后可以直接创建生产单，开始提醒下单
                             if (oldEntity.DownMark != 1)
                             {
+                                oldEntity.MoneyOkMark = 1;
+                                entity.MoneyOkMark = 1;//客诉单，默认报价审核，不走财务
                                 Sale_Customer_Main.SaveSaleMain(db, oldEntity);//如果下单不及时，可能重复创建
 
                                 //发微信模板消息---财务已经报价审核并收款确认之后，给张宝莲发消息提醒oA-EC1bJnd0KFBuOy0joJvUOGwwk
