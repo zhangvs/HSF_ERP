@@ -63,6 +63,16 @@ namespace HZSoft.Application.Entity.CustomerManage
         [Column("CREATEDATE")]
         public DateTime? CreateDate { get; set; }
         /// <summary>
+        /// 创建用户主键
+        /// </summary>
+        /// <returns></returns>
+        public string CreateUserId { get; set; }
+        /// <summary>
+        /// 创建用户
+        /// </summary>
+        /// <returns></returns>
+        public string CreateUserName { get; set; }
+        /// <summary>
         /// 修改日期
         /// </summary>
         /// <returns></returns>
@@ -77,6 +87,8 @@ namespace HZSoft.Application.Entity.CustomerManage
         public override void Create()
         {
             this.RoomId = Guid.NewGuid().ToString();
+            this.CreateUserId = OperatorProvider.Provider.Current().UserId;
+            this.CreateUserName = OperatorProvider.Provider.Current().UserName;
             this.CreateDate = DateTime.Now;
                                 }
         /// <summary>

@@ -698,21 +698,20 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
 
 
         /// <summary>
-        /// 报价
+        /// 导入酷家乐报价
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult KuJiaLeImport(string keyValue)
+        public ActionResult ImportKuJiaLe(string keyValue)
         {
             ViewBag.OrderId = keyValue;
             return View();
         }
 
         [HttpPost]
-        public ActionResult KuJiaLeImport(HttpPostedFileBase filebase)
+        public ActionResult ImportKuJiaLe(HttpPostedFileBase filebase, string keyValue)
         {
             HttpPostedFileBase file = Request.Files["files"];
-            string keyValue = Request.Form["OrderId"];
             string FileName;
             string savePath;
             if (file == null || file.ContentLength <= 0)
@@ -740,24 +739,80 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
                     ViewBag.error = "上传文件超过4M，不能上传";
                     return View();
                 }
-                string path = AppDomain.CurrentDomain.BaseDirectory + "Resource/KuJiaLe/";
+                string path = AppDomain.CurrentDomain.BaseDirectory + "Resource/KuJiaLe/" + DateTime.Now.ToString("yyyyMMdd") + "/";
+
+                if (Directory.Exists(path) == false)//如果不存在就创建file文件夹
+                {
+                    Directory.CreateDirectory(path);
+                }
                 savePath = Path.Combine(path, FileName);
                 file.SaveAs(savePath);
             }
-
-            //excel转DataTable
+            
             DataTable dtSource = ExcelHelper.ExcelImport(savePath);
-
-            //批量插入TelphoneWash表
-            //SqlBulkCopyByDatatable("TelphoneWash", dtSource);
-
-            //一行行插入
-            //引用事务机制，出错时，事物回滚
             ViewBag.error = dz_orderbll.BatchAddEntity(keyValue, dtSource);
 
             System.Threading.Thread.Sleep(2000);
             return View();
         }
 
+
+        /// <summary>
+        /// 导入1010
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult Import1010(string keyValue)
+        {
+            ViewBag.OrderId = keyValue;
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Import1010(HttpPostedFileBase filebase, string keyValue)
+        {
+            HttpPostedFileBase file = Request.Files["files"];
+            string FileName;
+            string savePath;
+            if (file == null || file.ContentLength <= 0)
+            {
+                ViewBag.error = "文件不能为空";
+                return View();
+            }
+            else
+            {
+                string filename = Path.GetFileName(file.FileName);
+                int filesize = file.ContentLength;//获取上传文件的大小单位为字节byte
+                string fileEx = System.IO.Path.GetExtension(filename);//获取上传文件的扩展名
+                string NoFileName = System.IO.Path.GetFileNameWithoutExtension(filename);//获取无扩展名的文件名
+                int Maxsize = 4000 * 1024;//定义上传文件的最大空间大小为4M
+                string FileType = ".xls,.xlsx";//定义上传文件的类型字符串
+
+                FileName = NoFileName + DateTime.Now.ToString("yyyyMMddhhmmss") + fileEx;
+                if (!FileType.Contains(fileEx))
+                {
+                    ViewBag.error = "文件类型不对，只能导入xls和xlsx格式的文件";
+                    return View();
+                }
+                if (filesize >= Maxsize)
+                {
+                    ViewBag.error = "上传文件超过4M，不能上传";
+                    return View();
+                }
+                string path = AppDomain.CurrentDomain.BaseDirectory + "Resource/1010/"+ DateTime.Now.ToString("yyyyMMdd")+"/";
+
+                if (Directory.Exists(path) == false)//如果不存在就创建file文件夹
+                {
+                    Directory.CreateDirectory(path);
+                }
+                savePath = Path.Combine(path, FileName);
+                file.SaveAs(savePath);
+            }
+
+            DataTable dtSource = ExcelHelper.ExcelImport(savePath);
+            ViewBag.error = dz_orderbll.BatchAddEntity1010(keyValue, dtSource);
+
+            System.Threading.Thread.Sleep(2000);
+            return View();
+        }
     }
 }

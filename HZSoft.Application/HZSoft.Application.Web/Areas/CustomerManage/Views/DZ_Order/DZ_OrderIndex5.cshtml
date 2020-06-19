@@ -236,18 +236,33 @@
     }
 
     //批量导入
-    function btn_import() {
+    function btn_import1010() {
         var keyValue = $('#gridTable').jqGridRowValue('Id');
         if (checkedRow(keyValue)) {
             layer.open({
                 type: 2,
-                title: '导入',
+                title: '导入1010',
                 shadeClose: true,
                 shade: false,
                 maxmin: true, //开启最大化最小化按钮
                 area: ['650px', '450px'],
-                content: '/CustomerManage/DZ_Order/KuJiaLeImport?keyValue=' + keyValue
+                content: '/CustomerManage/DZ_Order/Import1010?keyValue=' + keyValue
              });
+        }
+    }
+    //批量导入
+    function btn_importKuJiaLe() {
+        var keyValue = $('#gridTable').jqGridRowValue('Id');
+        if (checkedRow(keyValue)) {
+            layer.open({
+                type: 2,
+                title: '导入酷家乐',
+                shadeClose: true,
+                shade: false,
+                maxmin: true, //开启最大化最小化按钮
+                area: ['650px', '450px'],
+                content: '/CustomerManage/DZ_Order/ImportKuJiaLe?keyValue=' + keyValue
+            });
         }
     }
 </script>
@@ -365,7 +380,8 @@
         <div class="btn-group">
             <a id="lr-replace" class="btn btn-default" onclick="reload()"><i class="fa fa-refresh"></i>&nbsp;刷新</a>
             <a id="lr-edit" class="btn btn-default" onclick="btn_edit()"><i class="fa fa-pencil-square-o"></i>&nbsp;报价</a>
-            <a id="lr-import" class="btn btn-default" onclick="btn_import()"><i class="fa fa-level-down"></i>&nbsp;导入</a>
+            <a id="lr-import" class="btn btn-default" onclick="btn_import1010()"><i class="fa fa-level-down"></i>&nbsp;导入1010</a>
+            <a id="lr-import" class="btn btn-default" onclick="btn_importKuJiaLe()"><i class="fa fa-level-down"></i>&nbsp;导入酷家乐</a>
         </div>
     </div>
     @*<script>$('.toolbar').authorizeButton()</script>*@

@@ -2058,7 +2058,7 @@
     <Content Include="Areas\CustomerManage\Views\DZ_Product\DZ_ProductTypeForm.cshtml" />
     <Content Include="Areas\CustomerManage\Views\DZ_Product\DZ_ProductImport.cshtml" />
     <Content Include="Areas\CustomerManage\Views\DZ_Product\DZ_ProductDetail.cshtml" />
-    <Content Include="Areas\CustomerManage\Views\DZ_Order\KuJiaLeImport.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\DZ_Order\ImportKuJiaLe.cshtml" />
     <Content Include="Areas\CustomerManage\Views\DZ_Money_Room\DZ_Money_RoomForm.cshtml" />
     <Content Include="Areas\CustomerManage\Views\DZ_Money_Room\DZ_Money_RoomIndex.cshtml" />
     <Content Include="Areas\WeChatManage\Views\Produce\EnterForm.cshtml" />
@@ -2069,6 +2069,7 @@
     <Content Include="Areas\CustomerManage\Views\TrailRecord\TrailRecordForm.cshtml" />
     <Content Include="Areas\CustomerManage\Views\Buys_Order\SendOutForm.cshtml" />
     <Content Include="Areas\WeChatManage\Views\Produce\SendOutH5Form.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\DZ_Order\Import1010.cshtml" />
     <None Include="Properties\PublishProfiles\6.1.pubxml" />
     <Content Include="Areas\FlowManage\Views\FlowLaunch\Index.cshtml" />
     <Content Include="Areas\FlowManage\Views\FormDesign\FormPreview.cshtml" />

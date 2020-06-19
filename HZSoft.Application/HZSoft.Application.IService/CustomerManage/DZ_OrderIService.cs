@@ -64,5 +64,6 @@ namespace HZSoft.Application.IService.CustomerManage
         /// <param name="dtSource">实体对象</param>
         /// <returns></returns>
         string BatchAddEntity(string keyValue, DataTable dtSource);
+        string BatchAddEntity1010(string keyValue, DataTable dtSource);
     }
 }

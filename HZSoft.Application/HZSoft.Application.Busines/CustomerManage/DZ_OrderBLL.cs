@@ -168,5 +168,21 @@ namespace HZSoft.Application.Busines.CustomerManage
                 return ex.Message;
             }
         }
+        /// <summary>
+        /// 保存表单（新增、修改）
+        /// </summary>
+        /// <returns></returns>
+        public string BatchAddEntity1010(string keyValue, DataTable dtSource)
+        {
+            try
+            {
+                string returnMsg = service.BatchAddEntity1010(keyValue, dtSource);
+                return returnMsg;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
     }
 }

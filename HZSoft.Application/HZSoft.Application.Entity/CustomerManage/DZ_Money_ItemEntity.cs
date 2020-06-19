@@ -73,7 +73,13 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// </summary>
         /// <returns></returns>
         [Column("COUNT")]
-        public decimal? Count { get; set; }
+        public int? Count { get; set; }
+        /// <summary>
+        /// 面积
+        /// </summary>
+        /// <returns></returns>
+        [Column("Area")]
+        public decimal? Area { get; set; }
         /// <summary>
         /// 单位
         /// </summary>

@@ -100,6 +100,17 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
             };
             return ToJsonResult(jsonData);
         }
+        /// <summary>
+        /// 获取实体 
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <returns>返回对象Json</returns>
+        [HttpGet]
+        public ActionResult GetFormJson(string keyValue)
+        {
+            var data = chancetrailbll.GetEntity(keyValue);
+            return ToJsonResult(data);
+        }
         #endregion
 
         #region 提交数据
