@@ -257,6 +257,8 @@ namespace HZSoft.Application.Service.CustomerManage
                     entity.Modify(keyValue);
                     //更新
                     db.Update<DZSH_OrderEntity>(entity);
+                    db.Commit();
+                    RecordHelp.AddRecord(4, entity.Id, "客诉单编辑");
                 }
                 else
                 {
@@ -269,6 +271,8 @@ namespace HZSoft.Application.Service.CustomerManage
                         CreateDZOrder.SaveDZOrder(db, entity);
                     }
 
+                    db.Commit();
+                    RecordHelp.AddRecord(4, entity.Id, "客诉接单");
                     //胡鲁鲁
                     TemplateWxApp.SendTemplateNew("oA-EC1aaKOSNdW2wL8lHSsr3R4Dg", "您好，有新的客诉单!", entity.OrderTitle, entity.Code, "请进行处理。");
 
@@ -276,7 +280,6 @@ namespace HZSoft.Application.Service.CustomerManage
                     //订单生成通知（审图提醒）
                     TemplateWxApp.SendTemplateNew("oA-EC1X6RWfW1_DNJ_VNiA3uhOYg", "您好，有新的订单需要审图!", entity.OrderTitle, entity.Code, "请进行审图。");
                 }
-                db.Commit();
             }
             catch (Exception)
             {

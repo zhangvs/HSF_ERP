@@ -69,7 +69,7 @@
                 success: function (data) {
                     $("#form1").SetWebControls(data);
                     if (data.Picture != undefined) {
-                        $("#UploadPicture").attr("imgsrc", data.Picture).html("<img src='" + data.Picture + "' style='height:130px;' />");
+                        $("#UploadPicture").attr("imgsrc", data.Picture).html("<img src='" + data.Picture + "' />");
                     }
                 }
             })
@@ -151,7 +151,7 @@
             <th class="formTitle">分类<font face="宋体">*</font></th>
             <td class="formValue">
                 <div id="ParentId" type="selectTree" class="ui-select" isvalid="yes" checkexpession="NotNull"></div>
-                <input id="ParentName" type="text" class="form-control" />
+                <input id="ParentName" type="hidden" class="form-control" />
             </td>
         </tr>
         <tr>
@@ -166,7 +166,7 @@
         <tr>
             <td style="text-align:center" colspan="4">
                 <input id="Picture" type="hidden" class="form-control" />
-                <div class="layui-upload-drag upload" id="UploadPicture" style="width:150px;height:150px">
+                <div class="layui-upload-drag upload" id="UploadPicture" style="width:160px;height:160px">
                     <i class="layui-icon"></i>
                     <p>点击上传图片</p>
                 </div>

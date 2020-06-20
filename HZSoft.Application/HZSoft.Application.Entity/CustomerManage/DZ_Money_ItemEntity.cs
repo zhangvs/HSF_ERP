@@ -122,6 +122,12 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// <returns></returns>
         [Column("MODIFYDATE")]
         public DateTime? ModifyDate { get; set; }
+        /// <summary>
+        /// 来源
+        /// </summary>
+        /// <returns></returns>
+        [Column("Source")]
+        public string Source { get; set; }
         #endregion
 
         #region 扩展操作

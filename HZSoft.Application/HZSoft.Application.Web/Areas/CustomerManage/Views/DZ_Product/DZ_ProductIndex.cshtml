@@ -4,6 +4,18 @@
     ViewBag.Title = "物料管理";
     Layout = "~/Views/Shared/_LayoutIndex.cshtml";
 }
+<style>
+    img {
+        max-width: 80px;
+        max-height: 80px;
+        height: auto;
+        zoom: expression( function(e) {
+    if(e.width>e.height) {if (e.width>80) { e.height = e.height*(80 /e.width); e.width=80; }}
+    else {if (e.height>80) { e.width = e.width*(80 /e.height); e.height=80; }}
+    e.style.zoom = '1';     }(this));
+        overflow: hidden;
+    }
+</style>
 <script>
     $(function () {
         InitialPage();
@@ -69,7 +81,7 @@
                     label: "产品图片", name: "Picture", index: "Picture", width: 100, align: "center", sortable: false,
                     formatter: function (cellvalue) {
                         if (typeof (cellvalue) != "undefined" && cellvalue != "" && cellvalue != null) {
-                            return "<img src='" + cellvalue + "' height='80px' width='80px'/>";
+                            return "<img src='" + cellvalue + "' />";
                         } else {
                             return '';
                         }

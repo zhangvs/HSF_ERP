@@ -651,6 +651,50 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
 
 
 
+        /// <summary>
+        /// 上传产品图片
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult UploadProductPicture()
+        {
+            string Message = "";
+            if (Request.Files.Count > 0)
+            {
+                HttpPostedFile file = System.Web.HttpContext.Current.Request.Files[0];
+                if (file.ContentLength > 0)
+                {
+                    string fileExt = file.FileName.Substring(file.FileName.LastIndexOf('.'));//后缀
+                    try
+                    {
+                        string uploadDate = OperatorProvider.Provider.Current().Account;
+                        string dir = string.Format("/Resource/DocumentFile/Product/{0}/", uploadDate);
+                        if (Directory.Exists(Server.MapPath(dir)) == false)//如果不存在就创建file文件夹
+                        {
+                            Directory.CreateDirectory(Server.MapPath(dir));
+                        }
+                        string newfileName = DateTime.Now.ToString("yyyyMMddHHmmss");
+                        //原图
+                        string fullDir1 = dir + newfileName + fileExt;
+                        string imgFilePath = Request.MapPath(fullDir1);
+                        file.SaveAs(imgFilePath);
+
+                        return Content(new JsonMessage { Success = true, Code = "0", Message = fullDir1 }.ToString());
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Message = HttpUtility.HtmlEncode(ex.Message);
+                        return Content(new JsonMessage { Success = false, Code = "-1", Message = Message }.ToString());
+                    }
+                }
+                Message = "请选择要上传的文件！";
+                return Content(new JsonMessage { Success = false, Code = "-1", Message = Message }.ToString());
+            }
+            Message = "请选择要上传的文件！";
+            return Content(new JsonMessage { Success = false, Code = "-1", Message = Message }.ToString());
+        }
+
 
         /// <summary>
         /// 上传签收单
