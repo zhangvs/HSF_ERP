@@ -442,7 +442,9 @@ namespace HZSoft.Application.Service.CustomerManage
                         if (entity.OrderType == 3)
                         {
                             dZ_OrderEntity.PushMark = 1;
+                            dZ_OrderEntity.PushDate = DateTime.Now;
                             entity.PushMark = 1;
+                            entity.PushDate = DateTime.Now;
                             RecordHelp.AddRecord(4, entity.OrderId, "客诉单跳过推单");
                         }
                     }
