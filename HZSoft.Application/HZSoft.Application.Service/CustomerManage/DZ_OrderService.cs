@@ -802,12 +802,12 @@ namespace HZSoft.Application.Service.CustomerManage
                     //报价之后，给财务发消息提醒
                     if (entity.MoneyMark == 1 && oldEntity.MoneyMark != 1)
                     {
+                        RecordHelp.AddRecord(4, keyValue, "报价");
                         if (entity.OrderType != 3)//不是客诉单
                         {
                             //发微信模板消息---研发报价之后，给财务提醒--刘一珠改刘庆莉oA-EC1bg4U16c63kR6yj51lA5AiM
                             //订单生成通知（报价提醒）
                             TemplateWxApp.SendTemplateMoney("oA-EC1bg4U16c63kR6yj51lA5AiM", "您好，有新的报价需要审核!", "研发中心", entity.OrderTitle, entity.Code, "请进行报价审核。");
-                            RecordHelp.AddRecord(4, keyValue, "报价");
                         }
                         else
                         {
@@ -817,6 +817,7 @@ namespace HZSoft.Application.Service.CustomerManage
                             {
                                 oldEntity.MoneyOkMark = 1;
                                 entity.MoneyOkMark = 1;//客诉单，默认报价审核，不走财务
+                                RecordHelp.AddRecord(4, keyValue, "客诉单跳过报价审核");
                                 Sale_Customer_Main.SaveSaleMain(db, oldEntity);//如果下单不及时，可能重复创建
 
                                 //发微信模板消息---财务已经报价审核并收款确认之后，给张宝莲发消息提醒oA-EC1bJnd0KFBuOy0joJvUOGwwk
@@ -929,6 +930,7 @@ namespace HZSoft.Application.Service.CustomerManage
                         //第一次报价审核的通知，可重复操作 && oldEntity.MoneyOkMark != 1
                         if (state == 1)
                         {
+                            RecordHelp.AddRecord(4, keyValue, "报价审核");
                             //发微信模板消息（报价审核提醒）
                             if (!string.IsNullOrEmpty(oldEntity.CreateUserName))
                             {
@@ -974,7 +976,6 @@ namespace HZSoft.Application.Service.CustomerManage
                                     Sale_Customer_Main.SaveSaleMain(db, oldEntity);//如果下单不及时，可能重复创建
                                 }
                             }
-                            RecordHelp.AddRecord(4, keyValue, "报价审核");
                         }
 
                         //第一次报价驳回的通知

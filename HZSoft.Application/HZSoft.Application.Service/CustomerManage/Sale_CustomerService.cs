@@ -430,6 +430,7 @@ namespace HZSoft.Application.Service.CustomerManage
                 if (!string.IsNullOrEmpty(keyValue))
                 {
                     Sale_CustomerEntity oldEntity = GetEntity(keyValue);
+                    DZ_OrderEntity dZ_OrderEntity = new DZ_OrderEntity();
                     //原生产单没有下单文件，第一次上传下单文件，则修改下单状态
                     if (entity.DownMark == 1 && oldEntity.DownMark != 1)// && string.IsNullOrEmpty(oldEntity.DownPath)//不管之前有没有上传都修改下单状态
                     {
@@ -437,6 +438,13 @@ namespace HZSoft.Application.Service.CustomerManage
                         //订单生成通知（8下单提醒）
                         TemplateWxApp.SendTemplateNew("oA-EC1W1BQZ46Wc8HPCZZUUFbE9M","您好，有新的订单需要推单!", entity.OrderTitle, entity.OrderCode, "请进行审核推单。");
                         RecordHelp.AddRecord(4, entity.OrderId, "生产下单");
+
+                        if (entity.OrderType == 3)
+                        {
+                            dZ_OrderEntity.PushMark = 1;
+                            entity.PushMark = 1;
+                            RecordHelp.AddRecord(4, entity.OrderId, "客诉单跳过推单");
+                        }
                     }
 
                     if (entity.DownMark == -1 && oldEntity.DownMark != -1)// && string.IsNullOrEmpty(oldEntity.DownPath)//不管之前有没有上传都修改下单状态
@@ -448,25 +456,20 @@ namespace HZSoft.Application.Service.CustomerManage
                         entity.DownPath = null;//下单驳回，下单附件路径清空
                     }
 
+                    //修改销售单下单状态
+                    dZ_OrderEntity.DownMark = entity.DownMark;
+                    dZ_OrderEntity.DownDate = DateTime.Now;
+                    dZ_OrderEntity.DownUserId = OperatorProvider.Provider.Current().UserId;
+                    dZ_OrderEntity.DownUserName = OperatorProvider.Provider.Current().UserName;
+                    dZ_OrderEntity.DownPath = entity.DownPath;
+                    dZ_OrderEntity.Modify(entity.OrderId);//原生产单实体才对
+                    db.Update<DZ_OrderEntity>(dZ_OrderEntity);
+
 
                     //修改生产单下单状态
                     entity.DownDate = DateTime.Now;
                     entity.DownUserId = OperatorProvider.Provider.Current().UserId;
                     entity.DownUserName = OperatorProvider.Provider.Current().UserName;
-
-                    //修改销售单下单状态
-                    DZ_OrderEntity dZ_OrderEntity = new DZ_OrderEntity
-                    {
-                        DownMark = entity.DownMark,
-                        DownDate = DateTime.Now,
-                        DownUserId = OperatorProvider.Provider.Current().UserId,
-                        DownUserName = OperatorProvider.Provider.Current().UserName,
-                        DownPath = entity.DownPath
-                    };
-                    dZ_OrderEntity.Modify(entity.OrderId);//原生产单实体才对
-                    db.Update<DZ_OrderEntity>(dZ_OrderEntity);
-
-
                     entity.Modify(keyValue);
                     db.Update<Sale_CustomerEntity>(entity);
                     db.Commit();
