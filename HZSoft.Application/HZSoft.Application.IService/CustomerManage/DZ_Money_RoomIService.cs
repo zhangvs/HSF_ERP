@@ -32,6 +32,18 @@ namespace HZSoft.Application.IService.CustomerManage
         /// </summary>
         /// <param name="keyValue">主键值</param>
         /// <returns></returns>
+        IEnumerable<DZ_Money_RoomEntity> GetRoomDetails(string keyValue);
+        /// <summary>
+        /// 获取子表详细信息
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <returns></returns>
+        IEnumerable<DZ_Money_ItemEntity> GetRoomItemDetails(string keyValue);
+        /// <summary>
+        /// 获取子表详细信息
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <returns></returns>
         IEnumerable<DZ_Money_ItemEntity> GetDetails(string keyValue);
         #endregion
 

@@ -2070,6 +2070,8 @@
     <Content Include="Areas\CustomerManage\Views\Buys_Order\SendOutForm.cshtml" />
     <Content Include="Areas\WeChatManage\Views\Produce\SendOutH5Form.cshtml" />
     <Content Include="Areas\CustomerManage\Views\DZ_Order\Import1010.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\DZ_Order\MoneyDetail.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\DZ_Order\MoneyForm.cshtml" />
     <None Include="Properties\PublishProfiles\6.1.pubxml" />
     <Content Include="Areas\FlowManage\Views\FlowLaunch\Index.cshtml" />
     <Content Include="Areas\FlowManage\Views\FormDesign\FormPreview.cshtml" />

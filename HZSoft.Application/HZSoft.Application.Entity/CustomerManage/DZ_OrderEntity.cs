@@ -34,6 +34,11 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// <returns></returns>
         public int? OrderType { get; set; }
         /// <summary>
+        /// 产品名称
+        /// </summary>
+        /// <returns></returns>
+        public string ProductName { get; set; }
+        /// <summary>
         /// 经销商id
         /// </summary>
         /// <returns></returns>
@@ -533,6 +538,11 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// </summary>
         /// <returns></returns>
         public int? OverMark { get; set; }
+        /// <summary>
+        /// 备注
+        /// </summary>
+        /// <returns></returns>
+        public string Remark { get; set; }
         #endregion
 
         #region 扩展操作

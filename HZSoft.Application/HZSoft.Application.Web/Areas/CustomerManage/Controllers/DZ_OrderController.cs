@@ -29,6 +29,7 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         private CodeRuleBLL codeRuleBLL = new CodeRuleBLL();
         private DZ_OrderBLL dz_orderbll = new DZ_OrderBLL();
         private FileInfoBLL fileInfoBLL = new FileInfoBLL();
+        private DZ_Money_RoomBLL dz_money_roombll = new DZ_Money_RoomBLL();
 
         #region 视图功能
         /// <summary>
@@ -191,6 +192,24 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 报价详细页
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult MoneyDetail()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 报价编辑
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult MoneyForm()
+        {
+            return View();
+        }
 
         /// <summary>
         /// 报价审核（财务中心）
@@ -307,6 +326,21 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         {
             var data = dz_orderbll.GetEntity(keyValue);
             return ToJsonResult(data);
+        }
+
+        /// <summary>
+        /// 获取实体 报价系统
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <returns>返回对象Json</returns>
+        [HttpGet]
+        public ActionResult GetMoneyFormJson(string keyValue)
+        {
+            var data = dz_orderbll.GetEntity(keyValue);
+            var roomdata = dz_money_roombll.GetRoomDetails(keyValue);
+            var roomItemData = dz_money_roombll.GetRoomItemDetails(keyValue);
+            var jsonData = new { entity = data, roomEntity = roomdata, childEntity = roomItemData };
+            return ToJsonResult(jsonData);
         }
         #endregion
 

@@ -43,6 +43,24 @@ namespace HZSoft.Application.Busines.CustomerManage
         /// </summary>
         /// <param name="keyValue">主键值</param>
         /// <returns></returns>
+        public IEnumerable<DZ_Money_RoomEntity> GetRoomDetails(string orderId)
+        {
+            return service.GetRoomDetails(orderId);
+        }
+        /// <summary>
+        /// 获取子表详细信息
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <returns></returns>
+        public IEnumerable<DZ_Money_ItemEntity> GetRoomItemDetails(string orderId)
+        {
+            return service.GetRoomItemDetails(orderId);
+        }
+        /// <summary>
+        /// 获取子表详细信息
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <returns></returns>
         public IEnumerable<DZ_Money_ItemEntity> GetDetails(string keyValue)
         {
             return service.GetDetails(keyValue);

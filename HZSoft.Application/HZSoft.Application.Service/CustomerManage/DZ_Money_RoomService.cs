@@ -42,6 +42,24 @@ namespace HZSoft.Application.Service.CustomerManage
         /// </summary>
         /// <param name="keyValue">主键值</param>
         /// <returns></returns>
+        public IEnumerable<DZ_Money_RoomEntity> GetRoomDetails(string keyValue)
+        {
+            return this.BaseRepository().FindList<DZ_Money_RoomEntity>("select * from DZ_Money_Room where OrderId='" + keyValue + "'");
+        }
+        /// <summary>
+        /// 获取子表详细信息
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <returns></returns>
+        public IEnumerable<DZ_Money_ItemEntity> GetRoomItemDetails(string keyValue)
+        {
+            return this.BaseRepository().FindList<DZ_Money_ItemEntity>("select * from DZ_Money_Item where OrderId='" + keyValue + "'");
+        }
+        /// <summary>
+        /// 获取子表详细信息
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <returns></returns>
         public IEnumerable<DZ_Money_ItemEntity> GetDetails(string keyValue)
         {
             return this.BaseRepository().FindList<DZ_Money_ItemEntity>("select * from DZ_Money_Item where RoomId='"+keyValue+ "'");        }

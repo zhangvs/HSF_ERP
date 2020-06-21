@@ -66,8 +66,8 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// 规格
         /// </summary>
         /// <returns></returns>
-        [Column("GuiGe")]
-        public string GuiGe { get; set; }
+        [Column("Guige")]
+        public string Guige { get; set; }
         /// <summary>
         /// 数量
         /// </summary>

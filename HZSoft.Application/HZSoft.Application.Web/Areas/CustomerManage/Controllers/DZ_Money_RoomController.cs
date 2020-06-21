@@ -70,7 +70,7 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         public ActionResult GetFormJson(string keyValue)
         {
             var data = dz_money_roombll.GetEntity(keyValue);
-            var childData = dz_money_roombll.GetDetails(keyValue);            var jsonData = new            {                entity = data,                childEntity = childData            };            return ToJsonResult(jsonData);
+            var childData = dz_money_roombll.GetDetails(keyValue); var jsonData = new { entity = data, childEntity = childData }; return ToJsonResult(jsonData);
         }
         /// <summary>
         /// 获取子表详细信息 
@@ -108,9 +108,9 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AjaxOnly]
-        public ActionResult SaveForm(string keyValue, string strEntity,string strChildEntitys)
+        public ActionResult SaveForm(string keyValue, string strEntity, string strChildEntitys)
         {
-            var entity = strEntity.Replace("","").ToObject<DZ_Money_RoomEntity>();
+            var entity = strEntity.Replace("", "").ToObject<DZ_Money_RoomEntity>();
             var childEntitys = strChildEntitys.ToList<DZ_Money_ItemEntity>();
             dz_money_roombll.SaveForm(keyValue, entity, childEntitys);
             return Success("操作成功。");

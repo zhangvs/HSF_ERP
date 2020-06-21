@@ -1,0 +1,354 @@
+@{;
+    ViewBag.Title = "表单页面";
+    Layout = "~/Views/Shared/_OrderForm.cshtml";
+}
+<script src="~/Content/scripts/utils/hzsoft-ui.js"></script>
+<script src="~/Content/scripts/plugins/layer2/layer.js"></script>
+<script src="~/Content/scripts/plugins/layui/layui.js"></script>
+<link href="~/Content/scripts/plugins/layui/css/layui.css" rel="stylesheet" />
+
+<script>
+    var keyValue = request('keyValue');
+    $(function () {
+        InitialPage();
+        GetOrderEntryGrid();
+        initControl();
+    });
+    //初始化页面
+    function InitialPage() {
+        $(".bills").height($(window).height() - 88);
+        //resize重设(表格、树形)宽高
+        $(window).resize(function (e) {
+            window.setTimeout(function () {
+                $('#gridTable').setGridWidth(($('.gridPanel').width()));
+                $(".bills").height($(window).height() - 88);
+            }, 200);
+            e.stopPropagation();
+        });
+
+
+        //订单状态
+        $("#OrderType").ComboBox({
+            url: "../../SystemManage/DataItemDetail/GetDataItemListJson",
+            param: { EnCode: "OrderType" },
+            id: "ItemValue",
+            text: "ItemName",
+            description: "==请选择==",
+            height: "200px"
+        });
+
+
+    }
+    //初始化控件
+    function initControl() {
+        //获取表单
+        if (!!keyValue) {
+            $.SetForm({
+                url: "../../CustomerManage/DZ_Order/GetMoneyFormJson",
+                param: { keyValue: keyValue },
+                success: function (data) {
+                    var order = data.entity;
+                    $("#form1").SetWebControls(order);
+                    //明细
+                    var childEntity = data.childEntity;
+                    $('#gridTable').find('[role=row]').each(function (i) {
+                        var row = childEntity[i - 1];
+                        if (row != undefined) {
+                            $(this).find('input[name="ItemId"]').val(row.ItemId);
+                            $(this).find('input[name="RoomName"]').val(row.RoomName);
+                            $(this).find('input[name="ProductId"]').val(row.ProductId);
+                            $(this).find('input[name="ProductName"]').val(row.ProductName);
+                            $(this).find('input[name="Guige"]').val(row.Guige);
+                            $(this).find('input[name="Unit"]').val(row.Unit);
+                            $(this).find('input[name="Price"]').val(row.Price);
+                            $(this).find('input[name="Area"]').val(row.Area);
+                            $(this).find('input[name="Amount"]').val(row.Amount);
+                            $(this).find('input[name="Description"]').val(row.Description);
+                            $(this).find('[id="PlusDelete"]').val("删除");
+                            $(this).find('input').removeAttr('disabled').attr("isvalid", "yes");
+                            $(this).next().find('input').removeAttr('disabled');
+                        }
+                    });
+                    //合计
+                    GetTotal();
+                }
+            })
+        }
+    }
+    //加载明细表
+    function GetOrderEntryGrid() {
+        var $grid = $('#gridTable');
+        $grid.jqGrid({
+            unwritten: false,
+            datatype: 'local',
+            height: '100%',
+            autowidth: true,
+            colModel: [
+                { label: '统计子表Id', name: 'ItemId', width: 80, align: '', sortable: false, resizable: false, hidden: true },
+                { label: '房间名称', name: 'RoomName', width: 180, align: '', sortable: false, resizable: false },
+                { label: '物料名称', name: 'ProductName', width: 180, align: '', sortable: false, resizable: false },
+                { label: '规格', name: 'Guige', width: 100, align: '', sortable: false, resizable: false },
+                { label: '单位', name: 'Unit', width: 100, align: '', sortable: false, resizable: false },
+                { label: '单价', name: 'Price', width: 100, align: '', sortable: false, resizable: false },
+                { label: '数量', name: 'Area', width: 120, align: '', sortable: false, resizable: false },
+                { label: '金额', name: 'Amount', width: 120, align: '', sortable: false, resizable: false },
+                { label: '描述', name: 'Description', width: 380, align: '', sortable: false, resizable: false },
+                { label: '删除', name: 'PlusDelete', width: 95, align: '', sortable: false, resizable: false }
+            ],
+            pager: false,
+            rownumbers: true,
+            shrinkToFit: false,
+            gridview: true,
+            footerrow: true,
+            gridComplete: function () {
+                //合计
+                $(this).footerData("set", {
+                    "ProductName": "合计：",
+                    "Area": "<span id='SumTotalArea'>0.00</span>",
+                    "Amount": "<span id='SumTotalAmount'>0.00</span>"
+                });
+            }
+        });
+        //表头合并
+        $grid.jqGrid('setGroupHeaders', {
+            useColSpanStyle: true,
+            groupHeaders: [
+                { startColumnName: 'ProductName', numberOfColumns: 4, titleText: '物料信息' },
+                { startColumnName: 'Area', numberOfColumns: 2, titleText: '数据信息' },
+            ]
+        });
+        //默认添加13行 空行
+        for (var i = 1; i < 13; i++) {
+            var rowdata = {
+                ItemId: '<input name="ItemId" type="text" class="editable center" />',
+                RoomName: '<input name="RoomName" type="text" class="editable center" />',
+                ProductName: '<div class="product"><input name="ProductName" readonly type="text" class="editable"/><span class="ui-icon-ellipsis goodsname"></span></div>',
+                Guige: '<input name="Guige" type="text" class="editable center " /><input name="ProductId" type="hidden" />',
+                Unit: '<input name="Unit" type="text" class="editable center" />',
+                Price: '<input name="Price" type="text" class="editable center decimal" />',
+                Area: '<input name="Area" type="text" class="editable center decimal" />',
+                Amount: '<input name="Amount" type="text" class="editable center decimal" />',
+                Description: '<input name="Description" type="text" class="editable center" />',
+                PlusDelete: '<input readonly disabled="disabled" id="PlusDelete" class="editable center" type="text" style="cursor:pointer" datacol="No" err="删除"  />'
+            }
+            $grid.jqGrid('addRowData', i, rowdata);
+        };
+        $grid.find('.decimal').attr('onfocus', 'IsMoney(this.id)');
+        $grid.find('input').attr("disabled", "disabled");
+        $grid.find("tbody tr:eq(1)").find('input').removeAttr('disabled').attr("isvalid", "yes");
+        $grid.find('.disabled').attr("disabled", "disabled");
+        //商品名称事件
+        $('input[name="ProductName"]').focus(function () {
+            $('.goodsname').hide();
+            $(this).next('.goodsname').show();
+            $(this).Contextmenu();
+        });
+
+        //选择商品事件
+        $('.goodsname').click(function () {
+            var $ellipsis = $(this);
+            dialogOpen({
+                id: "OptionGoods",
+                title: '选择商品',
+                url: '/CustomerManage/DZ_Product/DZ_ProductIndex',
+                width: "1200px",
+                height: "600px",
+                callBack: function (iframeId) {
+                    top.frames[iframeId].AcceptClick(function (datas) {
+                        var currRow = $ellipsis.parents('[role=row]').prev();
+                        for (var i = 0; i < datas.length; i++) {
+                            var data = datas[i];
+                            if ($('#gridTable').find('[data-value="' + data.ProductId + '"]').length == 0) {
+                                var nextRow = currRow.next();
+                                nextRow.find('input[name="ProductId"]').val(data.Id);
+                                nextRow.find('input[name="ProductName"]').val(data.Name);
+                                nextRow.find('input[name="Guige"]').val(data.Guige).attr('data-value', data.Id);
+                                nextRow.find('input[name="Unit"]').val(data.Unit);
+                                nextRow.find('input[name="Price"]').val(data.Plan1);
+                                nextRow.find('input[name="Area"]').val('0.00');
+                                nextRow.find('input[name="Amount"]').val('0.00');
+                                nextRow.find('input[id="PlusDelete"]').val("删除").removeAttr("disabled");
+                                nextRow.find('input').removeAttr('disabled').attr("isvalid", "yes");
+                                nextRow.next().find('input').removeAttr('disabled');
+                                currRow = nextRow;
+                            }
+                        }
+                    });
+                },
+                btn: ['确认选中', '关闭']
+            });
+        });
+
+        //删除信息文本框点击事件
+        $("#gridTable tbody tr").find('input[id="PlusDelete"]').click(function () {
+            if ($(this).attr('disabled') == 'disabled') {
+                return false;
+            }
+            var KeyValue = $(this).parent().parent().find('input[name="ProductName"]').find('input').val()
+            if (KeyValue != "") {
+                var currtr = $(this).parent().parent();
+                dialogConfirm('您确认要删除此数据吗？', function (r) {
+                    if (r) {
+                        currtr.remove();
+                        GetTotal();
+                        dialogMsg("操作成功", 1);
+                    }
+                });
+            }
+        });
+
+        //价格文本框事件
+        $grid.find('.decimal').click(function () {
+            $(this).select();
+        });
+        //价格文本框换算
+        $grid.find('.decimal').keyup(function () {
+            var Area = $(this).parents('[role=row]').find('input[name="Area"]');                    //数量
+            var $Price = $(this).parents('[role=row]').find('input[name="Price"]');                //单价
+            var $Amount = $(this).parents('[role=row]').find('input[name="Amount"]');              //金额
+
+            //数量*单价=金额
+            $Amount.val(toDecimal(Area.val() * $Price.val()));
+
+            GetTotal();
+        });
+    }
+
+    //合计
+    function GetTotal() {
+        var SumTotalArea = 0.00, SumTotalAmount = 0.00;
+        $("#gridTable").find("tbody tr").each(function (i) {
+            var Area = $(this).find('td:eq(7)').find('input').val();
+            if (Area != "" && Area != undefined) {
+                SumTotalArea += Number(Area);
+            }
+            var Amount = $(this).find('td:eq(8)').find('input').val();
+            if (Amount != "" && Amount != undefined) {
+                SumTotalAmount += Number(Amount);
+            }
+        });
+        $("#SumTotalArea").text(toDecimal(SumTotalArea));
+        $("#SumTotalAmount").text(toDecimal(SumTotalAmount));
+    }
+
+    //保存表单;
+    function AcceptClick(save_Mode) {
+        if (!$('#form1').Validform()) {
+            return false;
+        }
+
+        var strChildEntitys = [];
+        $('#gridTable').find('[role=row]').each(function (i) {
+            if (!!$(this).find('input[name="Guige"]').val()) {
+                strChildEntitys.push({
+                    ItemId: $(this).find('input[name="ItemId"]').val(),
+                    RoomName: $(this).find('input[name="RoomName"]').val(),
+                    ProductId: $(this).find('input[name="ProductId"]').val(),
+                    ProductName: $(this).find('input[name="ProductName"]').val(),
+                    Guige: $(this).find('input[name="Guige"]').val(),
+                    Unit: $(this).find('input[name="Unit"]').val(),
+                    Price: $(this).find('input[name="Price"]').val(),
+                    Area: $(this).find('input[name="Area"]').val(),
+                    Amount: $(this).find('input[name="Amount"]').val(),
+                    Description: $(this).find('input[name="Description"]').val(),
+                    Sort: i
+                });
+            }
+        });
+
+
+        var postData = $("#form1").GetWebControls(keyValue);
+        postData["SumTotalArea"] = $("#SumTotalArea").text();
+        postData["SumTotalAmount"] = $("#SumTotalAmount").text();
+        postData["strChildEntitys"] = JSON.stringify(strChildEntitys);
+
+        $.ConfirmAjax({
+            msg: "注：您确认要保存此操作吗？",
+            url: "../../CustomerManage/Sale_Customer/SaveForm?keyValue=" + keyValue,
+            param: { "strEntity": JSON.stringify(postData), "strChildEntitys": JSON.stringify(strChildEntitys) },
+            success: function (data) {
+                if (save_Mode == 1) {
+                    reload();
+                } else {
+                    top.$.removeTab('closeCurrent');
+                }
+            }
+        });
+    }
+
+
+</script>
+<div class="bills">
+    <table class="form" style="width: 100%;margin-bottom: 10px;">
+        <tr>
+            <th class="formTitle" style="width: 60px;">订单编号<font face="宋体">*</font></th>
+            <td class="formValue">
+                <input id="Code" type="text" class="form-control" disabled />
+                <input id="Id" type="hidden" class="form-control" />
+            </td>
+            <th class="formTitle" style="width: 60px;">标题<font face="宋体">*</font></th>
+            <td class="formValue">
+                <input id="OrderTitle" type="text" class="form-control" disabled />
+            </td>
+            <th class="formTitle" style="width: 60px;">订单类型<font face="宋体">*</font></th>
+            <td class="formValue">
+                <div id="OrderType" type="select" class="ui-select" disabled></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="formTitle">客户<font face="宋体">*</font></td>
+            <td class="formValue">
+                <input id="CustomerName" type="text" class="form-control" disabled />
+                <input id="CustomerId" type="hidden" class="form-control" />
+            </td>
+            <td class="formTitle">客户电话</td>
+            <td class="formValue">
+                <input id="CustomerTelphone" type="text" class="form-control" disabled />
+            </td>
+            <td class="formTitle">收货地址</td>
+            <td class="formValue">
+                <input id="Address" type="text" class="form-control" disabled />
+            </td>
+        </tr>
+        <tr>
+            <td class="formTitle">产品名称</td>
+            <td class="formValue">
+                <input id="ProductName" type="text" class="form-control" disabled />
+            </td>
+        </tr>
+    </table>
+    <div class="gridPanel">
+        <table id="gridTable"></table>
+    </div>
+
+    <textarea id="Remark" placeholder="暂无备注信息" class="form-control" style="width: 100%; height: 50px; margin-top: 10px;"></textarea>
+    <table class="form" style="width: 100%;margin-bottom: 10px;">
+        <tr>
+            <td class="formTitle">拆单人<font face="宋体">*</font></td>
+            <td class="formValue">
+                <input id="ChaiUserName" type="text" class="form-control" disabled />
+            </td>
+            <td class="formTitle">审核人</td>
+            <td class="formValue">
+                <input id="CheckUserName" type="text" class="form-control" disabled />
+            </td>
+            <td class="formTitle">报价人</td>
+            <td class="formValue">
+                <input id="MoneyUserName" type="text" class="form-control" disabled />
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div id="bottomField">
+    @*<a id="savaAndAdd" class="btn btn-success" onclick="AcceptClick(1)">保存并新增</a>*@
+    <a id="save" class="btn btn-success" onclick="AcceptClick(2)">保存单据</a>
+</div>
+
+<div class="loading">
+    <div class="layui-progress layui-progress-big" lay-showpercent="true" lay-filter="uploadProgress">
+        <div class="layui-progress-bar layui-bg-red" lay-percent="0%"></div>
+    </div>
+</div>
+<link href="~/Content/styles/hsf/loading.css" rel="stylesheet" />
+<script src="~/Content/scripts/hsf/SplitUpload.js"></script>

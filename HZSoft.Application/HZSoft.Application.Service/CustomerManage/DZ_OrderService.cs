@@ -1211,7 +1211,7 @@ namespace HZSoft.Application.Service.CustomerManage
                                             roomEntity.RoomAmount += _amount;
                                             var itemEntity= GetDbItem(roomEntity.RoomId, room, product.Id, product.Code, secondName, caizhi, 1, _area, product.Unit, _place, _amount, keyValue, oldEntity.Code, "KuJiaLe", db);
 
-                                            var itemFrist = ItemList.Find(t => t.ProductId == product.Id && t.GuiGe == caizhi);
+                                            var itemFrist = ItemList.Find(t => t.ProductId == product.Id && t.Guige == caizhi);
                                             if(itemFrist == null)
                                             {
                                                 ItemList.Add(itemEntity);
@@ -1327,7 +1327,7 @@ namespace HZSoft.Application.Service.CustomerManage
                 ProductId = productId,
                 ProductCode = productCode,
                 ProductName = productName,
-                GuiGe = guige,
+                Guige = guige,
                 Count = count,
                 Area = area,
                 Unit = unit,
@@ -1350,7 +1350,7 @@ namespace HZSoft.Application.Service.CustomerManage
                 ProductId = productId,
                 ProductCode = productCode,
                 ProductName = productName,
-                GuiGe = guige,
+                Guige = guige,
                 Count = count,
                 Area = area,
                 Unit = unit,

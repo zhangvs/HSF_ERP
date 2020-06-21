@@ -223,9 +223,13 @@
                 var data = $("#gridTable").jqGrid('getRowData', ids[i]);
                 if (data.Id) {
                     returnData.push({
-                        ProductId: data.Id,
-                        ProductCode: data.ProductCode,
-                        ProductName: data.ProductName
+                        Id: data.Id,
+                        Code: data.Code,
+                        Name: data.Name,
+                        Guige: data.Guige,
+                        Unit: data.Unit,
+                        Plan1: data.Plan1,
+                        Plan2: data.Plan2
                     });
                 }
             }
