@@ -44,7 +44,7 @@ namespace HZSoft.Application.Service.CustomerManage
         /// <returns></returns>
         public IEnumerable<DZ_Money_RoomEntity> GetRoomDetails(string keyValue)
         {
-            return this.BaseRepository().FindList<DZ_Money_RoomEntity>("select * from DZ_Money_Room where OrderId='" + keyValue + "'");
+            return this.BaseRepository().FindList<DZ_Money_RoomEntity>("select * from DZ_Money_Room where OrderId='" + keyValue + "' ORDER BY createdate");
         }
         /// <summary>
         /// 获取子表详细信息
@@ -53,7 +53,7 @@ namespace HZSoft.Application.Service.CustomerManage
         /// <returns></returns>
         public IEnumerable<DZ_Money_ItemEntity> GetRoomItemDetails(string keyValue)
         {
-            return this.BaseRepository().FindList<DZ_Money_ItemEntity>("select * from DZ_Money_Item where OrderId='" + keyValue + "'");
+            return this.BaseRepository().FindList<DZ_Money_ItemEntity>("select * from DZ_Money_Item where OrderId='" + keyValue + "' ORDER BY createdate");
         }
         /// <summary>
         /// 获取子表详细信息
@@ -62,7 +62,7 @@ namespace HZSoft.Application.Service.CustomerManage
         /// <returns></returns>
         public IEnumerable<DZ_Money_ItemEntity> GetDetails(string keyValue)
         {
-            return this.BaseRepository().FindList<DZ_Money_ItemEntity>("select * from DZ_Money_Item where RoomId='"+keyValue+ "'");        }
+            return this.BaseRepository().FindList<DZ_Money_ItemEntity>("select * from DZ_Money_Item where RoomId='"+keyValue+ "' ORDER BY createdate");        }
         #endregion
 
         #region 提交数据

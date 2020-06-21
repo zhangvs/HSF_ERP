@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Text.RegularExpressions;
 
 namespace HZSoft.Application.Service.CustomerManage
 {
@@ -1139,14 +1140,15 @@ namespace HZSoft.Application.Service.CustomerManage
                 }
 
                 int rowsCount = dtSource.Rows.Count;
+                string productName = "";
 
                 for (int r = 4; r < rowsCount; r++)
                 {
                     string firstName = dtSource.Rows[r][0].ToString();
                     if (firstName.Contains("房间名称："))
                     {
-                        string room = firstName.Replace("房间名称：", "");
-                        DZ_Money_RoomEntity roomEntity = AddDbRoom(room, keyValue, oldEntity.Code, "KuJiaLe");
+                        string roomName = firstName.Replace("房间名称：", "");
+                        DZ_Money_RoomEntity roomEntity = AddDbRoom(roomName, keyValue, oldEntity.Code, "KuJiaLe");
                         roomEntity.RoomAmount = 0;
 
                         //从当前房间开始遍历，获取当前房间的详情
@@ -1209,7 +1211,7 @@ namespace HZSoft.Application.Service.CustomerManage
                                             }
                                             decimal? _amount = _place * _area;
                                             roomEntity.RoomAmount += _amount;
-                                            var itemEntity= GetDbItem(roomEntity.RoomId, room, product.Id, product.Code, secondName, caizhi, 1, _area, product.Unit, _place, _amount, keyValue, oldEntity.Code, "KuJiaLe", db);
+                                            var itemEntity= GetDbItem(roomEntity.RoomId, roomName, product.Id, product.Code, secondName, caizhi, 1, _area, product.Unit, _place, _amount, keyValue, oldEntity.Code, "KuJiaLe", db);
 
                                             var itemFrist = ItemList.Find(t => t.ProductId == product.Id && t.Guige == caizhi);
                                             if(itemFrist == null)
@@ -1257,7 +1259,7 @@ namespace HZSoft.Application.Service.CustomerManage
                                             decimal? _count = Convert.ToDecimal(count);
                                             decimal? _amount = _place * _count;
                                             roomEntity.RoomAmount += _amount;
-                                            AddDbItem(roomEntity.RoomId, room, product.Id, product.Code, secondName, product.Guige, 1, _count, product.Unit, _place, _amount, keyValue, oldEntity.Code, "KuJiaLe", db);
+                                            AddDbItem(roomEntity.RoomId, roomName, product.Id, product.Code, secondName, product.Guige, 1, _count, product.Unit, _place, _amount, keyValue, oldEntity.Code, "KuJiaLe", db);
                                         }
                                     }
                                     else
@@ -1269,13 +1271,26 @@ namespace HZSoft.Application.Service.CustomerManage
 
                             if (firstName.Contains("房间名称："))
                             {
-                                db.Insert<DZ_Money_RoomEntity>(roomEntity);
+                                var oldRoom = db.FindEntity<DZ_Money_RoomEntity>(t => t.RoomName == roomName && t.OrderId == keyValue);
+                                if (oldRoom != null)
+                                {
+                                    oldRoom.RoomAmount += roomEntity.RoomAmount;
+                                    oldRoom.Source += "KuJiaLe";
+                                    db.Update<DZ_Money_RoomEntity>(oldRoom);
+                                }
+                                else
+                                {
+                                    db.Insert<DZ_Money_RoomEntity>(roomEntity);
+                                    productName += roomName + "、";
+                                }
                                 r = r - 1;
                                 break;//当前room遍历完毕，跳出循环
                             }
                         }
                     }
                 }
+                oldEntity.ProductName = productName.Substring(0, productName.Length - 1);
+                db.Update<DZ_OrderEntity>(oldEntity);
                 db.Commit();
                 return "导入酷家乐报价文件成功！";
             }
@@ -1394,9 +1409,7 @@ namespace HZSoft.Application.Service.CustomerManage
                 }
 
                 int rowsCount = dtSource.Rows.Count;
-
-
-                int columns = dtSource.Columns.Count;
+                string productName = "";
 
                 for (int r = 4; r < rowsCount; r++)
                 {
@@ -1407,8 +1420,9 @@ namespace HZSoft.Application.Service.CustomerManage
                         {
                             break;
                         }
+                        string roomName = Regex.Match(c1, "[\u4e00-\u9fa5]+").Value;
                         //创建房间db
-                        DZ_Money_RoomEntity roomEntity = AddDbRoom(c1, keyValue, oldEntity.Code, "1010");
+                        DZ_Money_RoomEntity roomEntity = AddDbRoom(roomName, keyValue, oldEntity.Code, "1010");
                         roomEntity.RoomAmount = 0;
                         for (int i = r + 1; i < rowsCount; i++)
                         {
@@ -1447,7 +1461,7 @@ namespace HZSoft.Application.Service.CustomerManage
                                                     decimal? _amount = _place * sumArea;
                                                     roomEntity.RoomAmount += _amount;
                                                     //创建房间内的材质db
-                                                    AddDbItem(roomEntity.RoomId, c1, product.Id, product.Code, caizhiNMame, product.Guige, sumCount, sumArea, product.Unit, _place, _amount, keyValue, oldEntity.Code, "1010", db);
+                                                    AddDbItem(roomEntity.RoomId, roomName, product.Id, product.Code, caizhiNMame, product.Guige, sumCount, sumArea, product.Unit, _place, _amount, keyValue, oldEntity.Code, "1010", db);
                                                     i = j - 1;//当前空行，-1回去，i会自增1
                                                     break;//当前item遍历完毕，跳出循环
                                                 }
@@ -1462,13 +1476,26 @@ namespace HZSoft.Application.Service.CustomerManage
                             }
                             else
                             {
-                                db.Insert<DZ_Money_RoomEntity>(roomEntity);
+                                var oldRoom = db.FindEntity<DZ_Money_RoomEntity>(t => t.RoomName == roomName && t.OrderId == keyValue);
+                                if (oldRoom != null)
+                                {
+                                    oldRoom.RoomAmount += roomEntity.RoomAmount;
+                                    oldRoom.Source += "1010";
+                                    db.Update<DZ_Money_RoomEntity>(oldRoom);
+                                }
+                                else
+                                {
+                                    db.Insert<DZ_Money_RoomEntity>(roomEntity);
+                                    productName += roomName+"、";
+                                }
                                 r = i - 1;
                                 break;//当前room遍历完毕，跳出循环
                             }
                         }
                     }
                 }
+                oldEntity.ProductName = productName.Substring(0,productName.Length-1);
+                db.Update<DZ_OrderEntity>(oldEntity);
                 db.Commit();
                 return "导入1010报价文件成功";
             }

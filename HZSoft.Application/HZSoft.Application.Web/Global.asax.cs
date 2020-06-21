@@ -6,6 +6,7 @@ using Senparc.Weixin.MP.CommonAPIs;
 using Senparc.Weixin.MP.Containers;
 using System;
 using System.Net.Mail;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -23,6 +24,9 @@ namespace HZSoft.Application.Web
         /// </summary>
         protected void Application_Start()
         {
+            //string roomName = Regex.Match("分段多门柜3915*2020*500", "[A-Za-z0-9\u4e00-\u9fa5-]+").Value;//只保留中文数字
+            //string roomName = Regex.Match("分段多门柜3915*2020*500", "[\u4e00-\u9fa5]+").Value;//只保留中文
+            
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
