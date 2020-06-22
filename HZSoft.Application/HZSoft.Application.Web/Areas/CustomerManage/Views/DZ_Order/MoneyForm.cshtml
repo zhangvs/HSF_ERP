@@ -87,7 +87,7 @@
                 { label: '统计子表Id', name: 'ItemId', width: 80, align: '', sortable: false, resizable: false, hidden: true },
                 { label: '房间名称', name: 'RoomName', width: 100, align: '', sortable: false, resizable: false },
                 { label: '物料名称', name: 'ProductName', width: 180, align: '', sortable: false, resizable: false },
-                { label: '规格', name: 'Guige', width: 100, align: '', sortable: false, resizable: false },
+                { label: '规格', name: 'Guige', width: 180, align: '', sortable: false, resizable: false },
                 { label: '单位', name: 'Unit', width: 100, align: '', sortable: false, resizable: false },
                 { label: '单价', name: 'Price', width: 100, align: '', sortable: false, resizable: false },
                 { label: '数量', name: 'Area', width: 120, align: '', sortable: false, resizable: false },
@@ -122,7 +122,7 @@
                 ItemId: '<input name="ItemId" type="text" class="editable center" />',
                 RoomName: '<input name="RoomName" type="text" class="editable" />',
                 ProductName: '<div class="product"><input name="ProductName" readonly type="text" class="editable"/><span class="ui-icon-ellipsis goodsname"></span></div>',
-                Guige: '<input name="Guige" type="text" class="editable center " /><input name="ProductId" type="hidden" />',
+                Guige: '<input name="Guige" type="text" class="editable " /><input name="ProductId" type="hidden" />',
                 Unit: '<input name="Unit" type="text" class="editable center" />',
                 Price: '<input name="Price" type="text" class="editable center decimal" />',
                 Area: '<input name="Area" type="text" class="editable center decimal" />',
@@ -298,7 +298,7 @@
         });
 
         //选择商品事件
-        $('.goodsname').click(function () {
+        $('.ui-icon-ellipsis').click(function () {
             var $ellipsis = $(this);
             dialogOpen({
                 id: "OptionGoods",

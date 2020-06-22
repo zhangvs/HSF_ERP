@@ -305,6 +305,7 @@ namespace HZSoft.Application.Service.CustomerManage
                             Code = entity.OrderCode,
                             OrderId = entity.OrderId,
                             OrderCode = entity.OrderCode,
+                            OrderType = entity.OrderType,
                             OrderTitle = entity.OrderTitle,
                             ProduceId = entity.ProduceId,
                             ProduceCode = entity.ProduceCode,

@@ -27,6 +27,12 @@ namespace HZSoft.Application.Entity.CustomerManage
         [Column("Code")]
         public string Code { get; set; }
         /// <summary>
+        /// 订单类型
+        /// </summary>
+        /// <returns></returns>
+        [Column("OrderType")]
+        public int? OrderType { get; set; }
+        /// <summary>
         /// 销售Id
         /// </summary>
         /// <returns></returns>

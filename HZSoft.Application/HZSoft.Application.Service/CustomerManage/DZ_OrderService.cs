@@ -1156,6 +1156,61 @@ namespace HZSoft.Application.Service.CustomerManage
                         {
                             firstName = dtSource.Rows[r][0].ToString();
 
+                            if (firstName.Contains("组件清单"))
+                            {
+                                List<DZ_Money_ItemEntity> ItemList = new List<DZ_Money_ItemEntity>();
+                                for (r = r + 3; r < rowsCount; r++)
+                                {
+                                    string secondName = dtSource.Rows[r][1].ToString();//两层酒格
+                                    if (secondName.Contains("抽盒") || secondName.Contains("格抽") || secondName.Contains("裤抽") || secondName.Contains("键盘抽") 
+                                        || secondName.Contains("拉板抽") || secondName.Contains("主机") || secondName.Contains("酒格") || secondName.Contains("酒杯架") || secondName.Contains("酒瓶托"))
+                                    {
+                                        string[] keys = { "抽盒", "格抽", "裤抽", "键盘抽", "拉板抽", "主机", "酒格", "酒杯架", "酒瓶托" };
+                                        int keysIndex = 0;
+                                        string keyWord = "";
+                                        for (int i = 0; i < keys.Length; i++)
+                                        {
+                                            if (secondName.Contains(keys[i]))
+                                            {
+                                                keysIndex = i;
+                                                keyWord = keys[keysIndex];
+                                            }
+                                        }
+                                        if (!string.IsNullOrEmpty(keyWord))
+                                        {
+                                            var product = db.FindEntity<DZ_ProductEntity>(t => t.Name.Contains(keyWord));//名称相同的
+                                            if (product != null)
+                                            {
+                                                decimal? _place = GetPlanPrice(p, product);
+                                                decimal? _amount = _place;
+                                                roomEntity.RoomAmount += _amount;
+                                                var itemEntity = GetDbItem(roomEntity.RoomId, roomName, product.Id, product.Code, secondName, product.Guige, 1, 1, product.Unit, _place, _amount, keyValue, oldEntity.Code, "KuJiaLe", db);
+
+                                                var itemFrist = ItemList.Find(t => t.ProductId == product.Id);
+                                                if (itemFrist == null)
+                                                {
+                                                    ItemList.Add(itemEntity);
+                                                }
+                                                else
+                                                {
+                                                    //同一产品，同一材质，累加金额、数量、面积
+                                                    itemFrist.Amount += itemEntity.Amount;
+                                                    itemFrist.Count += itemEntity.Count;
+                                                    itemFrist.Area += itemEntity.Area;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        foreach (var item in ItemList)
+                                        {
+                                            db.Insert<DZ_Money_ItemEntity>(item);
+                                        }
+                                        break;
+                                    }
+                                }
+                            }
                             if (firstName.Contains("门板清单"))
                             {
                                 List<DZ_Money_ItemEntity> ItemList = new List<DZ_Money_ItemEntity>();
@@ -1300,6 +1355,7 @@ namespace HZSoft.Application.Service.CustomerManage
                 return ex.Message;
             }
         }
+        
 
         public decimal? GetPlanPrice(int p, DZ_ProductEntity entity)
         {

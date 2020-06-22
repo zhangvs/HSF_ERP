@@ -4,6 +4,8 @@
 }
 <script>
     var keyValue = request('keyValue');
+    var childLength;
+    var childEntity;
     $(function () {
         InitialPage();
         GetOrderEntryGrid();
@@ -29,80 +31,82 @@
             description: "==请选择==",
             height: "200px"
         });
-    }
-    //初始化控件
-    function InitControl() {
+
         //获取表单
         if (!!keyValue) {
             $.SetForm({
-                url: "../../CustomerManage/Sale_Customer/GetFormJson",
+                url: "../../CustomerManage/DZ_Order/GetMoneyFormJson",
                 param: { keyValue: keyValue },
                 success: function (data) {
                     var order = data.entity;
-                    order.BeiLiaoMark = order.BeiLiaoMark == 2 ? 1 : order.BeiLiaoMark;
-                    order.KaiLiaoMark = order.KaiLiaoMark == 2 ? 1 : order.KaiLiaoMark;
-                    order.FengBianMark = order.FengBianMark == 2 ? 1 : order.FengBianMark;
-                    order.PaiZuanMark = order.PaiZuanMark == 2 ? 1 : order.PaiZuanMark;
-                    order.ShiZhuangMark = order.ShiZhuangMark == 2 ? 1 : order.ShiZhuangMark;
-                    order.BaoZhuangMark = order.BaoZhuangMark == 2 ? 1 : order.BaoZhuangMark;
-                    //order.XiSuMark = order.XiSuMark == 2 ? 1 : order.XiSuMark;
                     $("#form1").SetWebControls(order);
-                    if (!!order.DownPath) {
-                        $("#DownPath_a").attr("href", order.DownPath).text(order.DownPath.substring(order.DownPath.lastIndexOf("/") + 1));
+                    if (!!order.MoneyPath1010) {
+                        $("#MoneyPath1010_a").attr("href", order.MoneyPath1010).text(order.MoneyPath1010.substring(order.MoneyPath1010.lastIndexOf("/") + 1));
                     }
-
+                    if (!!order.MoneyPathKuJiaLe) {
+                        $("#MoneyPathKuJiaLe_a").attr("href", order.MoneyPathKuJiaLe).text(order.MoneyPathKuJiaLe.substring(order.MoneyPathKuJiaLe.lastIndexOf("/") + 1));
+                    }
                     //明细
-                    var childEntity = data.childEntity;
-                    $('#gridTable').find('[role=row]').each(function (i) {
-                        var row = childEntity[i - 1];
-                        if (row != undefined) {
-                            $(this).find('td[aria-describedby="gridTable_Id"]').html(row.Id);
-                            $(this).find('td[aria-describedby="gridTable_ProductCode"]').html(row.ProductCode);
-                            $(this).find('td[aria-describedby="gridTable_ProductName"]').html(row.ProductName);
-                            $(this).find('td[aria-describedby="gridTable_SumArea"]').html(row.SumArea);
-                            $(this).find('td[aria-describedby="gridTable_SumCount"]').html(row.SumCount);
-                            $(this).find('td[aria-describedby="gridTable_Description"]').html(row.Description);
-                            $(this).find('input').removeAttr('readonly').attr("isvalid", "yes");
-                            $(this).next().find('input').removeAttr('readonly');
-                        }
-                    });
-                    //合计
-                    GetTotal();
+                    childEntity = data.childEntity;
+                    childLength = childEntity.length + 1;
+
                 }
             })
         }
     }
-    //合计
-    function GetTotal() {
-        var SumTotalArea = 0.00, SumTotalCount = 0.00;
-        $("#gridTable").find('[role=row]').each(function (i) {
-            var SumArea = $(this).find('td:eq(4)').html();
-            if (SumArea != "" && SumArea != undefined && SumArea != '&nbsp;') {
-                SumTotalArea += Number(SumArea);
-            }
-            var SumCount = $(this).find('td:eq(5)').html();
-            if (SumCount != "" && SumCount != undefined && SumCount != '&nbsp;') {
-                SumTotalCount += Number(SumCount);
+    //初始化控件
+    function InitControl() {
+        $('#gridTable').find('[role=row]').each(function (i) {
+            var row = childEntity[i - 1];
+            if (row != undefined) {
+                $(this).find('td[aria-describedby="gridTable_ItemId"]').html(row.ItemId);
+                $(this).find('td[aria-describedby="gridTable_RoomName"]').html(row.RoomName);
+                $(this).find('td[aria-describedby="gridTable_ProductId"]').html(row.ProductId);
+                $(this).find('td[aria-describedby="gridTable_ProductName"]').html(row.ProductName);
+                $(this).find('td[aria-describedby="gridTable_Guige"]').html(row.Guige);
+                $(this).find('td[aria-describedby="gridTable_Unit"]').html(row.Unit);
+                $(this).find('td[aria-describedby="gridTable_Price"]').html(row.Price);
+                $(this).find('td[aria-describedby="gridTable_Area"]').html(row.Area);
+                $(this).find('td[aria-describedby="gridTable_Amount"]').html(row.Amount);
+                $(this).find('td[aria-describedby="gridTable_Description"]').html(row.Description);
+                $(this).find('input').removeAttr('readonly').attr("isvalid", "yes");
+                $(this).next().find('input').removeAttr('readonly');
             }
         });
-        $("#SumTotalArea").text(toDecimal(SumTotalArea));
-        $("#SumTotalCount").text(toDecimal(SumTotalCount));
+        //合计
+        GetTotal();
+    }
+    //合计
+    function GetTotal() {
+        var MoneyAccounts = 0.00;
+        $("#gridTable").find("tbody tr").each(function (i) {
+            var Amount = $(this).find('td:eq(8)').find('input').val();
+            if (Amount != "" && Amount != undefined) {
+                MoneyAccounts += Number(Amount);
+            }
+        });
+
+        $("#MoneyAccounts").text(toDecimal(MoneyAccounts));
     }
     //加载明细
     function GetOrderEntryGrid() {
-        var $grid = $("#gridTable");
+        var $grid = $('#gridTable');
         $grid.jqGrid({
             unwritten: false,
-            datatype: "local",
+            datatype: 'local',
             height: '100%',
             autowidth: true,
             colModel: [
-                { label: '统计子表Id', name: 'Id', width: 80, align: '', sortable: false, resizable: false, hidden: true },
+                { label: '统计子表Id', name: 'ItemId', width: 80, align: '', sortable: false, resizable: false, hidden: true },
+                { label: '房间名称', name: 'RoomName', width: 100, align: '', sortable: false, resizable: false },
                 { label: '物料名称', name: 'ProductName', width: 180, align: '', sortable: false, resizable: false },
-                { label: '物料编号', name: 'ProductCode', width: 100, align: '', sortable: false, resizable: false },
-                { label: '总面积', name: 'SumArea', width: 120, align: '', sortable: false, resizable: false },
-                { label: '总数量', name: 'SumCount', width: 120, align: '', sortable: false, resizable: false },
-                { label: '描述', name: 'Description', width: 380, align: '', sortable: false, resizable: false }
+                { label: '规格', name: 'Guige', width: 180, align: '', sortable: false, resizable: false },
+                { label: '单位', name: 'Unit', width: 100, align: '', sortable: false, resizable: false },
+                { label: '单价', name: 'Price', width: 100, align: '', sortable: false, resizable: false },
+                { label: '数量', name: 'Area', width: 120, align: '', sortable: false, resizable: false },
+                { label: '金额', name: 'Amount', width: 120, align: '', sortable: false, resizable: false },
+                { label: '描述', name: 'Description', width: 380, align: '', sortable: false, resizable: false },
+                { label: '删除', name: 'PlusDelete', width: 95, align: '', sortable: false, resizable: false }
             ],
             pager: false,
             rownumbers: true,
@@ -112,33 +116,35 @@
             gridComplete: function () {
                 //合计
                 $(this).footerData("set", {
-                    "ProductName": "合计：",
-                    "SumArea": "<span id='SumTotalArea'>0.00</span>",
-                    "SumCount": "<span id='SumTotalCount'>0.00</span>"
+                    "RoomName": "合计：",
+                    "Amount": "<span id='MoneyAccounts'>0.00</span>"
                 });
-                $('table.ui-jqgrid-ftable td[aria-describedby="gridTable_UnitId"]').prevUntil().css("border-right-color", "#fff");
             }
         });
         //表头合并
         $grid.jqGrid('setGroupHeaders', {
             useColSpanStyle: true,
             groupHeaders: [
-                { startColumnName: 'ProductName', numberOfColumns: 2, titleText: '物料信息' },
-                { startColumnName: 'SumArea', numberOfColumns: 3, titleText: '数据信息' },
+                { startColumnName: 'ProductName', numberOfColumns: 4, titleText: '物料信息' },
+                { startColumnName: 'Area', numberOfColumns: 2, titleText: '数据信息' },
             ]
         });
         //默认添加13行 空行
-        for (var i = 1; i < 13; i++) {
+        for (var i = 1; i < childLength; i++) {
             var rowdata = {
-                Id: '',
+                ItemId: '',
+                RoomName: '',
                 ProductName: '',
-                ProductCode: '',
-                SumArea: '',
-                SumCount: '',
+                Guige: '',
+                Unit: '',
+                Price: '',
+                Area: '',
+                Amount: '',
                 Description: ''
             }
             $grid.jqGrid('addRowData', i, rowdata);
         };
+        
     }
     //打印
     function btn_print() {
@@ -149,81 +155,66 @@
     <div class="printArea">
         <table class="form" style="width: 100%; margin-bottom: 10px;">
             <tr>
-                <th class="formTitle">订单编号</th>
+                <th class="formTitle" style="width: 60px;">订单编号<font face="宋体">*</font></th>
                 <td class="formValue">
-                    <input id="ProduceCode" type="text" class="form-control" readonly />
+                    <input id="Code" type="text" class="form-control" disabled />
+                    <input id="Id" type="hidden" class="form-control" />
                 </td>
-                <th class="formTitle">标题</th>
+                <th class="formTitle" style="width: 60px;">标题<font face="宋体">*</font></th>
                 <td class="formValue">
-                    <input id="OrderTitle" type="text" class="form-control" readonly />
+                    <input id="OrderTitle" type="text" class="form-control" disabled />
                 </td>
-                <td class="formTitle">报价日期</td>
+                <th class="formTitle" style="width: 60px;">订单类型<font face="宋体">*</font></th>
                 <td class="formValue">
-                    <input id="MoneyDate" type="text" value="@HZSoft.Util.Time.GetToday()" class="form-control input-wdatepicker" onfocus="WdatePicker({maxDate:'%y-%M-%d'})" isvalid="yes" checkexpession="NotNull" />
+                    <div id="OrderType" type="select" class="ui-select" disabled></div>
                 </td>
             </tr>
             <tr>
-                <th class="formTitle">订单类型</th>
+                <td class="formTitle">客户<font face="宋体">*</font></td>
                 <td class="formValue">
-                    <div id="OrderType" type="select" class="ui-select" readonly></div>
+                    <input id="CustomerName" type="text" class="form-control" disabled />
+                    <input id="CustomerId" type="hidden" class="form-control" />
                 </td>
-                <td class="formTitle">经销商</td>
+                <td class="formTitle">客户电话</td>
                 <td class="formValue">
-                    <input id="CompanyName" type="text" class="form-control" readonly />
+                    <input id="CustomerTelphone" type="text" class="form-control" disabled />
                 </td>
-                <td class="formValue"></td>
+                <td class="formTitle">收货地址</td>
+                <td class="formValue">
+                    <input id="Address" type="text" class="form-control" disabled />
+                </td>
             </tr>
             <tr>
-                <td class="formTitle">客户</td>
+                <td class="formTitle">产品名称</td>
                 <td class="formValue">
-                    <input id="CustomerName" type="text" class="form-control" readonly />
+                    <input id="ProductName" type="text" class="form-control" disabled />
                 </td>
-                <td class="formTitle">销售</td>
-                <td class="formValue">
-                    <input id="SalesmanUserName" type="text" class="form-control" readonly />
-                </td>
-                <td class="formValue"></td>
-            </tr>
-            <tr>
-                <td class="formTitle">排产开始</td>
-                <td class="formValue">
-                    <input id="StatePlanDate" type="text" class="form-control" readonly />
-                </td>
-                <td class="formTitle">排产结束</td>
-                <td class="formValue">
-                    <input id="EndPlanDate" type="text" class="form-control" readonly />
-                </td>
-                <td class="formValue"></td>
-            </tr>
-            <tr>
-                <td class="formTitle">材料</td>
-                <td class="formValue">
-                    <div class="checkbox">
-                        <label><input id="GuiTiMark" type="checkbox" />&nbsp;柜体 </label>
-                        <label><input id="WuJinMark" type="checkbox" />&nbsp;五金 </label>
-                        <label><input id="MenBanMark" type="checkbox" />&nbsp;门板 </label>
-                        <label><input id="WaiXieMark" type="checkbox" />&nbsp;外协 </label>
-                    </div>
-                </td>
-                <td class="formTitle">柜体工序</td>
-                <td class="formValue">
-                    <label><input id="BeiLiaoMark" type="checkbox" checked />&nbsp;备料 </label>
-                    <label><input id="KaiLiaoMark" type="checkbox" checked />&nbsp;开料 </label>&nbsp;&nbsp;
-                    <label><input id="FengBianMark" type="checkbox" checked />&nbsp;封边 </label>&nbsp;&nbsp;
-                    <label><input id="PaiZuanMark" type="checkbox" checked />&nbsp;排钻 </label>&nbsp;&nbsp;
-                    <label><input id="ShiZhuangMark" type="checkbox" checked />&nbsp;试装 </label>&nbsp;&nbsp;
-                    <label><input id="BaoZhuangMark" type="checkbox" checked />&nbsp;包装 </label>&nbsp;&nbsp;
-                </td>
-                <td class="formTitle"></td>
             </tr>
         </table>
     </div>
-    下单附件：<a id="DownPath_a" style='text-decoration:underline;color: #337ab7;height:38px;line-height:38px;' href=""></a>
+    1010附件：<a id="MoneyPath1010_a" style='text-decoration:underline;color: #337ab7;height:38px;line-height:38px;' href=""></a>
+    酷家乐附件：<a id="MoneyPathKuJiaLe_a" style='text-decoration:underline;color: #337ab7;height:38px;line-height:38px;' href=""></a>
     <div class="gridPanel printArea">
         <table id="gridTable"></table>
     </div>
     <div class="printArea">
         <textarea id="Remark" placeholder="暂无备注信息" class="form-control" style="width: 100%; height: 50px; margin-top: 10px;"></textarea>
+        <table class="form" style="width: 100%;margin-bottom: 10px;">
+            <tr>
+                <td class="formTitle">拆单人<font face="宋体">*</font></td>
+                <td class="formValue">
+                    <input id="ChaiUserName" type="text" class="form-control" disabled />
+                </td>
+                <td class="formTitle">审核人</td>
+                <td class="formValue">
+                    <input id="CheckUserName" type="text" class="form-control" disabled />
+                </td>
+                <td class="formTitle">报价人</td>
+                <td class="formValue">
+                    <input id="MoneyUserName" type="text" class="form-control" disabled />
+                </td>
+            </tr>
+        </table>
     </div>
 </div>
 <div id="bottomField">
