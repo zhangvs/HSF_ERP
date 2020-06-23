@@ -80,8 +80,8 @@
     function GetTotal() {
         var MoneyAccounts = 0.00;
         $("#gridTable").find("tbody tr").each(function (i) {
-            var Amount = $(this).find('td:eq(8)').find('input').val();
-            if (Amount != "" && Amount != undefined) {
+            var Amount = $(this).find('td:eq(8)').html();
+            if (Amount != "" && Amount != undefined && Amount != '&nbsp;') {
                 MoneyAccounts += Number(Amount);
             }
         });
@@ -100,13 +100,12 @@
                 { label: '统计子表Id', name: 'ItemId', width: 80, align: '', sortable: false, resizable: false, hidden: true },
                 { label: '房间名称', name: 'RoomName', width: 100, align: '', sortable: false, resizable: false },
                 { label: '物料名称', name: 'ProductName', width: 180, align: '', sortable: false, resizable: false },
-                { label: '规格', name: 'Guige', width: 180, align: '', sortable: false, resizable: false },
+                { label: '规格', name: 'Guige', width: 230, align: '', sortable: false, resizable: false },
                 { label: '单位', name: 'Unit', width: 100, align: '', sortable: false, resizable: false },
                 { label: '单价', name: 'Price', width: 100, align: '', sortable: false, resizable: false },
                 { label: '数量', name: 'Area', width: 120, align: '', sortable: false, resizable: false },
                 { label: '金额', name: 'Amount', width: 120, align: '', sortable: false, resizable: false },
-                { label: '描述', name: 'Description', width: 380, align: '', sortable: false, resizable: false },
-                { label: '删除', name: 'PlusDelete', width: 95, align: '', sortable: false, resizable: false }
+                { label: '描述', name: 'Description', width: 380, align: '', sortable: false, resizable: false }
             ],
             pager: false,
             rownumbers: true,
@@ -153,7 +152,7 @@
 </script>
 <div class="bills">
     <div class="printArea">
-        <table class="form" style="width: 100%; margin-bottom: 10px;">
+        <table class="form" style="width: 100%;margin-bottom: 10px;">
             <tr>
                 <th class="formTitle" style="width: 60px;">订单编号<font face="宋体">*</font></th>
                 <td class="formValue">
@@ -164,29 +163,27 @@
                 <td class="formValue">
                     <input id="OrderTitle" type="text" class="form-control" disabled />
                 </td>
-                <th class="formTitle" style="width: 60px;">订单类型<font face="宋体">*</font></th>
-                <td class="formValue">
-                    <div id="OrderType" type="select" class="ui-select" disabled></div>
-                </td>
             </tr>
             <tr>
-                <td class="formTitle">客户<font face="宋体">*</font></td>
+                <td class="formTitle" style="width: 60px;">客户<font face="宋体">*</font></td>
                 <td class="formValue">
                     <input id="CustomerName" type="text" class="form-control" disabled />
                     <input id="CustomerId" type="hidden" class="form-control" />
                 </td>
-                <td class="formTitle">客户电话</td>
+                <td class="formTitle" style="width: 60px;">客户电话</td>
                 <td class="formValue">
                     <input id="CustomerTelphone" type="text" class="form-control" disabled />
                 </td>
-                <td class="formTitle">收货地址</td>
-                <td class="formValue">
+            </tr>
+            <tr>
+                <td class="formTitle" style="width: 60px;">收货地址</td>
+                <td class="formValue" colspan="3">
                     <input id="Address" type="text" class="form-control" disabled />
                 </td>
             </tr>
             <tr>
                 <td class="formTitle">产品名称</td>
-                <td class="formValue">
+                <td class="formValue" colspan="3">
                     <input id="ProductName" type="text" class="form-control" disabled />
                 </td>
             </tr>
@@ -201,15 +198,15 @@
         <textarea id="Remark" placeholder="暂无备注信息" class="form-control" style="width: 100%; height: 50px; margin-top: 10px;"></textarea>
         <table class="form" style="width: 100%;margin-bottom: 10px;">
             <tr>
-                <td class="formTitle">拆单人<font face="宋体">*</font></td>
+                <td class="formTitle" style="width: 60px;">拆单人<font face="宋体">*</font></td>
                 <td class="formValue">
                     <input id="ChaiUserName" type="text" class="form-control" disabled />
                 </td>
-                <td class="formTitle">审核人</td>
+                <td class="formTitle" style="width: 60px;">审核人</td>
                 <td class="formValue">
                     <input id="CheckUserName" type="text" class="form-control" disabled />
                 </td>
-                <td class="formTitle">报价人</td>
+                <td class="formTitle" style="width: 60px;">报价人</td>
                 <td class="formValue">
                     <input id="MoneyUserName" type="text" class="form-control" disabled />
                 </td>

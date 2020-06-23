@@ -59,24 +59,24 @@
                 },
                 { label: '经销商', name: 'CompanyName', index: 'CompanyName', width: 130, align: 'center', sortable: true },
                 { label: '客户', name: 'CustomerName', index: 'CustomerName', width: 100, align: 'center', sortable: true },
-                {
-                    label: "是否收取尾款", name: "AfterMark", index: "AfterMark", width: 90, align: "center", sortable: false,
-                    formatter: function (cellvalue) {
-                        return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
-                    }
-                },
-                {
-                    label: "收款状态", name: "PaymentState", width: 80, align: "center",
-                    formatter: function (cellvalue, options, rowObject) {
-                        if (cellvalue == 2) {
-                            return "<span style='color:green'>部分收款</span>";
-                        } else if (cellvalue == 3) {
-                            return "<span style='color:blue'>全部收款</span>";
-                        } else {
-                            return "<span style='color:red'>未收款</span>";
-                        }
-                    }
-                },
+                //{
+                //    label: "是否收取尾款", name: "AfterMark", index: "AfterMark", width: 90, align: "center", sortable: false,
+                //    formatter: function (cellvalue) {
+                //        return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
+                //    }
+                //},
+                //{
+                //    label: "收款状态", name: "PaymentState", width: 80, align: "center",
+                //    formatter: function (cellvalue, options, rowObject) {
+                //        if (cellvalue == 2) {
+                //            return "<span style='color:green'>部分收款</span>";
+                //        } else if (cellvalue == 3) {
+                //            return "<span style='color:blue'>全部收款</span>";
+                //        } else {
+                //            return "<span style='color:red'>未收款</span>";
+                //        }
+                //    }
+                //},
                 //{ label: '付款日期', name: 'PaymentDate', index: 'PaymentDate', width: 118, align: 'left', sortable: true },
                 { label: '销售人', name: 'SalesmanUserName', index: 'SalesmanUserName', width: 80, align: 'center', sortable: true },
                 { label: '创建日期', name: 'CreateDate', index: 'CreateDate', width: 118, align: 'left', sortable: true },

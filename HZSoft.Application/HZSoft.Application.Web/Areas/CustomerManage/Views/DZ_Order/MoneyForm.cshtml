@@ -44,6 +44,12 @@
                 success: function (data) {
                     var order = data.entity;
                     $("#form1").SetWebControls(order);
+                    if (!!order.MoneyPath1010) {
+                        $("#MoneyPath1010_a").attr("href", order.MoneyPath1010).text(order.MoneyPath1010.substring(order.MoneyPath1010.lastIndexOf("/") + 1));
+                    }
+                    if (!!order.MoneyPathKuJiaLe) {
+                        $("#MoneyPathKuJiaLe_a").attr("href", order.MoneyPathKuJiaLe).text(order.MoneyPathKuJiaLe.substring(order.MoneyPathKuJiaLe.lastIndexOf("/") + 1));
+                    }
                     //明细
                     childEntity = data.childEntity;
                     childLength = childEntity.length + 1;
@@ -87,7 +93,7 @@
                 { label: '统计子表Id', name: 'ItemId', width: 80, align: '', sortable: false, resizable: false, hidden: true },
                 { label: '房间名称', name: 'RoomName', width: 100, align: '', sortable: false, resizable: false },
                 { label: '物料名称', name: 'ProductName', width: 180, align: '', sortable: false, resizable: false },
-                { label: '规格', name: 'Guige', width: 180, align: '', sortable: false, resizable: false },
+                { label: '规格', name: 'Guige', width: 230, align: '', sortable: false, resizable: false },
                 { label: '单位', name: 'Unit', width: 100, align: '', sortable: false, resizable: false },
                 { label: '单价', name: 'Price', width: 100, align: '', sortable: false, resizable: false },
                 { label: '数量', name: 'Area', width: 120, align: '', sortable: false, resizable: false },
@@ -258,7 +264,7 @@
 
         $.ConfirmAjax({
             msg: "注：您确认要保存此操作吗？",
-            url: "../../CustomerManage/Sale_Customer/SaveForm?keyValue=" + keyValue,
+            url: "../../CustomerManage/DZ_Order/SaveMoneyForm?keyValue=" + keyValue,
             param: { "strEntity": JSON.stringify(postData), "strChildEntitys": JSON.stringify(strChildEntitys) },
             success: function (data) {
                 if (save_Mode == 1) {
@@ -380,33 +386,33 @@
             <td class="formValue">
                 <input id="OrderTitle" type="text" class="form-control" disabled />
             </td>
-            <th class="formTitle" style="width: 60px;">订单类型<font face="宋体">*</font></th>
-            <td class="formValue">
-                <div id="OrderType" type="select" class="ui-select" disabled></div>
-            </td>
         </tr>
         <tr>
-            <td class="formTitle">客户<font face="宋体">*</font></td>
+            <td class="formTitle" style="width: 60px;">客户<font face="宋体">*</font></td>
             <td class="formValue">
                 <input id="CustomerName" type="text" class="form-control" disabled />
                 <input id="CustomerId" type="hidden" class="form-control" />
             </td>
-            <td class="formTitle">客户电话</td>
+            <td class="formTitle" style="width: 60px;">客户电话</td>
             <td class="formValue">
                 <input id="CustomerTelphone" type="text" class="form-control" disabled />
             </td>
-            <td class="formTitle">收货地址</td>
-            <td class="formValue">
+        </tr>
+        <tr>
+            <td class="formTitle" style="width: 60px;">收货地址</td>
+            <td class="formValue" colspan="3">
                 <input id="Address" type="text" class="form-control" disabled />
             </td>
         </tr>
         <tr>
             <td class="formTitle">产品名称</td>
-            <td class="formValue">
+            <td class="formValue" colspan="3">
                 <input id="ProductName" type="text" class="form-control" disabled />
             </td>
         </tr>
     </table>
+    1010附件：<a id="MoneyPath1010_a" style='text-decoration:underline;color: #337ab7;height:38px;line-height:38px;' href=""></a>
+    酷家乐附件：<a id="MoneyPathKuJiaLe_a" style='text-decoration:underline;color: #337ab7;height:38px;line-height:38px;' href=""></a>
     <div class="gridPanel">
         <table id="gridTable"></table>
     </div>
@@ -414,15 +420,15 @@
     <textarea id="Remark" placeholder="暂无备注信息" class="form-control" style="width: 100%; height: 50px; margin-top: 10px;"></textarea>
     <table class="form" style="width: 100%;margin-bottom: 10px;">
         <tr>
-            <td class="formTitle">拆单人<font face="宋体">*</font></td>
+            <td class="formTitle" style="width: 60px;">拆单人<font face="宋体">*</font></td>
             <td class="formValue">
                 <input id="ChaiUserName" type="text" class="form-control" disabled />
             </td>
-            <td class="formTitle">审核人</td>
+            <td class="formTitle" style="width: 60px;">审核人</td>
             <td class="formValue">
                 <input id="CheckUserName" type="text" class="form-control" disabled />
             </td>
-            <td class="formTitle">报价人</td>
+            <td class="formTitle" style="width: 60px;">报价人</td>
             <td class="formValue">
                 <input id="MoneyUserName" type="text" class="form-control" disabled />
             </td>

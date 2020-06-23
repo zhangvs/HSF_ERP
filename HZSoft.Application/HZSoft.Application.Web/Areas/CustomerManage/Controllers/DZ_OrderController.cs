@@ -388,6 +388,24 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         }
 
         /// <summary>
+        /// 生产单编辑
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <param name="strEntity">实体对象</param>
+        /// <param name="strChildEntitys">实体对象</param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AjaxOnly]
+        public ActionResult SaveMoneyForm(string keyValue, string strEntity, string strChildEntitys)
+        {
+            var entity = strEntity.ToObject<DZ_OrderEntity>();
+            var childEntitys = strChildEntitys.ToList<DZ_Money_ItemEntity>();
+            dz_orderbll.SaveMoneyForm(keyValue, entity, childEntitys);
+            return Success("操作成功。");
+        }
+
+        /// <summary>
         /// 签收确认
         /// </summary>
         /// <param name="keyValue">主键值</param>
@@ -790,8 +808,17 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         public ActionResult ImportKuJiaLe(HttpPostedFileBase filebase, string keyValue)
         {
             HttpPostedFileBase file = Request.Files["files"];
-            string FileName;
-            string savePath;
+            if (string.IsNullOrEmpty(keyValue))
+            {
+                ViewBag.error = "订单编号不能为空！";
+                return View();
+            }
+            else
+            {
+                ViewBag.OrderId = keyValue;
+            }
+
+
             if (file == null || file.ContentLength <= 0)
             {
                 ViewBag.error = "文件不能为空";
@@ -801,13 +828,12 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
             {
                 string filename = Path.GetFileName(file.FileName);
                 int filesize = file.ContentLength;//获取上传文件的大小单位为字节byte
-                string fileEx = System.IO.Path.GetExtension(filename);//获取上传文件的扩展名
+                string fileExt = System.IO.Path.GetExtension(filename);//获取上传文件的扩展名
                 string NoFileName = System.IO.Path.GetFileNameWithoutExtension(filename);//获取无扩展名的文件名
                 int Maxsize = 4000 * 1024;//定义上传文件的最大空间大小为4M
                 string FileType = ".xls,.xlsx";//定义上传文件的类型字符串
 
-                FileName = NoFileName + DateTime.Now.ToString("yyyyMMddhhmmss") + fileEx;
-                if (!FileType.Contains(fileEx))
+                if (!FileType.Contains(fileExt))
                 {
                     ViewBag.error = "文件类型不对，只能导入xls和xlsx格式的文件";
                     return View();
@@ -817,20 +843,23 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
                     ViewBag.error = "上传文件超过4M，不能上传";
                     return View();
                 }
-                string path = AppDomain.CurrentDomain.BaseDirectory + "Resource/KuJiaLe/" + DateTime.Now.ToString("yyyyMMdd") + "/";
-
-                if (Directory.Exists(path) == false)//如果不存在就创建file文件夹
+                
+                string dir = string.Format("/Resource/KuJiaLe/{0}/", DateTime.Now.ToString("yyyyMMdd"));
+                if (Directory.Exists(Server.MapPath(dir)) == false)//如果不存在就创建file文件夹
                 {
-                    Directory.CreateDirectory(path);
+                    Directory.CreateDirectory(Server.MapPath(dir));
                 }
-                savePath = Path.Combine(path, FileName);
+                string newfileName = NoFileName + DateTime.Now.ToString("yyyyMMddhhmmss") + fileExt; ;
+                //原图
+                string fullDir1 = dir + newfileName + fileExt;
+                string savePath = Request.MapPath(fullDir1);
                 file.SaveAs(savePath);
+                DataTable dtSource = ExcelHelper.ExcelImport(savePath);
+                ViewBag.error = dz_orderbll.BatchAddEntity(keyValue, dtSource, fullDir1);
+
+                System.Threading.Thread.Sleep(2000);
             }
             
-            DataTable dtSource = ExcelHelper.ExcelImport(savePath);
-            ViewBag.error = dz_orderbll.BatchAddEntity(keyValue, dtSource);
-
-            System.Threading.Thread.Sleep(2000);
             return View();
         }
 
@@ -849,8 +878,15 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         public ActionResult Import1010(HttpPostedFileBase filebase, string keyValue)
         {
             HttpPostedFileBase file = Request.Files["files"];
-            string FileName;
-            string savePath;
+            if (string.IsNullOrEmpty(keyValue))
+            {
+                ViewBag.error = "订单编号不能为空！";
+                return View();
+            }
+            else
+            {
+                ViewBag.OrderId = keyValue;
+            }
             if (file == null || file.ContentLength <= 0)
             {
                 ViewBag.error = "文件不能为空";
@@ -860,13 +896,12 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
             {
                 string filename = Path.GetFileName(file.FileName);
                 int filesize = file.ContentLength;//获取上传文件的大小单位为字节byte
-                string fileEx = System.IO.Path.GetExtension(filename);//获取上传文件的扩展名
+                string fileExt = System.IO.Path.GetExtension(filename);//获取上传文件的扩展名
                 string NoFileName = System.IO.Path.GetFileNameWithoutExtension(filename);//获取无扩展名的文件名
                 int Maxsize = 4000 * 1024;//定义上传文件的最大空间大小为4M
                 string FileType = ".xls,.xlsx";//定义上传文件的类型字符串
 
-                FileName = NoFileName + DateTime.Now.ToString("yyyyMMddhhmmss") + fileEx;
-                if (!FileType.Contains(fileEx))
+                if (!FileType.Contains(fileExt))
                 {
                     ViewBag.error = "文件类型不对，只能导入xls和xlsx格式的文件";
                     return View();
@@ -876,20 +911,22 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
                     ViewBag.error = "上传文件超过4M，不能上传";
                     return View();
                 }
-                string path = AppDomain.CurrentDomain.BaseDirectory + "Resource/1010/"+ DateTime.Now.ToString("yyyyMMdd")+"/";
 
-                if (Directory.Exists(path) == false)//如果不存在就创建file文件夹
+                string dir = string.Format("/Resource/1010/{0}/", DateTime.Now.ToString("yyyyMMdd"));
+                if (Directory.Exists(Server.MapPath(dir)) == false)//如果不存在就创建file文件夹
                 {
-                    Directory.CreateDirectory(path);
+                    Directory.CreateDirectory(Server.MapPath(dir));
                 }
-                savePath = Path.Combine(path, FileName);
+                string newfileName = NoFileName + DateTime.Now.ToString("yyyyMMddhhmmss") + fileExt; ;
+                //原图
+                string fullDir1 = dir + newfileName + fileExt;
+                string savePath = Request.MapPath(fullDir1);
                 file.SaveAs(savePath);
+                DataTable dtSource = ExcelHelper.ExcelImport(savePath);
+                ViewBag.error = dz_orderbll.BatchAddEntity1010(keyValue, dtSource, fullDir1);
+
+                System.Threading.Thread.Sleep(2000);
             }
-
-            DataTable dtSource = ExcelHelper.ExcelImport(savePath);
-            ViewBag.error = dz_orderbll.BatchAddEntity1010(keyValue, dtSource);
-
-            System.Threading.Thread.Sleep(2000);
             return View();
         }
     }

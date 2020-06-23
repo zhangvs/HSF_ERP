@@ -1115,16 +1115,22 @@ namespace HZSoft.Application.Service.CustomerManage
         /// </summary>
         /// <param name="dtSource">实体对象</param>
         /// <returns></returns>
-        public string BatchAddEntity(string keyValue, DataTable dtSource)
+        public string BatchAddEntity(string keyValue, DataTable dtSource, string dir)
         {
+            IRepository db = new RepositoryFactory().BaseRepository().BeginTrans();
             try
             {
-                IRepository db = new RepositoryFactory().BaseRepository().BeginTrans();
-                //先删掉keyValue之前导入的room和item
-                db.Delete<DZ_Money_RoomEntity>(t => t.OrderId == keyValue && t.Source == "KuJiaLe");
-                db.Delete<DZ_Money_ItemEntity>(t => t.OrderId == keyValue && t.Source == "KuJiaLe");
-                //获取销售订单表
                 DZ_OrderEntity oldEntity = GetEntity(keyValue);
+                if (!string.IsNullOrEmpty(oldEntity.MoneyPathKuJiaLe))
+                {
+                    //重复导入，删掉之前导入的所有，不管是酷家乐或是1010
+                    //先删掉keyValue之前导入的room和item
+                    db.Delete<DZ_Money_RoomEntity>(t => t.OrderId == keyValue);
+                    db.Delete<DZ_Money_ItemEntity>(t => t.OrderId == keyValue);
+                    oldEntity.MoneyPathKuJiaLe = "";
+                    oldEntity.MoneyPath1010 = "";
+                }
+                //获取销售订单表
                 int p = 0;
                 if (oldEntity.CompanyName == "临沂乐豪斯")
                 {
@@ -1155,6 +1161,99 @@ namespace HZSoft.Application.Service.CustomerManage
                         for (r = r + 3; r < rowsCount; r++)
                         {
                             firstName = dtSource.Rows[r][0].ToString();
+
+
+                            if (firstName.Contains("移门清单"))
+                            {
+                                decimal width = 0;
+                                decimal height = 0;
+                                int shan = 0;
+                                string[] keys = { "黑色窄框", "白色窄框", "35框", "65框" };
+                                int keysIndex = 0;
+                                string keyWord = "";
+                                for (r = r + 3; r < rowsCount; r++)
+                                {
+                                    string secondName = dtSource.Rows[r][1].ToString();//D:移门顶轨（DG上-GU）
+                                    if (secondName.Contains("移门顶轨"))//只取一个高
+                                    {
+                                        string widthStr = dtSource.Rows[r][6].ToString();//宽：2244
+                                        width = Convert.ToDecimal(widthStr);
+                                    }
+
+                                    if (secondName.Contains("黑色窄框") || secondName.Contains("白色窄框") || secondName.Contains("35框") || secondName.Contains("65框"))//只取一个宽
+                                    {
+                                        string heightStr = dtSource.Rows[r][9].ToString();//高：2,261	
+                                        height = Convert.ToDecimal(heightStr);
+                                        shan++;
+                                        for (int i = 0; i < keys.Length; i++)
+                                        {
+                                            if (secondName.Contains(keys[i]))
+                                            {
+                                                keysIndex = i;
+                                                keyWord = keys[keysIndex];
+                                            }
+                                        }
+                                    }
+
+                                    if (string.IsNullOrEmpty(secondName))
+                                    {
+                                        if (width != 0 && height != 0)
+                                        {
+                                            var product = db.FindEntity<DZ_ProductEntity>(t => t.Name.Contains(keyWord));//名称相同的
+                                            if (product != null)
+                                            {
+                                                decimal? _place = GetPlanPrice(p, product);
+                                                decimal _area = width * height / 1000000;
+                                                decimal? _amount = _place * _area;
+                                                roomEntity.RoomAmount += _amount;
+                                                AddDbItem(roomEntity.RoomId, roomName, product.Id, product.Code, product.Name, $"门洞H{height}mm*W{width}mm，分{shan}扇", 1, _area, product.Unit, _place, _amount, keyValue, oldEntity.Code, "KuJiaLe", db);
+
+                                            }
+                                        }
+                                        break;//只计算一次。默认当前房间只有一个移门
+                                    }
+                                }
+                            }
+                            if (firstName.Contains("板件清单"))
+                            {
+                                List<DZ_Money_ItemEntity> ItemList = new List<DZ_Money_ItemEntity>();
+                                for (r = r + 3; r < rowsCount; r++)
+                                {
+                                    string secondName = dtSource.Rows[r][1].ToString();//两层酒格
+                                    if (secondName.Contains("圆弧踢脚板"))
+                                    {
+                                        var product = db.FindEntity<DZ_ProductEntity>(t => t.Name.Contains("圆弧踢脚板"));//名称相同的
+                                        if (product != null)
+                                        {
+                                            decimal? _place = GetPlanPrice(p, product);
+                                            decimal? _amount = _place;
+                                            roomEntity.RoomAmount += _amount;
+                                            var itemEntity = GetDbItem(roomEntity.RoomId, roomName, product.Id, product.Code, secondName, product.Guige, 1, 1, product.Unit, _place, _amount, keyValue, oldEntity.Code, "KuJiaLe", db);
+
+                                            var itemFrist = ItemList.Find(t => t.ProductId == product.Id);
+                                            if (itemFrist == null)
+                                            {
+                                                ItemList.Add(itemEntity);
+                                            }
+                                            else
+                                            {
+                                                //同一产品，同一材质，累加金额、数量、面积
+                                                itemFrist.Amount += itemEntity.Amount;
+                                                itemFrist.Count += itemEntity.Count;
+                                                itemFrist.Area += itemEntity.Area;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        foreach (var item in ItemList)
+                                        {
+                                            db.Insert<DZ_Money_ItemEntity>(item);
+                                        }
+                                        break;
+                                    }
+                                }
+                            }
 
                             if (firstName.Contains("组件清单"))
                             {
@@ -1280,7 +1379,6 @@ namespace HZSoft.Application.Service.CustomerManage
                                                 itemFrist.Count += itemEntity.Count;
                                                 itemFrist.Area += itemEntity.Area;
                                             }
-
                                         }
                                     }
                                     else
@@ -1302,7 +1400,7 @@ namespace HZSoft.Application.Service.CustomerManage
                                     if (!secondName.IsEmpty())
                                     {
                                         secondName = secondName.Substring(2);//去掉前两位Y:
-                                        var product = db.FindEntity<DZ_ProductEntity>(t => t.Name.Contains(secondName.ToUpper()));//名称相同的
+                                        var product = db.FindEntity<DZ_ProductEntity>(t => t.Name.Contains(secondName));//名称相同的
                                         if (product != null)
                                         {
                                             decimal? _place = GetPlanPrice(p, product);
@@ -1319,6 +1417,68 @@ namespace HZSoft.Application.Service.CustomerManage
                                     }
                                     else
                                     {
+                                        break;
+                                    }
+                                }
+                            }
+                            if (firstName.Contains("线条"))
+                            {
+                                List<DZ_Money_ItemEntity> ItemList = new List<DZ_Money_ItemEntity>();
+                                for (r = r + 3; r < rowsCount; r++)
+                                {
+                                    string secondName = dtSource.Rows[r][1].ToString();//P:顶线-95顶线1#	
+                                    if (!secondName.IsEmpty())
+                                    {
+                                        secondName = secondName.Substring(3);//去掉前两位顶线-
+                                        var product = db.FindEntity<DZ_ProductEntity>(t => t.Name.Contains(secondName));//名称相同的
+                                        if (product != null)
+                                        {
+                                            decimal? _place = GetPlanPrice(p, product);
+                                            if (_place == 0 || _place == null)
+                                            {
+                                                return "产品报价不存在：" + secondName;
+                                            }
+
+                                            string widthStr = dtSource.Rows[r][6].ToString();//宽：3,571	
+                                            //95顶线1#/75顶线1#按米计算      95顶线1#/75顶线1#长度=（宽度 >2400？长度=宽度/2000+0.2，数量=ceil（宽度/2400）：长度=宽度/1000+0.2）
+                                            decimal width = Convert.ToDecimal(widthStr);
+                                            decimal length;
+                                            decimal count=1;
+                                            if (width>2400)
+                                            {
+                                                length = width / 2000 + 0.2M;
+                                                count = width / 2400;
+                                            }
+                                            else
+                                            {
+                                                length=width/1000 + 0.2M;
+                                            }
+                                            
+                                            decimal? _amount = _place * count * length;
+                                            roomEntity.RoomAmount += _amount;
+
+                                            var itemEntity = GetDbItem(roomEntity.RoomId, roomName, product.Id, product.Code, secondName, product.Guige, count, length, product.Unit, _place, _amount, keyValue, oldEntity.Code, "KuJiaLe", db);
+
+                                            var itemFrist = ItemList.Find(t => t.ProductId == product.Id);
+                                            if (itemFrist == null)
+                                            {
+                                                ItemList.Add(itemEntity);
+                                            }
+                                            else
+                                            {
+                                                //同一产品，同一材质，累加金额、数量、面积
+                                                itemFrist.Amount += itemEntity.Amount;
+                                                itemFrist.Count += itemEntity.Count;
+                                                itemFrist.Area += itemEntity.Area;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        foreach (var item in ItemList)
+                                        {
+                                            db.Insert<DZ_Money_ItemEntity>(item);
+                                        }
                                         break;
                                     }
                                 }
@@ -1344,95 +1504,23 @@ namespace HZSoft.Application.Service.CustomerManage
                         }
                     }
                 }
-                oldEntity.ProductName = productName.Substring(0, productName.Length - 1);
+                if (!string.IsNullOrEmpty(productName))
+                {
+                    oldEntity.ProductName = productName.Substring(0, productName.Length - 1);
+                }
+
+                oldEntity.MoneyPathKuJiaLe = dir;
                 db.Update<DZ_OrderEntity>(oldEntity);
                 db.Commit();
                 return "导入酷家乐报价文件成功！";
             }
             catch (Exception ex)
             {
-                LogHelper.AddLog(ex.Message);
-                return ex.Message;
+                db.Rollback();
+                throw;
+                //LogHelper.AddLog(ex.Message);
+                //return ex.Message;
             }
-        }
-        
-
-        public decimal? GetPlanPrice(int p, DZ_ProductEntity entity)
-        {
-            decimal? price = null;
-            switch (p)
-            {
-                case 1:
-                    price = entity.Plan1;
-                    break;
-                case 2:
-                    price = entity.Plan2;
-                    break;
-                case 3:
-                    price = entity.Plan3;
-                    break;
-                default:
-                    break;
-            }
-            return price;
-        }
-
-        public DZ_Money_RoomEntity AddDbRoom(string roomName, string orderId, string orderCode, string source)
-        {
-            DZ_Money_RoomEntity roomEntity = new DZ_Money_RoomEntity()
-            {
-                RoomName = roomName,
-                OrderId = orderId,
-                OrderCode = orderCode,
-                Source = source
-            };
-            roomEntity.Create();
-            return roomEntity;
-        }
-        public void AddDbItem(string roomId, string roomName, string productId, string productCode, string productName, string guige, int? count, decimal? area, string unit, decimal? price, decimal? amount, string orderId, string orderCode, string source, IRepository db)
-        {
-            DZ_Money_ItemEntity itemEntity = new DZ_Money_ItemEntity()
-            {
-                RoomId = roomId,
-                RoomName = roomName,
-                ProductId = productId,
-                ProductCode = productCode,
-                ProductName = productName,
-                Guige = guige,
-                Count = count,
-                Area = area,
-                Unit = unit,
-                Price = price,
-                Amount = amount,
-                OrderId = orderId,
-                OrderCode = orderCode,
-                Source = source
-            };
-            itemEntity.Create();
-            db.Insert<DZ_Money_ItemEntity>(itemEntity);//插入柜体部分item
-        }
-
-        public DZ_Money_ItemEntity GetDbItem(string roomId, string roomName, string productId, string productCode, string productName, string guige, int? count, decimal? area, string unit, decimal? price, decimal? amount, string orderId, string orderCode, string source, IRepository db)
-        {
-            DZ_Money_ItemEntity itemEntity = new DZ_Money_ItemEntity()
-            {
-                RoomId = roomId,
-                RoomName = roomName,
-                ProductId = productId,
-                ProductCode = productCode,
-                ProductName = productName,
-                Guige = guige,
-                Count = count,
-                Area = area,
-                Unit = unit,
-                Price = price,
-                Amount = amount,
-                OrderId = orderId,
-                OrderCode = orderCode,
-                Source = source
-            };
-            itemEntity.Create();
-            return itemEntity;
         }
 
         /// <summary>
@@ -1440,16 +1528,21 @@ namespace HZSoft.Application.Service.CustomerManage
         /// </summary>
         /// <param name="dtSource">实体对象</param>
         /// <returns></returns>
-        public string BatchAddEntity1010(string keyValue, DataTable dtSource)
+        public string BatchAddEntity1010(string keyValue, DataTable dtSource, string dir)
         {
             try
             {
                 IRepository db = new RepositoryFactory().BaseRepository().BeginTrans();
-                //先删掉keyValue之前导入的room和item
-                db.Delete<DZ_Money_RoomEntity>(t => t.OrderId == keyValue && t.Source=="1010");
-                db.Delete<DZ_Money_ItemEntity>(t => t.OrderId == keyValue && t.Source == "1010");
-                //获取销售订单表
                 DZ_OrderEntity oldEntity = GetEntity(keyValue);
+                if (!string.IsNullOrEmpty(oldEntity.MoneyPath1010))
+                {
+                    //重复导入，删掉之前导入的所有，不管是酷家乐或是1010
+                    //先删掉keyValue之前导入的room和item
+                    db.Delete<DZ_Money_RoomEntity>(t => t.OrderId == keyValue);
+                    db.Delete<DZ_Money_ItemEntity>(t => t.OrderId == keyValue);
+                    oldEntity.MoneyPathKuJiaLe = "";
+                    oldEntity.MoneyPath1010 = "";
+                }
                 int p = 0;
                 if (oldEntity.CompanyName == "临沂乐豪斯")
                 {
@@ -1469,7 +1562,7 @@ namespace HZSoft.Application.Service.CustomerManage
 
                 for (int r = 4; r < rowsCount; r++)
                 {
-                    string c1 = dtSource.Rows[r][0].ToString();
+                    string c1 = dtSource.Rows[r][0].ToString();//分段多门柜3915*2020*500
                     if (!string.IsNullOrEmpty(c1))
                     {
                         if (c1 == "总计：")
@@ -1482,7 +1575,7 @@ namespace HZSoft.Application.Service.CustomerManage
                         roomEntity.RoomAmount = 0;
                         for (int i = r + 1; i < rowsCount; i++)
                         {
-                            string c2 = dtSource.Rows[i][1].ToString();
+                            string c2 = dtSource.Rows[i][1].ToString();//18-横纹天然原橡颗粒板
                             if (!string.IsNullOrEmpty(c2))
                             {
                                 string[] c22 = c2.Split('-');
@@ -1504,6 +1597,12 @@ namespace HZSoft.Application.Service.CustomerManage
                                         {
                                             for (int j = i + 1; j < rowsCount; j++)
                                             {
+
+                                                string c11 = dtSource.Rows[i][1].ToString();//18-横纹天然原橡颗粒板
+                                                if (c11 == "★")//异型另加10元/块	
+                                                {
+                                                    _place += 10;
+                                                }
                                                 string kuan = dtSource.Rows[j][3].ToString();//宽
                                                 string gao = dtSource.Rows[j][4].ToString();//高
                                                 if (!string.IsNullOrEmpty(kuan))
@@ -1550,7 +1649,11 @@ namespace HZSoft.Application.Service.CustomerManage
                         }
                     }
                 }
-                oldEntity.ProductName = productName.Substring(0,productName.Length-1);
+                if (!string.IsNullOrEmpty(productName))
+                {
+                    oldEntity.ProductName = productName.Substring(0, productName.Length - 1);
+                }
+                oldEntity.MoneyPath1010 = dir;
                 db.Update<DZ_OrderEntity>(oldEntity);
                 db.Commit();
                 return "导入1010报价文件成功";
@@ -1562,5 +1665,126 @@ namespace HZSoft.Application.Service.CustomerManage
             }
 
         }
+
+        /// <summary>
+        /// 生产单修改编辑
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <param name="entity">实体对象</param>
+        /// <param name="entryList">实体子对象</param>
+        /// <returns></returns>
+        public void SaveMoneyForm(string keyValue, DZ_OrderEntity entity, List<DZ_Money_ItemEntity> entryList)
+        {
+            IRepository db = new RepositoryFactory().BaseRepository().BeginTrans();
+            try
+            {
+                //生产扫码之后编辑
+                DZ_OrderEntity oldEntity = GetEntity(keyValue);
+                if (oldEntity != null)
+                {
+                    //主表
+                    entity.Modify(keyValue);
+                    db.Update(entity);
+                    //明细
+                    db.Delete<DZ_Money_ItemEntity>(t => t.OrderId.Equals(keyValue));
+
+                    foreach (DZ_Money_ItemEntity item in entryList)
+                    {
+                        item.Create();
+                        item.OrderId = keyValue;
+                        db.Insert(entryList);
+                    }
+
+                    db.Commit();
+                    RecordHelp.AddRecord(4, keyValue, "编辑报价");
+                }
+            }
+            catch (Exception)
+            {
+                db.Rollback();
+                throw;
+            }
+        }
+
+
+
+        public decimal? GetPlanPrice(int p, DZ_ProductEntity entity)
+        {
+            decimal? price = null;
+            switch (p)
+            {
+                case 1:
+                    price = entity.Plan1;
+                    break;
+                case 2:
+                    price = entity.Plan2;
+                    break;
+                case 3:
+                    price = entity.Plan3;
+                    break;
+                default:
+                    break;
+            }
+            return price;
+        }
+
+        public DZ_Money_RoomEntity AddDbRoom(string roomName, string orderId, string orderCode, string source)
+        {
+            DZ_Money_RoomEntity roomEntity = new DZ_Money_RoomEntity()
+            {
+                RoomName = roomName,
+                OrderId = orderId,
+                OrderCode = orderCode,
+                Source = source
+            };
+            roomEntity.Create();
+            return roomEntity;
+        }
+        public void AddDbItem(string roomId, string roomName, string productId, string productCode, string productName, string guige, decimal? count, decimal? area, string unit, decimal? price, decimal? amount, string orderId, string orderCode, string source, IRepository db)
+        {
+            DZ_Money_ItemEntity itemEntity = new DZ_Money_ItemEntity()
+            {
+                RoomId = roomId,
+                RoomName = roomName,
+                ProductId = productId,
+                ProductCode = productCode,
+                ProductName = productName,
+                Guige = guige,
+                Count = count,
+                Area = area,
+                Unit = unit,
+                Price = price,
+                Amount = amount,
+                OrderId = orderId,
+                OrderCode = orderCode,
+                Source = source
+            };
+            itemEntity.Create();
+            db.Insert<DZ_Money_ItemEntity>(itemEntity);//插入柜体部分item
+        }
+
+        public DZ_Money_ItemEntity GetDbItem(string roomId, string roomName, string productId, string productCode, string productName, string guige, decimal? count, decimal? area, string unit, decimal? price, decimal? amount, string orderId, string orderCode, string source, IRepository db)
+        {
+            DZ_Money_ItemEntity itemEntity = new DZ_Money_ItemEntity()
+            {
+                RoomId = roomId,
+                RoomName = roomName,
+                ProductId = productId,
+                ProductCode = productCode,
+                ProductName = productName,
+                Guige = guige,
+                Count = count,
+                Area = area,
+                Unit = unit,
+                Price = price,
+                Amount = amount,
+                OrderId = orderId,
+                OrderCode = orderCode,
+                Source = source
+            };
+            itemEntity.Create();
+            return itemEntity;
+        }
+        
     }
 }

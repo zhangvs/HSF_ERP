@@ -73,7 +73,7 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// </summary>
         /// <returns></returns>
         [Column("COUNT")]
-        public int? Count { get; set; }
+        public decimal? Count { get; set; }
         /// <summary>
         /// Ãæ»ý
         /// </summary>

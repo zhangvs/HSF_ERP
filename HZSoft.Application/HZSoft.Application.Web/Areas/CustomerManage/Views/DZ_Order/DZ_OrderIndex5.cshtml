@@ -113,6 +113,26 @@
                 },
                 { label: '审核日期', name: 'CheckDate', index: 'CheckDate', width: 118, align: 'left', sortable: true },
                 {
+                    label: "1010", name: "MoneyPath1010", index: "MoneyPath1010", width: 60, align: "center", sortable: false,
+                    formatter: function (cellvalue) {
+                        if (cellvalue!=null) {
+                            return "<i class=\"fa fa-toggle-on\"></i>";
+                        } else {
+                            return "<i class=\"fa fa-toggle-off\"></i>";
+                        }
+                    }
+                },
+                {
+                    label: "酷家乐", name: "MoneyPathKuJiaLe", index: "MoneyPathKuJiaLe", width: 60, align: "center", sortable: false,
+                    formatter: function (cellvalue) {
+                        if (cellvalue != null) {
+                            return "<i class=\"fa fa-toggle-on\"></i>";
+                        } else {
+                            return "<i class=\"fa fa-toggle-off\"></i>";
+                        }
+                    }
+                },
+                {
                     label: "报价", name: "MoneyMark", index: "MoneyMark", width: 60, align: "center", sortable: false,
                     formatter: function (cellvalue) {
                         if (cellvalue >= 1) {

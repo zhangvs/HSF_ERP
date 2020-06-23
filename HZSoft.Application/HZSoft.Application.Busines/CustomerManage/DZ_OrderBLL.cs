@@ -99,6 +99,23 @@ namespace HZSoft.Application.Busines.CustomerManage
             }
         }
         /// <summary>
+        /// 报价编辑
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <param name="entity">实体对象</param>
+        /// <returns></returns>
+        public void SaveMoneyForm(string keyValue, DZ_OrderEntity entity, List<DZ_Money_ItemEntity> entryList)
+        {
+            try
+            {
+                service.SaveMoneyForm(keyValue, entity, entryList);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        /// <summary>
         /// 保存表单（新增、修改）
         /// </summary>
         /// <param name="keyValue">主键值</param>
@@ -156,11 +173,11 @@ namespace HZSoft.Application.Busines.CustomerManage
         /// 保存表单（新增、修改）
         /// </summary>
         /// <returns></returns>
-        public string BatchAddEntity(string keyValue, DataTable dtSource)
+        public string BatchAddEntity(string keyValue, DataTable dtSource,string dir)
         {
             try
             {
-                string returnMsg = service.BatchAddEntity(keyValue, dtSource);
+                string returnMsg = service.BatchAddEntity(keyValue, dtSource, dir);
                 return returnMsg;
             }
             catch (Exception ex)
@@ -172,11 +189,11 @@ namespace HZSoft.Application.Busines.CustomerManage
         /// 保存表单（新增、修改）
         /// </summary>
         /// <returns></returns>
-        public string BatchAddEntity1010(string keyValue, DataTable dtSource)
+        public string BatchAddEntity1010(string keyValue, DataTable dtSource, string dir)
         {
             try
             {
-                string returnMsg = service.BatchAddEntity1010(keyValue, dtSource);
+                string returnMsg = service.BatchAddEntity1010(keyValue, dtSource, dir);
                 return returnMsg;
             }
             catch (Exception ex)

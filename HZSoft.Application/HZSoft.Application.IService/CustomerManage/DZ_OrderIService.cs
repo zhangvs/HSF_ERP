@@ -54,6 +54,13 @@ namespace HZSoft.Application.IService.CustomerManage
         /// <param name="entity">实体对象</param>
         /// <returns></returns>
         void SaveForm(string keyValue, DZ_OrderEntity entity);
+        /// <summary>
+        /// 报价系统保存表单（新增、修改）
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <param name="entity">实体对象</param>
+        /// <returns></returns>
+        void SaveMoneyForm(string keyValue, DZ_OrderEntity entity, List<DZ_Money_ItemEntity> entryList);
         void SaveSigned(string keyValue, DZ_OrderEntity entity);
         void UpdateMoneyOkState(string keyValue,int? state);
         void UpdateOverState(string keyValue, int? state);
@@ -63,7 +70,7 @@ namespace HZSoft.Application.IService.CustomerManage
         /// </summary>
         /// <param name="dtSource">实体对象</param>
         /// <returns></returns>
-        string BatchAddEntity(string keyValue, DataTable dtSource);
-        string BatchAddEntity1010(string keyValue, DataTable dtSource);
+        string BatchAddEntity(string keyValue, DataTable dtSource,string dir);
+        string BatchAddEntity1010(string keyValue, DataTable dtSource, string dir);
     }
 }
