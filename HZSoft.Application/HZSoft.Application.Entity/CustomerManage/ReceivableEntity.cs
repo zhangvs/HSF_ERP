@@ -34,6 +34,11 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// <returns></returns>
         public string OrderTitle { get; set; }
         /// <summary>
+        /// 订单类型
+        /// </summary>
+        /// <returns></returns>
+        public int? OrderType { get; set; }
+        /// <summary>
         /// 经销商
         /// </summary>
         /// <returns></returns>

@@ -29,16 +29,17 @@
         $("#OverMark").ComboBox({
             description: "==请选择==",
         });
-        $("#OverMark").ComboBoxSetValue(1);
-        //工序状态
-        $("#Step").ComboBox({
+
+        //订单类型
+        $("#OrderType").ComboBox({
             url: "../../SystemManage/DataItemDetail/GetDataItemListJson",
-            param: { EnCode: "Step" },
+            param: { EnCode: "OrderType" },
             id: "ItemValue",
             text: "ItemName",
             description: "==请选择==",
             height: "200px"
         });
+        $("#OverMark").ComboBoxSetValue(1);
         //resize重设布局;
         $(window).resize(function (e) {
             window.setTimeout(function () {
@@ -400,6 +401,12 @@
                                     <td class="formTitle">标题：</td>
                                     <td class="formValue">
                                         <input id="OrderTitle" type="text" class="form-control">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">订单类型：</td>
+                                    <td class="formValue">
+                                        <div id="OrderType" type="select" class="ui-select"></div>
                                     </td>
                                 </tr>
                                 <tr>

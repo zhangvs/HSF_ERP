@@ -12,8 +12,20 @@
         $("#PaymentState").ComboBox({
             description: "==请选择==",
         });
+        $("#MoneyMark").ComboBox({
+            description: "==请选择==",
+        });
         $("#MoneyOkMark").ComboBox({
             description: "==请选择==",
+        });
+        //订单类型
+        $("#OrderType").ComboBox({
+            url: "../../SystemManage/DataItemDetail/GetDataItemListJson",
+            param: { EnCode: "OrderType" },
+            id: "ItemValue",
+            text: "ItemName",
+            description: "==请选择==",
+            height: "200px"
         });
         $("#MoneyOkMark").ComboBoxSetValue(1);
         //resize重设布局;
@@ -153,6 +165,9 @@
             $("#SelectedStartTime").html($("#StartTime").val());
             $("#SelectedEndTime").html($("#EndTime").val());
             var queryJson = $("#filter-form").GetWebControls();
+            if (!queryJson.OrderType) {
+                queryJson["OrderType"] = -3;
+            }            
             $gridTable.jqGrid('setGridParam', {
                 postData: { queryJson: JSON.stringify(queryJson) },
                 page: 1
@@ -216,6 +231,18 @@
                                     <td class="formTitle">标题：</td>
                                     <td class="formValue">
                                         <input id="OrderTitle" type="text" class="form-control">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">订单类型：</td>
+                                    <td class="formValue">
+                                        <div id="OrderType" type="select" class="ui-select"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">经销商：</td>
+                                    <td class="formValue">
+                                        <input id="CompanyName" type="text" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>

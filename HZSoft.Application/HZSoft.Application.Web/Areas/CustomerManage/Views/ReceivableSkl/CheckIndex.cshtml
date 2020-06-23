@@ -12,6 +12,15 @@
         //收款状态
         $("#PaymentState").ComboBox({
             description: "==请选择==",
+        }); 
+        //订单类型
+        $("#OrderType").ComboBox({
+            url: "../../SystemManage/DataItemDetail/GetDataItemListJson",
+            param: { EnCode: "OrderType" },
+            id: "ItemValue",
+            text: "ItemName",
+            description: "==请选择==",
+            height: "200px"
         });
         //resize重设(表格、树形)宽高
         $(window).resize(function (e) {
@@ -36,6 +45,17 @@
                 { label: '主键', name: 'Id', hidden: true },
                 { label: "接单日期", name: "CreateDate", width: 100, align: "left", formatter: "date", formatoptions: { newformat: 'Y-m-d' } },
                 { label: "标题", name: "OrderTitle", width: 180, align: "left" },
+                {
+                    label: '订单类型', name: 'OrderType', index: 'OrderType', width: 80, align: 'center', sortable: true,
+                    formatter: function (cellvalue, options, rowObject) {
+                        if (cellvalue == 4) {
+                            return "<span style='color:red'>" + top.clientdataItem["OrderType"][cellvalue] + "</span>";
+                        }
+                        else {
+                            return top.clientdataItem["OrderType"][cellvalue];
+                        }
+                    }
+                },
                 { label: '经销商', name: 'CompanyName', index: 'CompanyName', width: 100, align: 'center', sortable: true },
                 { label: '客户', name: 'CustomerName', index: 'CustomerName', width: 100, align: 'center', sortable: true },
                 { label: "销售人员", name: "SalesmanUserName", width: 80, align: "left" },
@@ -240,6 +260,12 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td class="formTitle">订单类型：</td>
+                                    <td class="formValue">
+                                        <div id="OrderType" type="select" class="ui-select"></div>
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td class="formTitle">客户名称：</td>
                                     <td class="formValue">
                                         <input id="CustomerName" type="text" class="form-control">
@@ -249,6 +275,18 @@
                                     <td class="formTitle">销售人员：</td>
                                     <td class="formValue">
                                         <input id="SellerName" type="text" class="form-control">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">收款状态：</td>
+                                    <td class="formValue">
+                                        <div id="PaymentState" type="select" class="ui-select">
+                                            <ul>
+                                                <li data-value="1">未收款</li>
+                                                <li data-value="2">部分收款</li>
+                                                <li data-value="3">全部收款</li>
+                                            </ul>
+                                        </div>
                                     </td>
                                 </tr>
                             </table>

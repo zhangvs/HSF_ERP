@@ -37,22 +37,20 @@ namespace HZSoft.Application.Service.CustomerManage
         /// <returns>返回分页列表</returns>
         public IEnumerable<ReceivableEntity> GetPageList(Pagination pagination, string queryJson)
         {
-            string strSql = "select r.ReceivableId,r.PaymentTime,r.PaymentPrice,r.ReceiptPath,r.EnabledMark,r.Description,r.DeleteMark,r.CreateDate,r.CreateUserName," +
-                "o.Code,o.OrderTitle,o.CompanyName,o.CustomerName,o.SalesmanUserName,o.Accounts,o.ReceivedAmount from Client_Receivable r " +
-                "LEFT JOIN DZ_Order o ON r.OrderId=o.Id where r.DeleteMark=0 ";//报价的才显示 and MoneyMark = 1,,,不一定报价的显示，可以先收款，收款研发没有料单就不会到生产单
+            string strSql = "select * from Client_Receivable where DeleteMark=0 ";//报价的才显示 and MoneyMark = 1,,,不一定报价的显示，可以先收款，收款研发没有料单就不会到生产单
             var queryParam = queryJson.ToJObject();
             //成立日期
             if (!queryParam["StartTime"].IsEmpty() && !queryParam["EndTime"].IsEmpty())
             {
                 DateTime startTime = queryParam["StartTime"].ToDate();
                 DateTime endTime = queryParam["EndTime"].ToDate().AddDays(1);
-                strSql += " and r.CreateDate >= '" + startTime + "' and r.CreateDate < '" + endTime + "'";
+                strSql += " and CreateDate >= '" + startTime + "' and CreateDate < '" + endTime + "'";
             }
             //销售编号
             if (!queryParam["Code"].IsEmpty())
             {
                 string Code = queryParam["Code"].ToString();
-                strSql += " and o.Code like '%" + Code + "%'";
+                strSql += " and Code like '%" + Code + "%'";
             }
             //标题模糊搜索
             if (!queryParam["OrderTitle"].IsEmpty())
@@ -60,34 +58,119 @@ namespace HZSoft.Application.Service.CustomerManage
                 string OrderTitle = queryParam["OrderTitle"].ToString();
                 strSql += " and OrderTitle like '%" + OrderTitle + "%'";
             }
+            //订单类型
+            if (!queryParam["OrderType"].IsEmpty())
+            {
+                string OrderType = queryParam["OrderType"].ToString();
+                if (OrderType == "-3")//非客诉单
+                {
+                    strSql += " and OrderType <> 3";
+                }
+                else
+                {
+                    strSql += " and OrderType = " + OrderType;
+                }
+            }
 
             //公司名
             if (!queryParam["CompanyName"].IsEmpty())
             {
                 string CompanyName = queryParam["CompanyName"].ToString();
-                strSql += " and o.CompanyName like '%" + CompanyName + "%'";
+                strSql += " and CompanyName like '%" + CompanyName + "%'";
             }
             //客户名
             if (!queryParam["CustomerName"].IsEmpty())
             {
                 string CustomerName = queryParam["CustomerName"].ToString();
-                strSql += " and o.CustomerName like '%" + CustomerName + "%'";
+                strSql += " and CustomerName like '%" + CustomerName + "%'";
             }
             //销售人
             if (!queryParam["SalesmanUserName"].IsEmpty())
             {
                 string SalesmanUserName = queryParam["SalesmanUserName"].ToString();
-                strSql += " and o.SalesmanUserName like '%" + SalesmanUserName + "%'";
+                strSql += " and SalesmanUserName like '%" + SalesmanUserName + "%'";
             }
             //收款确认标识
             if (!queryParam["EnabledMark"].IsEmpty())
             {
                 int EnabledMark = queryParam["EnabledMark"].ToInt();
-                strSql += " and r.EnabledMark  = " + EnabledMark;//收款表的EnabledMark
+                strSql += " and EnabledMark  = " + EnabledMark;//收款表的EnabledMark
             }
 
             return new RepositoryFactory().BaseRepository().FindList<ReceivableEntity>(strSql.ToString(), pagination);
         }
+        //}
+        ///// 获取收款单列表
+        ///// </summary>
+        ///// <param name="pagination">分页</param>
+        ///// <param name="queryJson">查询参数</param>
+        ///// <returns>返回分页列表</returns>
+        //public IEnumerable<ReceivableEntity> GetPageList(Pagination pagination, string queryJson)
+        //{
+        //    string strSql = "select r.ReceivableId,r.PaymentTime,r.PaymentPrice,r.ReceiptPath,r.EnabledMark,r.Description,r.DeleteMark,r.CreateDate,r.CreateUserName," +
+        //        "o.Code,o.OrderTitle,o.OrderType,o.CompanyName,o.CustomerName,o.SalesmanUserName,o.Accounts,o.ReceivedAmount from Client_Receivable r " +
+        //        "LEFT JOIN DZ_Order o ON r.OrderId=o.Id where r.DeleteMark=0 ";//报价的才显示 and MoneyMark = 1,,,不一定报价的显示，可以先收款，收款研发没有料单就不会到生产单
+        //    var queryParam = queryJson.ToJObject();
+        //    //成立日期
+        //    if (!queryParam["StartTime"].IsEmpty() && !queryParam["EndTime"].IsEmpty())
+        //    {
+        //        DateTime startTime = queryParam["StartTime"].ToDate();
+        //        DateTime endTime = queryParam["EndTime"].ToDate().AddDays(1);
+        //        strSql += " and r.CreateDate >= '" + startTime + "' and r.CreateDate < '" + endTime + "'";
+        //    }
+        //    //销售编号
+        //    if (!queryParam["Code"].IsEmpty())
+        //    {
+        //        string Code = queryParam["Code"].ToString();
+        //        strSql += " and o.Code like '%" + Code + "%'";
+        //    }
+        //    //标题模糊搜索
+        //    if (!queryParam["OrderTitle"].IsEmpty())
+        //    {
+        //        string OrderTitle = queryParam["OrderTitle"].ToString();
+        //        strSql += " and OrderTitle like '%" + OrderTitle + "%'";
+        //    }
+        //    //订单类型
+        //    if (!queryParam["OrderType"].IsEmpty())
+        //    {
+        //        string OrderType = queryParam["OrderType"].ToString();
+        //        if (OrderType == "-3")//非客诉单
+        //        {
+        //            strSql += " and OrderType <> 3";
+        //        }
+        //        else
+        //        {
+        //            strSql += " and OrderType = " + OrderType;
+        //        }
+        //    }
+
+        //    //公司名
+        //    if (!queryParam["CompanyName"].IsEmpty())
+        //    {
+        //        string CompanyName = queryParam["CompanyName"].ToString();
+        //        strSql += " and o.CompanyName like '%" + CompanyName + "%'";
+        //    }
+        //    //客户名
+        //    if (!queryParam["CustomerName"].IsEmpty())
+        //    {
+        //        string CustomerName = queryParam["CustomerName"].ToString();
+        //        strSql += " and o.CustomerName like '%" + CustomerName + "%'";
+        //    }
+        //    //销售人
+        //    if (!queryParam["SalesmanUserName"].IsEmpty())
+        //    {
+        //        string SalesmanUserName = queryParam["SalesmanUserName"].ToString();
+        //        strSql += " and o.SalesmanUserName like '%" + SalesmanUserName + "%'";
+        //    }
+        //    //收款确认标识
+        //    if (!queryParam["EnabledMark"].IsEmpty())
+        //    {
+        //        int EnabledMark = queryParam["EnabledMark"].ToInt();
+        //        strSql += " and r.EnabledMark  = " + EnabledMark;//收款表的EnabledMark
+        //    }
+
+        //    return new RepositoryFactory().BaseRepository().FindList<ReceivableEntity>(strSql.ToString(), pagination);
+        //}
 
         /// 获取收款单列表
         /// </summary>
@@ -118,6 +201,19 @@ namespace HZSoft.Application.Service.CustomerManage
                 string OrderTitle = queryParam["OrderTitle"].ToString();
                 strSql += " and OrderTitle like '%" + OrderTitle + "%'";
             }
+            //订单类型
+            if (!queryParam["OrderType"].IsEmpty())
+            {
+                string OrderType = queryParam["OrderType"].ToString();
+                if (OrderType == "-3")//非客诉单
+                {
+                    strSql += " and OrderType <> 3";
+                }
+                else
+                {
+                    strSql += " and OrderType = " + OrderType;
+                }
+            }
 
             //公司名
             if (!queryParam["CompanyName"].IsEmpty())
@@ -136,6 +232,20 @@ namespace HZSoft.Application.Service.CustomerManage
             {
                 string SalesmanUserName = queryParam["SalesmanUserName"].ToString();
                 strSql += " and SalesmanUserName like '%" + SalesmanUserName + "%'";
+            }
+            //支付状态
+            if (!queryParam["PaymentState"].IsEmpty())
+            {
+                int PaymentState = queryParam["PaymentState"].ToInt();
+                if (PaymentState == 2)
+                {
+                    strSql += " and PaymentState >= 2 ";
+                }
+                else
+                {
+                    strSql += " and PaymentState  = " + PaymentState;
+                }
+
             }
 
             //销售人

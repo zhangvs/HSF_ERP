@@ -18,6 +18,15 @@
         $("#MoneyOkMark").ComboBox({
             description: "==请选择==",
         });
+        //订单类型
+        $("#OrderType").ComboBox({
+            url: "../../SystemManage/DataItemDetail/GetDataItemListJson",
+            param: { EnCode: "OrderType" },
+            id: "ItemValue",
+            text: "ItemName",
+            description: "==请选择==",
+            height: "200px"
+        });
         $("#MoneyMark").ComboBoxSetValue(1);
         $("#MoneyOkMark").ComboBoxSetValue(0);
         //resize重设布局;
@@ -158,6 +167,9 @@
             $("#SelectedStartTime").html($("#StartTime").val());
             $("#SelectedEndTime").html($("#EndTime").val());
             var queryJson = $("#filter-form").GetWebControls();
+            if (!queryJson.OrderType) {
+                queryJson["OrderType"] = -3;
+            }
             $gridTable.jqGrid('setGridParam', {
                 postData: { queryJson: JSON.stringify(queryJson) },
                 page: 1
@@ -224,6 +236,18 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td class="formTitle">订单类型：</td>
+                                    <td class="formValue">
+                                        <div id="OrderType" type="select" class="ui-select"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">经销商：</td>
+                                    <td class="formValue">
+                                        <input id="CompanyName" type="text" class="form-control">
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td class="formTitle">客户：</td>
                                     <td class="formValue">
                                         <input id="CustomerName" type="text" class="form-control">
@@ -237,6 +261,18 @@
                                                 <li data-value="1">未收款</li>
                                                 <li data-value="2">部分收款</li>
                                                 <li data-value="3">全部收款</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">报价：</td>
+                                    <td class="formValue">
+                                        <div id="MoneyMark" type="select" class="ui-select">
+                                            <ul>
+                                                <li data-value="">全部</li>
+                                                <li data-value="0">否</li>
+                                                <li data-value="1">是</li>
                                             </ul>
                                         </div>
                                     </td>

@@ -19,6 +19,15 @@
         $("#SendOutMark").ComboBox({
             description: "==请选择==",
         });
+        //订单类型
+        $("#OrderType").ComboBox({
+            url: "../../SystemManage/DataItemDetail/GetDataItemListJson",
+            param: { EnCode: "OrderType" },
+            id: "ItemValue",
+            text: "ItemName",
+            description: "==请选择==",
+            height: "200px"
+        });
 
         $("#SendInstallMark").ComboBoxSetValue(1);
         //resize重设布局;
@@ -243,6 +252,12 @@
                                     <td class="formTitle">标题：</td>
                                     <td class="formValue">
                                         <input id="OrderTitle" type="text" class="form-control">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">订单类型：</td>
+                                    <td class="formValue">
+                                        <div id="OrderType" type="select" class="ui-select"></div>
                                     </td>
                                 </tr>
                                 <tr>

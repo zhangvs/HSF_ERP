@@ -66,6 +66,19 @@ namespace HZSoft.Application.Service.CustomerManage
                 string OrderTitle = queryParam["OrderTitle"].ToString();
                 strSql += " and OrderTitle like '%" + OrderTitle + "%'";
             }
+            //订单类型
+            if (!queryParam["OrderType"].IsEmpty())
+            {
+                string OrderType = queryParam["OrderType"].ToString();
+                if (OrderType == "-3")//非客诉单
+                {
+                    strSql += " and OrderType <> 3";
+                }
+                else
+                {
+                    strSql += " and OrderType = " + OrderType;
+                }
+            }
 
             //公司名
             if (!queryParam["CompanyName"].IsEmpty())
@@ -192,6 +205,19 @@ namespace HZSoft.Application.Service.CustomerManage
             {
                 string OrderTitle = queryParam["OrderTitle"].ToString();
                 strSql += " and OrderTitle like '%" + OrderTitle + "%'";
+            }
+            //订单类型
+            if (!queryParam["OrderType"].IsEmpty())
+            {
+                string OrderType = queryParam["OrderType"].ToString();
+                if (OrderType == "-3")//非客诉单
+                {
+                    strSql += " and OrderType <> 3";
+                }
+                else
+                {
+                    strSql += " and OrderType = " + OrderType;
+                }
             }
 
             //公司名

@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "收款表单";
+    ViewBag.Title = "营销中心-收款";
     Layout = "~/Views/Shared/_Form.cshtml";
 }
 <link href="~/Content/layui/css/layui.css" rel="stylesheet" />
@@ -48,17 +48,22 @@
     })
     //初始化控件
     function initControl() {
+        //订单类型
+        $("#OrderType").ComboBox({
+            url: "../../SystemManage/DataItemDetail/GetDataItemListJson",
+            param: { EnCode: "OrderType" },
+            id: "ItemValue",
+            text: "ItemName",
+            description: "==请选择==",
+            height: "200px"
+        });
         $.SetForm({
             url: "../../CustomerManage/DZ_Order/GetFormJson",
             param: { keyValue: orderId },
             success: function (data) {
+                $("#form1").SetWebControls(data);
                 $("#ReceivedAmount").val(toDecimal(data.ReceivedAmount));
                 $("#Uncollected").val(toDecimal(data.Accounts - data.ReceivedAmount));
-                $("#Code").val(data.Code);
-                $("#OrderTitle").val(data.OrderTitle);
-                $("#CompanyName").val(data.CompanyName);
-                $("#CustomerName").val(data.CustomerName);
-                $("#SalesmanUserName").val(data.SalesmanUserName);
                 if (data.ReceiptPath != undefined) {
                     $("#UploadReceiptPath").attr("imgsrc", data.ReceiptPath).html("<img src='" + data.ReceiptPath + "' class='img' />");
                 }
@@ -108,16 +113,20 @@
             </td>
         </tr>
         <tr>
+            <td class="formTitle">订单类型</td>
+            <td class="formValue">
+                <div id="OrderType" type="select" class="ui-select" isvalid="yes" checkexpession="NotNull" disabled></div>
+            </td>
             <td class="formTitle">经销商</td>
             <td class="formValue">
                 <input id="CompanyName" type="text" class="form-control" disabled />
             </td>
+        </tr>
+        <tr>
             <td class="formTitle">客户</td>
             <td class="formValue">
                 <input id="CustomerName" type="text" class="form-control" disabled />
             </td>
-        </tr>
-        <tr>
             <td class="formTitle">销售人</td>
             <td class="formValue">
                 <input id="SalesmanUserName" type="text" class="form-control" disabled />

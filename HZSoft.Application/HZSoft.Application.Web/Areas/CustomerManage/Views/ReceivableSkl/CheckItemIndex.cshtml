@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "应收账款";
+    ViewBag.Title = "收款确认";
     Layout = "~/Views/Shared/_Index.cshtml";
 }
 <script>
@@ -9,10 +9,24 @@
     });
     //初始化页面
     function InitialPage() {
+        //收款确认状态
+        $("#EnabledMark").ComboBox({
+            description: "==请选择==",
+        });
         //收款状态
         $("#PaymentState").ComboBox({
             description: "==请选择==",
         });
+        //订单类型
+        $("#OrderType").ComboBox({
+            url: "../../SystemManage/DataItemDetail/GetDataItemListJson",
+            param: { EnCode: "OrderType" },
+            id: "ItemValue",
+            text: "ItemName",
+            description: "==请选择==",
+            height: "200px"
+        });
+        $("#EnabledMark").ComboBoxSetValue(0);
         //resize重设(表格、树形)宽高
         $(window).resize(function (e) {
             window.setTimeout(function () {
@@ -40,6 +54,17 @@
                 { label: '主键', name: 'ReceivableId', hidden: true },
                 { label: '单号', name: 'Code', index: 'Code', width: 150, align: 'left', sortable: true },
                 { label: '标题', name: 'OrderTitle', index: 'OrderTitle', width: 180, align: 'left', sortable: true },
+                {
+                    label: '订单类型', name: 'OrderType', index: 'OrderType', width: 80, align: 'center', sortable: true,
+                    formatter: function (cellvalue, options, rowObject) {
+                        if (cellvalue == 4) {
+                            return "<span style='color:red'>" + top.clientdataItem["OrderType"][cellvalue] + "</span>";
+                        }
+                        else {
+                            return top.clientdataItem["OrderType"][cellvalue];
+                        }
+                    }
+                },
                 { label: '经销商', name: 'CompanyName', index: 'CompanyName', width: 100, align: 'center', sortable: true },
                 { label: '客户', name: 'CustomerName', index: 'CustomerName', width: 100, align: 'center', sortable: true },
                 { label: "销售人员", name: "SalesmanUserName", width: 80, align: "left" },
@@ -190,6 +215,12 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td class="formTitle">订单类型：</td>
+                                    <td class="formValue">
+                                        <div id="OrderType" type="select" class="ui-select"></div>
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td class="formTitle">客户名称：</td>
                                     <td class="formValue">
                                         <input id="CustomerName" type="text" class="form-control">
@@ -199,6 +230,18 @@
                                     <td class="formTitle">销售人员：</td>
                                     <td class="formValue">
                                         <input id="SellerName" type="text" class="form-control">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">收款确认：</td>
+                                    <td class="formValue">
+                                        <div id="EnabledMark" type="select" class="ui-select">
+                                            <ul>
+                                                <li data-value="">全部</li>
+                                                <li data-value="0">否</li>
+                                                <li data-value="1">是</li>
+                                            </ul>
+                                        </div>
                                     </td>
                                 </tr>
                             </table>

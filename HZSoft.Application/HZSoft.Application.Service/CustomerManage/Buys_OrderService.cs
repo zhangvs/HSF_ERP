@@ -68,6 +68,19 @@ namespace HZSoft.Application.Service.CustomerManage
                 string OrderCode = queryParam["OrderCode"].ToString();
                 strSql += " and OrderCode like '%" + OrderCode + "%'";
             }
+            //订单类型
+            if (!queryParam["OrderType"].IsEmpty())
+            {
+                string OrderType = queryParam["OrderType"].ToString();
+                if (OrderType == "-3")//非客诉单
+                {
+                    strSql += " and OrderType <> 3";
+                }
+                else
+                {
+                    strSql += " and OrderType = " + OrderType;
+                }
+            }
 
             //公司名
             if (!queryParam["CompanyName"].IsEmpty())
