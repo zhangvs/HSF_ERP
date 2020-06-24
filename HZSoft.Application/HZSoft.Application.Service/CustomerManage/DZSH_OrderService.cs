@@ -217,6 +217,9 @@ namespace HZSoft.Application.Service.CustomerManage
                     {
                         //改为生产之后，创建销售单
                         CreateDZOrder.SaveDZOrder(db, entity);
+                        //发微信模板消息---客诉单接单之后，给审图人提醒--刘琛oA-EC1X6RWfW1_DNJ_VNiA3uhOYg
+                        //生成销售单------再通知（审图提醒）
+                        TemplateWxApp.SendTemplateNew("oA-EC1X6RWfW1_DNJ_VNiA3uhOYg", "您好，有新的订单需要审图!", entity.OrderTitle, entity.Code, "请进行审图。");
                     }
                     else
                     {
@@ -269,6 +272,9 @@ namespace HZSoft.Application.Service.CustomerManage
                     {
                         //创建新的销售单
                         CreateDZOrder.SaveDZOrder(db, entity);
+                        //发微信模板消息---客诉单接单之后，给审图人提醒--刘琛oA-EC1X6RWfW1_DNJ_VNiA3uhOYg
+                        //生成销售单------再通知（审图提醒）
+                        TemplateWxApp.SendTemplateNew("oA-EC1X6RWfW1_DNJ_VNiA3uhOYg", "您好，有新的订单需要审图!", entity.OrderTitle, entity.Code, "请进行审图。");
                     }
 
                     db.Commit();
@@ -276,9 +282,9 @@ namespace HZSoft.Application.Service.CustomerManage
                     //胡鲁鲁
                     TemplateWxApp.SendTemplateNew("oA-EC1aaKOSNdW2wL8lHSsr3R4Dg", "您好，有新的客诉单!", entity.OrderTitle, entity.Code, "请进行处理。");
 
-                    //发微信模板消息---客诉单接单之后，给审图人提醒--刘琛oA-EC1X6RWfW1_DNJ_VNiA3uhOYg
-                    //订单生成通知（审图提醒）
-                    TemplateWxApp.SendTemplateNew("oA-EC1X6RWfW1_DNJ_VNiA3uhOYg", "您好，有新的订单需要审图!", entity.OrderTitle, entity.Code, "请进行审图。");
+                    //邵明钊
+                    TemplateWxApp.SendTemplateNew("oA-EC1eudNmGSxra3-c5HJrGGTtk", "您好，有新的客诉单!", entity.OrderTitle, entity.Code, "请进行处理。");
+                    
                 }
             }
             catch (Exception)
