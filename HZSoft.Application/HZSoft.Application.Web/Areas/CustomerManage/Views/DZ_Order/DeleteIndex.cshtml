@@ -26,19 +26,12 @@
         $("#SendMark").ComboBox({
             description: "==请选择==",
         });
-        $("#OverMark").ComboBox({
+        $("#DeleteMark").ComboBox({
             description: "==请选择==",
         });
-        $("#OverMark").ComboBoxSetValue(1);
-        //工序状态
-        $("#Step").ComboBox({
-            url: "../../SystemManage/DataItemDetail/GetDataItemListJson",
-            param: { EnCode: "Step" },
-            id: "ItemValue",
-            text: "ItemName",
-            description: "==请选择==",
-            height: "200px"
-        });
+        $("#DeleteMark").ComboBoxSetValue(1);
+
+
         //resize重设布局;
         $(window).resize(function (e) {
             window.setTimeout(function () {
@@ -64,7 +57,7 @@
             colModel: [
                 { label: '主键', name: 'Id', hidden: true },
                 { label: '单号', name: 'Code', index: 'Code', width: 150, align: 'left', sortable: true },
-                { label: '标题', name: 'OrderTitle', index: 'OrderTitle', width: 180, align: 'left', sortable: true },
+                { label: '标题', name: 'OrderTitle', index: 'OrderTitle', width: 240, align: 'left', sortable: true },
                 {
                     label: '订单类型', name: 'OrderType', index: 'OrderType', width: 80, align: 'center', sortable: true,
                     formatter: function (cellvalue, options, rowObject) {
@@ -469,9 +462,9 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="formTitle">结单：</td>
+                                    <td class="formTitle">删除：</td>
                                     <td class="formValue">
-                                        <div id="OverMark" type="select" class="ui-select">
+                                        <div id="DeleteMark" type="select" class="ui-select">
                                             <ul>
                                                 <li data-value="">全部</li>
                                                 <li data-value="0">否</li>
