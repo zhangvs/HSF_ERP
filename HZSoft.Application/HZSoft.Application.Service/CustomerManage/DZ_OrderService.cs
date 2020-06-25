@@ -1238,9 +1238,9 @@ namespace HZSoft.Application.Service.CustomerManage
                                             else
                                             {
                                                 //同一产品，同一材质，累加金额、数量、面积
-                                                itemFrist.Amount += itemEntity.Amount;
                                                 itemFrist.Count += itemEntity.Count;
                                                 itemFrist.Area += itemEntity.Area;
+                                                itemFrist.Amount = itemFrist.Area * _place;
                                             }
                                         }
                                     }
@@ -1295,9 +1295,9 @@ namespace HZSoft.Application.Service.CustomerManage
                                                     else
                                                     {
                                                         //同一产品，同一材质，累加金额、数量、面积
-                                                        itemFrist.Amount += itemEntity.Amount;
                                                         itemFrist.Count += itemEntity.Count;
                                                         itemFrist.Area += itemEntity.Area;
+                                                        itemFrist.Amount = itemFrist.Area * _place;
                                                     }
                                                 }
                                             }
@@ -1339,9 +1339,9 @@ namespace HZSoft.Application.Service.CustomerManage
                                                     else
                                                     {
                                                         //同一产品，同一材质，累加金额、数量、面积
-                                                        itemFrist.Amount += itemEntity.Amount;
                                                         itemFrist.Count += itemEntity.Count;
                                                         itemFrist.Area += itemEntity.Area;
+                                                        itemFrist.Amount = itemFrist.Area * _place;
                                                     }
                                                 }
 
@@ -1365,9 +1365,9 @@ namespace HZSoft.Application.Service.CustomerManage
                                                     if (product2 != null)
                                                     {
                                                         decimal? _place = GetPlanPrice(p, product2);
-                                                        decimal? _amount = _place;
+                                                        decimal? _amount = _place*2;//数量*2
                                                         roomEntity.RoomAmount += _amount;
-                                                        var itemEntity = GetDbItem(roomEntity.RoomId, roomName, product2.Id, product2.Code, product2.Name, product2.Guige, 1, 1, product2.Unit, _place, _amount, keyValue, oldEntity.Code, "KuJiaLe", db);
+                                                        var itemEntity = GetDbItem(roomEntity.RoomId, roomName, product2.Id, product2.Code, product2.Name, product2.Guige, 1, 2, product2.Unit, _place, _amount, keyValue, oldEntity.Code, "KuJiaLe", db);
 
                                                         var itemFrist = ItemList.Find(t => t.ProductId == product2.Id);
                                                         if (itemFrist == null)
@@ -1377,23 +1377,61 @@ namespace HZSoft.Application.Service.CustomerManage
                                                         else
                                                         {
                                                             //同一产品，同一材质，累加金额、数量、面积
-                                                            itemFrist.Amount += itemEntity.Amount;
                                                             itemFrist.Count += itemEntity.Count;
                                                             itemFrist.Area += itemEntity.Area;
+                                                            itemFrist.Amount = itemFrist.Area * _place;
                                                         }
                                                     }
                                                 }
                                             }
-
-                                            
-
-
-
-
-
-
-
                                         }
+
+
+
+                                        if (secondName.Contains("衣通"))
+                                        {
+                                            //P:高档衣通座	
+                                            string keyWord = secondName.Substring(2);//去掉前两位P:
+                                            var product = db.FindEntity<DZ_ProductEntity>(t => t.Name.Contains(keyWord));//名称相同的
+                                            if (product != null)
+                                            {
+                                                decimal? _place = GetPlanPrice(p, product);
+
+                                                string widthStr = dtSource.Rows[r][6].ToString();//宽：2244
+                                                decimal width = Convert.ToDecimal(widthStr);
+                                                decimal length = 0;
+                                                if (keyWord == "高档衣通")
+                                                {
+                                                    length = (width - 6)/1000;//高档衣通长度= ceil（（宽度-6）/1000）
+                                                }
+                                                else
+                                                {
+                                                    length = (width - 10) / 1000;//衣通长度=ceil（（宽度-10）/1000）
+                                                }
+                                                if (length<1)
+                                                {
+                                                    length = 1;//小于1米，按1米
+                                                }
+
+                                                decimal? _amount = _place * length;
+                                                roomEntity.RoomAmount += _amount;
+                                                var itemEntity = GetDbItem(roomEntity.RoomId, roomName, product.Id, product.Code, keyWord, product.Guige, 1, length, product.Unit, _place, _amount, keyValue, oldEntity.Code, "KuJiaLe", db);
+
+                                                var itemFrist = ItemList.Find(t => t.ProductId == product.Id);
+                                                if (itemFrist == null)
+                                                {
+                                                    ItemList.Add(itemEntity);
+                                                }
+                                                else
+                                                {
+                                                    //同一产品，同一材质，累加金额、数量、面积
+                                                    itemFrist.Count += itemEntity.Count;
+                                                    itemFrist.Area += itemEntity.Area;
+                                                    itemFrist.Amount = itemFrist.Area * _place;
+                                                }
+                                            }
+                                        }
+
                                     }
                                     else
                                     {
@@ -1471,9 +1509,9 @@ namespace HZSoft.Application.Service.CustomerManage
                                             else
                                             {
                                                 //同一产品，同一材质，累加金额、数量、面积
-                                                itemFrist.Amount += itemEntity.Amount;
                                                 itemFrist.Count += itemEntity.Count;
                                                 itemFrist.Area += itemEntity.Area;
+                                                itemFrist.Amount = itemFrist.Area * _place;
                                             }
                                         }
                                     }
@@ -1525,48 +1563,92 @@ namespace HZSoft.Application.Service.CustomerManage
                                     string secondName = dtSource.Rows[r][1].ToString();//P:顶线-95顶线1#	
                                     if (!secondName.IsEmpty())
                                     {
-                                        secondName = secondName.Substring(3);//去掉前两位顶线-
-                                        var product = db.FindEntity<DZ_ProductEntity>(t => t.Name.Contains(secondName));//名称相同的
-                                        if (product != null)
+                                        if (secondName.Contains("顶线"))
                                         {
-                                            decimal? _place = GetPlanPrice(p, product);
-                                            if (_place == 0 || _place == null)
+                                            secondName = secondName.Substring(3);//去掉前两位顶线-
+                                            var product = db.FindEntity<DZ_ProductEntity>(t => t.Name.Contains(secondName));//名称相同的
+                                            if (product != null)
                                             {
-                                                return "产品报价不存在：" + secondName;
-                                            }
+                                                decimal? _place = GetPlanPrice(p, product);
+                                                if (_place == 0 || _place == null)
+                                                {
+                                                    return "产品报价不存在：" + secondName;
+                                                }
 
-                                            string widthStr = dtSource.Rows[r][6].ToString();//宽：3,571	
-                                            //95顶线1#/75顶线1#按米计算      95顶线1#/75顶线1#长度=（宽度 >2400？长度=宽度/2000+0.2，数量=ceil（宽度/2400）：长度=宽度/1000+0.2）
-                                            decimal width = Convert.ToDecimal(widthStr);
-                                            decimal length;
-                                            decimal count=1;
-                                            if (width>2400)
-                                            {
-                                                length = width / 2000 + 0.2M;
-                                                count = width / 2400;
+                                                string widthStr = dtSource.Rows[r][6].ToString();//宽：3,571	
+                                                                                                 //95顶线1#/75顶线1#按米计算      95顶线1#/75顶线1#长度=（宽度 >2400？长度=宽度/2000+0.2，数量=ceil（宽度/2400）：长度=宽度/1000+0.2）
+                                                decimal width = Convert.ToDecimal(widthStr);
+                                                decimal length;
+
+                                                if (width > 2400)
+                                                {
+                                                    length = width / 2000 + 0.2M * width / 2400;
+                                                }
+                                                else
+                                                {
+                                                    length = width / 1000 + 0.2M;
+                                                }
+
+                                                decimal? _amount = _place * length;
+                                                roomEntity.RoomAmount += _amount;
+
+                                                var itemEntity = GetDbItem(roomEntity.RoomId, roomName, product.Id, product.Code, secondName, product.Guige, 1, length, product.Unit, _place, _amount, keyValue, oldEntity.Code, "KuJiaLe", db);
+
+                                                var itemFrist = ItemList.Find(t => t.ProductId == product.Id);
+                                                if (itemFrist == null)
+                                                {
+                                                    ItemList.Add(itemEntity);
+                                                }
+                                                else
+                                                {
+                                                    //同一产品，同一材质，累加金额、数量、面积
+                                                    itemFrist.Count += itemEntity.Count;
+                                                    itemFrist.Area += itemEntity.Area;
+                                                    itemFrist.Amount = itemFrist.Area * _place;
+                                                }
                                             }
-                                            else
+                                        }
+
+                                        if (secondName.Contains("脚线"))
+                                        {
+                                            //脚线-铝合金踢脚板	
+                                            string amountStr = dtSource.Rows[r][18].ToString();//0.00
+                                            if (amountStr== "0")
                                             {
-                                                length=width/1000 + 0.2M;
+                                                secondName = secondName.Substring(3);//去掉前两位脚线-
+                                                var product = db.FindEntity<DZ_ProductEntity>(t => t.Name.Contains(secondName));//名称相同的
+                                                if (product != null)
+                                                {
+                                                    decimal? _place = GetPlanPrice(p, product);
+                                                    if (_place == 0 || _place == null)
+                                                    {
+                                                        return "产品报价不存在：" + secondName;
+                                                    }
+
+                                                    string widthStr = dtSource.Rows[r][6].ToString();
+                                                    decimal width = Convert.ToDecimal(widthStr);
+                                                    decimal count = count = (width + 600) / 2000 *2;//数量=ceil（金额为0的踢脚板宽度+600）/2000（最终需要拆单人员核对）   固定长度2.0米/根
+
+                                                    decimal? _amount = _place * count;
+                                                    roomEntity.RoomAmount += _amount;
+
+                                                    var itemEntity = GetDbItem(roomEntity.RoomId, roomName, product.Id, product.Code, secondName, product.Guige, 1, count, product.Unit, _place, _amount, keyValue, oldEntity.Code, "KuJiaLe", db);
+
+                                                    var itemFrist = ItemList.Find(t => t.ProductId == product.Id);
+                                                    if (itemFrist == null)
+                                                    {
+                                                        ItemList.Add(itemEntity);
+                                                    }
+                                                    else
+                                                    {
+                                                        //同一产品，同一材质，累加金额、数量、面积
+                                                        itemFrist.Count += itemEntity.Count;
+                                                        itemFrist.Area += itemEntity.Area;
+                                                        itemFrist.Amount = itemFrist.Area * _place;
+                                                    }
+                                                }
                                             }
                                             
-                                            decimal? _amount = _place * count * length;
-                                            roomEntity.RoomAmount += _amount;
-
-                                            var itemEntity = GetDbItem(roomEntity.RoomId, roomName, product.Id, product.Code, secondName, product.Guige, count, length, product.Unit, _place, _amount, keyValue, oldEntity.Code, "KuJiaLe", db);
-
-                                            var itemFrist = ItemList.Find(t => t.ProductId == product.Id);
-                                            if (itemFrist == null)
-                                            {
-                                                ItemList.Add(itemEntity);
-                                            }
-                                            else
-                                            {
-                                                //同一产品，同一材质，累加金额、数量、面积
-                                                itemFrist.Amount += itemEntity.Amount;
-                                                itemFrist.Count += itemEntity.Count;
-                                                itemFrist.Area += itemEntity.Area;
-                                            }
                                         }
                                     }
                                     else

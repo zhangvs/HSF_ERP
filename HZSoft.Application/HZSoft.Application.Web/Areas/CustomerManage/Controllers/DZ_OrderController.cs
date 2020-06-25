@@ -851,7 +851,7 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
                 }
                 string newfileName = NoFileName + DateTime.Now.ToString("yyyyMMddhhmmss") + fileExt; ;
                 //ԭͼ
-                string fullDir1 = dir + newfileName + fileExt;
+                string fullDir1 = dir + newfileName;
                 string savePath = Request.MapPath(fullDir1);
                 file.SaveAs(savePath);
                 DataTable dtSource = ExcelHelper.ExcelImport(savePath);
@@ -919,7 +919,7 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
                 }
                 string newfileName = NoFileName + DateTime.Now.ToString("yyyyMMddhhmmss") + fileExt; ;
                 //ԭͼ
-                string fullDir1 = dir + newfileName + fileExt;
+                string fullDir1 = dir + newfileName;
                 string savePath = Request.MapPath(fullDir1);
                 file.SaveAs(savePath);
                 DataTable dtSource = ExcelHelper.ExcelImport(savePath);
