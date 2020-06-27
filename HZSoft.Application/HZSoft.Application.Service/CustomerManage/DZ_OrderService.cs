@@ -1750,6 +1750,8 @@ namespace HZSoft.Application.Service.CustomerManage
                         string roomName = Regex.Match(c1, "[\u4e00-\u9fa5]+").Value;
                         //创建房间db
                         DZ_Money_RoomEntity roomEntity = AddDbRoom(roomName, keyValue, oldEntity.Code, "1010");
+                        int yixing = 0;
+
                         roomEntity.RoomAmount = 0;
                         for (int i = r + 1; i < rowsCount; i++)
                         {
@@ -1776,10 +1778,11 @@ namespace HZSoft.Application.Service.CustomerManage
                                             for (int j = i + 1; j < rowsCount; j++)
                                             {
 
-                                                string c11 = dtSource.Rows[i][1].ToString();//18-横纹天然原橡颗粒板
+                                                string c11 = dtSource.Rows[j][10].ToString();//18-横纹天然原橡颗粒板
                                                 if (c11 == "★")//异型另加10元/块	
                                                 {
-                                                    _place += 10;
+                                                    yixing ++;
+                                                    roomEntity.RoomAmount += 10;
                                                 }
                                                 string kuan = dtSource.Rows[j][3].ToString();//宽
                                                 string gao = dtSource.Rows[j][4].ToString();//高
@@ -1809,6 +1812,12 @@ namespace HZSoft.Application.Service.CustomerManage
                             }
                             else
                             {
+                                //创建房间内的材质db
+                                if (yixing!=0)
+                                {
+                                    AddDbItem(roomEntity.RoomId, roomName, "0f609c4b-edac-4082-a5bf-c6200b7013ec", "1508", "异型加工费", "异形板件", yixing, yixing, "处", 10, yixing * 10, keyValue, oldEntity.Code, "1010", db);
+                                }
+
                                 var oldRoom = db.FindEntity<DZ_Money_RoomEntity>(t => t.RoomName == roomName && t.OrderId == keyValue);
                                 if (oldRoom != null)
                                 {
