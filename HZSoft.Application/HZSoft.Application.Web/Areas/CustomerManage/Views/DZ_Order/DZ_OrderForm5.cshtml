@@ -114,7 +114,6 @@
         postData["MoneyDate"] = "@HZSoft.Util.Time.GetDateTime()";
         postData["MoneyUserId"] = "@HZSoft.Application.Code.OperatorProvider.Provider.Current().UserId";
         postData["MoneyUserName"] = "@HZSoft.Application.Code.OperatorProvider.Provider.Current().UserName";
-        postData["MoneyDate"] = "@HZSoft.Util.Time.GetDateTime()";
         $.SaveForm({
             url: "../../CustomerManage/DZ_Order/SaveForm?keyValue=" + keyValue,
             param: postData,

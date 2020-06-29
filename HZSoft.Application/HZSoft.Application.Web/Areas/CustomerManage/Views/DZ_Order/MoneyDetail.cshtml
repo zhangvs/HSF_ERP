@@ -46,6 +46,9 @@
                     if (!!order.MoneyPathKuJiaLe) {
                         $("#MoneyPathKuJiaLe_a").attr("href", order.MoneyPathKuJiaLe).text(order.MoneyPathKuJiaLe.substring(order.MoneyPathKuJiaLe.lastIndexOf("/") + 1));
                     }
+                    if (!!order.MoneyMark) {
+                        $("input:radio[name='MoneyMark'][value=" + order.MoneyMark + "]").attr("checked", 'checked');
+                    }
                     //明细
                     childEntity = data.childEntity;
                     childLength = childEntity.length + 1;
@@ -198,13 +201,16 @@
         <textarea id="Remark" placeholder="暂无备注信息" class="form-control" style="width: 100%; height: 50px; margin-top: 10px;"></textarea>
         <table class="form" style="width: 100%;margin-bottom: 10px;">
             <tr>
-                <td class="formTitle" style="width: 60px;">拆单人</td>
+                <td class="formTitle" style="width: 60px;">状态</td>
                 <td class="formValue">
-                    <input id="ChaiUserName" type="text" class="form-control" disabled />
+                    <div class="radio">
+                        <label><input name="MoneyMark" type="radio" value="-1" />&nbsp;<span style='color:red'>驳回</span> </label>
+                        <label><input name="MoneyMark" type="radio" value="1" />&nbsp;<span style='color:green'>通过</span> </label>
+                    </div>
                 </td>
-                <td class="formTitle" style="width: 60px;">审核人</td>
+                <td class="formTitle" style="width: 60px;">报价金额</td>
                 <td class="formValue">
-                    <input id="CheckUserName" type="text" class="form-control" disabled />
+                    <input id="MoneyAccounts" type="text" class="form-control" isvalid="yes" checkexpession="Double" />
                 </td>
                 <td class="formTitle" style="width: 60px;">报价人</td>
                 <td class="formValue">
