@@ -137,8 +137,8 @@
             var rowdata = {
                 ItemId: '<input name="ItemId" type="text" class="editable center" />',
                 RoomName: '<input name="RoomName" type="text" class="editable" /><input name="RoomId" type="hidden" />',
-                ProductName: '<div class="product"><input name="ProductName" readonly type="text" class="editable"/><input name="ProductId" type="hidden" /><input name="ProductCode" type="hidden" /><span class="ui-icon-ellipsis goodsname"></span></div>',
-                Guige: '<input name="Guige" type="text" class="editable " />',
+                ProductName: '<div class="product"><input name="ProductName" type="text" class="editable"/><span class="ui-icon-ellipsis goodsname"></span></div>',
+                Guige: '<input name="Guige" type="text" class="editable " /><input name="ProductId" type="hidden" /><input name="ProductCode" type="hidden" />',
                 Unit: '<input name="Unit" type="text" class="editable center" />',
                 Price: '<input name="Price" type="text" class="editable center decimal" />',
                 Area: '<input name="Area" type="text" class="editable center decimal" />',
@@ -230,77 +230,14 @@
         });
     }
 
-    //合计
-    function GetTotal() {
-        var SumMoneyAccounts = 0.00;
-        $("#gridTable").find("tbody tr").each(function (i) {
-            var Amount = $(this).find('td:eq(8)').find('input').val();
-            if (Amount != "" && Amount != undefined) {
-                SumMoneyAccounts += Number(Amount);
-            }
-        });
-
-        $("#SumMoneyAccounts").text(toDecimal(SumMoneyAccounts));
-        $("#MoneyAccounts").val(toDecimal(SumMoneyAccounts));
-    }
-
-    //保存表单;
-    function AcceptClick(save_Mode) {
-        if (!$('#form1').Validform()) {
-            return false;
-        }
-
-        var strChildEntitys = [];
-        $('#gridTable').find('[role=row]').each(function (i) {
-            if (!!$(this).find('input[name="RoomName"]').val()) {
-                strChildEntitys.push({
-                    ItemId: $(this).find('input[name="ItemId"]').val(),
-                    RoomId: $(this).find('input[name="RoomId"]').val(),
-                    RoomName: $(this).find('input[name="RoomName"]').val(),
-                    ProductId: $(this).find('input[name="ProductId"]').val(),
-                    ProductCode: $(this).find('input[name="ProductCode"]').val(),
-                    ProductName: $(this).find('input[name="ProductName"]').val(),
-                    Guige: $(this).find('input[name="Guige"]').val(),
-                    Unit: $(this).find('input[name="Unit"]').val(),
-                    Price: $(this).find('input[name="Price"]').val(),
-                    Area: $(this).find('input[name="Area"]').val(),
-                    Amount: $(this).find('input[name="Amount"]').val(),
-                    Description: $(this).find('input[name="Description"]').val(),
-                    Sort: i
-                });
-            }
-        });
-
-
-        var postData = $("#form1").GetWebControls(keyValue);
-        postData["MoneyMark"] = $("input[name='MoneyMark']:checked").val();
-        postData["MoneyDate"] = "@HZSoft.Util.Time.GetDateTime()";
-        postData["MoneyUserId"] = "@HZSoft.Application.Code.OperatorProvider.Provider.Current().UserId";
-        postData["MoneyUserName"] = "@HZSoft.Application.Code.OperatorProvider.Provider.Current().UserName";
-        postData["strChildEntitys"] = JSON.stringify(strChildEntitys);
-
-        $.ConfirmAjax({
-            msg: "注：您确认要保存此操作吗？",
-            url: "../../CustomerManage/DZ_Order/SaveMoneyForm?keyValue=" + keyValue,
-            param: { "strEntity": JSON.stringify(postData), "strChildEntitys": JSON.stringify(strChildEntitys) },
-            success: function (data) {
-                if (save_Mode == 1) {
-                    reload();
-                } else {
-                    top.$.removeTab('closeCurrent');
-                }
-            }
-        });
-    }
-
     function addRow() {
         var $grid = $('#gridTable');
         var rowLength = $grid.find('[role=row]').length
         var rowdata = {
             ItemId: '<input name="ItemId" type="text" class="editable center" />',
             RoomName: '<input name="RoomName" type="text" class="editable" /><input name="RoomId" type="hidden" />',
-            ProductName: '<div class="product"><input name="ProductName" readonly type="text" class="editable"/><input name="ProductId" type="hidden" /><input name="ProductCode" type="hidden" /><span class="ui-icon-ellipsis goodsname"></span></div>',
-            Guige: '<input name="Guige" type="text" class="editable center " />',
+            ProductName: '<div class="product"><input name="ProductName" type="text" class="editable"/><span class="ui-icon-ellipsis goodsname"></span></div>',
+            Guige: '<input name="Guige" type="text" class="editable" /><input name="ProductId" type="hidden" /><input name="ProductCode" type="hidden" />',
             Unit: '<input name="Unit" type="text" class="editable center" />',
             Price: '<input name="Price" type="text" class="editable center decimal" />',
             Area: '<input name="Area" type="text" class="editable center decimal" />',
@@ -388,6 +325,71 @@
             $Amount.val(toDecimal(Area.val() * $Price.val()));
 
             GetTotal();
+        });
+    }
+
+    
+
+    //合计
+    function GetTotal() {
+        var SumMoneyAccounts = 0.00;
+        $("#gridTable").find("tbody tr").each(function (i) {
+            var Amount = $(this).find('td:eq(8)').find('input').val();
+            if (Amount != "" && Amount != undefined) {
+                SumMoneyAccounts += Number(Amount);
+            }
+        });
+
+        $("#SumMoneyAccounts").text(toDecimal(SumMoneyAccounts));
+        $("#MoneyAccounts").val(toDecimal(SumMoneyAccounts));
+    }
+
+    //保存表单;
+    function AcceptClick(save_Mode) {
+        if (!$('#form1').Validform()) {
+            return false;
+        }
+
+        var strChildEntitys = [];
+        $('#gridTable').find('[role=row]').each(function (i) {
+            if (!!$(this).find('input[name="RoomName"]').val()) {
+                strChildEntitys.push({
+                    ItemId: $(this).find('input[name="ItemId"]').val(),
+                    RoomId: $(this).find('input[name="RoomId"]').val(),
+                    RoomName: $(this).find('input[name="RoomName"]').val(),
+                    ProductId: $(this).find('input[name="ProductId"]').val(),
+                    ProductCode: $(this).find('input[name="ProductCode"]').val(),
+                    ProductName: $(this).find('input[name="ProductName"]').val(),
+                    Guige: $(this).find('input[name="Guige"]').val(),
+                    Unit: $(this).find('input[name="Unit"]').val(),
+                    Price: $(this).find('input[name="Price"]').val(),
+                    Area: $(this).find('input[name="Area"]').val(),
+                    Amount: $(this).find('input[name="Amount"]').val(),
+                    Description: $(this).find('input[name="Description"]').val(),
+                    Sort: i
+                });
+            }
+        });
+
+
+        var postData = $("#form1").GetWebControls(keyValue);
+        postData["MoneyMark"] = $("input[name='MoneyMark']:checked").val();
+        postData["MoneyDate"] = "@HZSoft.Util.Time.GetDateTime()";
+        postData["MoneyUserId"] = "@HZSoft.Application.Code.OperatorProvider.Provider.Current().UserId";
+        postData["MoneyUserName"] = "@HZSoft.Application.Code.OperatorProvider.Provider.Current().UserName";
+        postData["strChildEntitys"] = JSON.stringify(strChildEntitys);
+
+        $.ConfirmAjax({
+            msg: "注：您确认要保存此操作吗？",
+            url: "../../CustomerManage/DZ_Order/SaveMoneyForm?keyValue=" + keyValue,
+            param: { "strEntity": JSON.stringify(postData), "strChildEntitys": JSON.stringify(strChildEntitys) },
+            success: function (data) {
+                if (save_Mode == 1) {
+                    reload();
+                } else {
+                    top.$.removeTab('closeCurrent');
+                }
+            }
         });
     }
 

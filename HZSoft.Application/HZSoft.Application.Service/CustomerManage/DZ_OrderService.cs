@@ -1894,8 +1894,6 @@ namespace HZSoft.Application.Service.CustomerManage
             }
         }
 
-
-
         public decimal? GetPlanPrice(int p, DZ_ProductEntity entity)
         {
             decimal? price = null;
