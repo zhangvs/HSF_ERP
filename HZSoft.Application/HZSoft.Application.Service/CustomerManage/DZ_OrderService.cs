@@ -1879,6 +1879,7 @@ namespace HZSoft.Application.Service.CustomerManage
                     {
                         item.Create();
                         item.OrderId = keyValue;
+                        item.OrderCode = oldEntity.Code;
                         db.Insert(entryList);
                     }
 

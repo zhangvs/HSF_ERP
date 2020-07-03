@@ -72,8 +72,10 @@
             var row = childEntity[i - 1];
             if (row != undefined) {
                 $(this).find('input[name="ItemId"]').val(row.ItemId);
+                $(this).find('input[name="RoomId"]').val(row.RoomId);
                 $(this).find('input[name="RoomName"]').val(row.RoomName);
                 $(this).find('input[name="ProductId"]').val(row.ProductId);
+                $(this).find('input[name="ProductCode"]').val(row.ProductCode);
                 $(this).find('input[name="ProductName"]').val(row.ProductName);
                 $(this).find('input[name="Guige"]').val(row.Guige);
                 $(this).find('input[name="Unit"]').val(row.Unit);
@@ -134,9 +136,9 @@
         for (var i = 1; i < childLength; i++) {
             var rowdata = {
                 ItemId: '<input name="ItemId" type="text" class="editable center" />',
-                RoomName: '<input name="RoomName" type="text" class="editable" />',
-                ProductName: '<div class="product"><input name="ProductName" readonly type="text" class="editable"/><span class="ui-icon-ellipsis goodsname"></span></div>',
-                Guige: '<input name="Guige" type="text" class="editable " /><input name="ProductId" type="hidden" />',
+                RoomName: '<input name="RoomName" type="text" class="editable" /><input name="RoomId" type="hidden" />',
+                ProductName: '<div class="product"><input name="ProductName" readonly type="text" class="editable"/><input name="ProductId" type="hidden" /><input name="ProductCode" type="hidden" /><span class="ui-icon-ellipsis goodsname"></span></div>',
+                Guige: '<input name="Guige" type="text" class="editable " />',
                 Unit: '<input name="Unit" type="text" class="editable center" />',
                 Price: '<input name="Price" type="text" class="editable center decimal" />',
                 Area: '<input name="Area" type="text" class="editable center decimal" />',
@@ -174,6 +176,7 @@
                             if ($('#gridTable').find('[data-value="' + data.ProductId + '"]').length == 0) {
                                 var nextRow = currRow.next();
                                 nextRow.find('input[name="ProductId"]').val(data.Id);
+                                nextRow.find('input[name="ProductCode"]').val(data.Code);
                                 nextRow.find('input[name="ProductName"]').val(data.Name);
                                 nextRow.find('input[name="Guige"]').val(data.Guige).attr('data-value', data.Id);
                                 nextRow.find('input[name="Unit"]').val(data.Unit);
@@ -249,21 +252,23 @@
 
         var strChildEntitys = [];
         $('#gridTable').find('[role=row]').each(function (i) {
-            strChildEntitys.push({
-                ItemId: $(this).find('input[name="ItemId"]').val(),
-                RoomName: $(this).find('input[name="RoomName"]').val(),
-                ProductId: $(this).find('input[name="ProductId"]').val(),
-                ProductName: $(this).find('input[name="ProductName"]').val(),
-                Guige: $(this).find('input[name="Guige"]').val(),
-                Unit: $(this).find('input[name="Unit"]').val(),
-                Price: $(this).find('input[name="Price"]').val(),
-                Area: $(this).find('input[name="Area"]').val(),
-                Amount: $(this).find('input[name="Amount"]').val(),
-                Description: $(this).find('input[name="Description"]').val(),
-                Sort: i
-            });
-            //if (!!$(this).find('input[name="Guige"]').val()) {
-            //}
+            if (!!$(this).find('input[name="RoomName"]').val()) {
+                strChildEntitys.push({
+                    ItemId: $(this).find('input[name="ItemId"]').val(),
+                    RoomId: $(this).find('input[name="RoomId"]').val(),
+                    RoomName: $(this).find('input[name="RoomName"]').val(),
+                    ProductId: $(this).find('input[name="ProductId"]').val(),
+                    ProductCode: $(this).find('input[name="ProductCode"]').val(),
+                    ProductName: $(this).find('input[name="ProductName"]').val(),
+                    Guige: $(this).find('input[name="Guige"]').val(),
+                    Unit: $(this).find('input[name="Unit"]').val(),
+                    Price: $(this).find('input[name="Price"]').val(),
+                    Area: $(this).find('input[name="Area"]').val(),
+                    Amount: $(this).find('input[name="Amount"]').val(),
+                    Description: $(this).find('input[name="Description"]').val(),
+                    Sort: i
+                });
+            }
         });
 
 
@@ -293,9 +298,9 @@
         var rowLength = $grid.find('[role=row]').length
         var rowdata = {
             ItemId: '<input name="ItemId" type="text" class="editable center" />',
-            RoomName: '<input name="RoomName" type="text" class="editable" />',
-            ProductName: '<div class="product"><input name="ProductName" readonly type="text" class="editable"/><span class="ui-icon-ellipsis goodsname"></span></div>',
-            Guige: '<input name="Guige" type="text" class="editable center " /><input name="ProductId" type="hidden" />',
+            RoomName: '<input name="RoomName" type="text" class="editable" /><input name="RoomId" type="hidden" />',
+            ProductName: '<div class="product"><input name="ProductName" readonly type="text" class="editable"/><input name="ProductId" type="hidden" /><input name="ProductCode" type="hidden" /><span class="ui-icon-ellipsis goodsname"></span></div>',
+            Guige: '<input name="Guige" type="text" class="editable center " />',
             Unit: '<input name="Unit" type="text" class="editable center" />',
             Price: '<input name="Price" type="text" class="editable center decimal" />',
             Area: '<input name="Area" type="text" class="editable center decimal" />',
@@ -332,6 +337,7 @@
                             if ($('#gridTable').find('[data-value="' + data.ProductId + '"]').length == 0) {
                                 var nextRow = currRow.next();
                                 nextRow.find('input[name="ProductId"]').val(data.Id);
+                                nextRow.find('input[name="ProductCode"]').val(data.Code);
                                 nextRow.find('input[name="ProductName"]').val(data.Name);
                                 nextRow.find('input[name="Guige"]').val(data.Guige).attr('data-value', data.Id);
                                 nextRow.find('input[name="Unit"]').val(data.Unit);
@@ -419,7 +425,7 @@
         <tr>
             <td class="formTitle">²úÆ·Ãû³Æ</td>
             <td class="formValue" colspan="3">
-                <input id="ProductName" type="text" class="form-control" disabled />
+                <input id="ProductName" type="text" class="form-control" />
             </td>
         </tr>
     </table>
