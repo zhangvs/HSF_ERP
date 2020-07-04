@@ -240,6 +240,15 @@ namespace HZSoft.Application.Web.Areas.CustomerManage.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 报价审核2（财务中心）
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult MoneyOkCheckForm()
+        {
+            return View();
+        }
 
         /// <summary>
         /// 签收页面

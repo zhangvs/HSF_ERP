@@ -198,6 +198,20 @@
             })
         }
     }
+    //报价审核新
+    function btn_edit2() {
+        var keyValue = $("#gridTable").jqGridRowValue('Id');
+        if (checkedRow(keyValue)) {
+            top.tablist.newTab({
+                id: "OrderForm",
+                title: "报价编辑",
+                closed: true,
+                replace: true,
+                icon: "fa fa-file-text-o",
+                url: top.contentPath + "/CustomerManage/DZ_Order/MoneyOkCheckForm?keyValue=" + keyValue
+            });
+        }
+    }
 </script>
 <div class="titlePanel">
     <div class="title-search">
@@ -311,6 +325,7 @@
         <div class="btn-group">
             <a id="lr-replace" class="btn btn-default" onclick="reload()"><i class="fa fa-refresh"></i>&nbsp;刷新</a>
             <a id="lr-edit" class="btn btn-default" onclick="btn_edit()"><i class="fa fa-pencil-square-o"></i>&nbsp;报价审核</a>
+            <a id="lr-edit" class="btn btn-default" onclick="btn_edit2()"><i class="fa fa-pencil-square-o"></i>&nbsp;报价审核</a>
         </div>
     </div>
     @*<script>$('.toolbar').authorizeButton()</script>*@

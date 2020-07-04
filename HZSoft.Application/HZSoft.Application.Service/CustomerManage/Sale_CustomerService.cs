@@ -400,20 +400,46 @@ namespace HZSoft.Application.Service.CustomerManage
                         if (entity.GuiTiMark == 1 && oldBuysEntity.GuiEnterMark == null)
                         {
                             oldBuysEntity.GuiEnterMark = 0;//修改柜体状态为需要入库
+                            LogHelper.AddLog("修改柜体状态为需要入库，" + oldEntity.ProduceCode);
                         }
                         if (entity.WuJinMark == 1 && oldBuysEntity.WuEnterMark == null)
                         {
                             oldBuysEntity.WuEnterMark = 0;//修改五金状态为需要入库
+                            LogHelper.AddLog("修改五金状态为需要入库，" + oldEntity.ProduceCode);
                         }
                         if (entity.MenBanMark == 1 && oldBuysEntity.MenEnterMark == null)
                         {
                             oldBuysEntity.MenEnterMark = 0;//修改门板状态为需要入库
+                            LogHelper.AddLog("修改门板状态为需要入库，" + oldEntity.ProduceCode);
                         }
                         if (entity.WaiXieMark == 1 && oldBuysEntity.WaiEnterMark == null)
                         {
                             oldBuysEntity.WaiEnterMark = 0;//修改外协状态为需要入库
+                            LogHelper.AddLog("修改外协状态为需要入库，" + oldEntity.ProduceCode);
                         }
-                        LogHelper.AddLog("包装扫码之后-又编辑，" + oldEntity.ProduceCode);
+
+                        //如果已经入库了，勾选材料错误，发现多勾选了，需要去掉，要同步到入库单
+                        if (entity.GuiTiMark == 0 && oldBuysEntity.GuiEnterMark == 1)
+                        {
+                            oldBuysEntity.GuiEnterMark = -1;//修改柜体状态为不需要入库
+                            LogHelper.AddLog("修改柜体状态为不需要入库，" + oldEntity.ProduceCode);
+                        }
+                        if (entity.WuJinMark == 0 && oldBuysEntity.WuEnterMark == 1)
+                        {
+                            oldBuysEntity.WuEnterMark = -1;//修改五金状态为不需要入库
+                            LogHelper.AddLog("修改五金状态为不需要入库，" + oldEntity.ProduceCode);
+                        }
+                        if (entity.MenBanMark == 0 && oldBuysEntity.MenEnterMark == 1)
+                        {
+                            oldBuysEntity.MenEnterMark = -1;//修改门板状态为不需要入库
+                            LogHelper.AddLog("修改门板状态为不需要入库，" + oldEntity.ProduceCode);
+                        }
+                        if (entity.WaiXieMark == 0 && oldBuysEntity.WaiEnterMark == 1)
+                        {
+                            oldBuysEntity.WaiEnterMark = -1;//修改外协状态为不需要入库
+                            LogHelper.AddLog("修改外协状态为不需要入库，" + oldEntity.ProduceCode);
+                        }
+
                         db.Update<Buys_OrderEntity>(oldBuysEntity);
                     }
 
