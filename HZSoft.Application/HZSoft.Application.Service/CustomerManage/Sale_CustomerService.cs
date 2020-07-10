@@ -602,6 +602,7 @@ namespace HZSoft.Application.Service.CustomerManage
                     {
                         PushMark = state,
                         PushDate = DateTime.Now,
+                        EndDate = DateTime.Now.AddDays(30).Date,//最迟交付日期
                         PushUserId = OperatorProvider.Provider.Current().UserId,
                         PushUserName = OperatorProvider.Provider.Current().UserName
                     };

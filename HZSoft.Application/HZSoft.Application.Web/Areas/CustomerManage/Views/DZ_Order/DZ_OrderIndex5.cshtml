@@ -28,6 +28,7 @@
         });
         $("#CheckMark").ComboBoxSetValue(1);
         $("#MoneyMark").ComboBoxSetValue(0);
+        $("#ChaiUserName").val('@HZSoft.Application.Code.OperatorProvider.Provider.Current().UserName');
         //resize重设布局;
         $(window).resize(function (e) {
             window.setTimeout(function () {
@@ -43,6 +44,7 @@
         var queryJson = {};
         queryJson.CheckMark = 1;
         queryJson.MoneyMark = 0;
+        queryJson.ChaiUserName='@HZSoft.Application.Code.OperatorProvider.Provider.Current().UserName';
 
         var $gridTable = $('#gridTable');
         $gridTable.jqGrid({
@@ -356,6 +358,18 @@
                                     <td class="formTitle">客户：</td>
                                     <td class="formValue">
                                         <input id="CustomerName" type="text" class="form-control">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">拆单人：</td>
+                                    <td class="formValue">
+                                        <input id="ChaiUserName" type="text" class="form-control">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">报价人：</td>
+                                    <td class="formValue">
+                                        <input id="MoneyUserName" type="text" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>

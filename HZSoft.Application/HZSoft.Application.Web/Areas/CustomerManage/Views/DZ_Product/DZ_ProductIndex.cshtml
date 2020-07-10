@@ -75,7 +75,7 @@
             height: $(window).height() - 171,
             autowidth: true,
             colModel: [
-                { label: '分类主键', name: 'Id', hidden: true },
+                { label: '主键', name: 'Id', hidden: true },
                 { label: '父级主键', name: 'ParentId', hidden: true },
                 {
                     label: "产品图片", name: "Picture", index: "Picture", width: 100, align: "center", sortable: false,
@@ -177,7 +177,7 @@
         var keyValue = $("#gridTable").jqGridRowValue("Id");
         if (keyValue) {
             $.RemoveForm({
-                url: "../../CustomerManage/DZ_Product/DZ_ProductForm/RemoveForm",
+                url: "../../CustomerManage/DZ_Product/RemoveForm",
                 param: { keyValue: keyValue },
                 success: function (data) {
                     $("#gridTable").resetSelection();

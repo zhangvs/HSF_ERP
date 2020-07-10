@@ -143,6 +143,12 @@ namespace HZSoft.Application.Service.CustomerManage
                 string CheckUserName = queryParam["CheckUserName"].ToString();
                 strSql += " and CheckUserName like '%" + CheckUserName + "%'";
             }
+            //报价人
+            if (!queryParam["MoneyUserName"].IsEmpty())
+            {
+                string MoneyUserName = queryParam["MoneyUserName"].ToString();
+                strSql += " and MoneyUserName like '%" + MoneyUserName + "%'";
+            }
 
             //审图
             if (!queryParam["CheckTuMark"].IsEmpty())
@@ -413,6 +419,12 @@ namespace HZSoft.Application.Service.CustomerManage
             {
                 string CheckUserName = queryParam["CheckUserName"].ToString();
                 strSql += " and CheckUserName like '%" + CheckUserName + "%'";
+            }
+            //报价人
+            if (!queryParam["MoneyUserName"].IsEmpty())
+            {
+                string MoneyUserName = queryParam["MoneyUserName"].ToString();
+                strSql += " and MoneyUserName like '%" + MoneyUserName + "%'";
             }
 
             //审图
@@ -691,11 +703,22 @@ namespace HZSoft.Application.Service.CustomerManage
         /// <param name="keyValue">主键</param>
         public void RemoveForm(string keyValue)
         {
+            IRepository db = new RepositoryFactory().BaseRepository().BeginTrans();
             DZ_OrderEntity entity = GetEntity(keyValue);
             entity.Modify(keyValue);
             entity.DeleteMark = 1;
-            this.BaseRepository().Update(entity);
-
+            db.Update<DZ_OrderEntity>(entity);
+            //同步删除生产单里面的记录
+            Sale_CustomerEntity sale_CustomerEntity = db.FindEntity<Sale_CustomerEntity>(t => t.ProduceId == entity.Code);//老销售单code会生成生产单id
+            if (sale_CustomerEntity != null)
+            {
+                //生产单存在的话，说明已经收款过
+                sale_CustomerEntity.DeleteMark = 1;
+                sale_CustomerEntity.Modify(keyValue);
+                db.Update<Sale_CustomerEntity>(sale_CustomerEntity);
+            }
+            db.Commit();
+            RecordHelp.AddRecord(4, keyValue, "删除订单");
             //this.BaseRepository().Delete(keyValue);
         }
         /// <summary>
@@ -777,6 +800,21 @@ namespace HZSoft.Application.Service.CustomerManage
                     if (entity.CheckMark > 0 && oldEntity.CheckMark != 1)
                     {
                         RecordHelp.AddRecord(4, keyValue, "审核");
+                        //发送给拆单人发审核通过通知，审核通过去给自己拆单的订单报价
+                        var hsf_CardList = db.IQueryable<Hsf_CardEntity>(t => t.Name.Equals(oldEntity.ChaiUserName));
+                        if (hsf_CardList.Count() != 0)
+                        {
+                            var hsf_CardEntity = hsf_CardList.First();
+                            string backMsg = TemplateWxApp.SendTemplateReject(hsf_CardEntity.OpenId, "您好，拆单已通过审核!", oldEntity.Code, oldEntity.OrderTitle);
+                            if (backMsg != "ok")
+                            {
+                                LogHelper.AddLog(entity.ChaiUserName + "没有关注公众号");//记录日志
+                            }
+                        }
+                        else
+                        {
+                            LogHelper.AddLog(entity.ChaiUserName + "没有关注公众号");//记录日志
+                        }
                     }
                     if (entity.CheckMark == -1 && oldEntity.CheckMark != -1)
                     {

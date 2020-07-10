@@ -26,6 +26,7 @@
             description: "==请选择==",
         });
         $("#MoneyMark").ComboBoxSetValue(1);
+        $("#ChaiUserName").val('@HZSoft.Application.Code.OperatorProvider.Provider.Current().UserName');
         //resize重设布局;
         $(window).resize(function (e) {
             window.setTimeout(function () {
@@ -40,6 +41,7 @@
         var selectedRowIndex = 0;
         var queryJson = {};
         queryJson.MoneyMark = 1;
+        queryJson.ChaiUserName='@HZSoft.Application.Code.OperatorProvider.Provider.Current().UserName';
 
         var $gridTable = $('#gridTable');
         $gridTable.jqGrid({
@@ -272,6 +274,18 @@
                                     <td class="formTitle">客户：</td>
                                     <td class="formValue">
                                         <input id="CustomerName" type="text" class="form-control">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">拆单人：</td>
+                                    <td class="formValue">
+                                        <input id="ChaiUserName" type="text" class="form-control">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="formTitle">报价人：</td>
+                                    <td class="formValue">
+                                        <input id="MoneyUserName" type="text" class="form-control">
                                     </td>
                                 </tr>
                                 <tr>

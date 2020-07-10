@@ -636,7 +636,6 @@ namespace HZSoft.Application.Entity.CustomerManage
             this.DeleteMark = 0;
             this.EnabledMark = 1;
 
-            this.EndDate = DateTime.Now.AddDays(30).Date;//最迟交付日期
             //if (this.CompanyId== "51956d52-2224-4f54-9be3-75f61dc9b142" || this.CompanyId == "c6f49fff-d7c5-4522-a656-68c08a320435")
             //{
             //    this.EndDate = DateTime.Now.AddDays(20).Date;//最迟交付日期20天，青岛乐豪斯，临沂乐豪斯
