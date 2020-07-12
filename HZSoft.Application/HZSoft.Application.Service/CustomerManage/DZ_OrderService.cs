@@ -1242,7 +1242,7 @@ namespace HZSoft.Application.Service.CustomerManage
                                             {
                                                 decimal? _place = GetPlanPrice(p, product);
                                                 decimal _area = width * height / 1000000;
-                                                decimal? _amount = _place * _area;
+                                                decimal _amount = Math.Round((decimal)_place * _area, 2);
                                                 roomEntity.RoomAmount += _amount;
                                                 AddDbItem(roomEntity.RoomId, roomName, product.Id, product.Code, product.Name, $"门洞H{height}mm*W{width}mm，分{shan}扇", 1, _area, product.Unit, _place, _amount, keyValue, oldEntity.Code, "KuJiaLe", db);
 
@@ -1264,7 +1264,7 @@ namespace HZSoft.Application.Service.CustomerManage
                                         if (product != null)
                                         {
                                             decimal? _place = GetPlanPrice(p, product);
-                                            decimal? _amount = _place;
+                                            decimal _amount = Math.Round((decimal)_place * 1, 2);
                                             roomEntity.RoomAmount += _amount;
                                             var itemEntity = GetDbItem(roomEntity.RoomId, roomName, product.Id, product.Code, secondName, product.Guige, 1, 1, product.Unit, _place, _amount, keyValue, oldEntity.Code, "KuJiaLe", db);
 
@@ -1321,7 +1321,7 @@ namespace HZSoft.Application.Service.CustomerManage
                                                 if (product != null)
                                                 {
                                                     decimal? _place = GetPlanPrice(p, product);
-                                                    decimal? _amount = _place;
+                                                    decimal _amount = Math.Round((decimal)_place * 1, 2);
                                                     roomEntity.RoomAmount += _amount;
                                                     var itemEntity = GetDbItem(roomEntity.RoomId, roomName, product.Id, product.Code, secondName, product.Guige, 1, 1, product.Unit, _place, _amount, keyValue, oldEntity.Code, "KuJiaLe", db);
 
@@ -1364,7 +1364,7 @@ namespace HZSoft.Application.Service.CustomerManage
                                                     decimal length = Convert.ToDecimal(heightStr) / 1000;
 
                                                     decimal? _place = GetPlanPrice(p, product);
-                                                    decimal? _amount = _place * length;
+                                                    decimal _amount = Math.Round((decimal)_place * length, 2);
 
                                                     roomEntity.RoomAmount += _amount;
                                                     var itemEntity = GetDbItem(roomEntity.RoomId, roomName, product.Id, product.Code, product.Name, product.Guige, 1, length, product.Unit, _place, _amount, keyValue, oldEntity.Code, "KuJiaLe", db);
@@ -1403,7 +1403,7 @@ namespace HZSoft.Application.Service.CustomerManage
                                                     if (product2 != null)
                                                     {
                                                         decimal? _place = GetPlanPrice(p, product2);
-                                                        decimal? _amount = _place*2;//数量*2
+                                                        decimal _amount = Math.Round((decimal)_place * 2, 2);//数量*2
                                                         roomEntity.RoomAmount += _amount;
                                                         var itemEntity = GetDbItem(roomEntity.RoomId, roomName, product2.Id, product2.Code, product2.Name, product2.Guige, 1, 2, product2.Unit, _place, _amount, keyValue, oldEntity.Code, "KuJiaLe", db);
 
@@ -1430,7 +1430,7 @@ namespace HZSoft.Application.Service.CustomerManage
                                         {
                                             //P:高档衣通座	
                                             string keyWord = secondName.Substring(2);//去掉前两位P:
-                                            var product = db.FindEntity<DZ_ProductEntity>(t => t.Name.Contains(keyWord));//名称相同的
+                                            var product = db.FindEntity<DZ_ProductEntity>(t => t.Name== keyWord);//名称相同的
                                             if (product != null)
                                             {
                                                 decimal? _place = GetPlanPrice(p, product);
@@ -1451,7 +1451,7 @@ namespace HZSoft.Application.Service.CustomerManage
                                                     length = 1;//小于1米，按1米
                                                 }
 
-                                                decimal? _amount = _place * length;
+                                                decimal _amount = Math.Round((decimal)_place * length, 2);
                                                 roomEntity.RoomAmount += _amount;
                                                 var itemEntity = GetDbItem(roomEntity.RoomId, roomName, product.Id, product.Code, keyWord, product.Guige, 1, length, product.Unit, _place, _amount, keyValue, oldEntity.Code, "KuJiaLe", db);
 
@@ -1509,7 +1509,7 @@ namespace HZSoft.Application.Service.CustomerManage
                                         if (product != null)
                                         {
                                             decimal? _place = GetPlanPrice(p, product);
-                                            if (_place == 0 || _place == null)
+                                            if (_place == null)
                                             {
                                                 return "产品报价不存在：" + secondName;
                                             }
@@ -1530,12 +1530,12 @@ namespace HZSoft.Application.Service.CustomerManage
                                                 _place += 30;//单价多层板+30
                                             }
 
-                                            decimal? _area = Convert.ToDecimal(area);
+                                            decimal _area = Convert.ToDecimal(area);
                                             if (secondName.Contains("G:"))//外协门板,不足0.3㎡按0.3㎡
                                             {
                                                 _area = _area > 0.3M ? _area : 0.3M;
                                             }
-                                            decimal? _amount = _place * _area;
+                                            decimal _amount = Math.Round((decimal)_place * _area, 2);
                                             roomEntity.RoomAmount += _amount;
                                             var itemEntity= GetDbItem(roomEntity.RoomId, roomName, product.Id, product.Code, secondName, caizhi, 1, _area, product.Unit, _place, _amount, keyValue, oldEntity.Code, "KuJiaLe", db);
 
@@ -1576,13 +1576,21 @@ namespace HZSoft.Application.Service.CustomerManage
                                         if (product != null)
                                         {
                                             decimal? _place = GetPlanPrice(p, product);
-                                            if (_place == 0 || _place == null)
+                                            if (_place == null)
                                             {
                                                 return "产品报价不存在：" + secondName;
                                             }
-
-                                            decimal? _count = Convert.ToDecimal(count);
-                                            decimal? _amount = _place * _count;
+                                            decimal _count = 0;
+                                            if (secondName == "衣通座" || secondName == "高档衣通座")
+                                            {
+                                                _count = Convert.ToDecimal(count)/2;
+                                            }
+                                            else
+                                            {
+                                                _count = Convert.ToDecimal(count);
+                                            }
+                                            
+                                            decimal _amount = Math.Round((decimal)_place * _count, 2);
                                             roomEntity.RoomAmount += _amount;
                                             AddDbItem(roomEntity.RoomId, roomName, product.Id, product.Code, secondName, product.Guige, 1, _count, product.Unit, _place, _amount, keyValue, oldEntity.Code, "KuJiaLe", db);
                                         }
@@ -1608,7 +1616,7 @@ namespace HZSoft.Application.Service.CustomerManage
                                             if (product != null)
                                             {
                                                 decimal? _place = GetPlanPrice(p, product);
-                                                if (_place == 0 || _place == null)
+                                                if (_place == null)
                                                 {
                                                     return "产品报价不存在：" + secondName;
                                                 }
@@ -1626,8 +1634,8 @@ namespace HZSoft.Application.Service.CustomerManage
                                                 {
                                                     length = width / 1000 + 0.2M;
                                                 }
-
-                                                decimal? _amount = _place * length;
+                                                
+                                                decimal _amount = Math.Round((decimal)_place * length, 2);
                                                 roomEntity.RoomAmount += _amount;
 
                                                 var itemEntity = GetDbItem(roomEntity.RoomId, roomName, product.Id, product.Code, secondName, product.Guige, 1, length, product.Unit, _place, _amount, keyValue, oldEntity.Code, "KuJiaLe", db);
@@ -1658,7 +1666,7 @@ namespace HZSoft.Application.Service.CustomerManage
                                                 if (product != null)
                                                 {
                                                     decimal? _place = GetPlanPrice(p, product);
-                                                    if (_place == 0 || _place == null)
+                                                    if (_place == null)
                                                     {
                                                         return "产品报价不存在：" + secondName;
                                                     }
@@ -1666,8 +1674,8 @@ namespace HZSoft.Application.Service.CustomerManage
                                                     string widthStr = dtSource.Rows[r][6].ToString();
                                                     decimal width = Convert.ToDecimal(widthStr);
                                                     decimal count = count = (width + 600) / 2000 *2;//数量=ceil（金额为0的踢脚板宽度+600）/2000（最终需要拆单人员核对）   固定长度2.0米/根
-
-                                                    decimal? _amount = _place * count;
+                                                    
+                                                    decimal _amount = Math.Round((decimal)_place * count, 2);
                                                     roomEntity.RoomAmount += _amount;
 
                                                     var itemEntity = GetDbItem(roomEntity.RoomId, roomName, product.Id, product.Code, secondName, product.Guige, 1, count, product.Unit, _place, _amount, keyValue, oldEntity.Code, "KuJiaLe", db);
@@ -1807,7 +1815,7 @@ namespace HZSoft.Application.Service.CustomerManage
                                     if (product != null)
                                     {
                                         decimal? _place = GetPlanPrice(p, product);
-                                        if (_place == 0 || _place == null)
+                                        if (_place == null)
                                         {
                                             return "产品报价不存在：" + caizhiNMame + houdu;
                                         }
