@@ -493,6 +493,11 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// </summary>
         /// <returns></returns>
         public string DownPath { get; set; }
+        /// <summary>
+        /// 料单附件
+        /// </summary>
+        /// <returns></returns>
+        public string LiangPath { get; set; }
 
         /// <summary>
         /// 推单

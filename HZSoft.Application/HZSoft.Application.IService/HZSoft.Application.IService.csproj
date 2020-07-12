@@ -94,6 +94,7 @@
     <Compile Include="CustomerManage\Poll_ShareIService.cs" />
     <Compile Include="CustomerManage\Poll_SignUpIService.cs" />
     <Compile Include="CustomerManage\Poll_ToIService.cs" />
+    <Compile Include="CustomerManage\Produce_OutIService.cs" />
     <Compile Include="CustomerManage\Sale_CustomerIService.cs" />
     <Compile Include="CustomerManage\Sale_UserStepIService.cs" />
     <Compile Include="FlowManage\WFDelegateRecordIService.cs" />

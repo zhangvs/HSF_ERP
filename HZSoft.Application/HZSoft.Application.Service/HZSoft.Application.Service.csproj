@@ -87,6 +87,7 @@
     <Compile Include="CustomerManage\Poll_ShareService.cs" />
     <Compile Include="CustomerManage\Poll_SignUpService.cs" />
     <Compile Include="CustomerManage\Poll_ToService.cs" />
+    <Compile Include="CustomerManage\Produce_OutService.cs" />
     <Compile Include="CustomerManage\ReceivableServiceSkl.cs" />
     <Compile Include="CustomerManage\ReceivableService.cs" />
     <Compile Include="CustomerManage\RecordHelp.cs" />

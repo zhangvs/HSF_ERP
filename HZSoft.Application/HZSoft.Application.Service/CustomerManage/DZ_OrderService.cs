@@ -1824,9 +1824,10 @@ namespace HZSoft.Application.Service.CustomerManage
                                                 }
                                                 string kuan = dtSource.Rows[j][3].ToString();//宽
                                                 string gao = dtSource.Rows[j][4].ToString();//高
+                                                string count = dtSource.Rows[j][8].ToString();//数量
                                                 if (!string.IsNullOrEmpty(kuan))
                                                 {
-                                                    sumArea += Math.Round(((decimal)Convert.ToDecimal(kuan) * Convert.ToDecimal(gao) / 1000000), 2);
+                                                    sumArea += Math.Round(((decimal)Convert.ToDecimal(kuan) * Convert.ToDecimal(gao)* Convert.ToDecimal(count) / 1000000), 2);//添加*数量
 
                                                 }
                                                 else

@@ -14,6 +14,7 @@ using System.Text;
 using System;
 using HZSoft.Util.WeChat.Comm;
 using HZSoft.Application.Entity.BaseManage;
+using System.Data;
 
 namespace HZSoft.Application.Service.CustomerManage
 {
@@ -854,6 +855,44 @@ namespace HZSoft.Application.Service.CustomerManage
 
         #endregion
 
+        /// <summary>
+        /// 批量（新增）1010
+        /// </summary>
+        /// <param name="dtSource">实体对象</param>
+        /// <returns></returns>
+        public string BatchAddEntityLiao(string keyValue, DataTable dtSource, string dir)
+        {
+            try
+            {
+                IRepository db = new RepositoryFactory().BaseRepository().BeginTrans();
+                Sale_CustomerEntity oldEntity = GetEntity(keyValue);
+                if (!string.IsNullOrEmpty(oldEntity.LiangPath))
+                {
+                    //重复导入，删掉之前导入的所有
+                    db.Delete<Produce_OutEntity>(t => t.Code == keyValue);
+                    oldEntity.LiangPath = "";
+                }
 
+                int rowsCount = dtSource.Rows.Count;
+
+                for (int r = 4; r < rowsCount; r++)
+                {
+                    string c1 = dtSource.Rows[r][0].ToString();
+                    if (!string.IsNullOrEmpty(c1))
+                    {
+                    }
+                }
+                oldEntity.LiangPath = dir;
+                db.Update<Sale_CustomerEntity>(oldEntity);
+                db.Commit();
+                return "导入料单Excel文件成功";
+            }
+            catch (Exception ex)
+            {
+                LogHelper.AddLog(ex.Message);
+                return ex.Message;
+            }
+
+        }
     }
 }

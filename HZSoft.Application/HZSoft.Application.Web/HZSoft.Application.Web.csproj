@@ -201,6 +201,7 @@
     <Compile Include="Areas\CustomerManage\Controllers\Poll_ShareController.cs" />
     <Compile Include="Areas\CustomerManage\Controllers\Poll_SignUpController.cs" />
     <Compile Include="Areas\CustomerManage\Controllers\Poll_ToController.cs" />
+    <Compile Include="Areas\CustomerManage\Controllers\Produce_OutController.cs" />
     <Compile Include="Areas\CustomerManage\Controllers\ReceivableSklController.cs" />
     <Compile Include="Areas\CustomerManage\Controllers\ReceivableController.cs" />
     <Compile Include="Areas\CustomerManage\Controllers\ReceivableReportController.cs" />
@@ -2073,6 +2074,9 @@
     <Content Include="Areas\CustomerManage\Views\DZ_Order\MoneyDetail.cshtml" />
     <Content Include="Areas\CustomerManage\Views\DZ_Order\MoneyForm.cshtml" />
     <Content Include="Areas\CustomerManage\Views\DZ_Order\MoneyOKCheckForm.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\Produce_Out\Produce_OutForm.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\Produce_Out\Produce_OutIndex.cshtml" />
+    <Content Include="Areas\CustomerManage\Views\Sale_Customer\ImportLiao.cshtml" />
     <None Include="Properties\PublishProfiles\6.1.pubxml" />
     <Content Include="Areas\FlowManage\Views\FlowLaunch\Index.cshtml" />
     <Content Include="Areas\FlowManage\Views\FormDesign\FormPreview.cshtml" />

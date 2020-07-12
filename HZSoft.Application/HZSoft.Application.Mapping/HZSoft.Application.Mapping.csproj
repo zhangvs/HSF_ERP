@@ -87,6 +87,7 @@
     <Compile Include="CustomerManage\Poll_ShareMap.cs" />
     <Compile Include="CustomerManage\Poll_SignUpMap.cs" />
     <Compile Include="CustomerManage\Poll_ToMap.cs" />
+    <Compile Include="CustomerManage\Produce_OutMap.cs" />
     <Compile Include="CustomerManage\ReceivableMap.cs" />
     <Compile Include="CustomerManage\Sale_CustomerMap.cs" />
     <Compile Include="CustomerManage\Sale_Customer_ItemMap.cs" />

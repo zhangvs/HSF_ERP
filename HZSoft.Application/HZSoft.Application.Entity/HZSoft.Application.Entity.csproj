@@ -80,6 +80,7 @@
     <Compile Include="CustomerManage\Poll_ShareEntity.cs" />
     <Compile Include="CustomerManage\Poll_SignUpEntity.cs" />
     <Compile Include="CustomerManage\Poll_ToEntity.cs" />
+    <Compile Include="CustomerManage\Produce_OutEntity.cs" />
     <Compile Include="CustomerManage\ReceivableEntity.cs" />
     <Compile Include="CustomerManage\Sale_CustomerEntity.cs" />
     <Compile Include="CustomerManage\Sale_Customer_ItemEntity.cs" />

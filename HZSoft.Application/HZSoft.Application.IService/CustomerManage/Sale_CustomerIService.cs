@@ -2,6 +2,7 @@ using HZSoft.Application.Entity.CustomerManage;
 using HZSoft.Data.Repository;
 using HZSoft.Util.WebControl;
 using System.Collections.Generic;
+using System.Data;
 
 namespace HZSoft.Application.IService.CustomerManage
 {
@@ -87,6 +88,7 @@ namespace HZSoft.Application.IService.CustomerManage
         /// </summary>
         /// <param name="entity"></param>
         void UpdateStepState(Sale_CustomerEntity entity);
+        string BatchAddEntityLiao(string keyValue, DataTable dtSource, string dir);
         #endregion
     }
 }

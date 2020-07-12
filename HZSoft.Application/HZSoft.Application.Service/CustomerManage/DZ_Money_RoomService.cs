@@ -53,7 +53,7 @@ namespace HZSoft.Application.Service.CustomerManage
         /// <returns></returns>
         public IEnumerable<DZ_Money_ItemEntity> GetRoomItemDetails(string keyValue)
         {
-            return this.BaseRepository().FindList<DZ_Money_ItemEntity>("select * from DZ_Money_Item where OrderId='" + keyValue + "' ORDER BY roomname,sort,createdate");
+            return this.BaseRepository().FindList<DZ_Money_ItemEntity>("select * from DZ_Money_Item where OrderId='" + keyValue + "' ORDER BY roomid,sort,createdate");
         }
         /// <summary>
         /// 获取子表详细信息

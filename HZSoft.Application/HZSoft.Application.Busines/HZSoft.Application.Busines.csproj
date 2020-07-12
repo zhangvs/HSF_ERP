@@ -76,6 +76,7 @@
     <Compile Include="CustomerManage\Poll_ShareBLL.cs" />
     <Compile Include="CustomerManage\Poll_SignUpBLL.cs" />
     <Compile Include="CustomerManage\Poll_ToBLL.cs" />
+    <Compile Include="CustomerManage\Produce_OutBLL.cs" />
     <Compile Include="CustomerManage\ReceivableSklBLL.cs" />
     <Compile Include="CustomerManage\ReceivableBLL.cs" />
     <Compile Include="CustomerManage\ReceivableReportBLL.cs" />
