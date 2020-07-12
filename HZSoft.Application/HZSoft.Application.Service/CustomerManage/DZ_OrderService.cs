@@ -1827,16 +1827,17 @@ namespace HZSoft.Application.Service.CustomerManage
                                                 string count = dtSource.Rows[j][8].ToString();//数量
                                                 if (!string.IsNullOrEmpty(kuan))
                                                 {
-                                                    sumArea += Math.Round(((decimal)Convert.ToDecimal(kuan) * Convert.ToDecimal(gao)* Convert.ToDecimal(count) / 1000000), 2);//添加*数量
-
+                                                    //sumArea += Math.Round(((decimal)Convert.ToDecimal(kuan) * Convert.ToDecimal(gao)* Convert.ToDecimal(count) / 1000000), 2);//添加*数量
+                                                    sumArea += Convert.ToDecimal(kuan) * Convert.ToDecimal(gao) * Convert.ToDecimal(count) / 1000000;//先不四舍五入，先求和再四舍五入
                                                 }
                                                 else
                                                 {
                                                     //跳空，说明当前材质已经遍历完成，计算金额
-                                                    decimal? _amount = _place * sumArea;
+                                                    decimal _dsumArea = Math.Round((decimal)sumArea, 2);
+                                                    decimal _amount = Math.Round((decimal)_place * _dsumArea, 2);
                                                     roomEntity.RoomAmount += _amount;
                                                     //创建房间内的材质db
-                                                    AddDbItem(roomEntity.RoomId, roomName, product.Id, product.Code, caizhiNMame, product.Guige, sumCount, sumArea, product.Unit, _place, _amount, keyValue, oldEntity.Code, "1010", db);
+                                                    AddDbItem(roomEntity.RoomId, roomName, product.Id, product.Code, caizhiNMame, product.Guige, sumCount, _dsumArea, product.Unit, _place, _amount, keyValue, oldEntity.Code, "1010", db);
                                                     i = j - 1;//当前空行，-1回去，i会自增1
                                                     break;//当前item遍历完毕，跳出循环
                                                 }
