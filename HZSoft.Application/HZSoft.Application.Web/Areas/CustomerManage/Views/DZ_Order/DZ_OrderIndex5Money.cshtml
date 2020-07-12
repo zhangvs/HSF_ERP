@@ -26,7 +26,7 @@
             description: "==请选择==",
         });
         $("#MoneyMark").ComboBoxSetValue(1);
-        $("#ChaiUserName").val('@HZSoft.Application.Code.OperatorProvider.Provider.Current().UserName');
+        //$("#ChaiUserName").val('@HZSoft.Application.Code.OperatorProvider.Provider.Current().UserName');
         //resize重设布局;
         $(window).resize(function (e) {
             window.setTimeout(function () {
@@ -41,7 +41,7 @@
         var selectedRowIndex = 0;
         var queryJson = {};
         queryJson.MoneyMark = 1;
-        queryJson.ChaiUserName='@HZSoft.Application.Code.OperatorProvider.Provider.Current().UserName';
+        //queryJson.ChaiUserName='@HZSoft.Application.Code.OperatorProvider.Provider.Current().UserName';
 
         var $gridTable = $('#gridTable');
         $gridTable.jqGrid({

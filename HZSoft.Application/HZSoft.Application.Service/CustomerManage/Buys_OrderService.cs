@@ -459,6 +459,11 @@ namespace HZSoft.Application.Service.CustomerManage
                             //发微信模板消息---完全入库+（收齐尾款或者不需要收取尾款）之后，给胡鲁鲁发消息提醒????给程东彩发全部入库提醒
                             //订单生成通知（9完全入库提醒）
                             TemplateWxApp.SendTemplateAllIn("oA-EC1W1BQZ46Wc8HPCZZUUFbE9M", "您好，有新的订单已经入库!", buyEntity.OrderTitle, "共" + buyEntity.TotalQty + "包，请进行发货通知");
+                            if (buyEntity.CompanyId == "0e4ad85a-7bd3-4cba-a390-26ba6d3bf6a2")
+                            {
+                                //整装部订单全部入库，给戴宝华提醒
+                                TemplateWxApp.SendTemplateAllIn("oA-EC1ZrUuePIU9bIapbYnAVe6EU", "您好，有新的订单已经入库!", buyEntity.OrderTitle, "共" + buyEntity.TotalQty + "包，请进行发货通知");
+                            }
                         }
                         else
                         {

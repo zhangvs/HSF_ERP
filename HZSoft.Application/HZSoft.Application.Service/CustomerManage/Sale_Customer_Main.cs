@@ -71,6 +71,14 @@ namespace HZSoft.Application.Service.CustomerManage
                     }
                     RecordHelp.AddRecord(4, orderEntity.Id, "初始化生产单");
                 }
+                else
+                {
+                    //客诉单需要修改报价审核状态
+                    oldSale.MoneyOkMark = orderEntity.MoneyOkMark;
+                    oldSale.MoneyOkDate = orderEntity.MoneyOkDate;
+                    oldSale.Modify(orderEntity.Code);
+                    db.Update(oldSale);
+                }
             }
             catch (Exception)
             {

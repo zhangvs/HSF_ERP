@@ -68,7 +68,7 @@
                 { label: "创建人员", name: "CreateUserName", width: 100, align: "left" },
                 { label: "创建时间", name: "CreateDate", width: 130, align: 'left', sortable: true, formatter: "date", formatoptions: { srcformat: 'Y-m-d H:i', newformat: 'Y-m-d H:i' } },
                 {
-                    label: "收款确认", name: "EnabledMark", index: "EnabledMark", width: 150, align: "center",
+                    label: "收款确认", name: "EnabledMark", index: "EnabledMark", width: 80, align: "center",
                     formatter: function (cellvalue, options, rowObject) {
                             if (cellvalue >= 1) {
                                 return "<i class=\"fa fa-toggle-on\"></i>";
@@ -79,6 +79,7 @@
                             }
                     }
                 },
+                { label: "更新人员", name: "ModifyUserName", width: 100, align: "left" },
                 { label: '备注信息', name: 'Description', width: 200, align: 'left' },
             ],
             viewrecords: true,
