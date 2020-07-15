@@ -229,6 +229,16 @@ namespace HZSoft.Application.Entity.CustomerManage
         /// <returns></returns>
         public string MoneyPathKuJiaLe { get; set; }
         /// <summary>
+        /// 报价附件1010厨卫
+        /// </summary>
+        /// <returns></returns>
+        public string MoneyPath1010_cw { get; set; }
+        /// <summary>
+        /// 报价附件酷家乐厨卫
+        /// </summary>
+        /// <returns></returns>
+        public string MoneyPathKuJiaLe_cw { get; set; }
+        /// <summary>
         /// 拆单金额
         /// </summary>
         /// <returns></returns>

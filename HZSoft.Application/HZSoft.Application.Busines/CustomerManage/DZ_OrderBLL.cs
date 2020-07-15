@@ -201,5 +201,54 @@ namespace HZSoft.Application.Busines.CustomerManage
                 return ex.Message;
             }
         }
+
+
+        /// <summary>
+        /// 保存表单（新增、修改）
+        /// </summary>
+        /// <returns></returns>
+        public string BatchAddEntity_cw(string keyValue, DataTable dtSource, string dir)
+        {
+            try
+            {
+                string returnMsg = service.BatchAddEntity_cw(keyValue, dtSource, dir);
+                return returnMsg;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+        /// <summary>
+        /// 保存表单（新增、修改）
+        /// </summary>
+        /// <returns></returns>
+        public string BatchAddEntity1010_cw(string keyValue, DataTable dtSource, string dir)
+        {
+            try
+            {
+                string returnMsg = service.BatchAddEntity1010_cw(keyValue, dtSource, dir);
+                return returnMsg;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+        /// <summary>
+        /// 清空导入数据
+        /// </summary>
+        /// <param name="keyValue">主键</param>
+        public void RemoveImportForm(string keyValue)
+        {
+            try
+            {
+                service.RemoveImportForm(keyValue);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

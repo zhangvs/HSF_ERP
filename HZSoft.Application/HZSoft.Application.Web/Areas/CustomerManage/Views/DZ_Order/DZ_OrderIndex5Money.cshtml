@@ -69,20 +69,6 @@
                 { label: '客户', name: 'CustomerName', index: 'CustomerName', width: 100, align: 'center', sortable: true },
                 { label: '销售人', name: 'SalesmanUserName', index: 'SalesmanUserName', width: 65, align: 'center', sortable: true },
                 { label: '接单日期', name: 'CreateDate', index: 'CreateDate', width: 118, align: 'left', sortable: true },
-                { label: '审图人', name: 'CheckTuUserName', index: 'CheckTuUserName', width: 60, align: 'center', sortable: true },
-                {
-                    label: "审图", name: "CheckTuMark", index: "CheckTuMark", width: 60, align: "center", sortable: false,
-                    formatter: function (cellvalue, options, rowObject) {
-                        if (cellvalue >= 1) {
-                            return "<i class=\"fa fa-toggle-on\"></i>";
-                        } else if (cellvalue == -1) {
-                            return "<span style='color:red'>驳回</span>";
-                        } else {
-                            return "<i class=\"fa fa-toggle-off\"></i>";
-                        }
-                    }
-                },
-                { label: '审图日期', name: 'CheckTuDate', index: 'CheckTuDate', width: 118, align: 'left', sortable: true },
                 { label: '拆单人', name: 'ChaiUserName', index: 'ChaiUserName', width: 60, align: 'center', sortable: true },
                 {
                     label: "拆单", name: "ChaiMark", index: "ChaiMark", width: 60, align: "center", sortable: false,
@@ -111,6 +97,46 @@
                     }
                 },
                 { label: '审核日期', name: 'CheckDate', index: 'CheckDate', width: 118, align: 'left', sortable: true },
+                {
+                    label: "1010定制", name: "MoneyPath1010", index: "MoneyPath1010", width: 70, align: "center", sortable: false,
+                    formatter: function (cellvalue) {
+                        if (cellvalue != null) {
+                            return "<i class=\"fa fa-toggle-on\"></i>";
+                        } else {
+                            return "<i class=\"fa fa-toggle-off\"></i>";
+                        }
+                    }
+                },
+                {
+                    label: "1010厨卫", name: "MoneyPath1010_cw", index: "MoneyPath1010_cw", width: 70, align: "center", sortable: false,
+                    formatter: function (cellvalue) {
+                        if (cellvalue != null) {
+                            return "<i class=\"fa fa-toggle-on\"></i>";
+                        } else {
+                            return "<i class=\"fa fa-toggle-off\"></i>";
+                        }
+                    }
+                },
+                {
+                    label: "酷家乐定制", name: "MoneyPathKuJiaLe", index: "MoneyPathKuJiaLe", width: 80, align: "center", sortable: false,
+                    formatter: function (cellvalue) {
+                        if (cellvalue != null) {
+                            return "<i class=\"fa fa-toggle-on\"></i>";
+                        } else {
+                            return "<i class=\"fa fa-toggle-off\"></i>";
+                        }
+                    }
+                },
+                {
+                    label: "酷家乐厨卫", name: "MoneyPathKuJiaLe_cw", index: "MoneyPathKuJiaLe_cw", width: 80, align: "center", sortable: false,
+                    formatter: function (cellvalue) {
+                        if (cellvalue != null) {
+                            return "<i class=\"fa fa-toggle-on\"></i>";
+                        } else {
+                            return "<i class=\"fa fa-toggle-off\"></i>";
+                        }
+                    }
+                },
                 {
                     label: "报价", name: "MoneyMark", index: "MoneyMark", width: 60, align: "center", sortable: false,
                     formatter: function (cellvalue) {

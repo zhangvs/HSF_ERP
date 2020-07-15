@@ -72,20 +72,6 @@
                 { label: '客户', name: 'CustomerName', index: 'CustomerName', width: 100, align: 'center', sortable: true },
                 { label: '销售人', name: 'SalesmanUserName', index: 'SalesmanUserName', width: 65, align: 'center', sortable: true },
                 { label: '接单日期', name: 'CreateDate', index: 'CreateDate', width: 118, align: 'left', sortable: true },
-                { label: '审图人', name: 'CheckTuUserName', index: 'CheckTuUserName', width: 60, align: 'center', sortable: true },
-                {
-                    label: "审图", name: "CheckTuMark", index: "CheckTuMark", width: 60, align: "center", sortable: false,
-                    formatter: function (cellvalue, options, rowObject) {
-                        if (cellvalue >= 1) {
-                            return "<i class=\"fa fa-toggle-on\"></i>";
-                        } else if (cellvalue == -1) {
-                            return "<span style='color:red'>驳回</span>";
-                        } else {
-                            return "<i class=\"fa fa-toggle-off\"></i>";
-                        }
-                    }
-                },
-                { label: '审图日期', name: 'CheckTuDate', index: 'CheckTuDate', width: 118, align: 'left', sortable: true },
                 { label: '拆单人', name: 'ChaiUserName', index: 'ChaiUserName', width: 60, align: 'center', sortable: true },
                 {
                     label: "拆单", name: "ChaiMark", index: "ChaiMark", width: 60, align: "center", sortable: false,
@@ -115,7 +101,7 @@
                 },
                 { label: '审核日期', name: 'CheckDate', index: 'CheckDate', width: 118, align: 'left', sortable: true },
                 {
-                    label: "1010", name: "MoneyPath1010", index: "MoneyPath1010", width: 60, align: "center", sortable: false,
+                    label: "1010定制", name: "MoneyPath1010", index: "MoneyPath1010", width: 70, align: "center", sortable: false,
                     formatter: function (cellvalue) {
                         if (cellvalue!=null) {
                             return "<i class=\"fa fa-toggle-on\"></i>";
@@ -125,7 +111,27 @@
                     }
                 },
                 {
-                    label: "酷家乐", name: "MoneyPathKuJiaLe", index: "MoneyPathKuJiaLe", width: 60, align: "center", sortable: false,
+                    label: "1010厨卫", name: "MoneyPath1010_cw", index: "MoneyPath1010_cw", width: 70, align: "center", sortable: false,
+                    formatter: function (cellvalue) {
+                        if (cellvalue != null) {
+                            return "<i class=\"fa fa-toggle-on\"></i>";
+                        } else {
+                            return "<i class=\"fa fa-toggle-off\"></i>";
+                        }
+                    }
+                },
+                {
+                    label: "酷家乐定制", name: "MoneyPathKuJiaLe", index: "MoneyPathKuJiaLe", width: 80, align: "center", sortable: false,
+                    formatter: function (cellvalue) {
+                        if (cellvalue != null) {
+                            return "<i class=\"fa fa-toggle-on\"></i>";
+                        } else {
+                            return "<i class=\"fa fa-toggle-off\"></i>";
+                        }
+                    }
+                },
+                {
+                    label: "酷家乐厨卫", name: "MoneyPathKuJiaLe_cw", index: "MoneyPathKuJiaLe_cw", width: 80, align: "center", sortable: false,
                     formatter: function (cellvalue) {
                         if (cellvalue != null) {
                             return "<i class=\"fa fa-toggle-on\"></i>";
@@ -287,6 +293,36 @@
             });
         }
     }
+    //批量导入
+    function btn_import1010_cw() {
+        var keyValue = $('#gridTable').jqGridRowValue('Id');
+        if (checkedRow(keyValue)) {
+            layer.open({
+                type: 2,
+                title: '导入1010厨卫',
+                shadeClose: true,
+                shade: false,
+                maxmin: true, //开启最大化最小化按钮
+                area: ['650px', '450px'],
+                content: '/CustomerManage/DZ_Order/Import1010_cw?keyValue=' + keyValue
+            });
+        }
+    }
+    //批量导入
+    function btn_importKuJiaLe_cw() {
+        var keyValue = $('#gridTable').jqGridRowValue('Id');
+        if (checkedRow(keyValue)) {
+            layer.open({
+                type: 2,
+                title: '导入酷家乐厨卫',
+                shadeClose: true,
+                shade: false,
+                maxmin: true, //开启最大化最小化按钮
+                area: ['650px', '450px'],
+                content: '/CustomerManage/DZ_Order/ImportKuJiaLe_cw?keyValue=' + keyValue
+            });
+        }
+    }
     //编辑
     function btn_edit2() {
         var keyValue = $("#gridTable").jqGridRowValue('Id');
@@ -313,6 +349,21 @@
                 icon: "fa fa-file-text-o",
                 url: top.contentPath + "/CustomerManage/DZ_Order/MoneyDetail?keyValue=" + keyValue
             });
+        }
+    }
+    //删除
+    function btn_delete() {
+        var keyValue = $('#gridTable').jqGridRowValue('Id');
+        if (keyValue) {
+            $.RemoveForm({
+                url: '../../CustomerManage/DZ_Order/RemoveImportForm',
+                param: { keyValue: keyValue },
+                success: function (data) {
+                    $('#gridTable').trigger('reloadGrid');
+                }
+            })
+        } else {
+            dialogMsg('请选择需要删除的订单！', 0);
         }
     }
 </script>
@@ -442,10 +493,17 @@
         <div class="btn-group">
             <a id="lr-replace" class="btn btn-default" onclick="reload()"><i class="fa fa-refresh"></i>&nbsp;刷新</a>
             <a id="lr-edit" class="btn btn-default" onclick="btn_edit()"><i class="fa fa-pencil-square-o"></i>&nbsp;报价</a>
-            <a id="lr-import" class="btn btn-default" onclick="btn_import1010()"><i class="fa fa-level-down"></i>&nbsp;导入1010</a>
-            <a id="lr-import" class="btn btn-default" onclick="btn_importKuJiaLe()"><i class="fa fa-level-down"></i>&nbsp;导入酷家乐</a>
             <a id="lr-edit" class="btn btn-default" onclick="btn_edit2()"><i class="fa fa-pencil-square-o"></i>&nbsp;报价编辑</a>
             <a id="lr-detail" class="btn btn-default" onclick="btn_detail()"><i class="fa fa-list-alt"></i>&nbsp;报价详细</a>
+            <a id="lr-delete" class="btn btn-default" onclick="btn_delete()"><i class="fa fa-trash-o"></i>&nbsp;清空导入</a>
+        </div>
+        <div class="btn-group">
+            <a id="lr-import" class="btn btn-default" onclick="btn_import1010()"><i class="fa fa-level-down"></i>&nbsp;1010（定制）</a>
+            <a id="lr-import" class="btn btn-default" onclick="btn_import1010_cw()"><i class="fa fa-level-down"></i>&nbsp;1010（厨卫）</a>
+        </div>
+        <div class="btn-group">
+            <a id="lr-import" class="btn btn-default" onclick="btn_importKuJiaLe()"><i class="fa fa-level-down"></i>&nbsp;酷家乐（定制）</a>
+            <a id="lr-import" class="btn btn-default" onclick="btn_importKuJiaLe_cw()"><i class="fa fa-level-down"></i>&nbsp;酷家乐（厨卫）</a>
         </div>
     </div>
     @*<script>$('.toolbar').authorizeButton()</script>*@

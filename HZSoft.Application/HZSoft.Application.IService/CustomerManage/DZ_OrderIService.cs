@@ -72,5 +72,12 @@ namespace HZSoft.Application.IService.CustomerManage
         /// <returns></returns>
         string BatchAddEntity(string keyValue, DataTable dtSource,string dir);
         string BatchAddEntity1010(string keyValue, DataTable dtSource, string dir);
+        string BatchAddEntity_cw(string keyValue, DataTable dtSource, string dir);
+        string BatchAddEntity1010_cw(string keyValue, DataTable dtSource, string dir);
+        /// <summary>
+        /// 清空导入数据
+        /// </summary>
+        /// <param name="keyValue">主键</param>
+        void RemoveImportForm(string keyValue);
     }
 }

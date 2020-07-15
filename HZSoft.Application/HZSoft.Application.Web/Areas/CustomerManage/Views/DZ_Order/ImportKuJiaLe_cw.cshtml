@@ -1,4 +1,4 @@
-﻿@using (Html.BeginForm("Import1010", "DZ_Order", new { keyValue = @ViewBag.OrderId }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+﻿@using (Html.BeginForm("ImportKuJiaLe_cw", "DZ_Order", new { keyValue = @ViewBag.OrderId }, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <script src="/Content/scripts/jquery/jquery-1.10.2.min.js"></script>
     <style>
@@ -8,7 +8,7 @@
     </style>
     <div style="margin-top: 20px;">
         <fieldset id="myfieldset1">
-            <legend>1010（全屋定制）导入</legend>
+            <legend>酷家乐导入厨卫</legend>
             <p>
                 <input id="FileUpload" type="file" name="files" style="width: 250px; height: 24px;background: White" class="easyui-validatebox" />
                 <input id="btnImport" type="submit" value="导入" onclick="importIng()" style="width: 80px; height: 24px;" />

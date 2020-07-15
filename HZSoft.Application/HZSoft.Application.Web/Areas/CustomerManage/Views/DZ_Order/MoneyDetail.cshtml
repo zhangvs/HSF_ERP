@@ -46,6 +46,12 @@
                     if (!!order.MoneyPathKuJiaLe) {
                         $("#MoneyPathKuJiaLe_a").attr("href", order.MoneyPathKuJiaLe).text(order.MoneyPathKuJiaLe.substring(order.MoneyPathKuJiaLe.lastIndexOf("/") + 1));
                     }
+                    if (!!order.MoneyPath1010_cw) {
+                        $("#MoneyPath1010_cw_a").attr("href", order.MoneyPath1010_cw).text(order.MoneyPath1010_cw.substring(order.MoneyPath1010_cw.lastIndexOf("/") + 1));
+                    }
+                    if (!!order.MoneyPathKuJiaLe_cw) {
+                        $("#MoneyPathKuJiaLe_cw_a").attr("href", order.MoneyPathKuJiaLe_cw).text(order.MoneyPathKuJiaLe_cw.substring(order.MoneyPathKuJiaLe_cw.lastIndexOf("/") + 1));
+                    }
                     if (!!order.MoneyMark) {
                         $("input:radio[name='MoneyMark'][value=" + order.MoneyMark + "]").attr("checked", 'checked');
                     }
@@ -206,8 +212,10 @@
             </tr>
         </table>
     </div>
-    1010附件：<a id="MoneyPath1010_a" style='text-decoration:underline;color: #337ab7;height:38px;line-height:38px;' href=""></a>
-    酷家乐附件：<a id="MoneyPathKuJiaLe_a" style='text-decoration:underline;color: #337ab7;height:38px;line-height:38px;' href=""></a>
+    1010（定制）：<a id="MoneyPath1010_a" style='text-decoration:underline;color: #337ab7;height:38px;line-height:38px;' href=""></a>
+    1010（厨卫）：<a id="MoneyPath1010_cw_a" style='text-decoration:underline;color: #337ab7;height:38px;line-height:38px;' href=""></a>
+    酷家乐（定制）：<a id="MoneyPathKuJiaLe_a" style='text-decoration:underline;color: #337ab7;height:38px;line-height:38px;' href=""></a>
+    酷家乐（厨卫）：<a id="MoneyPathKuJiaLe_cw_a" style='text-decoration:underline;color: #337ab7;height:38px;line-height:38px;' href=""></a>
     <div class="gridPanel printArea">
         <table id="gridTable"></table>
     </div>
